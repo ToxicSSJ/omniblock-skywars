@@ -29,6 +29,7 @@ import net.omniblock.skywars.util.ContaminationUtil.ContaminationInfo;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationTroop;
 import net.omniblock.skywars.util.DestructionUtil.Destruction;
 import net.omniblock.skywars.util.DestructionUtil.DestructionInfo;
+import net.omniblock.skywars.util.Schematic;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
 import omniblock.on.util.TextUtil;
@@ -65,7 +66,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				if(remainingTimeLobby <= 0) {
 					
 					chestmanager = new ChestManager();
-					SoloSkywars.lobbyschematic.removeSchematic();
+					Schematic.removeSchematic(SoloSkywars.lobbyschematic.getLocation());
 					
 					SoloPlayerManager.transferAllPlayersToInGame();
 					SoloPlayerManager.sendAllPlayersToCages(gStarter);
