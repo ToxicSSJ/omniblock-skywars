@@ -1,0 +1,8 @@
+name: Skywars
+main: net.omniblock.skywars.Skywars
+softdepend: [OmniNetwork, WorldEdit, Citizens]
+version: 1.0
+commands:
+   chest:
+      description: testeando los kakichest!.
+      usage: /<command>
