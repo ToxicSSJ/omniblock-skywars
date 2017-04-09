@@ -45,8 +45,8 @@ public class Bridged implements ItemType, Listener {
 				if(player.getInventory().getItemInHand().getItemMeta().hasDisplayName()){
 					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUNTE_FUTURISTICO.getName())){
 						if(event.getBlockPlaced().getType() == Material.POWERED_RAIL){
-							
 							Block block = event.getBlock();
+							
 							createBridged(player, block, player.getWorld());
 							world.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, -2);
 							
@@ -70,11 +70,6 @@ public class Bridged implements ItemType, Listener {
 				if (bridgeremove.contains(block)) {
 					bridgeremove.remove(block);
 					block.setTypeIdAndData(95, (byte) 14, true);
-					
-					/**
-					 * Delete bridged
-					 * 
-					 **/
 					deleteBirdged(player, block);
 				}
 			}

@@ -14,14 +14,14 @@ import net.omniblock.skywars.util.NumberUtil;
 public class SpawnBlock {
 
 	//GENERA BLOQUES RANDOM
-	public static List<Block> blockGeneratorInList(Block block, int numberofblock){
+	public static List<Block> blockGeneratorInList(Block block, int xn, int yn, int zn, int rx, int ry, int rz, int numberofblock){
 		List<Block> locblock = new ArrayList<Block>();
 	
 		for(int t = 0; t < numberofblock; t++){
-			
-			int x = NumberUtil.getRandomInt(10, +1);
-			int y = NumberUtil.getRandomInt(20, +1);
-			int z = NumberUtil.getRandomInt(10, -4);
+			int x = NumberUtil.getRandomInt(rx, xn);
+			int y = NumberUtil.getRandomInt(ry, yn);
+			int z = NumberUtil.getRandomInt(rz, zn);
+
 			String listKey = x + "," + y + "," + z;
 			
 			block.getRelative(x, y, z).setType(Material.PACKED_ICE);
@@ -33,14 +33,14 @@ public class SpawnBlock {
 	}
 	
 	
-	public static void blockGenerator(Block block, int numberofblock){   
+	public static void blockGenerator(Block block,int xn, int yn, int zn, int rx, int ry, int rz, int numberofblock){   
 		List<Block> locblock = new ArrayList<Block>();
 	
 		for(int t = 0; t < numberofblock; t++){
-		
-			int x = NumberUtil.getRandomInt(10, +1);
-			int y = NumberUtil.getRandomInt(20, -10);
-			int z = NumberUtil.getRandomInt(10, +5);
+			int x = NumberUtil.getRandomInt(rx, xn);
+			int y = NumberUtil.getRandomInt(ry, yn);
+			int z = NumberUtil.getRandomInt(rz, zn);
+
 			String listKey = x + "," + y + "," + z;
 			
 			block.getRelative(x, y, z).setType(Material.PACKED_ICE);
@@ -68,14 +68,15 @@ public class SpawnBlock {
     }	
 	
 	//TE CREA COLUMNAS 
-	public static void columns(Block block, int xn, int yn, int zn, int rx, int ry, int rz,  int numberofcolumns, int height, boolean Columns){
+	public static void columns(Block block, int xn,  int yn, int zn, int rx, int ry, int rz,  int numberofcolumns, int height, boolean Columns){
 		List<String> numberplace = new ArrayList<String>();
 	
 		for(int t = 0; t < numberofcolumns; t++){
-		
-			int x = NumberUtil.getRandomInt(xn, rx );
-			int y = NumberUtil.getRandomInt(yn, ry);
-			int z = NumberUtil.getRandomInt(zn, rz);
+	
+			int x = NumberUtil.getRandomInt(rx, xn);
+			int y = block.getY();
+			int y2 = NumberUtil.getRandomInt(ry, yn);
+			int z = NumberUtil.getRandomInt(rz, zn);
 			String listKey = x + "," + y + "," + z;
 			
 			if(Columns){
@@ -85,7 +86,7 @@ public class SpawnBlock {
 	            }else{
 	                
 	            	numberplace.add(listKey);
-	            	for(int h = 0; h + y < height; h++){
+	            	for(int h = 0; h + y + y2 < height + y; h++){
 	            		block.getRelative(x, h, z).setType(Material.PACKED_ICE);
 	            	}
 				}
@@ -95,13 +96,41 @@ public class SpawnBlock {
 		}
 	}
 	
+	
+	public static void columnsInList(Block block, int xn,  int zn, int yn, int rx, int ry, int rz,  int numberofcolumns, int height, boolean Columns){
+		List<String> numberplace = new ArrayList<String>();
+	
+		for(int t = 0; t < numberofcolumns; t++){
+	
+			int x = NumberUtil.getRandomInt(rx, xn);
+			int y = block.getY();
+			int y2 = NumberUtil.getRandomInt(ry, yn);
+			int z = NumberUtil.getRandomInt(rz, zn);
+			String listKey = x + "," + y + "," + z;
+			
+			if(Columns){
+				if(numberplace.contains(listKey)){
+	                continue;
+	 
+	            }else{
+	                
+	            	numberplace.add(listKey);
+	            	for(int h = 0; h + y + y2 < height + y; h++){
+	            		block.getRelative(x, h, z).setType(Material.PACKED_ICE);
+	            	}
+				}
+			}else {
+				block.getRelative(x, y, z).setType(Material.PACKED_ICE);
+			}
+		}
+	}
+	
+	
 	//SPAWN FALLINGBLOCK
 	public static void bounceBlock(Block b, float y_speed) {
         if(b == null) return;
        
-        FallingBlock fb = b.getWorld()
-                .spawnFallingBlock(b.getLocation(), b.getType(), b.getData());
-       
+        FallingBlock fb = b.getWorld().spawnFallingBlock(b.getLocation(), b.getType(), b.getData());
         fb.setDropItem(false);
         b.setType(Material.AIR);
        

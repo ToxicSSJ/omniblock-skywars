@@ -18,7 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.AngryChest;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bombardier;
+import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bridged;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.HealthTurret;
+import net.omniblock.skywars.games.solo.chest.item.z.listeners.IBall;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.IceTurret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.LaserTurret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.Meteoro;
@@ -64,6 +66,10 @@ public class Skywars extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new Meteoro(), this);
 		this.getServer().getPluginManager().registerEvents(new Bombardier(), this);
 		
+                this.getServer().getPluginManager().registerEvents(new AngryChest(), this);
+		this.getServer().getPluginManager().registerEvents(new Bridged(), this);
+		this.getServer().getPluginManager().registerEvents(new IBall(), this);
+
 		this.getServer().getPluginManager().registerEvents(new PorkTurret(), this);
 		this.getServer().getPluginManager().registerEvents(new LaserTurret(), this);
 		this.getServer().getPluginManager().registerEvents(new IceTurret(), this);

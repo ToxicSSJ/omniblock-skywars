@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
+
 import net.omniblock.skywars.Skywars;
 
 public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener {
@@ -347,5 +348,4 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
             }
         }, 2L);
     }
-
 }

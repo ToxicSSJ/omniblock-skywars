@@ -38,9 +38,6 @@ public class Potion implements ItemType, Listener {
 					|| event.getAction() == Action.RIGHT_CLICK_AIR
 					|| event.getAction() == Action.LEFT_CLICK_AIR) {
 				if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.POCION_PURIFICADORA.getName())) {
-					if(event.getClickedBlock() != null){
-						if(event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST) return;
-					}
 				    
 					for (PotionEffect potion : player.getActivePotionEffects()) {
 						player.removePotionEffect(potion.getType());
@@ -50,10 +47,8 @@ public class Potion implements ItemType, Listener {
 					player.playSound(player.getLocation(), Sound.DRINK, 3, -30);
 					player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 3, -30);
 					player.playSound(player.getLocation(), Sound.VILLAGER_YES, 2, -30);
-
 					player.setHealth(player.getMaxHealth());
 					player.setFoodLevel((int) 20);
-
 					player.playEffect(EntityEffect.VILLAGER_HAPPY);
 					player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 10, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10, 10));

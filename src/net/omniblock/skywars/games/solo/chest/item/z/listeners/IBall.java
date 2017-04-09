@@ -6,7 +6,9 @@ import java.util.List;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -45,13 +47,13 @@ public class IBall implements ItemType, Listener {
 				    		|| event.getAction() == Action.LEFT_CLICK_BLOCK 
 				    		|| event.getAction() == Action.RIGHT_CLICK_AIR){
 												
-							player.getInventory().setItemInHand(null);
-								
+							player.getInventory().setItemInHand(null);	
 							Vector dir = player.getLocation().getDirection().normalize().multiply(3);
 							final Snowball sb = player.launchProjectile(Snowball.class);
 							sb.setVelocity(dir);
 			    			
 							new BukkitRunnable(){
+								int LIFE_TIME = 0;
 								@Override
 								public void run(){
 									if(sb.isDead() != true){
@@ -59,7 +61,11 @@ public class IBall implements ItemType, Listener {
 										Location block = sb.getLocation();
 										block.getWorld().playEffect(block, Effect.HAPPY_VILLAGER, 4);
 										block.getWorld().playSound(block, Sound.BLAZE_HIT, 3, 1);
-										SpawnBlock.blockGenerator(block.getBlock(), 5);
+										SpawnBlock.blockGenerator(block.getBlock(), 4, 4, 4, 2, 2, 2, 5);
+										LIFE_TIME++;
+										if(LIFE_TIME == 60){
+											cancel();
+										}
 			    					 
 									} else {
 										cancel();
@@ -72,14 +78,20 @@ public class IBall implements ItemType, Listener {
 			}
 		}
 	}
+	
 	@SuppressWarnings("unused")
 	@EventHandler
 	public void iceBalleffect(ProjectileHitEvent event){
-		
 		if(event.getEntity() instanceof Snowball){
 			Snowball sb = (Snowball) event.getEntity();
 			Location location = sb.getLocation();
 			sb.remove();
+			location.getWorld().playSound(location, Sound.EXPLODE, 5, 10);
+			List<Block> circle = SpawnBlock.circle(location, 3,1,false, true, -1);
+			for(Block b : circle){
+				if(b.getType() == Material.AIR) continue;
+				b.setType(Material.PACKED_ICE);
+			}
 		}
 	}
 }

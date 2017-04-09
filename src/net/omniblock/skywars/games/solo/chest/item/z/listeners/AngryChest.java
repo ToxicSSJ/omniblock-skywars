@@ -8,7 +8,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -31,20 +30,9 @@ public class AngryChest implements ItemType, Listener {
 	
 	private static SoloPlayerManager soloplayer;
 	
-	private static List<Block> chestN = new ArrayList<Block>();
-	private static List<Block> chestR = new ArrayList<Block>();
-
-	public enum Phase{
+	private static List<Block> chestblock = new ArrayList<Block>();
+	private static int CHEST_TYPE = 0;
 	
-		JAIL, 
-		SKEWERS,
-		NORMAL,
-		POSION,
-		;
-	}
-	
-		
-	private static Phase phase;
 	
 	@SuppressWarnings("static-access")
 	@EventHandler
@@ -56,20 +44,10 @@ public class AngryChest implements ItemType, Listener {
 				if(player.getItemInHand().getItemMeta().hasDisplayName()){
 					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.COFRE_EXPLOSIVO.getName())){
 						if(event.getBlockPlaced().getType() == Material.TRAPPED_CHEST){
-							
-							/**
-							* effect
-							* */
 												
 							player.playSound(player.getLocation(), Sound.ZOMBIE_WOOD, 5, -10);
 							player.getWorld().playEffect(event.getBlockPlaced().getLocation(), Effect.SMOKE, 10);
-							
-							
-							/**
-							* Chest Type
-							* */
-							
-							chestR.add(event.getBlockPlaced().getLocation().getBlock());
+							chestblock.add(event.getBlockPlaced().getLocation().getBlock());
 							
 						}
 					}else{
@@ -90,87 +68,38 @@ public class AngryChest implements ItemType, Listener {
 		if(soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(event.getAction() ==  Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK){					
 				if(event.getClickedBlock().getType() == Material.TRAPPED_CHEST){
-					if(chestR.contains(event.getClickedBlock())){
+					if(chestblock.contains(event.getClickedBlock())){
+						chestblock.remove(event.getClickedBlock());
 						
-						chestR.remove(event.getClickedBlock());
 						Block block = event.getClickedBlock();
 						Location location = block.getLocation();
-						removeChest(block, location);
-						ChestType();
+						removeChest(block, location);	
+						CHEST_TYPE = NumberUtil.getRandomInt(1, 3);
 						
-						switch(phase){
-							
-						/**
-						* Explode block effect
-						*/	
-							
-						case JAIL:
-							
-							List<Block> locblock = SpawnBlock.blockGeneratorInList(block, 20);
-							List<Block> cube = SpawnBlock.circle(location, 6,1,false, true, -1);
-							List<Block> cube2 = SpawnBlock.circle(location, 4,1,false, true, -1);
-							
-							for(Block b : cube){
-									
-								location.getWorld().playEffect(location, Effect.FIREWORKS_SPARK, 10);
-								if(b.getType() == Material.AIR) continue;
-								b.setType(Material.ICE);
-									
-							}
-							
-							for(Block b : cube2){
-								b.setType(Material.AIR);
-									
-							}
-							
-							for(Block b : locblock){
-								
-								SpawnBlock.bounceBlock(b, (float) 0.8);
-							}
-								
+						switch(CHEST_TYPE){
+						case 1:
+							jail(location, block);
 							Block b = location.getBlock().getRelative(0, -2, 0);
-							location.getWorld().playSound(location, Sound.EXPLODE, 2, 2);
-								
+							location.getWorld().playSound(location, Sound.EXPLODE, 2, 2);	
 							break;
-
-						case SKEWERS:
-						
-							SpawnBlock.columns(block, 10, 20, 10, -5, +1, -5, 20, 20, true);
-							List<Block> cube3 = SpawnBlock.circle(location, 6,1,false, true, -1);
+						case 2:
+							circle(location, block, Material.PACKED_ICE, 8);
+							
 							player.playSound(location, Sound.EXPLODE, 5, 10);
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20*3, 2));
 							player.setVelocity(location.getDirection().add(new Vector(0,2,0)));
-								
-							for(Block b2 : cube3){
-									
-								location.getWorld().playEffect(location, Effect.FIREWORKS_SPARK, 10);
-								if(b2.getType() == Material.AIR) continue;
-								b2.setType(Material.PACKED_ICE);
-									
-							}
-
-								
+							SpawnBlock.columns(block, 6, 15, 6, -2, -10, -2, 8, 20, true);
 							break;
-						case POSION:
-							
-							World world = block.getLocation().getWorld();
-							world.createExplosion(location, (float) 0.4F);							
-							
-							break;
-						case NORMAL:
-							
+						case 3:
 							location.getWorld().playSound(location, Sound.WOLF_HOWL, 5, 30);
 							location.getWorld().playSound(location, Sound.GHAST_SCREAM2, 5, 30);
-							
-					      
-					      				
 					      	player.setVelocity(location.getDirection().add(new Vector(0,2,0)));
 					      	player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 50);
 					      	location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 50);
 					      	player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3, 2));
-
-							
-								break;
+							break;
+						default:
+					      	break;
 						}
 					}
 				}
@@ -185,21 +114,28 @@ public class AngryChest implements ItemType, Listener {
 		chest.getInventory().clear();
 		chest.update();
 		block.setType(Material.AIR);
-
-		
 	}
 	
-	public void ChestType(){
-		int r = NumberUtil.getRandomInt(3, +1);
-
-		if(r == 1){
-			phase = Phase.JAIL;
+	public void jail(Location location, Block block){
+		List<Block> locblock = SpawnBlock.blockGeneratorInList(block, 10, 20, 10, +1, +1, -5, 20);
+		List<Block> cube = SpawnBlock.circle(location, 4,1,false, true, -1);
+		circle(location, block, Material.ICE, 8);
+		for(Block b : cube){
+			b.setType(Material.AIR);	
 		}
-		if(r == 2){
-			phase = Phase.SKEWERS;
+		
+		for(Block b : locblock){
+			SpawnBlock.bounceBlock(b, (float) 0.8);
+		
 		}
-		if(r == 3){
-			phase = Phase.NORMAL;
+	}
+	
+	public void circle(Location location, Block bloc, Material m, Integer r){
+		List<Block> cube = SpawnBlock.circle(location, r,1,false, true, -1);
+		for(Block b2 : cube){
+			location.getWorld().playEffect(location, Effect.FIREWORKS_SPARK, 10);
+			if(b2.getType() == Material.AIR) continue;
+			b2.setType(m);
 		}
 	}
 }

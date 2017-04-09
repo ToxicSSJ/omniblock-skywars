@@ -33,18 +33,10 @@ public class Punch implements ItemType, Listener {
 						if (playerdamage.getItemInHand().getItemMeta().getDisplayName()
 								.equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
 
-							/**
-							 * Remove Item
-							 */
 							playerdamage.getInventory().setItemInHand(null);
-
-							/**
-							 * Action
-							 */
 							playerdamage.playSound(playerdamage.getLocation(), Sound.ANVIL_BREAK, 2, 2); // sonido
 																											// de
 																											// test
-
 							new BukkitRunnable() {
 								@Override
 								public void run() {

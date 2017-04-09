@@ -1,129 +1,44 @@
 package net.omniblock.skywars.games.solo.chest.item.object;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
-import net.omniblock.skywars.util.ItemBuilder;
-
 public class AddItem {
 
-	public static int numberofitemN = 0;
-	public static int numberofitemT = 0;
+	public static int numberofitemN;
+	public static int numberofitemT;
+	private static Random random = new Random();
+	public static List<ItemStack> itemN = new ArrayList<ItemStack>();
+	public static List<ItemStack> itemT = new  ArrayList<ItemStack>();
 	
-	private Random random = new Random();
-
-	private Chest chest;
-	private Material material;
-	private List<ItemStack> list;
-
-	private boolean repeat_item = false;
-	
-	public AddItem() {
-
-	}
-
-	public Chest getChest() {
-		return chest;
-	}
-
-	public void setChest(Chest chest) {
-		this.chest = chest;
-	}
-
-	public Material getMaterial() {
-		return material;
-	}
-
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
-
-	public List<ItemStack> getList() {
-		return list;
-	}
-
-	public void setList(List<ItemStack> list) {
-		this.list = list;
-	}
-
-	public int getNumberofitemN() {
-		return numberofitemN;
-	}
-
-	public int getNumberofitemT() {
-		return numberofitemT;
-	}
-	
-	public boolean isRepeat_item() {
-		return repeat_item;
-	}
-
-	public void setRepeat_item(boolean repeat_item) {
-		this.repeat_item = repeat_item;
-	}
-
-	
-	public void addItemN() {
+	public static void add(Chest chest, final int n, List<ItemStack> list) {
 		
-		List<Integer> listposition = new ArrayList<Integer>();
-		listposition.clear();
-		for (int x = 0; x < numberofitemN; x++) {
+		List<Integer> LIST_ITEM = new ArrayList<Integer>();
+		List<Integer> LIST_SLOT = new ArrayList<Integer>();
+		LIST_ITEM.clear();
+		LIST_SLOT.clear();
+		Collections.shuffle(list);
+		int item = 0;
+		int slot = 0;
+		
+		for (int x = 0; x < n; x++) {
 	
-			int item = random.nextInt(list.size());
-			
-			if(!this.repeat_item){
-				if(listposition.contains(item)){
-					continue;
-				
-				}else{
-					
-					listposition.add(item);
-					chest.getInventory().setItem(randomSlot(), list.get(item));
-				}
-				
-			}else{
-				
-				chest.getInventory().setItem(randomSlot(), list.get(random.nextInt(list.size())));
-			}	
+			item = random.nextInt(list.size());
+			slot = random.nextInt(27);
+			if(!LIST_ITEM.contains(item) && !LIST_SLOT.contains(slot)){
+				LIST_ITEM.add(item);
+				LIST_SLOT.add(slot);
+				chest.getInventory().setItem(slot, list.get(item));
+			} else {
+				continue;
+			}
 		}
 	}
+	public AddItem(){}
 
-	public void addItemT() {
-		
-		List<Integer> listposition = new ArrayList<Integer>();
-		listposition.clear();
-		for (int x = 0; x < numberofitemT; x++) {
-	
-			int item = random.nextInt(list.size());
-			
-			if(!this.repeat_item){
-				if(listposition.contains(item)){
-					continue;
-				
-				}else{
-					
-					listposition.add(item);
-					chest.getInventory().setItem(randomSlot(), list.get(item));
-				}
-				
-			}else{
-				
-				chest.getInventory().setItem(randomSlot(), list.get(random.nextInt(list.size())));
-			}	
-		}
-	}
-
-	public void addItem(Material m, int amount) {
-		chest.getInventory().setItem(randomSlot(), new ItemBuilder(m).amount(amount).build());
-	}
-
-	public int randomSlot() {
-		int r = random.nextInt(27);
-		return r;
-	}
 }
