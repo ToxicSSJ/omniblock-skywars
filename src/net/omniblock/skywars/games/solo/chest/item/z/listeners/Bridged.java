@@ -70,7 +70,6 @@ public class Bridged implements ItemType, Listener {
 				if (bridgeremove.contains(block)) {
 					bridgeremove.remove(block);
 					block.setTypeIdAndData(95, (byte) 14, true);
-					
 					deleteBirdged(player, block);
 				}
 			}

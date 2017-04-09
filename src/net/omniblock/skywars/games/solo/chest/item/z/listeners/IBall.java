@@ -78,6 +78,7 @@ public class IBall implements ItemType, Listener {
 			}
 		}
 	}
+	
 	@SuppressWarnings("unused")
 	@EventHandler
 	public void iceBalleffect(ProjectileHitEvent event){

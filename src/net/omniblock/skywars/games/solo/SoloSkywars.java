@@ -157,8 +157,8 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Solo
 		 *   - Z
 		 */
-		
-		mainRunnableTask.addEvent("&d&DESTRUCCIÓN:", 60);
+
+		mainRunnableTask.addEvent("&d&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 240);
 		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 350);

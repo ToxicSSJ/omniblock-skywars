@@ -131,7 +131,6 @@ public class SpawnBlock {
         if(b == null) return;
        
         FallingBlock fb = b.getWorld().spawnFallingBlock(b.getLocation(), b.getType(), b.getData());
-       
         fb.setDropItem(false);
         b.setType(Material.AIR);
        
