@@ -1,0 +1,9 @@
+worlds:
+  mapsNormal:
+  - Torretas
+  mapsZ:
+  - Poop
+  - Aereo
+  - Torretas
+  lastUsedMap: "SWL"
+  currentMap: ""

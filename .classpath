@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Gitlab/OmniTools.jar"/>
+	<classpathentry kind="lib" path="C:/Gitlab/SPIGOT_1_8.jar"/>
+	<classpathentry kind="lib" path="C:/Gitlab/OmniNetwork.jar"/>
+	<classpathentry kind="lib" path="C:/Gitlab/WorldEdit_1_8.jar"/>
+	<classpathentry kind="lib" path="C:/Gitlab/Citizens.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
