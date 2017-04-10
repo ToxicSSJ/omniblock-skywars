@@ -590,7 +590,7 @@ public class CageManager {
 	}
 	
 	public enum AnimationType{
-		FUEGO("fuego"),  /** FUEGO: es un ejemplo */
+		FUEGO("fuego"),  /** FUEGO: es un ejemplo, /data/cages/animation/fuego/ */
 		;
 		
 		private String name;
