@@ -386,8 +386,8 @@ public class SoloSkywars implements SkywarsStarter {
 								
 								if(AccountManager.SAVED_ACCOUNTS.containsKey(p)) {
 									
-									p.sendMessage(TextUtil.getCenteredMessage(" &7Kills Totales: &c" + (AccountManager.SAVED_ACCOUNTS.get(p).getKills() + k.getKey().getKills())));
-									p.sendMessage(TextUtil.getCenteredMessage(" &7Asistencias Totales: &b" + (AccountManager.SAVED_ACCOUNTS.get(p).getAssistences() + k.getKey().getAssistences())));
+									p.sendMessage(TextUtil.getCenteredMessage(" &7Kills Totales: &c" + (AccountManager.getKills(AccountManager.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getKills())));
+									p.sendMessage(TextUtil.getCenteredMessage(" &7Asistencias Totales: &b" + (AccountManager.getAssistences(AccountManager.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getAssistences())));
 									p.sendMessage(TextUtil.getCenteredMessage(" &7Promedio Total: &9&l" + k.getKey().getAverage())); // TODO Terminar xd
 									p.sendMessage(TextUtil.getCenteredMessage("&r"));
 									

@@ -27,8 +27,6 @@ public class SoloPlayerJoinListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		
-		Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + e.getPlayer().getName() + "&7 ha ingresado a la partida. (" + SoloPlayerManager.getPlayersInLobbyAmount() + "/" + SoloSkywars.cagesLocations.size() + ")"));
-		SoloPlayerManager.addPlayer(e.getPlayer());
 		SoloPlayerManager.addPlayer(e.getPlayer());
 		Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + e.getPlayer().getName() + "&7 ha ingresado a la partida. (" + SoloPlayerManager.getPlayersInLobbyAmount() + "/" + SoloSkywars.cagesLocations.size() + ")"));
 		

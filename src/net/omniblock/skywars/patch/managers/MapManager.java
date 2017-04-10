@@ -164,10 +164,11 @@ public class MapManager {
 		
 		//Si solo hay 1 mapa en el listado (poco probable :v) pues no hacemos el resto del proceso, solo escogemos ese.
 		if(worldName.size() == 1) {
-			nextMapName =  worldName.get(0);
+			nextMapName = worldName.get(0);
+			currentMap = nextMapName;
 		} else {
 			Random rand = new Random();
-			nextMapName =  worldName.get(rand.nextInt(worldName.size()));
+			nextMapName = worldName.get(rand.nextInt(worldName.size()));
 			currentMap = nextMapName;
 		}
 		

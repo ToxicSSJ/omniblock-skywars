@@ -7,13 +7,10 @@
  *  No third party is allowed to modification of the code.
  *
  */
-
 package net.omniblock.skywars.patch.managers;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +20,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -44,11 +40,10 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.ParticleEffect;
 import net.omniblock.skywars.util.ResourceExtractor;
+import net.omniblock.skywars.util.Schematic;
 import omniblock.ot.errorapi.ErrorAPI;
-
 @SuppressWarnings("deprecation")
 public class CageManager {
-
 	public static Map<Player, Location> cagesdata = new HashMap<Player, Location>();
 	
 	public static List<EditSession> pastedcages = new ArrayList<EditSession>();
@@ -221,17 +216,14 @@ public class CageManager {
 							   " &7atrapadas en la destrucción",
 							   " &7infernal."
 				 			 },
-				Material.STAINED_GLASS,
-				15,
-				"J800", "infernal",
-				new CageAnimator[] {
-						makeAnimation(20,
-						 		  	  Material.STAINED_GLASS,
-						 		  	  14,
-						 		  	  CageMaterial.STAINED_GLASS_BLACK,
-						 		  	  CageMaterial.STAINED_GLASS_GRAY,
-						 		  	  CageMaterial.STAINED_GLASS_LIGHT_GRAY)
-								   }),
+				"J800", "infernal", new String[]{
+						"01",
+						"02",
+						"03",
+						"04",
+						"05",
+						
+				}),
 		
 		;
 		
@@ -240,6 +232,7 @@ public class CageManager {
 		
 		private String code;
 		private String hashcode;
+		private String[] codeAnimation;
 		
 		private Material mat;
 		
@@ -268,10 +261,20 @@ public class CageManager {
 			this.data = data;
 			this.code = code;
 			this.hashcode = hashcode;
-			
 			this.vip = true;
 			this.animation = false;
 		}
+		
+		CageType(String name, String[] lore,  String code, String hashcode, String[] codeAnimation){
+			this.name = name;
+			this.lore = lore;
+			this.code = code;
+			this.hashcode = hashcode;
+			this.codeAnimation = codeAnimation;
+			this.vip = true;
+			this.animation = false;
+		}
+
 		
 		CageType(String name, String[] lore, Material mat, int data, String code, String hashcode, CageAnimator...animations){
 			this.name = name;
@@ -284,17 +287,6 @@ public class CageManager {
 			
 			this.vip = true;
 			this.animation = true;
-		}
-
-		public void animate(CuboidClipboard cc, Vector loc, World world){
-			if(animation == true){
-				if(animations.length >= 1){
-					for(CageAnimator ca : animations){
-						ca.setClipboard(cc, loc, world);
-						registerAnimation(ca);
-					}
-				}
-			}
 		}
 		
 		public Map<EditSession, CuboidClipboard> paste(Vector loc, World world) {
@@ -332,87 +324,73 @@ public class CageManager {
 		public String getName() {
 			return name;
 		}
-
 		public void setName(String name) {
 			this.name = name;
 		}
-
 		public String[] getLore() {
 			return lore;
 		}
-
 		public void setLore(String[] lore) {
 			this.lore = lore;
 		}
-
 		public String getCode() {
 			return code;
 		}
-
 		public void setCode(String code) {
 			this.code = code;
 		}
-
+		public String[] getCodeAnimation() {
+			return codeAnimation;
+		}
+		public void setCodeAnimation(String[] codeAnimation) {
+			this.codeAnimation = codeAnimation;
+		}
 		public Material getMaterial() {
 			return mat;
 		}
-
 		public void setMaterial(Material mat) {
 			this.mat = mat;
 		}
-
 		public boolean isVip() {
 			return vip;
 		}
-
 		public void setVip(boolean vip) {
 			this.vip = vip;
 		}
-
 		public boolean isAnimation() {
 			return animation;
 		}
-
 		public void setAnimation(boolean animation) {
 			this.animation = animation;
 		}
-
 		public int getPrice() {
 			return price;
 		}
-
 		public void setPrice(int price) {
 			this.price = price;
 		}
-
 		public int getData() {
 			return data;
 		}
-
 		public void setData(int data) {
 			this.data = data;
 		}
-
 		public CageAnimator[] getAnimations() {
 			return animations;
 		}
-
 		public void setAnimations(CageAnimator[] animations) {
 			this.animations = animations;
 		}
-
 		public String getHashcode() {
 			return hashcode;
 		}
-
 		public void setHashcode(String hashcode) {
 			this.hashcode = hashcode;
 		}
-
 	}
 	
-	public static CageAnimator makeAnimation(int delay, Material mat, int data, CageMaterial...cm){
-		return new CageAnimator(delay, mat, data, cm);
+	public static CageAnimator makeAnimation(int delay, CageType ct, AnimationType animation){
+		return new CageAnimator(delay, ct, animation);
 	}
 	
 	public static File getCageSchematic(CageType type){
@@ -430,7 +408,7 @@ public class CageManager {
 		} else {
 			
 			String dir = "/data/cages/team/";
-			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap2p." + code + ".schematic");
+			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap." + code + ".schematic");
 			
 			return file;
 			
@@ -549,205 +527,106 @@ public class CageManager {
 	 */
 	
 	public static class CageAnimator {
-		
+		public static Map<Player, Location> registerPlayer = new HashMap<Player, Location>();
+		private static Player player;
 		private int delay;
+		private String[] codeAnimation;
+		private String animationType;
+		private String HashCode;
 		
-		private CageMaterial[] animation;
-		private Block[] blocks;
-		
-		private CuboidClipboard clipboard;
-		private Material identifier = Material.AIR;
-		private int identifierdata = 0;
-		
-		private Vector pastedloc;
-		
-		public CageAnimator(int delay, Material identifier, int identifierdata, CageMaterial...animation){
-			
+		public CageAnimator(final int delay, CageType ct, AnimationType animationType){
 			this.delay = delay;
-			this.animation = animation;
-			
-			this.identifier = identifier;
-			this.identifierdata = identifierdata;
+			this.codeAnimation = ct.getCodeAnimation();
+			this.animationType = animationType.getName();
+			this.HashCode = ct.getHashcode();
 			
 		}
-		
+				
 		public BukkitTask start(){
 			
-			if(clipboard == null || blocks == null){
-				throw new RuntimeException("Clipboard no puede ser Nulo.");
-			}
-			
-			if(animation.length >= 2){
+			if(codeAnimation.length > 1){
 				
 				return new BukkitRunnable(){
-					
-					private CageMaterial current = animation[0];
+					final int MAX = codeAnimation.length;
+					int start = 0;
 					
 					@Override
 					public void run() {
-						
-						for(CageMaterial k : animation){
-							
-							if(current == k){
+						if(start != MAX){
+							start++;
+							if(Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO 
+									|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
+									|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO){
 								
-								int cache = 0;
-										
-								List<CageMaterial> list = Arrays.asList(animation);
-								int index = list.indexOf(animation);
+								String dir = "/data/cages/animation/ + animationType";
+								String code = codeAnimation[start];
+								String path =  "cap." + HashCode  + code + ".schematic";
 								
-								if(!(new Integer(index + 1) > animation.length)){
-									cache = new Integer(index + 1);
-								}
+								Schematic.pasteSchematic(dir, path, registerPlayer.get(player));
+								Schematic.removeSchematic(registerPlayer.get(player));
+
+							}else{
 								
-								current = animation[cache];
+								String dir = "/data/cages/animation/ + animationType";
+								String code = codeAnimation[start];
+								String path =  "cap." + HashCode  + code + ".schematic";
 								
-								changeBlocks(current);
-								break;
+								Schematic.pasteSchematic(dir, path, registerPlayer.get(player));
+								Schematic.removeSchematic(registerPlayer.get(player));
+
 							}
-							
+														
+						}else{
+							cancel();
 						}
-						
 					}
 					
 				}.runTaskTimer(Skywars.getInstance(), 0, delay);
 				
 			} else {
-				throw new RuntimeException("No se puede recrear una animación con menos de 2 tipos de materiales en su conjunto.");
+				throw new RuntimeException("No se puede recrear una animación con menos de 2 schematic en su conjunto.");
 			}
-			
-		}
-
-		public void changeBlocks(CageMaterial to){
-			
-			if(clipboard == null || blocks == null){
-				throw new RuntimeException("Clipboard no puede ser Nulo.");
-			}
-			
-			if(blocks.length >= 1){
-				
-				for(Block b : blocks){
-					b.setType(to.getM());
-					b.setData(to.getData());
-				}
-				
-			}
-			
 		}
 		
-		public void setClipboard(CuboidClipboard cc, Vector location, World world){
+		public static void registerPlayer(Player player, Location cageLocation){
 			
-			List<Block> blocks = new ArrayList<Block>();
-			
-			if(cc != null){
+			if(!registerPlayer.containsKey(player)){
 				
-				for (int x = 0; x < cc.getSize().getBlockX(); ++x) {
-		            for (int y = 0; y < cc.getSize().getBlockY(); ++y) {
-		                for (int z = 0; z < cc.getSize().getBlockZ(); ++z) {
-		                	Vector cache = new Vector(x, y, z).add(location);
-		                	Location loc = new Location(world,
-									 cache.getBlockX(),
-									 cache.getBlockY(),
-									 cache.getBlockZ());
-		                	Block block = world.getBlockAt(loc);
-		                	if(block.getType() == identifier && block.getData() == (byte) identifierdata){
-		                		blocks.add(world.getBlockAt(loc));
-		                	}
-		                }
-		            }
-				}
-				
-			}
-			
-			this.clipboard = cc;
-			this.blocks = (Block[]) blocks.toArray();
-			
-		}
-		
-		public CageMaterial[] getAnimation() {
-			return animation;
+				registerPlayer.put(player, cageLocation);
+				setPlayer(player);
+
+			}else{
+				System.out.println("El jugador " + player + " ya esta registrado!");
+			}	
 		}
 
-		public void setAnimation(CageMaterial[] animation) {
-			this.animation = animation;
+		public static void setPlayer(Player player) {
+			CageAnimator.player = player;
 		}
-		
-		public Material getIdentifier() {
-			return identifier;
+		public static Player getPlayer() {
+			return player;
 		}
-
-		public void setIdentifier(Material identifier) {
-			this.identifier = identifier;
-		}
-
-		public Block[] getBlocks() {
-			return blocks;
-		}
-
-		public void setBlocks(Block[] blocks) {
-			this.blocks = blocks;
-		}
-
-		public Vector getPastedloc() {
-			return pastedloc;
-		}
-
-		public void setPastedloc(Vector pastedloc) {
-			this.pastedloc = pastedloc;
-		}
-
-		public int getIdentifierdata() {
-			return identifierdata;
-		}
-
-		public void setIdentifierdata(int identifierdata) {
-			this.identifierdata = identifierdata;
-		}
-		
 	}
+
 	
-	public enum CageMaterial {
-		STAINED_GLASS_BLACK(Material.STAINED_GLASS, (byte) 15),
-		STAINED_GLASS_BLUE(Material.STAINED_GLASS, (byte) 11),
-		STAINED_GLASS_BROWN(Material.STAINED_GLASS, (byte) 12),
-		STAINED_GLASS_CYAN(Material.STAINED_GLASS, (byte) 9),
-		STAINED_GLASS_GRAY(Material.STAINED_GLASS, (byte) 7),
-		STAINED_GLASS_GREEN(Material.STAINED_GLASS, (byte) 13),
-		STAINED_GLASS_LIGHT_BLUE(Material.STAINED_GLASS, (byte) 3),
-		STAINED_GLASS_LIME(Material.STAINED_GLASS, (byte) 5),
-		STAINED_GLASS_MAGENTA(Material.STAINED_GLASS, (byte) 2),
-		STAINED_GLASS_ORANGE(Material.STAINED_GLASS, (byte) 1),
-		STAINED_GLASS_PINK(Material.STAINED_GLASS, (byte) 6),
-		STAINED_GLASS_PURPLE(Material.STAINED_GLASS, (byte) 10),
-		STAINED_GLASS_RED(Material.STAINED_GLASS, (byte) 14),
-		STAINED_GLASS_LIGHT_GRAY(Material.STAINED_GLASS, (byte) 8),
-		STAINED_GLASS_WHITE(Material.STAINED_GLASS, (byte) 0),
-		STAINED_GLASS_YELLOW(Material.STAINED_GLASS, (byte) 4),
-		GLASS(Material.GLASS, (byte) 0);
+	public enum AnimationType{
+		FUEGO("fuego"),  /** FUEGO: es un ejemplo, /data/cages/animation/fuego/ */
+		;
 		
-		private Material m;
-		private byte data;
+		private String name;
 		
-		CageMaterial(Material m, byte data){
-			this.setM(m);
-			this.setData(data);
-		}
-
-		public byte getData() {
-			return data;
-		}
-
-		public void setData(byte data) {
-			this.data = data;
-		}
-
-		public Material getM() {
-			return m;
-		}
-
-		public void setM(Material m) {
-			this.m = m;
+		public void setName(String name) {
+			this.name = name;
 		}
 		
+		
+		AnimationType(String name){
+			this.setName(name); 
+		}
+
+		public String getName() {
+			return name;
+		}
+
 	}
-	
 }
