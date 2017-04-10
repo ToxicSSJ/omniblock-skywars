@@ -40,7 +40,6 @@ public class SpawnBlock {
 			int x = NumberUtil.getRandomInt(rx, xn);
 			int y = NumberUtil.getRandomInt(ry, yn);
 			int z = NumberUtil.getRandomInt(rz, zn);
-
 			String listKey = x + "," + y + "," + z;
 			
 			block.getRelative(x, y, z).setType(Material.PACKED_ICE);

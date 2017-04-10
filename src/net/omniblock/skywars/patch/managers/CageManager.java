@@ -389,8 +389,8 @@ public class CageManager {
 		}
 	}
 	
-	public static CageAnimator makeAnimation(int delay, CageType ct, AnimationType animation, Location loc){
-		return new CageAnimator(delay, ct, animation, loc);
+	public static CageAnimator makeAnimation(int delay, CageType ct, AnimationType animation){
+		return new CageAnimator(delay, ct, animation);
 	}
 	
 	public static File getCageSchematic(CageType type){
@@ -408,7 +408,7 @@ public class CageManager {
 		} else {
 			
 			String dir = "/data/cages/team/";
-			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap2p." + code + ".schematic");
+			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap." + code + ".schematic");
 			
 			return file;
 			
@@ -446,7 +446,7 @@ public class CageManager {
 		
 	}
 	
-	public static void registerAnimation(CageAnimator ca, CageType type, Location loc){
+	public static void registerAnimation(CageAnimator ca){
 		
 	    BukkitTask bt;
 		try{
@@ -527,21 +527,21 @@ public class CageManager {
 	 */
 	
 	public static class CageAnimator {
-		
+		public static Map<Player, Location> registerPlayer = new HashMap<Player, Location>();
+		private static Player player;
 		private int delay;
 		private String[] codeAnimation;
 		private String animationType;
 		private String HashCode;
-		private Location location;
 		
-		public CageAnimator(final int delay, CageType ct, AnimationType animationType, Location location){
+		public CageAnimator(final int delay, CageType ct, AnimationType animationType){
 			this.delay = delay;
 			this.codeAnimation = ct.getCodeAnimation();
 			this.animationType = animationType.getName();
 			this.HashCode = ct.getHashcode();
-			this.location = location;
+			
 		}
-		
+				
 		public BukkitTask start(){
 			
 			if(codeAnimation.length > 1){
@@ -562,8 +562,8 @@ public class CageManager {
 								String code = codeAnimation[start];
 								String path =  "cap." + HashCode  + code + ".schematic";
 								
-								Schematic.pasteSchematic(dir, path, location);
-								Schematic.removeSchematic(location);
+								Schematic.pasteSchematic(dir, path, registerPlayer.get(player));
+								Schematic.removeSchematic(registerPlayer.get(player));
 
 							}else{
 								
@@ -571,8 +571,8 @@ public class CageManager {
 								String code = codeAnimation[start];
 								String path =  "cap." + HashCode  + code + ".schematic";
 								
-								Schematic.pasteSchematic(dir, path, location);
-								Schematic.removeSchematic(location);
+								Schematic.pasteSchematic(dir, path, registerPlayer.get(player));
+								Schematic.removeSchematic(registerPlayer.get(player));
 
 							}
 														
@@ -587,14 +587,33 @@ public class CageManager {
 				throw new RuntimeException("No se puede recrear una animación con menos de 2 schematic en su conjunto.");
 			}
 		}
+		
+		public static void registerPlayer(Player player, Location cageLocation){
+			
+			if(!registerPlayer.containsKey(player)){
+				
+				registerPlayer.put(player, cageLocation);
+				setPlayer(player);
+
+			}else{
+				System.out.println("El jugador " + player + " ya esta registrado!");
+			}	
+		}
+
+		public static void setPlayer(Player player) {
+			CageAnimator.player = player;
+		}
+		public static Player getPlayer() {
+			return player;
+		}
 	}
+
 	
 	public enum AnimationType{
 		FUEGO("fuego"),  /** FUEGO: es un ejemplo, /data/cages/animation/fuego/ */
 		;
 		
 		private String name;
-		
 		
 		public void setName(String name) {
 			this.name = name;
