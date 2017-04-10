@@ -178,7 +178,7 @@ public class Bombardier implements ItemType, Listener {
 						fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 20, 20);
 						fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 20, -20);
 						
-						SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 20);
+						SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 1000);
 						
 						round++;
 						

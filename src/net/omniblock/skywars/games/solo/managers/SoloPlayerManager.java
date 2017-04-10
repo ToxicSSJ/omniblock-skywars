@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.patch.managers.AccountManager;
+import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.util.SpectatorUtil;
@@ -163,17 +164,34 @@ public class SoloPlayerManager {
 		
 		List<Location> cageLocations = ss.getCageLocations();
 		
-		for(Location cageLocation : cageLocations) {
-			CageManager.registerCage(CageType.DEFAULT, cageLocation);
-		}
-		
 		for(int i = 0; i < getPlayersInGameAmount(); i++) {
 			
 			Player player = playersInGame.get(i);
-			Location cageLocation = cageLocations.get(i);
-			player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
+			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
 			
-			CageManager.cagesdata.put(player, cageLocation);
+			if(cage_obj instanceof CageType) {
+				
+				CageType ct = (CageType) cage_obj;
+				Location cageLocation = cageLocations.get(i);
+				
+				CageManager.registerCage(ct, cageLocation);
+				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
+				
+				CageManager.cagesdata.put(player, cageLocation);
+				
+				continue;
+				
+			} else {
+				Location cageLocation = cageLocations.get(i);
+				
+				CageManager.registerCage(CageType.DEFAULT, cageLocation);
+				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
+				
+				CageManager.cagesdata.put(player, cageLocation);
+				
+				continue;
+				
+			}
 			
 		}
 	}
