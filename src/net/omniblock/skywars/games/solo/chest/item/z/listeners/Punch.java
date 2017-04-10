@@ -29,10 +29,9 @@ public class Punch implements ItemType, Listener {
 			if (event.getDamager() instanceof Player) {
 				Player playerdamage = (Player) event.getDamager();
 				if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
-					if (playerdamage.getItemInHand().getItemMeta().getDisplayName() != null) {
-						if (playerdamage.getItemInHand().getItemMeta().getDisplayName()
-								.equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
-
+					if (playerdamage.getItemInHand().getItemMeta().hasDisplayName()) {
+						if (playerdamage.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
+							
 							playerdamage.getInventory().setItemInHand(null);
 							playerdamage.playSound(playerdamage.getLocation(), Sound.ANVIL_BREAK, 2, 2); // sonido
 																											// de

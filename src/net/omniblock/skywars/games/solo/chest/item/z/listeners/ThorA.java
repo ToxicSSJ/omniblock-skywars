@@ -40,6 +40,17 @@ public class ThorA implements ItemType, Listener {
 								|| event.getAction() == Action.LEFT_CLICK_AIR 
 								|| event.getAction() == Action.LEFT_CLICK_BLOCK){
 							
+							if(event.getClickedBlock() != null) {
+								if(event.getClickedBlock().getType() == Material.CHEST ||
+										event.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
+										event.getClickedBlock().getType() == Material.JUKEBOX) {
+									
+									event.setCancelled(true);
+									return;
+									
+								}
+							}
+							
 							player.getInventory().setItemInHand(null);
 							
 							Block targetblock = event.getPlayer().getTargetBlock((Set<Material>) null, 200);

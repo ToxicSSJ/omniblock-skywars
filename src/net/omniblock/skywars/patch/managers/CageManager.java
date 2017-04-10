@@ -529,11 +529,11 @@ public class CageManager {
 	public static class CageAnimator {
 		public static Map<Player, Location> registerPlayer = new HashMap<Player, Location>();
 		private static Player player;
-		private int delay;
+		private static String animationType;
+		private static String HashCode;
 		private String[] codeAnimation;
-		private String animationType;
-		private String HashCode;
-		
+		private int delay;
+
 		public CageAnimator(final int delay, CageType ct, AnimationType animationType){
 			this.delay = delay;
 			this.codeAnimation = ct.getCodeAnimation();
@@ -600,17 +600,24 @@ public class CageManager {
 			}	
 		}
 
+		
 		public static void setPlayer(Player player) {
 			CageAnimator.player = player;
 		}
 		public static Player getPlayer() {
 			return player;
 		}
+		public static String getAnimationType() {
+			return animationType;
+		}
+		public static String getHashCode() {
+			return HashCode;
+		}
 	}
 
 	
 	public enum AnimationType{
-		FUEGO("fuego"),  /** FUEGO: es un ejemplo, /data/cages/animation/fuego/ */
+		FUEGO("fuego")  /** FUEGO: es un ejemplo, /data/cages/animation/fuego/ */
 		;
 		
 		private String name;
@@ -627,6 +634,5 @@ public class CageManager {
 		public String getName() {
 			return name;
 		}
-
 	}
 }

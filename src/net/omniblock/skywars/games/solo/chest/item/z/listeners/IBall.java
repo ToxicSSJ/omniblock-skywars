@@ -46,7 +46,19 @@ public class IBall implements ItemType, Listener {
 							|| event.getAction() == Action.RIGHT_CLICK_BLOCK
 				    		|| event.getAction() == Action.LEFT_CLICK_BLOCK 
 				    		|| event.getAction() == Action.RIGHT_CLICK_AIR){
-												
+							
+
+							if(event.getClickedBlock() != null) {
+								if(event.getClickedBlock().getType() == Material.CHEST ||
+										event.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
+										event.getClickedBlock().getType() == Material.JUKEBOX) {
+									
+									event.setCancelled(true);
+									return;
+									
+								}
+							}
+							
 							player.getInventory().setItemInHand(null);	
 							Vector dir = player.getLocation().getDirection().normalize().multiply(3);
 							final Snowball sb = player.launchProjectile(Snowball.class);
@@ -54,14 +66,21 @@ public class IBall implements ItemType, Listener {
 			    			
 							new BukkitRunnable(){
 								int LIFE_TIME = 0;
+							
 								@Override
 								public void run(){
 									if(sb.isDead() != true){
-
+										
 										Location block = sb.getLocation();
 										block.getWorld().playEffect(block, Effect.HAPPY_VILLAGER, 4);
 										block.getWorld().playSound(block, Sound.BLAZE_HIT, 3, 1);
-										SpawnBlock.blockGenerator(block.getBlock(), 4, 4, 4, 2, 2, 2, 5);
+										new BukkitRunnable(){
+											@Override
+											public void run() {
+												SpawnBlock.blockGenerator(block.getBlock(), 1, 2, 1, -1, -1, -1, 4);
+											}
+											
+										}.runTaskLater(Skywars.getInstance(), 2L);
 										LIFE_TIME++;
 										if(LIFE_TIME == 60){
 											cancel();

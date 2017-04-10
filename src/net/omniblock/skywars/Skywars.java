@@ -25,6 +25,7 @@ import net.omniblock.skywars.games.solo.chest.item.z.listeners.IceTurret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.LaserTurret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.Meteoro;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.PorkTurret;
+import net.omniblock.skywars.games.solo.chest.item.z.listeners.Potion;
 import net.omniblock.skywars.patch.MapPatcher;
 import net.omniblock.skywars.patch.NetworkPatcher;
 import net.omniblock.skywars.patch.managers.CageManager;
@@ -66,8 +67,8 @@ public class Skywars extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new Meteoro(), this);
 		this.getServer().getPluginManager().registerEvents(new Bombardier(), this);
 		
-        this.getServer().getPluginManager().registerEvents(new AngryChest(), this);
 		this.getServer().getPluginManager().registerEvents(new Bridged(), this);
+		this.getServer().getPluginManager().registerEvents(new Potion(), this);
 		this.getServer().getPluginManager().registerEvents(new IBall(), this);
 
 		this.getServer().getPluginManager().registerEvents(new PorkTurret(), this);
