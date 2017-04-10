@@ -188,7 +188,7 @@ public class PlayerBattleInfo {
 			if(amount >= 1) {
 				
 				int posx = 1;
-				Object[] a = pbi.entrySet().toArray();
+				Object[] a = average.entrySet().toArray();
 				
 				for(Map.Entry<Player, PlayerBattleInfo> k : pbi.entrySet()) {
 					PlayerBattleInfo cache_pbi = k.getValue();

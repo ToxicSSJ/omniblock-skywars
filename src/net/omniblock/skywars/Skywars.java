@@ -66,7 +66,7 @@ public class Skywars extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new Meteoro(), this);
 		this.getServer().getPluginManager().registerEvents(new Bombardier(), this);
 		
-                this.getServer().getPluginManager().registerEvents(new AngryChest(), this);
+        this.getServer().getPluginManager().registerEvents(new AngryChest(), this);
 		this.getServer().getPluginManager().registerEvents(new Bridged(), this);
 		this.getServer().getPluginManager().registerEvents(new IBall(), this);
 
