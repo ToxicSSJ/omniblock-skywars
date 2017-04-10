@@ -389,8 +389,8 @@ public class CageManager {
 		}
 	}
 	
-	public static CageAnimator makeAnimation(int delay, CageType ct, Location loc){
-		return new CageAnimator(delay, ct, loc);
+	public static CageAnimator makeAnimation(int delay, CageType ct, AnimationType animation, Location loc){
+		return new CageAnimator(delay, ct, animation, loc);
 	}
 	
 	public static File getCageSchematic(CageType type){
@@ -530,12 +530,14 @@ public class CageManager {
 		
 		private int delay;
 		private String[] codeAnimation;
+		private String animationType;
 		private String HashCode;
 		private Location location;
 		
-		public CageAnimator(final int delay, CageType ct, Location location){
+		public CageAnimator(final int delay, CageType ct, AnimationType animationType, Location location){
 			this.delay = delay;
 			this.codeAnimation = ct.getCodeAnimation();
+			this.animationType = animationType.getName();
 			this.HashCode = ct.getHashcode();
 			this.location = location;
 		}
@@ -556,16 +558,19 @@ public class CageManager {
 									|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
 									|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO){
 								
-								String dir = "/data/cages/animation/";
+								String dir = "/data/cages/animation/ + animationType";
 								String code = codeAnimation[start];
 								String path =  "cap." + HashCode  + code + ".schematic";
+								
 								Schematic.pasteSchematic(dir, path, location);
 								Schematic.removeSchematic(location);
 
 							}else{
-								String dir = "/data/cages/animation/";
+								
+								String dir = "/data/cages/animation/ + animationType";
 								String code = codeAnimation[start];
 								String path =  "cap." + HashCode  + code + ".schematic";
+								
 								Schematic.pasteSchematic(dir, path, location);
 								Schematic.removeSchematic(location);
 
@@ -582,5 +587,27 @@ public class CageManager {
 				throw new RuntimeException("No se puede recrear una animación con menos de 2 schematic en su conjunto.");
 			}
 		}
+	}
+	
+	public enum AnimationType{
+		FUEGO("fuego"),  /** FUEGO: es un ejemplo */
+		;
+		
+		private String name;
+		
+		
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+		
+		AnimationType(String name){
+			this.setName(name); 
+		}
+
+		public String getName() {
+			return name;
+		}
+
 	}
 }
