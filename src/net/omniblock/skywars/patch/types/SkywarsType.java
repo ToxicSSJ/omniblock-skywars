@@ -18,22 +18,27 @@ import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
 
 public enum SkywarsType {
-NONE(null, null),
-SW_NORMAL_SOLO(new SoloSkywars(), new SkywarsResolver(
-														NetworkData.serial,
-														new String[] { "antihacks" , "normal" , "solo" } )),
-SW_NORMAL_TEAMS(new TeamSkywars(), new SkywarsResolver(
-														NetworkData.serial,
-														new String[] { "antihacks" , "normal" , "teams" } )),
-SW_INSANE_SOLO(new SoloSkywars(), new SkywarsResolver(
-														NetworkData.serial,
-														new String[] { "antihacks" , "insane" , "solo" } )),
-SW_INSANE_TEAMS(new TeamSkywars(), new SkywarsResolver(
-														NetworkData.serial,
-														new String[] { "antihacks" , "insane" , "teams" } )),
-SW_Z_SOLO(new SoloSkywars(), new SkywarsResolver(
-														NetworkData.serial,
-														new String[] { "antihacks" , "z" , "solo" } ));
+	NONE(null, null),
+	
+	SW_NORMAL_SOLO(new SoloSkywars(), new SkywarsResolver(
+															NetworkData.serial,
+															new String[] { "antihacks" , "normal" , "solo" } )),
+	
+	SW_NORMAL_TEAMS(new TeamSkywars(), new SkywarsResolver(
+															NetworkData.serial,
+															new String[] { "antihacks" , "normal" , "teams" } )),
+	
+	SW_INSANE_SOLO(new SoloSkywars(), new SkywarsResolver(
+															NetworkData.serial,
+															new String[] { "antihacks" , "insane" , "solo" } )),
+	
+	SW_INSANE_TEAMS(new TeamSkywars(), new SkywarsResolver(
+															NetworkData.serial,
+															new String[] { "antihacks" , "insane" , "teams" } )),
+	
+	SW_Z_SOLO(new SoloSkywars(), new SkywarsResolver(
+															NetworkData.serial,
+															new String[] { "antihacks" , "z" , "solo" } ));
 
 	
 	private SkywarsStarter ss;

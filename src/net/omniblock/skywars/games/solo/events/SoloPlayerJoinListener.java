@@ -12,6 +12,7 @@ import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.TextUtil;
+import net.omniblock.skywars.util.VanishUtil;
 
 public class SoloPlayerJoinListener implements Listener {
 
@@ -29,6 +30,8 @@ public class SoloPlayerJoinListener implements Listener {
 		
 		SoloPlayerManager.addPlayer(e.getPlayer());
 		Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + e.getPlayer().getName() + "&7 ha ingresado a la partida. (" + SoloPlayerManager.getPlayersInLobbyAmount() + "/" + SoloSkywars.cagesLocations.size() + ")"));
+		
+		VanishUtil.updateInvisible();
 		
 	}
 }

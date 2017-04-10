@@ -88,7 +88,7 @@ public class ClonData {
 	}
 
 	private void remove() {
-		clon.despawn();
+		clon.destroy();
 	}
 
 	public NPC getClon() {

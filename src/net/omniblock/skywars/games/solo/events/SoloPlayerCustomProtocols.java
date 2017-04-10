@@ -3,16 +3,20 @@ package net.omniblock.skywars.games.solo.events;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.Lists;
 
@@ -49,6 +53,11 @@ public class SoloPlayerCustomProtocols implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
+    public void blockCanBuild(BlockCanBuildEvent e){
+        e.setBuildable(true);
+    }
+	
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void blockInteract(PlayerInteractEvent e) {
 		if(e.getClickedBlock() != null) {
 			if(PROTECTED_BLOCK_LIST.contains(e.getClickedBlock())) {
@@ -64,6 +73,25 @@ public class SoloPlayerCustomProtocols implements Listener {
 			if (e.getReason().equalsIgnoreCase("Flying is not enabled on this server")) {
 				e.setCancelled(true);
 			}	
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void explode(EntityChangeBlockEvent e){
+		if(e.getEntity() instanceof FallingBlock){
+			
+			FallingBlock fb = (FallingBlock) e.getEntity();
+			
+			if(fb.hasMetadata("REMOVE")){
+				
+				e.setCancelled(true);
+				e.getBlock().breakNaturally(new ItemStack(e.getTo(), 1, e.getData()));
+				
+				fb.remove();
+				
+			}
+			
 		}
 	}
 	

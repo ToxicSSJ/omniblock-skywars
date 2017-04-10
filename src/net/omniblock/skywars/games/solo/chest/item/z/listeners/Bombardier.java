@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +25,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -128,6 +129,7 @@ public class Bombardier implements ItemType, Listener {
 		
 	}
 	
+	@SuppressWarnings("static-access")
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
 		
@@ -160,33 +162,10 @@ public class Bombardier implements ItemType, Listener {
 				
 				e.setCancelled(true);
 				
-				new BukkitRunnable() {
-					
-					int round = 0;
-					
-					@Override
-					public void run() {
-						
-						if(round >= 5) {
-							cancel();
-							return;
-						}
-						
-						fb.getLocation().getWorld().playSound(fb.getLocation(), Sound.HORSE_JUMP, 20, -15);
-						fb.getLocation().getWorld().playSound(fb.getLocation(), Sound.ARROW_HIT, 20, -15);
-						
-						fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 20, 20);
-						fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 20, -20);
-						
-						SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 1000);
-						
-						round++;
-						
-					}
-				}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
+				fb.getLocation().getWorld().playSound(fb.getLocation(), Sound.HORSE_JUMP, 20, -15);
+				fb.getLocation().getWorld().playSound(fb.getLocation(), Sound.ARROW_HIT, 20, -15);
 				
-				fb.getWorld().playEffect(fb.getLocation(), Effect.EXPLOSION, 10);
-				fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 10, 10);
+				SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 500);
 				
 				ExplodeEffect ef = new ExplodeEffect(Skywars.effectmanager);
 				ef.visibleRange = 300;
@@ -203,8 +182,8 @@ public class Bombardier implements ItemType, Listener {
 			    for(Block b : cube){
 					if(b != null){
 						if(!SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(b)){
-							if(NumberUtil.getRandomInt(1, 5) == 2) {
-								bounceBlock(b, (float) (0.5));
+							if(NumberUtil.getRandomInt(1, 8) == 2) {
+								bounceBlock(b, (float) (0.5), true);
 							} else {
 								b.setType(Material.AIR);
 							}
@@ -241,6 +220,7 @@ public class Bombardier implements ItemType, Listener {
 				Location tracker = data.getClon().getEntity().getLocation();
 				player.teleport(tracker);
 				
+				player.removePotionEffect(PotionEffectType.INVISIBILITY);
 				player.setNoDamageTicks(0);
 				
 				player.setFoodLevel(psd.food);
@@ -267,6 +247,7 @@ public class Bombardier implements ItemType, Listener {
 			}
 			
 			
+			@SuppressWarnings("static-access")
 			Location based_loc = SoloSkywars.lobbyschematic.getLocation();
 			
 			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 100);
@@ -336,7 +317,7 @@ public class Bombardier implements ItemType, Listener {
 														fb.setDropItem(false);
 														fb.setTicksLived(20 * 8);
 														fb.setMetadata("BOMBARDIER", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
-														fb.setVelocity(new Vector(0, -1, 0).multiply(0.6));
+														fb.setVelocity(new Vector(0, -2, 0).multiply(0.6));
 														
 													}
 													
@@ -391,7 +372,7 @@ public class Bombardier implements ItemType, Listener {
 		
 	}
 	
-	@SuppressWarnings("serial")
+	@SuppressWarnings({ "serial", "static-access" })
 	public void useBombardier(Player player) {
 		
 		Location tp_loc = SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
@@ -419,6 +400,10 @@ public class Bombardier implements ItemType, Listener {
 		
 		player.setCanPickupItems(false);
 		player.setLevel(0);
+		
+		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1), true);
+		
+		SoundPlayer.sendSound(player, "skywars.bombardier_elevation", 1000);
 		
 		CameraUtil.travel(player,
 				          new ArrayList<Location>(){
@@ -454,7 +439,7 @@ public class Bombardier implements ItemType, Listener {
 					
 					new BukkitRunnable() {
 						
-						int seconds = 10;
+						int seconds = 6;
 						int click = 0;
 						
 						@Override
@@ -462,35 +447,106 @@ public class Bombardier implements ItemType, Listener {
 							
 							if(player.isOnline()) {
 								
-								if(BOMBARDIER_USE.containsKey(player)) {
+								click++;
+								
+								if(click == 10) {
 									
+									click = 0;
 									seconds--;
-									click++;
 									
-									if(click == 10) {
-										
-										click = 0;
-										player.playSound(player.getLocation(), Sound.CLICK, 5, 15);
-										
-									}
+								}
+								
+								if(BOMBARDIER_USE.containsKey(player)) {
 									
 									if(seconds <= 0) {
 										
 										cancel();
+										
 										ActionBarApi.sendActionBar(player, TextUtil.format("&c&l - &7Se te ha acabado el tiempo!"));
+										
+										if(BOMBARDIER_USE.containsKey(player) && LAUNCHER_SYSTEM.containsKey(player) &&
+												SAVED_INVENTORY.containsKey(player) && SAVED_STATUS.containsKey(player)) {
+											
+											ClonData data = BOMBARDIER_USE.get(player);
+											
+											if(data.getClon().isSpawned()) {
+														
+												SoloPlayerManager.emptyPlayer(player);
+												
+												PlayerSavedData psd = SAVED_STATUS.get(player);
+												Inventory psi = player.getInventory();
+												
+												try {
+													psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+												} catch (IOException e) {
+													e.printStackTrace();
+												}
+												
+												Location tracker = data.getClon().getEntity().getLocation();
+												player.teleport(tracker);
+												
+												player.removePotionEffect(PotionEffectType.INVISIBILITY);
+												player.setNoDamageTicks(0);
+												
+												player.setFoodLevel(psd.food);
+												
+												player.setHealth(psd.health);
+												player.setFireTicks(0);
+												
+												player.setCanPickupItems(true);
+												
+												player.setExp(psd.exp);
+												player.setLevel(psd.level);
+												
+												player.getInventory().setContents(psi.getContents());
+												player.updateInventory();
+												
+												SoundPlayer.stopSound(player);
+												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+												
+												data.destroyClon(0);
+												
+												BOMBARDIER_USE.remove(player);
+												LAUNCHER_SYSTEM.remove(player);
+												
+											} else {
+												
+												player.teleport(data.getSaved());
+												
+												BOMBARDIER_USE.remove(player);
+												LAUNCHER_SYSTEM.remove(player);
+												
+											}
+											
+										}
+										
 										return;
 										
 									} else {
 										
 										ActionBarApi.sendActionBar(player, TextUtil.format("&c&l¡Apunta y Dispara! &8&l: &7Te quedan &a" + seconds + " &fsegundos."));
+										return;
 										
 									}
-									
-									
-									
 								}
 								
 							} else {
+								
+								cancel();
+								BOMBARDIER_USE.remove(player);
+								LAUNCHER_SYSTEM.remove(player);
+								
+							}
+							
+							if(seconds <= 0) {
+								
+								cancel();
+								if(BOMBARDIER_USE.containsKey(player)) {
+									BOMBARDIER_USE.remove(player);
+								}
+								if(LAUNCHER_SYSTEM.containsKey(player)) {
+									LAUNCHER_SYSTEM.remove(player);
+								}
 								
 							}
 							
@@ -541,14 +597,16 @@ public class Bombardier implements ItemType, Listener {
     }
 	
 	@SuppressWarnings("deprecation")
-	public static void bounceBlock(Block b, float y_speed) {
+	public static void bounceBlock(Block b, float y_speed, boolean remove) {
 		
         if(b == null) return;
        
         FallingBlock fb = b.getWorld()
                 .spawnFallingBlock(b.getLocation(), b.getType(), b.getData());
-       
+
+		fb.setMetadata("REMOVE", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
         fb.setDropItem(false);
+        
         b.setType(Material.AIR);
        
         float x = (float) -0.2 + (float) (Math.random() * ((0.2 - -0.2) + 0.2));

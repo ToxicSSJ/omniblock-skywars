@@ -58,6 +58,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		
 	}
 	
+	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {

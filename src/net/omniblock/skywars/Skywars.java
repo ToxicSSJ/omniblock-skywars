@@ -16,16 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.AngryChest;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bombardier;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bridged;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.HealthTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.IBall;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.IceTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.LaserTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Meteoro;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.PorkTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Potion;
 import net.omniblock.skywars.patch.MapPatcher;
 import net.omniblock.skywars.patch.NetworkPatcher;
 import net.omniblock.skywars.patch.managers.CageManager;
@@ -59,22 +49,6 @@ public class Skywars extends JavaPlugin {
 		
 		//logger
 		DebugUtil.setupLogger();
-		
-		//eventos
-		DebugUtil.info("Registrando eventos ...");
-		
-		this.getServer().getPluginManager().registerEvents(new AngryChest(), this);
-		this.getServer().getPluginManager().registerEvents(new Meteoro(), this);
-		this.getServer().getPluginManager().registerEvents(new Bombardier(), this);
-		
-		this.getServer().getPluginManager().registerEvents(new Bridged(), this);
-		this.getServer().getPluginManager().registerEvents(new Potion(), this);
-		this.getServer().getPluginManager().registerEvents(new IBall(), this);
-
-		this.getServer().getPluginManager().registerEvents(new PorkTurret(), this);
-		this.getServer().getPluginManager().registerEvents(new LaserTurret(), this);
-		this.getServer().getPluginManager().registerEvents(new IceTurret(), this);
-		this.getServer().getPluginManager().registerEvents(new HealthTurret(), this);
 		
 		//data
 		CageManager.extractCages();
@@ -223,4 +197,5 @@ public class Skywars extends JavaPlugin {
 	public static void setSkywarsType(SkywarsType skywarsType) {
 		currentMatchType = skywarsType;
 	}
+	
 }

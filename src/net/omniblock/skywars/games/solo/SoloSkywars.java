@@ -25,9 +25,6 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
-import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
-import net.omniblock.skywars.games.solo.events.SoloPlayerJoinListener;
-import net.omniblock.skywars.games.solo.events.SoloPlayerQuitListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
 import net.omniblock.skywars.games.solo.object.PlayerBattleInfo;
@@ -37,6 +34,7 @@ import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
 import net.omniblock.skywars.patch.managers.AccountManager;
+import net.omniblock.skywars.patch.managers.EventsManager;
 import net.omniblock.skywars.patch.managers.LobbySchematic;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
@@ -50,12 +48,10 @@ public class SoloSkywars implements SkywarsStarter {
 	public static LobbySchematic lobbyschematic;
 	
 	public static SkywarsResolver gSkywarsResolver;
-	
-	private static MatchType gMatchType = MatchType.NONE;
-	
 	public  static SoloSkywarsRunnable mainRunnableTask;
 	
 	public static List<Location> cagesLocations = Lists.newArrayList();
+	private static MatchType gMatchType = MatchType.NONE;
 	
 	@Override
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) {
@@ -81,18 +77,16 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		System.out.println("Continuando...");
 		
-		/*
-		 * Eventos
-		 */
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SoloPlayerBattleListener(), Skywars.getInstance());
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SoloPlayerJoinListener(), Skywars.getInstance());
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SoloPlayerQuitListener(), Skywars.getInstance());
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SoloPlayerCustomProtocols(), Skywars.getInstance());
 		
 		/*
 		 * Mapa
 		 */
 		MapManager.prepareNextWorld(gMatchType);
+		
+		/*
+		 * Eventos
+		 */
+		EventsManager.setupEvents(Skywars.currentMatchType);
 		
 		/*
 		 * Localizaciones
@@ -188,6 +182,7 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		new BukkitRunnable() {
 				
+			@SuppressWarnings("static-access")
 			Location fix_loc = lobbyschematic.getLocation().getWorld().getHighestBlockAt(lobbyschematic.getLocation()).getLocation();
 			int launched = 0;
 			
@@ -360,6 +355,7 @@ public class SoloSkywars implements SkywarsStarter {
 		}.runTaskLater(Skywars.getInstance(), 200L);
 		
 		new BukkitRunnable() {
+			@SuppressWarnings("static-access")
 			@Override
 			public void run() {
 				
@@ -434,6 +430,7 @@ public class SoloSkywars implements SkywarsStarter {
 		}
 		
 		MapManager.unloadWorldAndPrepareForNextRequest();
+		EventsManager.reset();
 		
 		Skywars.makeTestMatch();
 	}
