@@ -156,9 +156,10 @@ public class MapManager {
 	 */
 	private static void resolveNextMap(MapType map, final String mode, List<String> worldName) {
 		currentMapType = map;
+
+		//Configuration config = ConfigurationType.DEFAULT_CONFIGURATION.getConfig();
+		//YamlConfiguration yaml = config.getYaml();
 		
-		Configuration config = ConfigurationType.DEFAULT_CONFIGURATION.getConfig();
-		YamlConfiguration yaml = config.getYaml();
 		String nextMapName = null;
 		
 		

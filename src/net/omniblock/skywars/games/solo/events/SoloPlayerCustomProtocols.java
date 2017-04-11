@@ -14,6 +14,8 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +25,8 @@ import com.google.common.collect.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.patch.managers.SpectatorManager;
+import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 
 public class SoloPlayerCustomProtocols implements Listener {
 
@@ -65,6 +69,44 @@ public class SoloPlayerCustomProtocols implements Listener {
 				return;
 			}
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void blockDrop(PlayerDropItemEvent e) {
+		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void blockDrag(InventoryDragEvent e) {
+		if(SpectatorManager.playersSpectators.contains((Player) e.getWhoClicked())) {
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void spectatorInteract(PlayerInteractEvent e) {
+		
+		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+			if(e.getPlayer().getItemInHand() != null) {
+				if(e.getPlayer().getItemInHand().hasItemMeta()) {
+					
+					String display_name = e.getPlayer().getItemInHand().getItemMeta().getDisplayName();
+					if(display_name != null) {
+						
+						for(SpectatorItem si : SpectatorItem.values()) {
+							if(si.getItem().getDisplayname().contains(display_name)) {
+								si.getExecutor().execute(e.getPlayer());
+							}
+						}
+						
+					}
+					
+				}
+			}
+		}
+		
 	}
 	
 	@EventHandler

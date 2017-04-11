@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
@@ -24,12 +26,14 @@ import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
+import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
 import net.omniblock.skywars.util.ContaminationUtil.Contamination;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationInfo;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationTroop;
 import net.omniblock.skywars.util.DestructionUtil.Destruction;
 import net.omniblock.skywars.util.DestructionUtil.DestructionInfo;
 import net.omniblock.skywars.util.Schematic;
+import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
 import omniblock.on.util.TextUtil;
@@ -181,7 +185,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			}
 			
 			if(SoloPlayerManager.getPlayersInGameAmount() <= 0) {
-				Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
+				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(null);
 			}
 			
@@ -242,6 +246,36 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		} else if(str.contains("APOCALIPSIS")) {
 			
 			sendInGameTitle(InGameTitles.APOCALYPSE_TITLE);
+			
+			Apocalipsis apocalipsis = new Apocalipsis();
+			apocalipsis.runTaskTimer(Skywars.getInstance(), 1L, 1L);
+			
+			for(Player p : apocalipsis.getInGamePlayers()) {
+				
+				p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20* 7, 2, true), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 10, 2, true), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 10, 2, true), true);
+				
+				DestructionInfo di = new DestructionInfo(p.getLocation().getBlock(), p.getWorld());
+				
+				Destruction destruction = new Destruction();
+				destruction.setDestructionDefaults(di, 1000);
+				destruction.runTaskTimer(Skywars.getInstance(), 2L, 2L);
+				
+			}
+			
+			SoundPlayer.sendSound(apocalipsis.getLobbySchematicLoc(), "skywars.apocalipsis_intro", 5000);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					
+					if(Skywars.getGameState() == SkywarsGameState.IN_GAME) {
+						SoundPlayer.sendSound(apocalipsis.getLobbySchematicLoc(), "skywars.apocalipsis_song", 5000);
+					}
+					
+				}
+			}.runTaskLater(Skywars.getInstance(), 7 * 20);
+			
 			return;
 			
 		} else if(str.contains("DESTRUCCIÓN")) {
@@ -433,21 +467,8 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 		INSANE_TITLES(65, new TitleFormat[] { new TitleFormat(5, 45, 5, TextUtil.format("&6&lSkyWars"),
 										   					  TextUtil.format("&7Modo Mejorado")) } ),
-				
-		Z_TITLES(160, new TitleFormat[] { new TitleFormat(2, 16, 0, TextUtil.format("&c&lSkyWars"),
+		Z_TITLES(98, new TitleFormat[] { new TitleFormat(2, 16, 0, TextUtil.format("&8&lSkyWars"),
 				   					 					  TextUtil.format("&7Modo &4&lZ")),
-										  new TitleFormat(2, 15, 0, TextUtil.format("&c&lSkyWars"),
-												  		  TextUtil.format("&7Modo &9&lZ")),
-										  new TitleFormat(2, 14, 0, TextUtil.format("&c&lSkyWars"),
-										  		  		  TextUtil.format("&7Modo &b&lZ")),
-										  new TitleFormat(2, 13, 0, TextUtil.format("&c&lSkyWars"),
-										  		  	      TextUtil.format("&7Modo &a&lZ")),
-										  new TitleFormat(2, 12, 0, TextUtil.format("&c&lSkyWars"),
-												  		  TextUtil.format("&7Modo &e&lZ")),
-										  new TitleFormat(2, 11, 0, TextUtil.format("&c&lSkyWars"),
-										  		          TextUtil.format("&7Modo &6&lZ")),
-										  new TitleFormat(2, 10, 0, TextUtil.format("&c&lSkyWars"),
-												  		  TextUtil.format("&7Modo &8&lZ")),
 					 					  new TitleFormat(0, 10, 0, "",
 					 							 		  TextUtil.format("&aCargando mapa...")),
 					 					  new TitleFormat(0, 10, 0, "",

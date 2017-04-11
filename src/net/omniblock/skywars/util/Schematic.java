@@ -21,14 +21,12 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import net.omniblock.skywars.Skywars;
 import omniblock.on.OmniNetwork;
 
+@SuppressWarnings("deprecation")
 public class Schematic {	
-    
 	
 	private static EditSession savedsession;
 	private static boolean pasted;
-
 	
-	@SuppressWarnings("deprecation")
 	public static void pasteSchematic(String dir, String string, Location loc) {
     	
     	if(Skywars.getInstance().getServer().getPluginManager().isPluginEnabled("WorldEdit")){

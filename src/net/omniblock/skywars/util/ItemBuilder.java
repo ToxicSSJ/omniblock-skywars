@@ -7,7 +7,9 @@
  *  No third party is allowed to modification of the code.
  *
  */
+
 package net.omniblock.skywars.util;
+
 import com.google.gson.Gson;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -26,7 +28,9 @@ import org.bukkit.potion.PotionEffectType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+
 public class ItemBuilder {
+	
     private ItemStack item;
     private ItemMeta meta;
     private Material material = Material.STONE;
@@ -39,6 +43,7 @@ public class ItemBuilder {
     private List<ItemFlag> flags = new ArrayList<>();
     private boolean andSymbol = true;
     private boolean unsafeStackSize = false;
+    
     /** Initalizes the ItemBuilder with {@link org.bukkit.Material} */
     public ItemBuilder(Material material) {
         if(material == null) material = Material.AIR;

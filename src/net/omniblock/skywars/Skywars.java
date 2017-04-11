@@ -27,6 +27,7 @@ import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.effectlib.EffectLib;
 import net.omniblock.skywars.util.effectlib.EffectManager;
+import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
 
 public class Skywars extends JavaPlugin {
 
@@ -77,6 +78,7 @@ public class Skywars extends JavaPlugin {
 		
 		BossBar.startBossBar();
 		EffectLib.startEffectLib();
+		InventoryBuilderListener.startInventoryBuilder();
 		
 		effectmanager = new EffectManager(this);
 		

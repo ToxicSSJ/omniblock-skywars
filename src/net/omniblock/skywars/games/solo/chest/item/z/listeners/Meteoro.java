@@ -105,7 +105,7 @@ public class Meteoro implements ItemType, Listener  {
 			    for(Block b : cube){
 					if(b != null){
 						if(!SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(b)){
-							if(NumberUtil.getRandomInt(1, 4) == 2) {
+							if(NumberUtil.getRandomInt(1, 8) == 4) {
 								bounceBlock(b, (float) (0.5));
 							} else {
 								b.setType(Material.AIR);

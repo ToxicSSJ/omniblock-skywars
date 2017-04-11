@@ -29,6 +29,7 @@ public class DestructionUtil {
 		public Block pos_block = null;
 		public Block center_block = null;
 		
+		public int distance = 30;
 		public int i = 0;
 		
 		public void setDestructionDefaults(DestructionInfo ci) {
@@ -42,6 +43,22 @@ public class DestructionUtil {
 			center_block = ci.getB();
 			
 			enabled = true;
+			
+		}
+		
+		public void setDestructionDefaults(DestructionInfo ci, int distance) {
+			
+			contaminfo = ci;
+			
+			pos_block = ci.getB();
+			pos_block.getLocation().setY(0);
+			
+			cache_blocks.add(pos_block);
+			center_block = ci.getB();
+			
+			enabled = true;
+			
+			this.distance = distance;
 			
 		}
 		
@@ -95,7 +112,7 @@ public class DestructionUtil {
 			
 			for(Block b : FACES) {
 				if(!cache_blocks.contains(b)) {
-					if(b.getLocation().distance(center_block.getLocation()) <= 30) {
+					if(b.getLocation().distance(center_block.getLocation()) <= distance) {
 						if(b.getType() != Material.AIR && !SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(b)) {
 							
 							Block lower = getLowestBlockAt(b);

@@ -10,7 +10,6 @@ import net.omniblock.skywars.patch.managers.MapManager.MapType;
 import net.omniblock.skywars.util.Scan;
 import net.omniblock.skywars.util.Schematic;
 
-@SuppressWarnings("deprecation")
 public class LobbySchematic {
 
 	private MapType currentMapType = MapType.UNKNOWN;
@@ -51,7 +50,7 @@ public class LobbySchematic {
 	}
 	
    
-	public static Location getLocation() {
+	public Location getLocation() {
 		return lobbyschematic;
 	}
 

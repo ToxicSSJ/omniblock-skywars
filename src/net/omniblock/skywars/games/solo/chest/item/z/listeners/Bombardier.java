@@ -161,11 +161,8 @@ public class Bombardier implements ItemType, Listener {
 			if(fb.hasMetadata("BOMBARDIER")){
 				
 				e.setCancelled(true);
-				
-				fb.getLocation().getWorld().playSound(fb.getLocation(), Sound.HORSE_JUMP, 20, -15);
-				fb.getLocation().getWorld().playSound(fb.getLocation(), Sound.ARROW_HIT, 20, -15);
-				
-				SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 500);
+					
+				SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 30);
 				
 				ExplodeEffect ef = new ExplodeEffect(Skywars.effectmanager);
 				ef.visibleRange = 300;
@@ -197,8 +194,167 @@ public class Bombardier implements ItemType, Listener {
 		}
 	}
 	
-	public void launchBomb(Player player, Location loc) {
+	public static void launchNoPlaneBomb(Location loc) {
 		
+		Location based_loc = SoloSkywars.lobbyschematic.getLocation();
+		
+		new BukkitRunnable() {
+			
+			int round = 0;
+			
+			@SuppressWarnings("deprecation")
+			@Override
+			public void run() {
+				
+				loc.setY(based_loc.getY());
+				
+				loc.getWorld().playSound(loc, Sound.FIREWORK_LARGE_BLAST2, 20, 5);
+				loc.getWorld().playSound(loc, Sound.FIREWORK_LARGE_BLAST, 20, 5);
+				
+				loc.getWorld().playSound(loc, Sound.FIREWORK_TWINKLE, 20, 5);
+				loc.getWorld().playSound(loc, Sound.FIREWORK_TWINKLE2, 20, 5);
+					
+				FallingBlock fb = loc.getWorld().spawnFallingBlock(loc.clone().add(0, -1, 0), Material.TNT, (byte) 0);
+					
+				fb.setDropItem(false);
+				fb.setTicksLived(20 * 8);
+				fb.setMetadata("BOMBARDIER", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
+				fb.setVelocity(new Vector(0, -2, 0).multiply(0.6));
+				
+				round++;
+				
+				if(round >= 5) {
+					cancel();
+					return;
+				}
+				
+			}
+		}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
+		
+	}
+	
+	public static void launchNaturallyBomb(Location loc) {
+		
+		@SuppressWarnings("static-access")
+		Location based_loc = SoloSkywars.lobbyschematic.getLocation();
+		
+		Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
+		Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ());
+		Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() + 300);
+		
+		final Cinematix cm = new Cinematix();
+		cm.getPoints().add(av1);
+		cm.getPoints().add(av2);
+		cm.getPoints().add(av3);
+		
+		new BukkitRunnable() {
+			
+			boolean launcher = false;
+			
+			@Override
+			public void run() {
+				
+				final ArmorStand plane = (ArmorStand) based_loc.getWorld().spawnEntity(av1, EntityType.ARMOR_STAND);
+				plane.setGravity(false);
+				plane.setVisible(false);
+				
+				plane.setItemInHand(new ItemStack(Material.IRON_BARDING, 1));
+				 
+				cm.start(plane, 10);
+				
+				SoundPlayer.sendSound(plane.getLocation(), "skywars.planelow", 1000);
+				
+				 new BukkitRunnable(){
+					 
+					@SuppressWarnings("deprecation")
+					@Override
+					public void run(){
+					 
+						if(plane.isValid()) {
+							
+							if(!plane.isDead()) {
+								
+								Location plane_loc = plane.getLocation();
+								
+								if(plane_loc.distance(av2) <= 1) {
+									if(!launcher) {
+										
+										launcher = true;
+										
+										plane_loc.getWorld().playSound(plane_loc, Sound.BAT_TAKEOFF, 20, 5);
+										
+										new BukkitRunnable() {
+											
+											int round = 0;
+											
+											@Override
+											public void run() {
+												
+												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_LARGE_BLAST2, 20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_LARGE_BLAST, 20, 5);
+												
+												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE, 20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE2, 20, 5);
+												
+												if(!plane.isDead()) {
+													
+													Location plane_loc = plane.getLocation();
+													
+													FallingBlock fb = plane_loc.getWorld().spawnFallingBlock(plane_loc.clone().add(0, -1, 0), Material.TNT, (byte) 0);
+													
+													fb.setDropItem(false);
+													fb.setTicksLived(20 * 8);
+													fb.setMetadata("BOMBARDIER", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
+													fb.setVelocity(new Vector(0, -2, 0).multiply(0.6));
+													
+												}
+												
+												round++;
+												
+												if(round >= 5) {
+													cancel();
+													return;
+												}
+												
+											}
+										}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
+										
+									}
+								}
+								
+								if(plane_loc == av3 || plane_loc.distance(av3) < 2) {
+									
+									cancel();
+									plane.remove();
+									return;
+									
+								}
+								
+							} else {
+								
+								cancel();
+								return;
+								
+							}
+							
+						} else {
+							
+							cancel();
+							return;
+							
+						}
+						
+					}
+					
+				 }.runTaskTimer(Skywars.getInstance(), 1L, 1L);
+				 
+			}
+		}.runTaskLater(Skywars.getInstance(), 35L);
+		
+	}
+	
+	public void launchBomb(Player player, Location loc) {
+
 		if(BOMBARDIER_USE.containsKey(player) && LAUNCHER_SYSTEM.containsKey(player) &&
 				SAVED_INVENTORY.containsKey(player) && SAVED_STATUS.containsKey(player)) {
 			
@@ -236,6 +392,11 @@ public class Bombardier implements ItemType, Listener {
 				player.getInventory().setContents(psi.getContents());
 				player.updateInventory();
 				
+				player.setGameMode(GameMode.SURVIVAL);
+				
+				SoloPlayerManager.forceRemoveFly(player);
+				
+				SoundPlayer.stopSound(player);
 				SoundPlayer.sendSound(player, "skywars.radioc", true, 3);
 				
 				data.destroyClon(0);
@@ -250,9 +411,9 @@ public class Bombardier implements ItemType, Listener {
 			@SuppressWarnings("static-access")
 			Location based_loc = SoloSkywars.lobbyschematic.getLocation();
 			
-			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 100);
+			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
 			Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ());
-			Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() + 100);
+			Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() + 300);
 			
 			final Cinematix cm = new Cinematix();
 			cm.getPoints().add(av1);
@@ -269,6 +430,7 @@ public class Bombardier implements ItemType, Listener {
 					final ArmorStand plane = (ArmorStand) based_loc.getWorld().spawnEntity(av1, EntityType.ARMOR_STAND);
 					plane.setGravity(false);
 					plane.setVisible(false);
+					
 					plane.setItemInHand(new ItemStack(Material.IRON_BARDING, 1));
 					 
 					cm.start(plane, 10);
@@ -286,9 +448,8 @@ public class Bombardier implements ItemType, Listener {
 								if(!plane.isDead()) {
 									
 									Location plane_loc = plane.getLocation();
-									double z = plane_loc.getZ();
 									
-									if(z == loc.getZ()) {
+									if(plane_loc.distance(av2) <= 1) {
 										if(!launcher) {
 											
 											launcher = true;
@@ -391,7 +552,7 @@ public class Bombardier implements ItemType, Listener {
 		SoloPlayerManager.emptyPlayer(player);
 		
 		player.setMaximumNoDamageTicks(9000 * 20);
-		player.setNoDamageTicks(9000 * 20);
+		player.setNoDamageTicks(8000 * 20);
 		
 		player.setFoodLevel(20);
 		
@@ -401,7 +562,9 @@ public class Bombardier implements ItemType, Listener {
 		player.setCanPickupItems(false);
 		player.setLevel(0);
 		
-		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1), true);
+		player.setGameMode(GameMode.SPECTATOR);
+		
+		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false), false);
 		
 		SoundPlayer.sendSound(player, "skywars.bombardier_elevation", 1000);
 		
@@ -500,6 +663,10 @@ public class Bombardier implements ItemType, Listener {
 												
 												player.getInventory().setContents(psi.getContents());
 												player.updateInventory();
+												
+												player.setGameMode(GameMode.SURVIVAL);
+												
+												SoloPlayerManager.forceRemoveFly(player);
 												
 												SoundPlayer.stopSound(player);
 												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);

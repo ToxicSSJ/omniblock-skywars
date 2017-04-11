@@ -13,12 +13,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
-import net.omniblock.skywars.util.SpectatorUtil;
+import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
 
@@ -39,6 +40,7 @@ public class SoloPlayerManager {
 		
 	}
 	
+	@SuppressWarnings("static-access")
 	public static void spectatorPlayer(Player p) {
 		
 		emptyPlayer(p);
@@ -51,7 +53,7 @@ public class SoloPlayerManager {
 			p.teleport(SoloSkywars.lobbyschematic.getLocation());
 		}
 		
-		SpectatorUtil.makeSpectator(p);
+		SpectatorManager.addPlayerToSpectator(p);
 		return;
 		
 	}
@@ -103,22 +105,49 @@ public class SoloPlayerManager {
 		
 	}
 	
-	public static boolean addPlayer(Player p) {
-		for(Player p2 : getPlayersInLobbyListAsCopy()) {
-			if(p.getUniqueId().equals(p2.getUniqueId())) {
-				removePlayer(p);
+	public static void forceRemoveFly(Player p) {
+		
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(p.isFlying()) {
+					p.setAllowFlight(false);
+					p.setFlying(false);
+				} else {
+					cancel();
+				}
 			}
+		}.runTaskTimer(Skywars.getInstance(), 5L, 5L);
+		
+	}
+	
+	@SuppressWarnings("static-access")
+	public static boolean addPlayer(Player p) {
+		
+		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
+			
+			for(Player p2 : getPlayersInLobbyListAsCopy()) {
+				if(p.getUniqueId().equals(p2.getUniqueId())) {
+					removePlayer(p);
+				}
+			}
+			
+			emptyPlayer(p);
+			healPlayer(p);
+			
+			p.teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
+			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
+			
+			AccountManager.saveAccount(p);
+			
+			playersInLobby.add(p);
+			
+		} else {
+			
+			spectatorPlayer(p);
+			
 		}
 		
-		emptyPlayer(p);
-		healPlayer(p);
-		
-		p.teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
-		p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-		
-		AccountManager.saveAccount(p);
-		
-		playersInLobby.add(p);
 		return true;
 	}
 	

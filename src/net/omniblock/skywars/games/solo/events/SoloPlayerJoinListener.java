@@ -18,11 +18,13 @@ public class SoloPlayerJoinListener implements Listener {
 
 	@EventHandler
 	public void onPlayerPreJoin(AsyncPlayerPreLoginEvent e) {
+		
 		SkywarsGameState currentState = Skywars.getGameState();
 		
 		if(currentState != SkywarsGameState.IN_LOBBY) {
 			e.disallow(Result.KICK_OTHER, "¡El juego está en progreso!");
 		}
+		
 	}
 	
 	@EventHandler
@@ -34,4 +36,5 @@ public class SoloPlayerJoinListener implements Listener {
 		VanishUtil.updateInvisible();
 		
 	}
+	
 }

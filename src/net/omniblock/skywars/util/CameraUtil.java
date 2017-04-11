@@ -21,6 +21,7 @@ import org.bukkit.util.Vector;
 import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 
 public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener {
 
@@ -236,6 +237,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
                         CameraUtil.travelling.remove(player.getUniqueId());
                         
                         player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 5, -5);
+                        SoloPlayerManager.forceRemoveFly(player);
                         
                         platform.setType(m);
                         platform.setData(b);

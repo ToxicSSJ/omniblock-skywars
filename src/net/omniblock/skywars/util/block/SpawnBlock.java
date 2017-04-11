@@ -18,11 +18,10 @@ public class SpawnBlock {
 		List<Block> locblock = new ArrayList<Block>();
 	
 		for(int t = 0; t < numberofblock; t++){
+			
 			int x = NumberUtil.getRandomInt(rx, xn);
 			int y = NumberUtil.getRandomInt(ry, yn);
 			int z = NumberUtil.getRandomInt(rz, zn);
-
-			String listKey = x + "," + y + "," + z;
 			
 			block.getRelative(x, y, z).setType(Material.PACKED_ICE);
 			locblock.add(block.getRelative(x, y, z));
@@ -33,14 +32,13 @@ public class SpawnBlock {
 	}
 	
 	
-	public static void blockGenerator(Block block,int xn, int yn, int zn, int rx, int ry, int rz, int numberofblock){   
-		List<Block> locblock = new ArrayList<Block>();
+	public static void blockGenerator(Block block,int xn, int yn, int zn, int rx, int ry, int rz, int numberofblock){
 	
 		for(int t = 0; t < numberofblock; t++){
+			
 			int x = NumberUtil.getRandomInt(rx, xn);
 			int y = NumberUtil.getRandomInt(ry, yn);
 			int z = NumberUtil.getRandomInt(rz, zn);
-			String listKey = x + "," + y + "," + z;
 			
 			block.getRelative(x, y, z).setType(Material.PACKED_ICE);
 			
@@ -124,9 +122,9 @@ public class SpawnBlock {
 		}
 	}
 	
-	
-	//SPAWN FALLINGBLOCK
+	@SuppressWarnings("deprecation")
 	public static void bounceBlock(Block b, float y_speed) {
+		
         if(b == null) return;
        
         FallingBlock fb = b.getWorld().spawnFallingBlock(b.getLocation(), b.getType(), b.getData());
@@ -138,6 +136,7 @@ public class SpawnBlock {
         float z = (float) -0.2 + (float)(Math.random() * ((0.2 - -0.2) + 0.2));
        
         fb.setVelocity(new Vector(x, y, z));
+        
     }
 
 }
