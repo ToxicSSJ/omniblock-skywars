@@ -86,7 +86,7 @@ public class Potion implements ItemType, Listener {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 5));
 					player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 5, 5);
-
+					
 				}else{
 					player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 2, 2);
 					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 10));

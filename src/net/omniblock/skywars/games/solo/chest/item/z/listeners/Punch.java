@@ -18,8 +18,8 @@ import net.omniblock.skywars.util.SoundPlayer;
 public class Punch implements ItemType, Listener {
 
 	private static SoloPlayerManager soloplayer;
-	private int DELAY = 0;
-
+	private int DELAY = 0; 
+	
 	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler

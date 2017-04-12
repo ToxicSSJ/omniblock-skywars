@@ -32,7 +32,6 @@ public class Bridged implements ItemType, Listener {
 	
 	private static List<Block> bridgeremove = new ArrayList<Block>();
 
-
 	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler

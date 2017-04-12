@@ -103,7 +103,7 @@ public class AngryChest implements ItemType, Listener {
 						}
 					}
 				}
-			}			
+			}		
 		}
 	}
 
