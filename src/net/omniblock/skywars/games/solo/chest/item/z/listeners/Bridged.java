@@ -23,14 +23,14 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.ItemType;
 import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
-import net.omniblock.skywars.patch.managers.MapManager;
 
 public class Bridged implements ItemType, Listener {
 
 	private static SoloPlayerManager soloplayer;
-	private static List<Block> bridgeremove = new ArrayList<Block>();
 	private static final int BRIDGE_SIZE = 20;
-	private static World world = MapManager.getWorld();
+	private boolean build = false;
+	
+	private static List<Block> bridgeremove = new ArrayList<Block>();
 
 
 	@SuppressWarnings("static-access")
@@ -41,15 +41,18 @@ public class Bridged implements ItemType, Listener {
 		Player player = event.getPlayer();
 	
 		if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+			
 			if (player.getInventory().getItemInHand().hasItemMeta()){
 				if(player.getInventory().getItemInHand().getItemMeta().hasDisplayName()){
+					
 					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUENTE_FUTURISTICO.getName())){
-						if(event.getBlockPlaced().getType() == Material.POWERED_RAIL){
+						if(event.getBlockPlaced().getType() == Material.MELON_BLOCK){
 							Block block = event.getBlock();
 							
-							createBridged(player, block, player.getWorld());
-							world.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, -2);
-							
+								CreateBridged bridged = new CreateBridged(player, block, player.getWorld());
+								bridged.createBridged();
+								player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, -2);
+														
 						}else{
 							return;
 						
@@ -76,57 +79,30 @@ public class Bridged implements ItemType, Listener {
 		}
 	}
 
-	public void createBridged(Player player, Block block, World world) {
-		
-		final List<Block> bridge = new ArrayList<Block>();
-		BlockFace bf = getBlockFace(player);
-		Block b;
-		bridge.add(block);
-		bridgeremove.add(block);
-		
-		for(int i = 0; i < BRIDGE_SIZE; i++){
-			b = bridge.get(i);
-			bridge.add(b.getRelative(bf));
-			bridgeremove.add(b.getRelative(bf));
-			
-		}
-		
-		new BukkitRunnable(){
-			int i = 0;
-			@Override
-			public void run() {
-				if(i != BRIDGE_SIZE){
-					Block line = bridge.get(i);
-					world.playSound(line.getLocation(), Sound.GLASS, 1, -20);
-					world.playEffect(line.getLocation(), Effect.STEP_SOUND, Material.GLASS);
-					line.setType(Material.STAINED_GLASS);
-					i++;
-				}else{
-					bridge.clear();
-					cancel();
-				}
-			}
-			
-		}.runTaskTimer(Skywars.getInstance(), 0L, (long) (0.2*20));
-	}
-
+	
 	public void deleteBirdged(Player player, Block block) {
 		new BukkitRunnable() {
 			@Override
 			@SuppressWarnings("deprecation")
 			public void run() {
+				
 				block.setType(Material.AIR);
 				FallingBlock fallingblock = player.getWorld().spawnFallingBlock(block.getLocation(), Material.STAINED_GLASS, (byte) 14);
 				fallingblock.setVelocity(new Vector(0, 3, 0));
 				block.getWorld().playSound(block.getLocation(), Sound.CHICKEN_EGG_POP, 5, -15);
+				
 				new BukkitRunnable(){
 					@Override
 					public void run(){
+						
 						if(fallingblock.isDead() == false){
+							
 							fallingblock.remove();
 							cancel();
 							return;
+						
 						} else {
+							
 							cancel();
 						}
 					}
@@ -163,4 +139,53 @@ public class Bridged implements ItemType, Listener {
            return BlockFace.NORTH;
         }
     }
+	
+	public class CreateBridged{
+		private Player player;
+		private Block block;
+		private World world;
+		
+		public CreateBridged(Player player, Block block, World world){
+			
+			this.player = player;
+			this.block = block;
+			this.world = world;
+			
+		}
+		
+		
+		public void createBridged() {
+			List<Block> bridged = new ArrayList<Block>();
+			BlockFace bf = getBlockFace(player);
+			Block b;
+			bridged.add(block);
+			bridgeremove.add(block);
+			
+			for(int i = 0; i < BRIDGE_SIZE; i++){
+				b = bridged.get(i);
+				bridged.add(b.getRelative(bf));
+				bridgeremove.add(b.getRelative(bf));
+				
+			}
+			
+			new BukkitRunnable(){
+				int i = 0;
+				@Override
+				public void run() {
+					
+					if(i != BRIDGE_SIZE){
+						Block line = bridged.get(i);
+						world.playSound(line.getLocation(), Sound.GLASS, 1, -20);
+						world.playEffect(line.getLocation(), Effect.STEP_SOUND, Material.GLASS);
+						line.setType(Material.STAINED_GLASS);
+						i++;
+					}else{
+						bridged.clear();
+						cancel();
+					}
+				}
+				
+			}.runTaskTimer(Skywars.getInstance(), 0L, (long) (0.2*20));
+		}
+	}
 }

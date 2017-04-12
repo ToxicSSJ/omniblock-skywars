@@ -128,7 +128,7 @@ public class ItemZ {
 				/* BLOQUE */ EItem.ItemBuilder(Material.TRAPPED_CHEST, EItem.COFRE_EXPLOSIVO, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.JUKEBOX, EItem.TORRETA_SANADORA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.NOTE_BLOCK, EItem.TORRETA_CONGELADORA, 1),
-				/* BLOQUE */ EItem.ItemBuilder(Material.POWERED_RAIL, EItem.PUENTE_FUTURISTICO, 1), 
+				/* BLOQUE */ EItem.ItemBuilder(Material.MELON_BLOCK, EItem.PUENTE_FUTURISTICO, 1), 
 				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
 				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(46).build(),
 				/* BLOQUE */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),

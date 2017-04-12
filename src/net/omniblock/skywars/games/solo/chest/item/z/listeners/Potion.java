@@ -80,7 +80,7 @@ public class Potion implements ItemType, Listener {
 			int TIME = 0;
 			@Override
 			public void run() {
-				if(TIME != 60){
+				if(TIME != 40){
 					TIME += 20;
 					player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5, 10));

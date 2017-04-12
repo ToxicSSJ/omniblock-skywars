@@ -28,7 +28,7 @@ public class ClonData {
 		
 		if(player != null) {
 			if(player.isOnline()) {
-				
+			
 				clon = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, player.getName());
 				clon.spawn(player.getLocation());
 				
@@ -87,7 +87,7 @@ public class ClonData {
 		
 	}
 
-	private void remove() {
+	public void remove() {
 		clon.destroy();
 	}
 
@@ -118,6 +118,17 @@ public class ClonData {
 			clon.setProtected(true);
 		}
 		
+	}
+	
+	public void targetEntiTy(Player player){
+		
+		if(clon.getNavigator().getEntityTarget() == player){
+			clon.getNavigator().setTarget(player, true);
+
+		}else{
+			return;
+		
+		}
 	}
 
 	public Location getSaved() {

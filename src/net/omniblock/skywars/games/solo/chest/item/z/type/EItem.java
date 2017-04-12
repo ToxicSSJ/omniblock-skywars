@@ -805,8 +805,8 @@ public enum EItem{
 			"§7§lRareza: §c§lLegendario",
 			"§7§lGenera: §71 Clon",
 			"§7§lTe da: ",
-			"   §7Velocidad II ; 5 seg",
-			"   §7Invisibilidad I ; 5 seg",
+			"   §7Velocidad II ; 7 seg",
+			"   §7Invisibilidad I ; 7 seg",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
 	}, new Enchantment[]{
 			Enchantment.FIRE_ASPECT
@@ -849,8 +849,11 @@ public enum EItem{
 			"    §7Rellena el nivel de hambre",
 			"    §7Rellena el nivel de vida",
 			"    §7Remueve todas las pociones",
-			"    §7Regeneracion II ; 0.5 seg",
 			"    §7Vision Nocturna II ; 0.5 seg",
+			"    §7Regeneracion II ; 2 seg",
+			"    §7Resistencia ; 2 seg",
+			"    §7Velocidad ; 4 seg",
+		
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
 	}, new Enchantment[]{
 			Enchantment.FIRE_ASPECT

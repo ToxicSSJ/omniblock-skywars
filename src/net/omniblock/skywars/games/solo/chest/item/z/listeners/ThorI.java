@@ -61,6 +61,7 @@ public class ThorI implements ItemType, Listener {
 							world.createExplosion(location, 2.0F);
 							List<Block> cube = SpawnBlock.circle(location, 6, 1, false, true, -1);
 							for(Block b : cube ){
+								if(b.getType() == Material.AIR) continue;
 								 b.setType(Material.PACKED_ICE);
 							}
 						}

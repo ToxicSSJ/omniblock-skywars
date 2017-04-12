@@ -1,5 +1,4 @@
 package net.omniblock.skywars.games.solo.chest.item.object;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import net.omniblock.skywars.games.solo.chest.ChestManager;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
-
 public class AddChest {
 	
 	private static AddItem additem;
@@ -20,7 +18,6 @@ public class AddChest {
 	private ItemStack[] arrayofitemT;
 	private int CHEST_TYPE; // int 1 = IRON; 2 = GOLD; 3 = DIAMOND.
 	public static List<Block> ChestDiamond = new ArrayList<Block>();  //LISTA DE LOS COFRES QUE TIENEN ITEM DE DIAMANTE
-
 	public AddChest(ItemStack[] arrayofitemN, ItemStack[] arrayofitemT,  final int N, final int T) {
 		
 		this.arrayofitemN = arrayofitemN;
@@ -58,11 +55,9 @@ public class AddChest {
 			}
 		}
 	}
-
 	@SuppressWarnings({ "deprecation", "static-access", "unused" })
 	public void trappedChest() {
 		ArrayList<Location> save_chest_location = new ArrayList<Location>();
-
 		for (int i = 0; i < ChestManager.trappedchest.size(); i++) {
 			
 			Location chestlocation = ChestManager.trappedchest.get(i);
@@ -90,7 +85,6 @@ public class AddChest {
 			return;
 		}
 	}
-
 	public static void addItemToArray(List<ItemStack> list, ItemStack[] array) {
 		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);

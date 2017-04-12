@@ -93,7 +93,7 @@ public class AngryChest implements ItemType, Listener {
 						case 3:
 							location.getWorld().playSound(location, Sound.WOLF_HOWL, 5, 30);
 							location.getWorld().playSound(location, Sound.GHAST_SCREAM2, 5, 30);
-					      	player.setVelocity(location.getDirection().add(new Vector(0,2,0)));
+					      	  
 					      	player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 50);
 					      	location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 50);
 					      	player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3, 2));

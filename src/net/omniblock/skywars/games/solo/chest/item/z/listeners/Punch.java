@@ -13,6 +13,7 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.ItemType;
 import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.util.SoundPlayer;
 
 public class Punch implements ItemType, Listener {
 
@@ -33,9 +34,8 @@ public class Punch implements ItemType, Listener {
 						if (playerdamage.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
 							
 							playerdamage.getInventory().setItemInHand(null);
-							playerdamage.playSound(playerdamage.getLocation(), Sound.ANVIL_BREAK, 2, 2); // sonido
-																											// de
-																											// test
+							SoundPlayer.sendSound(playerdamage.getLocation(), "skywars.jhonc", 30); 
+			
 							new BukkitRunnable() {
 								@Override
 								public void run() {

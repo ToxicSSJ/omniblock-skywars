@@ -80,7 +80,7 @@ public class IBall implements ItemType, Listener {
 												SpawnBlock.blockGenerator(block.getBlock(), 1, 2, 1, -1, -1, -1, 4);
 											}
 											
-										}.runTaskLater(Skywars.getInstance(), 2L);
+										}.runTaskLater(Skywars.getInstance(), 5L);
 										LIFE_TIME++;
 										if(LIFE_TIME == 60){
 											cancel();
@@ -106,7 +106,7 @@ public class IBall implements ItemType, Listener {
 			Location location = sb.getLocation();
 			sb.remove();
 			location.getWorld().playSound(location, Sound.EXPLODE, 5, 10);
-			List<Block> circle = SpawnBlock.circle(location, 3,1,false, true, -1);
+			List<Block> circle = SpawnBlock.circle(location, 6,1,false, true, -1);
 			for(Block b : circle){
 				if(b.getType() == Material.AIR) continue;
 				b.setType(Material.PACKED_ICE);
