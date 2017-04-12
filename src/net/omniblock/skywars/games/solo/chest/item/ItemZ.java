@@ -51,7 +51,7 @@ public class ItemZ {
 				/* BLOQUE */ EItem.ItemBuilder(Material.TRAPPED_CHEST, EItem.COFRE_EXPLOSIVO, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.JUKEBOX, EItem.TORRETA_SANADORA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.NOTE_BLOCK, EItem.TORRETA_CONGELADORA, 1),
-				/* BLOQUE */ EItem.ItemBuilder(Material.POWERED_RAIL, EItem.PUNTE_FUTURISTICO, 1),
+				/* BLOQUE */ EItem.ItemBuilder(Material.POWERED_RAIL, EItem.PUENTE_FUTURISTICO, 1),
 				
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_9, EItem.BOLA_CONGELACEREBROS, 1),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_8, EItem.RAYO, 1),
@@ -128,7 +128,7 @@ public class ItemZ {
 				/* BLOQUE */ EItem.ItemBuilder(Material.TRAPPED_CHEST, EItem.COFRE_EXPLOSIVO, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.JUKEBOX, EItem.TORRETA_SANADORA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.NOTE_BLOCK, EItem.TORRETA_CONGELADORA, 1),
-				/* BLOQUE */ EItem.ItemBuilder(Material.POWERED_RAIL, EItem.PUNTE_FUTURISTICO, 1), 
+				/* BLOQUE */ EItem.ItemBuilder(Material.POWERED_RAIL, EItem.PUENTE_FUTURISTICO, 1), 
 				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
 				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(46).build(),
 				/* BLOQUE */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),

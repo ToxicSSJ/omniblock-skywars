@@ -270,7 +270,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				public void run() {
 					
 					if(Skywars.getGameState() == SkywarsGameState.IN_GAME) {
-						SoundPlayer.sendSound(apocalipsis.getLobbySchematicLoc(), "skywars.apocalipsis_song", 5000);
+						SoundPlayer.sendSound(apocalipsis.getLobbySchematicLoc(), "skywars.apocalipsis_song", 1000000);
 					}
 					
 				}

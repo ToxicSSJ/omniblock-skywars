@@ -43,7 +43,7 @@ public class Bridged implements ItemType, Listener {
 		if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 			if (player.getInventory().getItemInHand().hasItemMeta()){
 				if(player.getInventory().getItemInHand().getItemMeta().hasDisplayName()){
-					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUNTE_FUTURISTICO.getName())){
+					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUENTE_FUTURISTICO.getName())){
 						if(event.getBlockPlaced().getType() == Material.POWERED_RAIL){
 							Block block = event.getBlock();
 							

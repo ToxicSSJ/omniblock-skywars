@@ -119,9 +119,9 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Normal
 		 */
 		
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 135);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 255);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 480);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 80);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 80);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 340);
 		
 	}
 	
@@ -135,10 +135,10 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Mejorado (Insano)
 		 */
 		
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 135);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 255);
-		mainRunnableTask.addEvent("&c&lDUELO:", 460);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 510);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 80);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 140);
+		mainRunnableTask.addEvent("&c&lDUELO:", 260);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 340);
 		
 	}
 	
@@ -152,11 +152,12 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Z
 		 */
 
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 15);
+		
 		mainRunnableTask.addEvent("&d&lDESTRUCCIÓN:", 60);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 240);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 435);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 200);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
 	}
 	

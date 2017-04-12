@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -40,7 +41,9 @@ import net.omniblock.skywars.games.solo.chest.item.z.listeners.object.ClonData;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.object.PlayerSavedData;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.ItemType;
 import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.CameraUtil;
@@ -51,6 +54,8 @@ import net.omniblock.skywars.util.effectlib.effect.SkyRocketEffect;
 import omniblock.on.util.TextUtil;
 
 public class Bombardier implements ItemType, Listener {
+	
+	public static Map<Entity, Player> BOMBARDIER_OWNER = new HashMap<Entity, Player>();
 	
 	Map<Player, String> SAVED_INVENTORY = new HashMap<Player, String>();
 	Map<Player, PlayerSavedData> SAVED_STATUS = new HashMap<Player, PlayerSavedData>();
@@ -161,7 +166,9 @@ public class Bombardier implements ItemType, Listener {
 			if(fb.hasMetadata("BOMBARDIER")){
 				
 				e.setCancelled(true);
-					
+				
+				Player damager = null;
+				
 				SoundPlayer.sendSound(fb.getLocation(), "skywars.generic_tnt_explosion", 30);
 				
 				ExplodeEffect ef = new ExplodeEffect(Skywars.effectmanager);
@@ -173,6 +180,27 @@ public class Bombardier implements ItemType, Listener {
 				ef_2.visibleRange = 300;
 				ef_2.setLocation(fb.getLocation());
 				ef_2.start();
+				
+				if(BOMBARDIER_OWNER.containsKey(fb)) {
+					damager = BOMBARDIER_OWNER.get(fb);
+					BOMBARDIER_OWNER.remove(fb);
+				}
+				
+				List<Entity> entities = fb.getNearbyEntities(3, 3, 3);
+				for(Entity entity : entities) {
+					
+					if(entity.getType() == EntityType.PLAYER) {
+						Player p = (Player) entity;
+						
+						if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
+							
+							SoloPlayerBattleListener.makeZDamage(p, damager, 6, DamageCauseZ.BOMBARDIER);
+							continue;
+							
+						}
+					}
+					
+				}
 				
 				List<Block> cube = circle(fb.getLocation(), 5,1,false,true,-1);
 				

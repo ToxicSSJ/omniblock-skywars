@@ -27,7 +27,9 @@ import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.Turret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.Turret.TurretUtil.TurretBuilder;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.TurretType;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.effectlib.effect.LineEffect;
@@ -283,7 +285,8 @@ public class LaserTurret implements Turret, ItemType, Listener {
 			ef.setTarget(affected.getEyeLocation());
 			ef.start();
 			
-			affected.damage(1.0); // TODO
+			affected.setVelocity(awaketurret.turret.getEntity().getLocation().getDirection().multiply(0.2));
+			SoloPlayerBattleListener.makeZDamage(affected, awaketurret.owner, type.getDamage(), DamageCauseZ.TURRET_L);
 			
 		}
 		

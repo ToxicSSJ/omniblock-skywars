@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -14,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -35,10 +37,10 @@ public class SoloPlayerBattleListener implements Listener {
 	public Map<Player, BukkitTask> contamination_infected = new HashMap<Player, BukkitTask>();
 	
 	public static Map<Player, PlayerBattleInfo> battle_info = new HashMap<Player, PlayerBattleInfo>();
-	public Map<Player, Map<Player, BukkitTask>> assistence = new HashMap<Player, Map<Player, BukkitTask>>();
+	public static Map<Player, Map<Player, BukkitTask>> assistence = new HashMap<Player, Map<Player, BukkitTask>>();
 	
-	public Map<Player, Player> lasthit = new HashMap<Player, Player>();
-	public Map<Player, BukkitTask> lasthit_timer = new HashMap<Player, BukkitTask>();
+	public static Map<Player, Player> lasthit = new HashMap<Player, Player>();
+	public static Map<Player, BukkitTask> lasthit_timer = new HashMap<Player, BukkitTask>();
 	
 	
 	public static void setBattleInfo() {
@@ -52,6 +54,461 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
+	public static void makeZDamage(Player affected, Player damager, double damage, DamageCauseZ dcz) {
+		
+		if(!Skywars.ingame) {
+			return;
+		}
+		
+		damage = damage * 2;
+		
+		affected.setMetadata("ZDAMAGE", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
+		EntityDamageEvent event = callEntityDamageEvent(damager, affected, DamageCause.CUSTOM, damage);
+		
+		if(event instanceof EntityDamageByEntityEvent && damager != null) {
+			
+			if(affected.hasMetadata("ZDAMAGE")) {
+				affected.removeMetadata("ZDAMAGE", Skywars.getInstance());
+			}
+			
+			if(affected == damager) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_SUICIDE.broadcastMessage(affected);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.METEORO) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_METEOR.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.JHON_CENA) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_JHON_CENA.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.BOMBARDIER) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_BOMBARDIER.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.THORA) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_THOR.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+
+			if(dcz == DamageCauseZ.THORI) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_ICE_THOR.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+
+			if(dcz == DamageCauseZ.IBALL) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_ICE_BALL.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.EXP_CHEST) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_TRAP_CHEST.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.EXP_CHEST) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_TRAP_CHEST.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.KRAKEN) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_KRAKEN.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.TURRET_C) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_ICE_TURRET.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.TURRET_L) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_LASER_TURRET.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.TURRET_P) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						killPlayer(damager, affected);
+						DeathMessages.P2P_Z_PORK_TURRET.broadcastMessage(affected, damager);
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+						addToAssistence(damager, affected, 8);
+						addToLastHitList(damager, affected, 8);
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+		} else {
+			
+			System.out.println("DAMAGER == NULL");
+			System.out.println("FINALDAMAGE = " + event.getFinalDamage());
+			System.out.println("isCanceled() " + event.isCancelled());
+			
+			event.setCancelled(false);
+			
+			if(affected.hasMetadata("ZDAMAGE")) {
+				affected.removeMetadata("ZDAMAGE", Skywars.getInstance());
+			}
+			
+			if(dcz == DamageCauseZ.METEORO) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						event.setCancelled(true);
+						
+						if(lasthit.containsKey(affected)) {
+							
+							damager = lasthit.get(affected);
+							killPlayer(affected, damager);
+							DeathMessages.P2P_AMBIENT_Z_METEOR.broadcastMessage(affected, damager);
+							
+						} else {
+							
+							killPlayer(affected);
+							DeathMessages.P2A_Z_METEOR.broadcastMessage(affected);
+							
+						}
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.BOMBARDIER) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						System.out.println("xdd");
+						
+						event.setCancelled(true);
+						
+						if(lasthit.containsKey(affected)) {
+							
+							damager = lasthit.get(affected);
+							killPlayer(affected, damager);
+							DeathMessages.P2P_AMBIENT_Z_BOMBARDIER.broadcastMessage(affected, damager);
+							
+						} else {
+							
+							killPlayer(affected);
+							DeathMessages.P2A_Z_BOMBARDIER.broadcastMessage(affected);
+							
+						}
+						
+					} else {
+						
+						System.out.println("finaldamage = " + event.getFinalDamage());
+						System.out.println("affectedlife = " + affected.getHealth());
+						
+						affected.damage(event.getFinalDamage());
+						
+						System.out.println("restlife = " + affected.getHealth());
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+			if(dcz == DamageCauseZ.THORA) {
+				
+				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					if(affected.getHealth() - event.getFinalDamage() <= 0) {
+						
+						event.setCancelled(true);
+						
+						if(lasthit.containsKey(affected)) {
+							
+							damager = lasthit.get(affected);
+							killPlayer(affected, damager);
+							DeathMessages.P2P_AMBIENT_Z_THOR.broadcastMessage(affected, damager);
+							
+						} else {
+							
+							killPlayer(affected);
+							DeathMessages.P2A_Z_THOR.broadcastMessage(affected);
+							
+						}
+						
+					} else {
+						
+						affected.damage(event.getFinalDamage());
+						
+					}
+					
+				}
+				
+				return;
+			}
+			
+		}
+		
+		if(affected.getHealth() - event.getFinalDamage() <= 0) {
+			
+			killPlayer(affected);
+			
+			if(lasthit.containsKey(affected)) {
+				
+				damager = lasthit.get(affected);
+				killPlayer(affected, damager);
+				DeathMessages.P2P_COMMON.broadcastMessage(affected, damager);
+				
+			} else {
+				
+				killPlayer(affected);
+				DeathMessages.P2A_COMMON.broadcastMessage(affected);
+				
+			}
+			
+		} else {
+			
+			affected.damage(event.getFinalDamage());
+			
+		}
+		
+	}
+	
 	@EventHandler
 	public void processDamage(EntityDamageEvent e) {
 		
@@ -60,11 +517,16 @@ public class SoloPlayerBattleListener implements Listener {
 			return;
 		}
 	
+		if(e.getCause() == DamageCause.CUSTOM) {
+			return;
+		}
+		
 		if(e.getEntity().getType() == EntityType.PLAYER) {
 			
 			Player affected = (Player) e.getEntity(); 
 			if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
 				if(e.getCause() != DamageCause.ENTITY_ATTACK) {
+					
 					if(e.getCause() == DamageCause.VOID) {
 						
 						e.setCancelled(true);
@@ -159,6 +621,23 @@ public class SoloPlayerBattleListener implements Listener {
 							
 						}
 						
+						if(contamination_infected.containsKey(affected)) {
+							
+							if(lasthit.containsKey(affected)) {
+								e.setCancelled(true);
+								damager = lasthit.get(affected);
+								killPlayer(affected, damager);
+								DeathMessages.P2P_Z_CONTAMINATION.broadcastMessage(affected, damager);
+								return;
+							} else {
+								e.setCancelled(true);
+								killPlayer(affected);
+								DeathMessages.P2A_Z_CONTAMINATION.broadcastMessage(affected);
+								return;
+							}
+							
+						}
+						
 						if(lasthit.containsKey(affected)) {
 							e.setCancelled(true);
 							damager = lasthit.get(affected);
@@ -193,16 +672,24 @@ public class SoloPlayerBattleListener implements Listener {
 			return;
 		}
 		
+		if(e.getDamager() == null || e.getEntity() == null) {
+			return;
+		}
+		
 		if(e.getDamager().getType() == EntityType.PLAYER && 
 				e.getEntity().getType() == EntityType.PLAYER) {
 			
 			Player damager = (Player) e.getDamager();
 			Player affected = (Player) e.getEntity();
 			
-			if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
-					SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+			if(!affected.hasMetadata("ZDAMAGE")) {
 				
-				attackFilter(damager, affected, e, false);
+				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
+						SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+					
+					attackFilter(damager, affected, e, false);
+					
+				}
 				
 			}
 			
@@ -347,9 +834,9 @@ public class SoloPlayerBattleListener implements Listener {
 				for(AwakeTurret at : TurretUtil.awake_turrets) {
 					if(at.turret.getEntity() == e.getEntity()) {
 						e.setCancelled(true);
-						//if(at.owner != damager) { TODO
+						if(at.owner != damager) {
 							at.damage(damager);
-						//}
+						}
 					}
 				}
 				
@@ -368,9 +855,9 @@ public class SoloPlayerBattleListener implements Listener {
 						if(at.turret.getEntity() == e.getEntity()) {
 							e.setCancelled(true);
 							pj.remove();
-							//if(at.owner != damager) { TODO
+							if(at.owner != damager) {
 								at.damage(damager);
-							//}
+							}
 						}
 					}
 				}
@@ -406,7 +893,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
-	public void addToAssistence(Player damager, Player affected, int time) {
+	public static void addToAssistence(Player damager, Player affected, int time) {
 		
 		if(assistence.containsKey(affected)) {
 			
@@ -470,7 +957,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
-	public void addToLastHitList(Player damager, Player affected, int time) {
+	public static void addToLastHitList(Player damager, Player affected, int time) {
 		
 		if(lasthit.containsKey(affected)) {
 			lasthit.remove(affected);
@@ -507,7 +994,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
-	public void killPlayer(Player affected) {
+	public static void killPlayer(Player affected) {
 		
 		/**
 		 * @AddTheKill
@@ -582,7 +1069,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
-	public void killPlayer(Player damager, Player affected) {
+	public static void killPlayer(Player damager, Player affected) {
 		
 		/**
 		 * @AddTheKill
@@ -632,7 +1119,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
-	public void playAssistence(Player death, Player helper) {
+	public static void playAssistence(Player death, Player helper) {
 		
 		/**
 		 * @MakeAssistence
@@ -658,7 +1145,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 
-	public void playDeath(Player death, Player killer) {
+	public static void playDeath(Player death, Player killer) {
 		
 		/**
 		 * @MakeKill
@@ -715,6 +1202,29 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
+	public static EntityDamageEvent callEntityDamageEvent(Entity damager, Entity damaged, DamageCause cause, double damage) {
+		
+		 EntityDamageEvent event;
+		 
+		 if (damager != null) {
+			 event = new EntityDamageByEntityEvent(damager, damaged, cause, damage);
+		 } else {
+			 event = new EntityDamageEvent(damaged, cause, damage);
+		 }
+		 
+		 event.setDamage(DamageModifier.BASE, damage);
+		 Skywars.getInstance().getServer().getPluginManager().callEvent(event);
+		
+		 if (!event.isCancelled()) {
+			 if(event.getEntity() != null) {
+				 damaged.setLastDamageCause(event);
+			 }
+		 }
+		 
+		 return event;
+	}
+	
 	public enum InGameActionBar {
 		KILL_ENEMY("&f¡Has matado un enemigo &a&l+%a&f!"),
 	    ASSISTENCE("&f¡Has ganado una asistencia &a&l+%a&f!"),
@@ -752,11 +1262,23 @@ public class SoloPlayerBattleListener implements Listener {
 		P2P_Z_THOR("&cPLAYER_1 &7Fue destrozado con el &e&lRAYO &7de &7PLAYER_1!"),
 		P2P_Z_ICE_THOR("&cPLAYER_1 &7Se congeló con el &b&lRAYO CONGELADOR &7de &7PLAYER_1!"),
 		P2P_Z_CLON("&aPLAYER_2 &7Mató a &cPLAYER_1 &7con su poderoso &9&lCLON!"),
+		P2P_Z_KRAKEN("&aPLAYER_2 &7Explotó a &cPLAYER_1 &7con su maravilloso &8&lKRAKEN!"),
 		P2P_Z_TRAP_CHEST("&cPLAYER_1 &7Se encontró una sorpresita en el &6&lCOFRE TRAMPA&7 puesto por &aPLAYER_2!"),
 		P2P_Z_ICE_BALL("&aPLAYER_2 &7Disparó a &cPLAYER_1&7, Con su &b&lBOLA CONGELACEREBROSSS!"),
 		P2P_Z_METEOR("&7El &c&lMETEORITO&7 de &aPLAYER_2 &7aplastó a &cPLAYER_1!"),
+		P2P_Z_BOMBARDIER("&cPLAYER_1 &7fue &2&lBOMBARDEADO &7por &aPLAYER_2!"),
 		
+		P2A_Z_RUSHER("&7Un zombie a acabado con la vida de &cPLAYER_1!"),
 		P2A_Z_CONTAMINATION("&7La contaminación a acabado con la vida de &cPLAYER_1!"),
+		P2A_Z_BOMBARDIER("&cPLAYER_1 &7explotó con las bombas del &4&lAPOCALIPSIS!"),
+		P2A_Z_THOR("&cPLAYER_1 &7sació el hambre de &b&lZEUS APOCALIPTICO!"),
+		P2A_Z_METEOR("&cPLAYER_1 &7explotó con un meteorito del &4&lAPOCALIPSIS!"),
+		
+		P2P_AMBIENT_Z_RUSHER("&aPLAYER_2 &7a empujado a &cPLAYER_1 &7a la horda de Zombies!"),
+		P2P_AMBIENT_Z_BOMBARDIER("&cPLAYER_1 &7fue empujado por &aPLAYER_1 &7a las bombas del &4&lAPOCALIPSIS!"),
+		P2P_AMBIENT_Z_THOR("&b&lZEUS APOCALIPTICO &7no perdonó a &cPLAYER_1 &7en su huida de &aPLAYER_2!"),
+		P2P_AMBIENT_Z_METEOR("&cPLAYER_1 &7fue arrojado por &aPLAYER_1 &7a un meteorito del &4&lAPOCALIPSIS!"),
+		
 		P2A_COMMON("&cPLAYER_1 &7Ha muerto!"),
 		P2A_VOID("&cPLAYER_1 &7fue absorbido por el vacio!", "&cPLAYER_1 &7fue exterminado por el espacio-tiempo!",
 				"&cPLAYER_1 &7se preguntaba que habia en el vacio!"),
@@ -793,8 +1315,8 @@ public class SoloPlayerBattleListener implements Listener {
 		public void broadcastMessage(Player p1, Player p2) {
 			
 			String send = message[0];
-			if(message.length >= 2) {
-				send = message[NumberUtil.getRandomInt(0, message.length)];
+			if(message.length >= 1) {
+				send = message[NumberUtil.getRandomInt(0, message.length - 1)];
 			}
 			
 			send = send.replaceAll("PLAYER_1", p1.getName());
@@ -806,8 +1328,8 @@ public class SoloPlayerBattleListener implements Listener {
 		public void broadcastMessage(Player p1) {
 			
 			String send = message[0];
-			if(message.length >= 2) {
-				send = message[NumberUtil.getRandomInt(0, message.length)];
+			if(message.length >= 1) {
+				send = message[NumberUtil.getRandomInt(0, message.length - 1)];
 			}
 			
 			send = send.replaceAll("PLAYER_1", p1.getName());
@@ -833,6 +1355,25 @@ public class SoloPlayerBattleListener implements Listener {
 		public void setMessage(String[] message) {
 			this.message = message;
 		}
+		
+	}
+	
+	public enum DamageCauseZ {
+		
+		JHON_CENA,
+		BOMBARDIER,
+		EXP_CHEST,
+		KRAKEN,
+		TURRET_C,
+		TURRET_P,
+		TURRET_L,
+		TURRET_S,
+		METEORO,
+		THORA,
+		THORI,
+		IBALL,
+		
+		;
 		
 	}
 	

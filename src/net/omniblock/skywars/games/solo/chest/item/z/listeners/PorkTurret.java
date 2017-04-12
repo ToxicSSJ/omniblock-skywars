@@ -30,6 +30,8 @@ import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.Turret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.TurretType;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.Turret.TurretUtil.TurretBuilder;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.TextUtil;
@@ -387,7 +389,10 @@ public class PorkTurret implements Turret, ItemType, Listener {
 						
 						if(!explosion_affected.isEmpty()) {
 							for(Player p : explosion_affected) {
-								p.damage(type.getDamage()); // TODO
+								
+								p.setVelocity(awaketurret.turret.getEntity().getLocation().getDirection().multiply(0.4));
+								SoloPlayerBattleListener.makeZDamage(p, awaketurret.owner, type.getDamage(), DamageCauseZ.TURRET_P);
+								
 							}
 						}
 						
@@ -550,7 +555,10 @@ public class PorkTurret implements Turret, ItemType, Listener {
 					
 					if(!explosion_affected.isEmpty()) {
 						for(Player p : explosion_affected) {
-							p.damage(type.getDamage()); // TODO
+							
+							p.setVelocity(p.getLocation().getDirection().multiply(0.4));
+							SoloPlayerBattleListener.makeZDamage(p, awaketurret.owner, type.getDamage(), DamageCauseZ.TURRET_P);
+							
 						}
 					}
 					

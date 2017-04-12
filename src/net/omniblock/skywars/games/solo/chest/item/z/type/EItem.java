@@ -749,7 +749,7 @@ public enum EItem{
 	}, new Enchantment[]{
 			Enchantment.FIRE_ASPECT
 	}),
-	PUNTE_FUTURISTICO(
+	PUENTE_FUTURISTICO(
 			"§4§k||§r §e§lPuente Futuristico §4§k||", new String[]{
 			"",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
@@ -878,7 +878,7 @@ public enum EItem{
 			"§7y mortales de la WWE.",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
 			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §74❤",
+			"§7§lDaño: §75❤",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
 	}, new Enchantment[]{
 			Enchantment.FIRE_ASPECT
@@ -893,6 +893,7 @@ public enum EItem{
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
 			"§7§lRareza: §c§lLegendario",
 			"§7§lTipo: §7Destructor",
+			"§7§lDaño: §74❤",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
 	}, new Enchantment[]{
 			Enchantment.FIRE_ASPECT

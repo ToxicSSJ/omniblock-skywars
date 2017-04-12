@@ -12,6 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,13 +31,17 @@ import com.google.common.collect.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.ItemType;
 import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.effectlib.effect.SmokeEffect;
 
 public class Meteoro implements ItemType, Listener  {
+	
+	public static Map<Entity, Player> METEORO_OWNER = new HashMap<Entity, Player>();
 	
 	@EventHandler
 	public void launchMeteoro(PlayerInteractEvent event) {
@@ -96,9 +102,32 @@ public class Meteoro implements ItemType, Listener  {
 			
 			if(fb.hasMetadata("METEORO")){
 				
+				Player damager = null;
+				
 				e.setCancelled(true);
 				fb.getWorld().playEffect(fb.getLocation(), Effect.EXPLOSION, 4);
 				fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 2, 10);
+				
+				if(METEORO_OWNER.containsKey(fb)) {
+					damager = METEORO_OWNER.get(fb);
+					METEORO_OWNER.remove(fb);
+				}
+				
+				List<Entity> entities = fb.getNearbyEntities(3, 3, 3);
+				for(Entity entity : entities) {
+					
+					if(entity.getType() == EntityType.PLAYER) {
+						Player p = (Player) entity;
+						
+						if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
+							
+							SoloPlayerBattleListener.makeZDamage(p, damager, 4, DamageCauseZ.METEORO);
+							continue;
+							
+						}
+					}
+					
+				}
 				
 				List<Block> cube = circle(fb.getLocation(), 3,1,false,true,-1);
 				
@@ -170,6 +199,10 @@ public class Meteoro implements ItemType, Listener  {
 			meteorocomponent.setMetadata("METEORO", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
 			meteoro.add(meteorocomponent);
 			
+			if(player != null) {
+				METEORO_OWNER.put(meteorocomponent, player);
+			}
+			
 		}
 		
 		new BukkitRunnable() {
@@ -214,6 +247,10 @@ public class Meteoro implements ItemType, Listener  {
 						deintegredmeteoro.setMetadata("METEORO", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
 						deintegredmeteoro.setVelocity(new Vector(NumberUtil.getRandomDouble(0.0 , deintegred_power), -2, NumberUtil.getRandomDouble(0.0 , 1.2)));
 							
+						if(player != null) {
+							METEORO_OWNER.put(deintegredmeteoro, player);
+						}
+						
 						deintegredmeteoro.setTicksLived(20 * 5);
 						emergencyback.add(deintegredmeteoro);
 						
