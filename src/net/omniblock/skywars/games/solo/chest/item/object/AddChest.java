@@ -150,8 +150,13 @@ public class AddChest {
 	}
 
 	
+	/*
+	 * 
+	 * - AddItem - Añade item a los cofres
+	 * 
+	 */
+	
 	public static class AddItem {
-
 		private static Random random = new Random();
 		
 		public static void add(Chest chest, final int n, List<ItemStack> list) {
@@ -179,6 +184,12 @@ public class AddChest {
 		}
 	}
 	
+	/*
+	 * 
+	 * - ReFillChest - Rellena nuevamente los cofres
+	 * 
+	 */
+	
 	public static class ReFillChest{
 		private AddItem additem = new AddItem();
 		private ItemStack[] arrayofitem;
@@ -192,9 +203,10 @@ public class AddChest {
 			this.arrayofitem = array;
 			this.numberofitem = NUMBER;
 			addItemToArray(item, this.arrayofitem);
+			fillChest();
 		}
 		
-		public void getAllChest(){
+		public void fillChest(){
 		
 			for(int i = 0; i < chestLoc.size(); i++){
 				
