@@ -28,8 +28,6 @@ public class Bridged implements ItemType, Listener {
 
 	private static SoloPlayerManager soloplayer;
 	private static final int BRIDGE_SIZE = 20;
-	private boolean build = false;
-	
 	private static List<Block> bridgeremove = new ArrayList<Block>();
 
 	@SuppressWarnings("static-access")
@@ -65,14 +63,18 @@ public class Bridged implements ItemType, Listener {
 	@SuppressWarnings("static-access")
 	@EventHandler
 	public void breakBridged(PlayerMoveEvent event) {
+		
 		Player player = event.getPlayer();
+		
 		if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 			if (player.getLocation().add(0, -1, 0).getBlock().getType() == Material.STAINED_GLASS) {
 				Block block = event.getPlayer().getLocation().add(0, -1, 0).getBlock();
 				if (bridgeremove.contains(block)) {
+					
 					bridgeremove.remove(block);
 					block.setTypeIdAndData(95, (byte) 14, true);
 					deleteBirdged(player, block);
+				
 				}
 			}
 		}

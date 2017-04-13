@@ -45,13 +45,18 @@ public class ItemZ {
 				/* ARMA ENC */ new ItemBuilder(Material.DIAMOND_SWORD).amount(1).enchant(Enchantment.DAMAGE_ALL, 1).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.WOOD_AXE).amount(1).enchant(Enchantment.DAMAGE_ALL, 2).enchant(Enchantment.FIRE_ASPECT, 1).build(),
 
-				
+		
+				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
+				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(46).build(),
+				/* BLOQUE */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),
+				/* BLOQUE */ new ItemBuilder(Material.STONE).amount(10).build(),
+				/* BLOQUE */ new ItemBuilder(Material.STONE).amount(20).build(),
 				/* BLOQUE */ EItem.ItemBuilder(Material.SPONGE, EItem.TORRETA_LASER, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.HARD_CLAY, EItem.TORRETA_PORCINA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.TRAPPED_CHEST, EItem.COFRE_EXPLOSIVO, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.JUKEBOX, EItem.TORRETA_SANADORA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.NOTE_BLOCK, EItem.TORRETA_CONGELADORA, 1),
-				/* BLOQUE */ EItem.ItemBuilder(Material.POWERED_RAIL, EItem.PUENTE_FUTURISTICO, 1),
+				/* BLOQUE */ EItem.ItemBuilder(Material.MELON_BLOCK, EItem.PUENTE_FUTURISTICO, 1),
 				
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_9, EItem.BOLA_CONGELACEREBROS, 1),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_8, EItem.RAYO, 1),

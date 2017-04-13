@@ -104,6 +104,7 @@ public class IBall implements ItemType, Listener {
 		if(event.getEntity() instanceof Snowball){
 			Snowball sb = (Snowball) event.getEntity();
 			Location location = sb.getLocation();
+			
 			sb.remove();
 			location.getWorld().playSound(location, Sound.EXPLODE, 5, 10);
 			List<Block> circle = SpawnBlock.circle(location, 6,1,false, true, -1);
