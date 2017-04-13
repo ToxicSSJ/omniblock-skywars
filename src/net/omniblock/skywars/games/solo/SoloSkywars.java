@@ -44,6 +44,8 @@ import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
 import net.omniblock.skywars.util.Scan;
 import net.omniblock.skywars.util.TextUtil;
+import omniblock.on.network.NetworkManager;
+import omniblock.on.server.type.EServerType;
 
 public class SoloSkywars implements SkywarsStarter {
 
@@ -430,7 +432,7 @@ public class SoloSkywars implements SkywarsStarter {
 		cagesLocations.clear();
 		
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			p.kickPlayer("El mapa se esta reiniciando");
+			NetworkManager.sendToServer(p, EServerType.SKYWARS_LS);
 		}
 		
 		MapManager.unloadWorldAndPrepareForNextRequest();
@@ -440,7 +442,7 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
-		Skywars.makeTestMatch();
+		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		
 	}
 
