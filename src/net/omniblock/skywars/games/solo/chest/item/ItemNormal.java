@@ -32,6 +32,9 @@ public class ItemNormal {
 				/* BLOQUES */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
 				/* BLOQUES */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),
 				
+
+				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
+				/* ITEMS */ new ItemBuilder(Material.LAVA_BUCKET).amount(1).build(),
 				/* ITEMS */ new ItemBuilder(Material.ARROW).amount(8).build(),
 				/* ITEMS */ new ItemBuilder(Material.BOOK).amount(1).enchant(Enchantment.DAMAGE_ALL, 2).build(),
 				/* ITEMS */ new ItemBuilder(Material.BOOK).amount(1).enchant(Enchantment.FIRE_ASPECT, 1).build(),
@@ -89,6 +92,9 @@ public class ItemNormal {
 				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(20).build(),
 				/* BLOQUES */ new ItemBuilder(Material.ENCHANTMENT_TABLE).amount(1).build(),
 		
+
+				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
+				/* ITEMS */ new ItemBuilder(Material.LAVA_BUCKET).amount(1).build(),
 				/* ITEMS */ new ItemBuilder(Material.ARROW).amount(8).build(),
 				/* ITEMS */ new ItemBuilder(Material.BOOK).amount(1).enchant(Enchantment.DAMAGE_ALL, 2).build(),
 				/* ITEMS */ new ItemBuilder(Material.BOOK).amount(1).enchant(Enchantment.FIRE_ASPECT, 1).build(),

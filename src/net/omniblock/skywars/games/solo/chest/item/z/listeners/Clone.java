@@ -1,6 +1,5 @@
 package net.omniblock.skywars.games.solo.chest.item.z.listeners;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,7 +30,7 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class Clone implements Listener, ItemType {
 	
-	private static Map<Player, ClonData> oneClon = new HashMap<Player, ClonData>(); 
+	private static Map<Player, ClonData> oneClon = new HashMap<Player, ClonData>();
 	@Override
 	@EventHandler
 	public void CloneSpell(PlayerInteractEvent event){
@@ -68,14 +66,12 @@ public class Clone implements Listener, ItemType {
 							
 								oneClon.put(player, clon);
 								oneClon.get(player).makeClon();
-								//oneClon.get(player).targetEntiTy(player);
 								RemoveClon(player, clon.getClon());
 
 	    					}else{
 	    						explodeSimulation(oneClon.get(player).getSaved());
 	    						oneClon.get(player).remove();
 	    						oneClon.remove(player);
-	    						player.getInventory().setItemInHand(null);
 	    						player.removePotionEffect(PotionEffectType.SPEED);
 	    						player.removePotionEffect(PotionEffectType.INVISIBILITY);
 	    						player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 2, 2);
@@ -92,7 +88,17 @@ public class Clone implements Listener, ItemType {
 	}
 	
 	public void RemoveClon(Player player, NPC clon){
+
+		ItemStack helmet =  player.getInventory().getHelmet();
+		ItemStack chestplate = player.getInventory().getChestplate();;
+		ItemStack leggings = player.getInventory().getLeggings();;
+		ItemStack boots = player.getInventory().getBoots();;
 		
+		player.getInventory().setHelmet(null);	
+		player.getInventory().setChestplate(null);	
+		player.getInventory().setLeggings(null);
+		player.getInventory().setBoots(null);
+
 		new BukkitRunnable(){
 			int TIME = 0;
 			@Override
@@ -105,42 +111,34 @@ public class Clone implements Listener, ItemType {
 							
 							oneClon.get(player).remove();
 							oneClon.remove(player);
+							
 							player.getInventory().setItemInHand(null);
+							player.getInventory().setHelmet(helmet);
+							player.getInventory().setChestplate(chestplate);
+							player.getInventory().setLeggings(leggings);
+							player.getInventory().setBoots(boots);
+							
 							player.playSound(player.getLocation(), Sound.PORTAL_TRIGGER, 5, 10);
 							player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 25, 10));
 							
 							cancel();
 						
 						}
-					}
+					}else{
 						
-				}else{
-					cancel();
+						player.getInventory().setItemInHand(null);
+						player.getInventory().setHelmet(helmet);
+						player.getInventory().setChestplate(chestplate);
+						player.getInventory().setLeggings(leggings);
+						player.getInventory().setBoots(boots);
+						cancel();
+					}
 				}
 			}
 			
 		}.runTaskTimer(Skywars.getInstance(), 0, 20L);
 			
 	}
-	
-	public List<Player> getEntity(NPC clon){
-		List<Entity> entities = clon.getEntity().getNearbyEntities(10, 10, 10);
-		List<Player> player = new ArrayList<Player>();
-
-		for(Entity entity : entities) {
-			
-			if(entity.getType() == EntityType.PLAYER) {
-				Player p = (Player) entity;
-				
-				if(SoloPlayerManager.getPlayersInGameList().contains(p) && p.getGameMode() == GameMode.SURVIVAL) {
-					player.add(p);				
-					
-				}
-			}
-		}
-		return player;
-	}
-	
 
 	public void explodeSimulation(Location location){
 		List<Block> cube = SpawnBlock.circle(location, 4,1,false, true, -1);

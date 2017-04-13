@@ -38,6 +38,9 @@ public class ItemInsane {
 				/* ARMA ENC */ new ItemBuilder(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.BOW).amount(1).enchant(Enchantment.ARROW_KNOCKBACK, 1).build(),
 				
+
+				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
+				/* ITEMS */ new ItemBuilder(Material.LAVA_BUCKET).amount(1).build(),
 				/* ITEMS */ new ItemBuilder(Material.FISHING_ROD).amount(1).build(),
 				/* ITEMS */ new ItemBuilder(Material.WEB).amount(4).build(),
 				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
@@ -104,6 +107,8 @@ public class ItemInsane {
 				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(10).build(),
 				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(20).build(),
 			
+
+				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
 				/* ITEMS */ new ItemBuilder(Material.ARROW).amount(8).build(),
 				/* ITEMS */ new ItemBuilder(Material.ARROW).amount(16).build(),
 				/* ITEMS */ new ItemBuilder(Material.FISHING_ROD).amount(1).build(),

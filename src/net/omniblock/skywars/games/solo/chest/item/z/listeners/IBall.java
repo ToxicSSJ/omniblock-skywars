@@ -83,6 +83,7 @@ public class IBall implements ItemType, Listener {
 										}.runTaskLater(Skywars.getInstance(), 5L);
 										LIFE_TIME++;
 										if(LIFE_TIME == 60){
+											sb.remove();
 											cancel();
 										}
 			    					 

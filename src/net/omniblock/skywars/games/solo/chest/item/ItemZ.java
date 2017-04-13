@@ -58,6 +58,8 @@ public class ItemZ {
 				/* BLOQUE */ EItem.ItemBuilder(Material.NOTE_BLOCK, EItem.TORRETA_CONGELADORA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.MELON_BLOCK, EItem.PUENTE_FUTURISTICO, 1),
 				
+				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
+				/* ITEMS */ new ItemBuilder(Material.LAVA_BUCKET).amount(1).build(),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_9, EItem.BOLA_CONGELACEREBROS, 1),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_8, EItem.RAYO, 1),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_7, EItem.VARITA_MAGICA, 1),
@@ -140,7 +142,9 @@ public class ItemZ {
 				/* BLOQUE */ new ItemBuilder(Material.STONE).amount(10).build(),
 				/* BLOQUE */ new ItemBuilder(Material.STONE).amount(20).build(),
 				
-			
+
+				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
+				/* ITEMS */ new ItemBuilder(Material.LAVA_BUCKET).amount(1).build(),
 				/* ITEMS */ EItem.ItemBuilder(Material.ENDER_PEARL, EItem.MATRIX, 1),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_9, EItem.BOLA_CONGELACEREBROS, 1),
 				/* ITEMS */ EItem.ItemBuilder(Material.RECORD_8, EItem.RAYO, 1),
