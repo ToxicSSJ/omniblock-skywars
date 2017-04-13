@@ -156,11 +156,11 @@ public class SoloSkywars implements SkywarsStarter {
 		 */
 
 		
-		//mainRunnableTask.addEvent("&d&lDESTRUCCIÓN:", 60);
+		//mainRunnableTask.addEvent("&d&lCONTAMINACIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
-		//mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 200);
-		//mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 60);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
 	}
 	
@@ -425,6 +425,7 @@ public class SoloSkywars implements SkywarsStarter {
 	
 	@Override
 	public void reset() {
+		
 		gMatchType = MatchType.NONE;
 		
 		if(mainRunnableTask != null) {
@@ -439,10 +440,14 @@ public class SoloSkywars implements SkywarsStarter {
 		}
 		
 		MapManager.unloadWorldAndPrepareForNextRequest();
+		
 		EventsManager.reset();
+		SoloPlayerBattleListener.reset();
+		
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
 		Skywars.makeTestMatch();
+		
 	}
 
 	@Override

@@ -211,7 +211,7 @@ public class AddChest {
 			for(int i = 0; i < chestLoc.size(); i++){
 				
 				Location chestlocation = chestLoc.get(i);
-				Chest chest = (Chest) chestlocation.getBlock();
+				Chest chest = (Chest) chestlocation.getBlock().getState();
 				chest.getInventory().clear();
 				additem.add(chest, this.numberofitem, this.item);
 				

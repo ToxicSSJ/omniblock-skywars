@@ -1,6 +1,7 @@
 package net.omniblock.skywars.games.solo.managers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -197,6 +198,7 @@ public class SoloPlayerManager {
 	public static void sendAllPlayersToCages(SoloSkywars ss) {
 		
 		List<Location> cageLocations = ss.getCageLocations();
+		Collections.shuffle(cageLocations);
 		
 		for(int i = 0; i < getPlayersInGameAmount(); i++) {
 			

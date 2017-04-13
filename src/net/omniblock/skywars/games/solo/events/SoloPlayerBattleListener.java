@@ -54,6 +54,40 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
+	public static void reset() {
+		
+		if(!(battle_info.size() == 0)) {
+			battle_info.clear();
+		}
+		
+		if(!(lasthit.size() == 0)) {
+			lasthit.clear();
+		}
+		
+		if(!(assistence.size() == 0)) {
+			
+			for(Map.Entry<Player, Map<Player, BukkitTask>> k : assistence.entrySet()) {
+				for(Map.Entry<Player, BukkitTask> j : k.getValue().entrySet()) {
+					j.getValue().cancel();
+				}
+			}
+			
+			assistence.clear();
+			
+		}
+		
+		if(!(lasthit_timer.size() == 0)) {
+			
+			for(Map.Entry<Player, BukkitTask> k : lasthit_timer.entrySet()) {
+				k.getValue().cancel();
+			}
+			
+			lasthit_timer.clear();
+			
+		}
+		
+	}
+	
 	public static void makeZDamage(Player affected, Player damager, double damage, DamageCauseZ dcz) {
 		
 		if(!Skywars.ingame) {
@@ -1176,6 +1210,8 @@ public class SoloPlayerBattleListener implements Listener {
 
 	public static void playDeath(Player death, Player killer) {
 		
+		System.out.println("xddd");
+		
 		/**
 		 * @MakeKill
 		 */
@@ -1207,6 +1243,8 @@ public class SoloPlayerBattleListener implements Listener {
 		 * @MakeDeath
 		 */
 		if(battle_info.containsKey(death)) {
+			
+			System.out.println("yeah");
 			
 			PlayerBattleInfo pbi = battle_info.get(death);
 			pbi.alive = false;
@@ -1325,7 +1363,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 		P2P_Z_CONTAMINATION("&aPLAYER_2 &7ha empujado sin piedad a &cPLAYER_1 &7hacia la &d&lcontaminacion!"),
 		P2P_Z_LASER_TURRET("&7La torreta &4&lLASER &7de &aPLAYER_2 &7destruyó a &cPLAYER_1 &7con su poderoso rayo!"),
-		P2P_Z_ICE_TURRET("&cPLAYER_1 No pudo huir de la poderosa torreta &b&lCONGELADORA &7de &aPLAYER_2!"),
+		P2P_Z_ICE_TURRET("&cPLAYER_1 &7No pudo huir de la poderosa torreta &b&lCONGELADORA &7de &aPLAYER_2!"),
 		P2P_Z_PORK_TURRET("&7La torreta &6&lPORCINA &7de &aPLAYER_2 &7explotó a &cPLAYER_1 &7en mil pedazos!"),
 		
 		P2P_COMMON("&aPLAYER_2 &7ha matado a &cPLAYER_1!"),
@@ -1333,8 +1371,8 @@ public class SoloPlayerBattleListener implements Listener {
 		P2P_SUICIDE("&aPLAYER_2 &7ha provocado que &cPLAYER_1 &7se suicide!"),
 		P2P_WATER("&aPLAYER_2 &7ha ahogado despediadamente a &cPLAYER_1 &7en el agua!"),
 		P2P_FIRE("&aPLAYER_2 &7empujó a &cPLAYER_1 &7hacia las llamas infernales!"),
-		P2P_LAVA("&aPLAYER_2 entrenó a &cPLAYER_1 &7en su curso de natación en lava!"),
-		P2P_JUMP("&cPLAYER_1 fue empujado por &aPLAYER_2 &7desde muy alto!"),
+		P2P_LAVA("&aPLAYER_2 &7entrenó a &cPLAYER_1 &7en su curso de natación en lava!"),
+		P2P_JUMP("&cPLAYER_1 &7fue empujado por &aPLAYER_2 &7desde muy alto!"),
 		
 		P2E_LEAVE("&cPLAYER_1 &7se ha desconectado!", "&cPLAYER_1 &7ha huido del campo de batalla!"),
 		P2E_EXPULSE("&cPLAYER_1 &7fue expulsado de la partida!"),

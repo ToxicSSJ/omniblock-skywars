@@ -321,6 +321,16 @@ public class PorkTurret implements Turret, ItemType, Listener {
 				@Override
 				public void run() {
 					
+					if(!awaketurret.turret.isSpawned()) {
+						cancel();
+						return;
+					}
+					
+					if(awaketurret.turret.getEntity().isDead()) {
+						cancel();
+						return;
+					}
+					
 					if(countdown <= 0) {
 						explode = true;
 					}

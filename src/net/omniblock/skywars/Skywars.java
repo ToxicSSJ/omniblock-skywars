@@ -67,7 +67,7 @@ public class Skywars extends JavaPlugin {
 		mappatcher.initialize();
 		
 		//test
-		// makeTestMatch();
+		makeTestMatch();
 		
 		/**
 		 * [LIB] [ActionBarApi Hook]

@@ -18,6 +18,9 @@ import com.google.common.collect.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.chest.ChestManager;
+import net.omniblock.skywars.games.solo.chest.item.ItemInsane;
+import net.omniblock.skywars.games.solo.chest.item.ItemNormal;
+import net.omniblock.skywars.games.solo.chest.item.ItemZ;
 import net.omniblock.skywars.games.solo.chest.item.object.AddChest;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -220,6 +223,29 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
+			
+			switch (SoloSkywars.getCurrentMatchType()) {
+			
+				case NORMAL:
+					
+					AddChest.makeReFill(ItemNormal.trappedChest(), 12);
+					break;
+					
+				case INSANE:
+					
+					AddChest.makeReFill(ItemInsane.trappedChest(), 12);
+					break;
+					
+				case Z:
+					
+					AddChest.makeReFill(ItemZ.trappedChest(), 12);
+					break;
+					
+				default:
+					break;
+			
+			}
+			
 			return;
 			
 		} else if(str.contains("CONTAMINACIÓN")) {

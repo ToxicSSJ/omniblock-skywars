@@ -788,9 +788,7 @@ public enum EItem{
 			"§7tus sueños!",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
 			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §77❤",
-			"§7§lOtras: ",
-			"    §7Ceguera I ; 5 seg",
+			"§7§lDaño: §75❤",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
 	}, new Enchantment[]{
 			Enchantment.FIRE_ASPECT

@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.ItemType;
 import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -24,6 +25,7 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCa
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
+import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 
 public class ThorA implements ItemType, Listener {
 
@@ -75,7 +77,11 @@ public class ThorA implements ItemType, Listener {
 							World world = location.getWorld();
 							
 							world.strikeLightning(location);
-							world.createExplosion(location, 2.0F, true);
+							
+							ExplodeEffect ef = new ExplodeEffect(Skywars.effectmanager);
+							ef.visibleRange = 300;
+							ef.setLocation(location);
+							ef.start();
 							
 							Collection<Entity> entities = location.getWorld().getNearbyEntities(location, 3, 3, 3);
 							for(Entity entity : entities) {
@@ -85,7 +91,7 @@ public class ThorA implements ItemType, Listener {
 									
 									if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
 										
-										SoloPlayerBattleListener.makeZDamage(p, player, 7, DamageCauseZ.THORA);
+										SoloPlayerBattleListener.makeZDamage(p, player, 5, DamageCauseZ.THORA);
 										continue;
 										
 									}
