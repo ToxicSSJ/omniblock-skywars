@@ -154,6 +154,16 @@ public class IceTurret implements Turret, ItemType, Listener {
 			@Override
 			public void run() {
 				
+				if(!awaketurret.turret.isSpawned()) {
+					cancel();
+					return;
+				}
+				
+				if(awaketurret.turret.getEntity().isDead()) {
+					cancel();
+					return;
+				}
+				
 				if(round >= (20 * recoil)) {
 					round = 0;
 					shoot = true;
@@ -170,7 +180,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 							
 							Player p = (Player) e;
 							if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
-								if(!awaketurret.extra_exclude.contains(p)) {
+								if(!awaketurret.extra_exclude.contains(p) && awaketurret.owner != p) {
 									
 									Snowman turret_entity = (Snowman) awaketurret.turret.getEntity();
 									if(turret_entity.hasLineOfSight(p)) {

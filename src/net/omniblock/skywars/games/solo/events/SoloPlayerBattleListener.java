@@ -77,7 +77,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_SUICIDE.broadcastMessage(affected);
 						
 					} else {
@@ -97,7 +97,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_METEOR.broadcastMessage(affected, damager);
 						
 					} else {
@@ -120,7 +120,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_JHON_CENA.broadcastMessage(affected, damager);
 						
 					} else {
@@ -143,7 +143,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_BOMBARDIER.broadcastMessage(affected, damager);
 						
 					} else {
@@ -166,7 +166,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_THOR.broadcastMessage(affected, damager);
 						
 					} else {
@@ -189,7 +189,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_ICE_THOR.broadcastMessage(affected, damager);
 						
 					} else {
@@ -212,7 +212,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_ICE_BALL.broadcastMessage(affected, damager);
 						
 					} else {
@@ -235,7 +235,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_TRAP_CHEST.broadcastMessage(affected, damager);
 						
 					} else {
@@ -258,7 +258,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_TRAP_CHEST.broadcastMessage(affected, damager);
 						
 					} else {
@@ -281,7 +281,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_KRAKEN.broadcastMessage(affected, damager);
 						
 					} else {
@@ -304,7 +304,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_ICE_TURRET.broadcastMessage(affected, damager);
 						
 					} else {
@@ -327,7 +327,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_LASER_TURRET.broadcastMessage(affected, damager);
 						
 					} else {
@@ -350,7 +350,7 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						killPlayer(damager, affected);
+						killPlayer(affected, damager);
 						DeathMessages.P2P_Z_PORK_TURRET.broadcastMessage(affected, damager);
 						
 					} else {
@@ -417,8 +417,6 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
-						System.out.println("xdd");
-						
 						event.setCancelled(true);
 						
 						if(lasthit.containsKey(affected)) {
@@ -436,12 +434,7 @@ public class SoloPlayerBattleListener implements Listener {
 						
 					} else {
 						
-						System.out.println("finaldamage = " + event.getFinalDamage());
-						System.out.println("affectedlife = " + affected.getHealth());
-						
 						affected.damage(event.getFinalDamage());
-						
-						System.out.println("restlife = " + affected.getHealth());
 						
 					}
 					
@@ -529,10 +522,21 @@ public class SoloPlayerBattleListener implements Listener {
 					
 					if(e.getCause() == DamageCause.VOID) {
 						
+						if(lasthit.containsKey(affected)) {
+							
+							e.setCancelled(true);
+							Player damager = lasthit.get(affected);
+							killPlayer(affected, damager);
+							DeathMessages.P2P_VOID.broadcastMessage(affected, damager);
+							return;
+							
+						}
+						
 						e.setCancelled(true);
 						DeathMessages.P2A_VOID.broadcastMessage(affected);
-						killPlayer(null, affected);
+						killPlayer(affected, null);
 						return;
+						
 					}
 					
 					if(affected.getHealth() - e.getFinalDamage() <= 0) {
@@ -875,7 +879,7 @@ public class SoloPlayerBattleListener implements Listener {
 		if((health - e.getFinalDamage()) <= 0) {
 			
 			e.setCancelled(true);
-			killPlayer(damager, affected);
+			killPlayer(affected, damager);
 			
 			if(arrow) {
 				DeathMessages.P2P_ARROWS.broadcastMessage(affected);
@@ -906,6 +910,7 @@ public class SoloPlayerBattleListener implements Listener {
 				players.put(damager, new BukkitRunnable() {
 					@Override
 					public void run() {
+						
 						if(assistence.containsKey(affected)) {
 							Map<Player, BukkitTask> cache = assistence.get(affected);
 							if(cache.containsKey(damager)) {
@@ -949,10 +954,28 @@ public class SoloPlayerBattleListener implements Listener {
 			
 		} else {
 			
-			Map<Player, BukkitTask> players = assistence.get(affected);
-			players.put(damager, null);
-			addToAssistence(damager, affected, time);
+			Map<Player, BukkitTask> players = new HashMap<Player, BukkitTask>();
+			
+			players.put(damager, new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(assistence.containsKey(affected)) {
+						Map<Player, BukkitTask> cache = assistence.get(affected);
+						if(cache.containsKey(damager)) {
+							
+							cache.remove(damager);
+							assistence.put(affected, cache);
+							return;
+							
+						}
+					}
+					
+				}
+			}.runTaskLater(Skywars.getInstance(), time * 20));
+			
+			assistence.put(affected, players);
 			return;
+			
 		}
 		
 	}
@@ -1069,7 +1092,11 @@ public class SoloPlayerBattleListener implements Listener {
 		
 	}
 	
-	public static void killPlayer(Player damager, Player affected) {
+	public static void killPlayer(Player affected, Player damager) {
+		
+		if(affected == null) {
+			throw new IllegalArgumentException("El afectado no puede ser un valor nulo.");
+		}
 		
 		/**
 		 * @AddTheKill
@@ -1124,14 +1151,16 @@ public class SoloPlayerBattleListener implements Listener {
 		/**
 		 * @MakeAssistence
 		 */
+		
 		if(battle_info.containsKey(helper)) {
 			
 			PlayerBattleInfo pbi = battle_info.get(helper);
 			pbi.assistences += 1;
 			
+			battle_info.remove(helper);
 			battle_info.put(helper, pbi);
 			
-			InGameActionBar.ASSISTENCE.send(helper);
+			InGameActionBar.ASSISTENCE.send(helper, 1);
 			helper.playSound(helper.getLocation(), Sound.ORB_PICKUP, 5, -5);
 			return;
 			
@@ -1157,9 +1186,10 @@ public class SoloPlayerBattleListener implements Listener {
 				PlayerBattleInfo pbi = battle_info.get(killer);
 				pbi.kills += 1;
 				
+				battle_info.remove(killer);
 				battle_info.put(killer, pbi);
 				
-				InGameActionBar.KILL_ENEMY.send(killer);
+				InGameActionBar.KILL_ENEMY.send(killer, 1);
 				killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 5, -5);
 				
 			} else {
@@ -1181,6 +1211,7 @@ public class SoloPlayerBattleListener implements Listener {
 			PlayerBattleInfo pbi = battle_info.get(death);
 			pbi.alive = false;
 			
+			battle_info.remove(death);
 			battle_info.put(death, pbi);
 			
 			InGameActionBar.DEAD.send(death);
@@ -1250,6 +1281,10 @@ public class SoloPlayerBattleListener implements Listener {
 		
 		public void send(Player player) {
 			ActionBarApi.sendActionBar(player, TextUtil.format(getBarmessage()));
+		}
+		
+		public void send(Player player, int quantity) {
+			ActionBarApi.sendActionBar(player, TextUtil.format(getBarmessage()).replaceAll("%a", String.valueOf(quantity)));
 		}
 		
 	}

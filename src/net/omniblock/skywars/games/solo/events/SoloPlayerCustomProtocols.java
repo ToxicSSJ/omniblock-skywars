@@ -111,10 +111,12 @@ public class SoloPlayerCustomProtocols implements Listener {
 	
 	@EventHandler
 	public void onKick(PlayerKickEvent e) {
-		if(SoloPlayerManager.getPlayersInSpectator().contains(e.getPlayer())) {
-			if (e.getReason().equalsIgnoreCase("Flying is not enabled on this server")) {
+		if(		SoloPlayerManager.getPlayersInSpectator().contains(e.getPlayer()) ||
+				SoloPlayerManager.getPlayersInLobbyList().contains(e.getPlayer()) ||
+				SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+			if (e.getReason().contains("Flying")) {
 				e.setCancelled(true);
-			}	
+			}
 		}
 	}
 	

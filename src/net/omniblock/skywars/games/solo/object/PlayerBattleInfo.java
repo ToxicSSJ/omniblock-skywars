@@ -1,8 +1,10 @@
 package net.omniblock.skywars.games.solo.object;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -181,19 +183,29 @@ public class PlayerBattleInfo {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Map<PlayerBattleInfo, Integer> getTop(Map<Player, PlayerBattleInfo> pbi){
 			
+			int posx = 1;
+			List<Player> pasted = new ArrayList<Player>();
+			
 			Map<PlayerBattleInfo, Integer> top = new HashMap<PlayerBattleInfo, Integer>();
 			Map<PlayerBattleInfo, Double> average = new HashMap<PlayerBattleInfo, Double>();
 			
 			int amount = pbi.size();
 			if(amount >= 1) {
 				
-				int posx = 1;
-				Object[] a = average.entrySet().toArray();
-				
 				for(Map.Entry<Player, PlayerBattleInfo> k : pbi.entrySet()) {
-					PlayerBattleInfo cache_pbi = k.getValue();
-					average.put(k.getValue(), cache_pbi.getAverage());
+					
+					if(!pasted.contains(k.getKey())) {
+						
+						pasted.add(k.getKey());
+						
+						PlayerBattleInfo cache_pbi = k.getValue();
+						average.put(cache_pbi, cache_pbi.getAverage());
+						
+					}
+					
 				}
+				
+				Object[] a = average.entrySet().toArray();
 
 				Arrays.sort(a, new Comparator() {
 					public int compare(Object o1, Object o2) {
@@ -203,23 +215,18 @@ public class PlayerBattleInfo {
 				});
 				
 				for (Object e : a) {
-					top.put(((Map.Entry<Player, PlayerBattleInfo>) e).getValue(), posx);
+					top.put(((Map.Entry<PlayerBattleInfo, Double>) e).getKey(), posx);
 					posx++;
 				}
 				
 			}
 			
 			if(top.size() < 3) {
-				if(top.size() == 2) {
-					top.put(new PlayerBattleInfo(true), 3);
-				} else if(top.size() == 1){
-					top.put(new PlayerBattleInfo(true), 2);
-					top.put(new PlayerBattleInfo(true), 3);
-				} else {
-					top.put(new PlayerBattleInfo(true), 1);
-					top.put(new PlayerBattleInfo(true), 2);
-					top.put(new PlayerBattleInfo(true), 3);
+				
+				for(int i = top.size(); i <= 3; i++) {
+					top.put(new PlayerBattleInfo(true), i);
 				}
+				
 			}
 			
 			return top;

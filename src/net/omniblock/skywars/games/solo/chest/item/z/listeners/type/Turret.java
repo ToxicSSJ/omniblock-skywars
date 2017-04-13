@@ -57,7 +57,7 @@ public interface Turret {
 			public Player owner;
 			
 			public List<Block> components = Lists.newArrayList();
-			public List<String> extra_exclude = Lists.newArrayList();
+			public List<Player> extra_exclude = Lists.newArrayList();
 			
 			public boolean alive = false;
 			
@@ -70,6 +70,7 @@ public interface Turret {
 			public AwakeTurret(Player owner) {
 				
 				this.owner = owner;
+				extra_exclude.add(owner);
 				
 			}
 			

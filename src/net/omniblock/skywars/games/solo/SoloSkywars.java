@@ -23,7 +23,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
@@ -105,6 +107,7 @@ public class SoloSkywars implements SkywarsStarter {
 		/*
 		 * Scoreboard
 		 */
+		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		SoloPlayerScoreboardManager.initialize();
 		
 	}
@@ -153,11 +156,11 @@ public class SoloSkywars implements SkywarsStarter {
 		 */
 
 		
-		mainRunnableTask.addEvent("&d&lDESTRUCCIÓN:", 60);
+		//mainRunnableTask.addEvent("&d&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 200);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
+		//mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 200);
+		//mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
 	}
 	
@@ -182,8 +185,7 @@ public class SoloSkywars implements SkywarsStarter {
 		}
 		
 		new BukkitRunnable() {
-				
-			@SuppressWarnings("static-access")
+			
 			Location fix_loc = lobbyschematic.getLocation().getWorld().getHighestBlockAt(lobbyschematic.getLocation()).getLocation();
 			int launched = 0;
 			
@@ -224,7 +226,7 @@ public class SoloSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					Bukkit.broadcastMessage(TextUtil.format("&7&l» &7Tabla de Posiciones/Scores&8&l:"));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
-					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r         &a&lGANADOR&r &a&l&m-&r &7Desconocido"));
+					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r         &a&lGANADOR&r &a&l&m-&r &7" + winner.getName()));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TOP_1.getTopTierMessage(1));
 					Bukkit.broadcastMessage(TOP_2.getTopTierMessage(2));
@@ -259,8 +261,11 @@ public class SoloSkywars implements SkywarsStarter {
 							p.sendMessage(TextUtil.getCenteredMessage("&7El promedio del jugador &c&l#1&r &7fue de &9&l" + TOP_1.getAverage()));
 						}
 					}
+					
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
+					
 				} else {
+					
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					Bukkit.broadcastMessage(TextUtil.format("&7&l» &7Tabla de Posiciones/Scores&8&l:"));
@@ -269,6 +274,7 @@ public class SoloSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TOP_2.getTopTierMessage(2));
 					Bukkit.broadcastMessage(TOP_3.getTopTierMessage(3));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
+					
 					for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 						
 						if(!k.getKey().unknow) {
@@ -282,6 +288,7 @@ public class SoloSkywars implements SkywarsStarter {
 						}
 						
 					}
+					
 					for(Player p : SoloPlayerManager.getPlayersInSpectator()) {
 						boolean contains = false;
 						for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
@@ -298,7 +305,9 @@ public class SoloSkywars implements SkywarsStarter {
 							p.sendMessage(TextUtil.getCenteredMessage("&7El promedio del jugador &c&l#1&r &7fue de &9&l" + TOP_1.getAverage()));
 						}
 					}
+					
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
+					
 				}
 			}
 		}.runTaskLater(Skywars.getInstance(), 60L);
@@ -356,7 +365,6 @@ public class SoloSkywars implements SkywarsStarter {
 		}.runTaskLater(Skywars.getInstance(), 200L);
 		
 		new BukkitRunnable() {
-			@SuppressWarnings("static-access")
 			@Override
 			public void run() {
 				
@@ -432,6 +440,7 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		MapManager.unloadWorldAndPrepareForNextRequest();
 		EventsManager.reset();
+		CitizensAPI.getNPCRegistry().deregisterAll();
 		
 		Skywars.makeTestMatch();
 	}

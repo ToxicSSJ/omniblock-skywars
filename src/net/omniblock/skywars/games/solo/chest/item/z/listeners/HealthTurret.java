@@ -147,6 +147,16 @@ public class HealthTurret implements Turret, ItemType, Listener {
 			@Override
 			public void run() {
 				
+				if(!awaketurret.turret.isSpawned()) {
+					cancel();
+					return;
+				}
+				
+				if(awaketurret.turret.getEntity().isDead()) {
+					cancel();
+					return;
+				}
+				
 				if(round >= (20 * recoil)) {
 					round = 0;
 					shoot = true;
@@ -212,7 +222,7 @@ public class HealthTurret implements Turret, ItemType, Listener {
 						
 						if(otherturret != awaketurret) {
 							if(awaketurret.turret.getEntity().getLocation().distance(otherturret.turret.getEntity().getLocation()) <= 8) {
-								//if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){ TODO
+								if(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner)){
 									
 									Entity e = otherturret.turret.getEntity();
 									Villager turret_entity = (Villager) awaketurret.turret.getEntity();
@@ -254,7 +264,7 @@ public class HealthTurret implements Turret, ItemType, Listener {
 										}
 									}
 								}
-							//}
+							}
 							
 						}
 						

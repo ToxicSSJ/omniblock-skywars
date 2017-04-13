@@ -327,12 +327,18 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
     }
 
     public static boolean getLookingAt(Player player1, Player player2){
-    	
-      Location eye = player1.getEyeLocation();
-      Vector toEntity = player2.getEyeLocation().toVector().subtract(eye.toVector());
-      double dot = toEntity.normalize().dot(eye.getDirection());
-     
-      return dot > 0.99D;
+      
+      if(player1 != player2) {
+    	  
+    	  Location eye = player1.getEyeLocation();
+          Vector toEntity = player2.getEyeLocation().toVector().subtract(eye.toVector());
+          double dot = toEntity.normalize().dot(eye.getDirection());
+         
+          return dot > 0.99D;
+    	  
+      }
+      
+      return false;
       
     }
     

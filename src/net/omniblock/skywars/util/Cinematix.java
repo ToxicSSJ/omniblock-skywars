@@ -133,7 +133,8 @@ public class Cinematix {
                 }
 
                 for (int x = 0; x < 5; x++)
-                	// moveToward(Entity, path.get(i), 3.0);
+                	
+                	Entity.getLocation().getChunk().load();
                     Entity.teleport(path.get(i));
 
                 i++;

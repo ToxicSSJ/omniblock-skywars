@@ -67,45 +67,6 @@ public class SpectatorManager {
 		
 		VanishUtil.makeInvisible(p);
 		
-		Scoreboard bukkitScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-		
-		Team tspec = bukkitScoreboard.getTeam("SPECTATORS_G");
-		
-		if(tspec == null) {
-			tspec = bukkitScoreboard.registerNewTeam("SPECTATORS_G");
-			tspec.setAllowFriendlyFire(false);
-			tspec.setCanSeeFriendlyInvisibles(true);
-		}
-		
-		tspec.addEntry(p.getName());
-		
-		for(Player pin : SoloPlayerManager.getPlayersInGameList()) {
-			
-			Team bukkiPlayerTeam = bukkitScoreboard.getTeam(pin.getName() + "_G");
-			
-			if(bukkiPlayerTeam == null) {
-				bukkiPlayerTeam = bukkitScoreboard.registerNewTeam(pin.getName() + "_G");
-				bukkiPlayerTeam.setAllowFriendlyFire(false);
-				bukkiPlayerTeam.setCanSeeFriendlyInvisibles(false);
-				bukkiPlayerTeam.addEntry(pin.getName());
-			}
-			
-			bukkiPlayerTeam.addEntry(p.getName());
-			
-			Scoreboard pScoreboard = pin.getScoreboard();
-			
-			if(pScoreboard == null) {
-				DebugUtil.warning(pin.getName() + " no tiene un scoreboard y no se ha podido añadir a " + p.getName() + " al equipo de espectadores (fake team). ¿Algo anda mal con el sistema del scoreboard?");
-			}
-			
-			Team spectatorPlayerTeam = pScoreboard.getTeam("SPECTATORS_P");
-			if(spectatorPlayerTeam == null) {
-				spectatorPlayerTeam = pScoreboard.registerNewTeam("SPECTATORS_P");
-				spectatorPlayerTeam.setAllowFriendlyFire(true);
-				spectatorPlayerTeam.setCanSeeFriendlyInvisibles(false);
-			}
-		}
-		
 		for(SpectatorItem si : SpectatorItem.values()) {
 			p.getInventory().setItem(si.getSlot(), si.getItem().build());
 		}

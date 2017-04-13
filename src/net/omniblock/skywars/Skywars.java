@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.omniblock.skywars.patch.MapPatcher;
 import net.omniblock.skywars.patch.NetworkPatcher;
 import net.omniblock.skywars.patch.managers.CageManager;
@@ -66,7 +67,7 @@ public class Skywars extends JavaPlugin {
 		mappatcher.initialize();
 		
 		//test
-		makeTestMatch();
+		// makeTestMatch();
 		
 		/**
 		 * [LIB] [ActionBarApi Hook]
@@ -80,15 +81,21 @@ public class Skywars extends JavaPlugin {
 		EffectLib.startEffectLib();
 		InventoryBuilderListener.startInventoryBuilder();
 		
+		CitizensAPI.getNPCRegistry().deregisterAll();
+		
 		effectmanager = new EffectManager(this);
 		
 	}
 
 	@Override
 	public void onDisable(){
+		
 		for(Handler h : DebugUtil.getLogger().getHandlers()) {
 		    h.close();
 		}
+		
+		CitizensAPI.getNPCRegistry().deregisterAll();
+		
 	}
 	
 	public static void makeTestMatch() {

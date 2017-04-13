@@ -151,6 +151,16 @@ public class PorkTurret implements Turret, ItemType, Listener {
 			@Override
 			public void run() {
 				
+				if(!awaketurret.turret.isSpawned()) {
+					cancel();
+					return;
+				}
+				
+				if(awaketurret.turret.getEntity().isDead()) {
+					cancel();
+					return;
+				}
+				
 				if(round >= (20 * recoil)) {
 					round = 0;
 					shoot = true;
@@ -167,7 +177,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 							
 							Player p = (Player) e;
 							if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
-								if(!awaketurret.extra_exclude.contains(p)) {
+								if(!awaketurret.extra_exclude.contains(p) && awaketurret.owner != p) {
 									
 									PigZombie turret_entity = (PigZombie) awaketurret.turret.getEntity();
 									if(turret_entity.hasLineOfSight(p)) {
@@ -211,7 +221,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 						
 						if(otherturret != awaketurret) {
 							if(awaketurret.turret.getEntity().getLocation().distance(otherturret.turret.getEntity().getLocation()) <= range) {
-								//if(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner)){ // TODO
+								if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
 									
 									Entity e = otherturret.turret.getEntity();
 									PigZombie turret_entity = (PigZombie) awaketurret.turret.getEntity();
@@ -250,7 +260,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 										
 									}
 									
-								//}
+								}
 							}
 						}
 						
@@ -341,13 +351,13 @@ public class PorkTurret implements Turret, ItemType, Listener {
 						
 						if(otherturret != awaketurret) {
 							if(awaketurret.turret.getEntity().getLocation().distance(otherturret.turret.getEntity().getLocation()) <= 12) {
-								//if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){ TODO
-									explode = true; // TODO
+								if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
+									explode = true;
 									if(!explosion_turret_affected.contains(otherturret)) {
 										explosion_turret_affected.add(otherturret);
 										continue;
 									}
-								//}
+								}
 							}
 						}
 						
@@ -375,13 +385,13 @@ public class PorkTurret implements Turret, ItemType, Listener {
 							
 							if(otherturret != awaketurret) {
 								if(awaketurret.turret.getEntity().getLocation().distance(otherturret.turret.getEntity().getLocation()) <= 12) {
-									//if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){ TODO
-										explode = true; // TODO
+									if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
+										explode = true;
 										if(!explosion_turret_affected.contains(otherturret)) {
 											explosion_turret_affected.add(otherturret);
 											continue;
 										}
-									//}
+									}
 								}
 							}
 							
@@ -508,7 +518,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 					if(otherturret != awaketurret) {
 						if(awaketurret.turret.getEntity().getLocation().distance(otherturret.turret.getEntity().getLocation()) <= 12) {
 							if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
-								explode = true; // TODO
+								explode = true;
 								if(!explosion_turret_affected.contains(otherturret)) {
 									explosion_turret_affected.add(otherturret);
 									continue;
@@ -542,7 +552,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 						if(otherturret != awaketurret) {
 							if(awaketurret.turret.getEntity().getLocation().distance(otherturret.turret.getEntity().getLocation()) <= 12) {
 								if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
-									explode = true; // TODO
+									explode = true;
 									if(!explosion_turret_affected.contains(otherturret)) {
 										explosion_turret_affected.add(otherturret);
 										continue;

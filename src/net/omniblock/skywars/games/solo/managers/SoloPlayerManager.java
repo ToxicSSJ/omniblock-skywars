@@ -32,8 +32,13 @@ public class SoloPlayerManager {
 	public static void deathPlayer(Player p) {
 		
 		if(getPlayersInGameList().contains(p)) {
+			
+			System.out.println("REMOVING!");
+			
 			playersInGame.remove(p);
 		}
+		
+		playersInSpectator.add(p);
 		
 		InGameTitles.DEATH.send(p);
 		spectatorPlayer(p);

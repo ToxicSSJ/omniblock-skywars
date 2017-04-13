@@ -134,7 +134,6 @@ public class Bombardier implements ItemType, Listener {
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
 		
@@ -146,6 +145,7 @@ public class Bombardier implements ItemType, Listener {
 			if(from.getY() != to.getY()) {
 				
 				TitleUtil.sendTitleToPlayer(e.getPlayer(), 0, 40, 0, "", TextUtil.format("&c&l¡No puedes moverte Verticalmente!"));
+				SoloPlayerManager.forceFly(e.getPlayer());
 				
 				e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
 				e.getPlayer().teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5));
@@ -263,7 +263,6 @@ public class Bombardier implements ItemType, Listener {
 	
 	public static void launchNaturallyBomb(Location loc) {
 		
-		@SuppressWarnings("static-access")
 		Location based_loc = SoloSkywars.lobbyschematic.getLocation();
 		
 		Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
@@ -435,8 +434,6 @@ public class Bombardier implements ItemType, Listener {
 				
 			}
 			
-			
-			@SuppressWarnings("static-access")
 			Location based_loc = SoloSkywars.lobbyschematic.getLocation();
 			
 			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
@@ -455,12 +452,15 @@ public class Bombardier implements ItemType, Listener {
 				@Override
 				public void run() {
 					
+					if(!av1.getChunk().isLoaded()) {
+						av1.getChunk().load();
+					}
+					
 					final ArmorStand plane = (ArmorStand) based_loc.getWorld().spawnEntity(av1, EntityType.ARMOR_STAND);
 					plane.setGravity(false);
 					plane.setVisible(false);
 					
 					plane.setItemInHand(new ItemStack(Material.IRON_BARDING, 1));
-					 
 					cm.start(plane, 10);
 					
 					SoundPlayer.sendSound(plane.getLocation(), "skywars.planelow", 1000);
@@ -470,12 +470,19 @@ public class Bombardier implements ItemType, Listener {
 						@SuppressWarnings("deprecation")
 						@Override
 						public void run(){
-						 
+							
 							if(plane.isValid()) {
-								
 								if(!plane.isDead()) {
 									
 									Location plane_loc = plane.getLocation();
+									
+									if(plane_loc.distance(av3) <= 10) {
+										
+										plane.remove();
+										cancel();
+										return;
+										
+									}
 									
 									if(plane_loc.distance(av2) <= 1) {
 										if(!launcher) {
@@ -561,7 +568,7 @@ public class Bombardier implements ItemType, Listener {
 		
 	}
 	
-	@SuppressWarnings({ "serial", "static-access" })
+	@SuppressWarnings("serial")
 	public void useBombardier(Player player) {
 		
 		Location tp_loc = SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
@@ -627,6 +634,9 @@ public class Bombardier implements ItemType, Listener {
 					
 					ItemStack launcher = new ItemBuilder(Material.BLAZE_POWDER).amount(1).name(TextUtil.format("&8&lLANZAR BOMBA DE &c&lTNT")).build();
 					player.getInventory().setItemInHand(launcher);
+					
+					player.setGameMode(GameMode.SURVIVAL);
+					SoloPlayerManager.forceFly(player);
 					
 					new BukkitRunnable() {
 						
@@ -708,6 +718,40 @@ public class Bombardier implements ItemType, Listener {
 												
 												player.teleport(data.getSaved());
 												
+												SoloPlayerManager.emptyPlayer(player);
+												
+												PlayerSavedData psd = SAVED_STATUS.get(player);
+												Inventory psi = player.getInventory();
+												
+												try {
+													psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+												} catch (IOException e) {
+													e.printStackTrace();
+												}
+												
+												player.removePotionEffect(PotionEffectType.INVISIBILITY);
+												player.setNoDamageTicks(0);
+												
+												player.setFoodLevel(psd.food);
+												
+												player.setHealth(psd.health);
+												player.setFireTicks(0);
+												
+												player.setCanPickupItems(true);
+												
+												player.setExp(psd.exp);
+												player.setLevel(psd.level);
+												
+												player.getInventory().setContents(psi.getContents());
+												player.updateInventory();
+												
+												player.setGameMode(GameMode.SURVIVAL);
+												
+												SoloPlayerManager.forceRemoveFly(player);
+												
+												SoundPlayer.stopSound(player);
+												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+												
 												BOMBARDIER_USE.remove(player);
 												LAUNCHER_SYSTEM.remove(player);
 												
@@ -755,6 +799,96 @@ public class Bombardier implements ItemType, Listener {
 				if(round >= 20*5) {
 					
 					cancel();
+					
+					ClonData data = BOMBARDIER_USE.get(player);
+					
+					if(data.getClon().isSpawned()) {
+								
+						SoloPlayerManager.emptyPlayer(player);
+						
+						PlayerSavedData psd = SAVED_STATUS.get(player);
+						Inventory psi = player.getInventory();
+						
+						try {
+							psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+						Location tracker = data.getClon().getEntity().getLocation();
+						player.teleport(tracker);
+						
+						player.removePotionEffect(PotionEffectType.INVISIBILITY);
+						player.setNoDamageTicks(0);
+						
+						player.setFoodLevel(psd.food);
+						
+						player.setHealth(psd.health);
+						player.setFireTicks(0);
+						
+						player.setCanPickupItems(true);
+						
+						player.setExp(psd.exp);
+						player.setLevel(psd.level);
+						
+						player.getInventory().setContents(psi.getContents());
+						player.updateInventory();
+						
+						player.setGameMode(GameMode.SURVIVAL);
+						
+						SoloPlayerManager.forceRemoveFly(player);
+						
+						SoundPlayer.stopSound(player);
+						player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+						
+						data.destroyClon(0);
+						
+						BOMBARDIER_USE.remove(player);
+						LAUNCHER_SYSTEM.remove(player);
+						
+					} else {
+						
+						player.teleport(data.getSaved());
+						
+						SoloPlayerManager.emptyPlayer(player);
+						
+						PlayerSavedData psd = SAVED_STATUS.get(player);
+						Inventory psi = player.getInventory();
+						
+						try {
+							psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+						player.removePotionEffect(PotionEffectType.INVISIBILITY);
+						player.setNoDamageTicks(0);
+						
+						player.setFoodLevel(psd.food);
+						
+						player.setHealth(psd.health);
+						player.setFireTicks(0);
+						
+						player.setCanPickupItems(true);
+						
+						player.setExp(psd.exp);
+						player.setLevel(psd.level);
+						
+						player.getInventory().setContents(psi.getContents());
+						player.updateInventory();
+						
+						player.setGameMode(GameMode.SURVIVAL);
+						
+						SoloPlayerManager.forceRemoveFly(player);
+						
+						SoundPlayer.stopSound(player);
+						player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+						
+						BOMBARDIER_USE.remove(player);
+						LAUNCHER_SYSTEM.remove(player);
+						
+					}
+					
 					return;
 					
 				}

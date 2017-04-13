@@ -147,6 +147,16 @@ public class LaserTurret implements Turret, ItemType, Listener {
 			@Override
 			public void run() {
 				
+				if(!awaketurret.turret.isSpawned()) {
+					cancel();
+					return;
+				}
+				
+				if(awaketurret.turret.getEntity().isDead()) {
+					cancel();
+					return;
+				}
+				
 				if(round >= (20 * recoil)) {
 					round = 0;
 					shoot = true;
@@ -163,7 +173,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 							
 							Player p = (Player) e;
 							if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
-								if(!awaketurret.extra_exclude.contains(p)) {
+								if(!awaketurret.extra_exclude.contains(p) && awaketurret.owner != p) {
 									
 									Guardian turret_entity = (Guardian) awaketurret.turret.getEntity();
 									if(turret_entity.hasLineOfSight(p)) {
@@ -208,7 +218,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 						
 						if(otherturret != awaketurret) {
 							if(otherturret.turret.getEntity().getLocation().distance(awaketurret.turret.getEntity().getLocation()) <= 8) {
-								//if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
+								if(!(otherturret.extra_exclude.contains(awaketurret.owner) && awaketurret.extra_exclude.contains(otherturret.owner))){
 									
 									Entity e = otherturret.turret.getEntity();
 									Guardian turret_entity = (Guardian) awaketurret.turret.getEntity();
@@ -246,8 +256,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 												
 										}
 									}
-									
-									//}
+								}
 							}
 						}
 						
@@ -285,7 +294,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 			ef.setTarget(affected.getEyeLocation());
 			ef.start();
 			
-			affected.setVelocity(awaketurret.turret.getEntity().getLocation().getDirection().multiply(0.2));
+			affected.setVelocity(awaketurret.turret.getEntity().getLocation().getDirection().multiply(0.4));
 			SoloPlayerBattleListener.makeZDamage(affected, awaketurret.owner, type.getDamage(), DamageCauseZ.TURRET_L);
 			
 		}

@@ -12,6 +12,8 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.type.ItemType;
 import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.SoundPlayer;
 
@@ -30,7 +32,12 @@ public class Punch implements ItemType, Listener {
 			if (event.getDamager() instanceof Player) {
 				Player playerdamage = (Player) event.getDamager();
 				if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
-					if (playerdamage.getItemInHand().getItemMeta().hasDisplayName()) {
+					if (playerdamage.getItemInHand().hasItemMeta()) {
+						
+						if(!playerdamage.getItemInHand().getItemMeta().hasDisplayName()) {
+							return;
+						}
+						
 						if (playerdamage.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
 							
 							playerdamage.getInventory().setItemInHand(null);
@@ -50,8 +57,9 @@ public class Punch implements ItemType, Listener {
 								}
 							}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
 
-							player.damage(7.3, playerdamage);
 							player.setVelocity(playerdamage.getLocation().getDirection().add(new Vector(0, 2, 0)).multiply(12.0));
+							SoloPlayerBattleListener.makeZDamage(player, playerdamage, 7.0, DamageCauseZ.JHON_CENA);
+							
 						}
 					}
 				}
