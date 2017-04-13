@@ -1328,6 +1328,7 @@ public class SoloPlayerBattleListener implements Listener {
 	}
 	
 	public enum DeathMessages {
+		
 		P2P_WEAPON("&cPLAYER_1 &7Ha muerto a manos de &aPLAYER_2!", "&cPLAYER_1 &7Ha sido asesinado brutalmente por &aPLAYER_2!"),
 		P2P_ARROWS("&aPLAYER_2 &7Mató a &cPLAYER_1&7, Con su arco!", "&cPLAYER_1 &7Ha destruido a &aPLAYER_2!"),
 		

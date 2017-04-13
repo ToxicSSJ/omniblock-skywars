@@ -57,7 +57,15 @@ public class MapManager {
 	 * de la petición de Boogst en hacer los métodos de manera estáticos (static).
 	 */
 	public static void initialize() {
+		
 		readConfiguration();
+		
+		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
+		for(MatchType mt : MatchType.values()) {
+			MapManager.prepareNextWorld(mt);
+		}
+		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
+		
 	}
 	
 	/**
@@ -186,11 +194,10 @@ public class MapManager {
 				Bukkit.unloadWorld(nextMapName, false);
 			}
 			
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4----------------------------"));
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Se inicio el modo: " + mode ));
+			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Mapa escogido para el modo: " + mode ));
 			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Mapa anterior " + lastUsedMapName));
 			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Mapa actual/nuevo " + currentMap));
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4----------------------------"));
+			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&c------------------------------------"));
 			restoreBackup(nextMapName, currentMap);
 		}
 		

@@ -79,12 +79,6 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		System.out.println("Continuando...");
 		
-		
-		/*
-		 * Mapa
-		 */
-		MapManager.prepareNextWorld(gMatchType);
-		
 		/*
 		 * Eventos
 		 */
