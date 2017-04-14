@@ -12,6 +12,8 @@ package net.omniblock.skywars.patch;
 
 import java.util.Calendar;
 
+import org.bukkit.Bukkit;
+
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.network.NetworkRunnable;
@@ -20,6 +22,7 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ArrayUtils;
 import omniblock.on.OmniNetwork;
 import omniblock.on.addons.games.NetworkBroadcaster;
+import omniblock.on.network.NetworkManager;
 
 public class NetworkPatcher implements Patcher {
 
@@ -63,7 +66,37 @@ public class NetworkPatcher implements Patcher {
 			@Override
 			public void read(String data) {
 				
-				if(data.contains("CANCEL")){
+				if(data.contains("$ LOCK")) {
+					
+					String serial = NetworkManager.serial;
+					String servername = NetworkManager.servername;
+					
+					String channel1;
+					String opendata1;
+					
+					channel1 = "lockservername";
+					opendata1 = serial + "#" + servername + "#" + Bukkit.getOnlinePlayers().size() + "#" + Bukkit.getServer().getMaxPlayers();
+					
+					NetworkManager.getChannelWrapper().sendToChannel(channel1, opendata1);
+					
+					return;
+					
+				} else if(data.contains("$ UNLOCK")) {
+					
+					String serial = NetworkManager.serial;
+					String servername = NetworkManager.servername;
+					
+					String channel1;
+					String opendata1;
+					
+					channel1 = "unlockservername";
+					opendata1 = serial + "#" + servername + "#" + Bukkit.getOnlinePlayers().size() + "#" + Bukkit.getServer().getMaxPlayers();
+					
+					NetworkManager.getChannelWrapper().sendToChannel(channel1, opendata1);
+					
+					return;
+					
+				} else if(data.contains("CANCEL")){
 					
 					return;
 				} else if(data.contains("STOP")){
@@ -79,6 +112,8 @@ public class NetworkPatcher implements Patcher {
 		};
 		
 	}
+	
+	
 	
 	public String[][] getResolversArgs(){
 		

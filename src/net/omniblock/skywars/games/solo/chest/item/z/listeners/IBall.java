@@ -28,17 +28,15 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class IBall implements ItemType, Listener {
 
-	private static SoloPlayerManager soloplayer;
-	private static List<Snowball> snowball = new ArrayList<Snowball>();
+	public static List<Snowball> snowball = new ArrayList<Snowball>();
 	
-	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void IceBall(PlayerInteractEvent event){
 		
 		Player player = event.getPlayer();
 		
-		if(soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(player.getItemInHand().hasItemMeta()){
 				if(player.getItemInHand().getItemMeta().hasDisplayName()){
 					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.BOLA_CONGELACEREBROS.getName())){
@@ -99,10 +97,11 @@ public class IBall implements ItemType, Listener {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	@EventHandler
 	public void iceBalleffect(ProjectileHitEvent event){
+		
 		if(event.getEntity() instanceof Snowball){
+			
 			Snowball sb = (Snowball) event.getEntity();
 			Location location = sb.getLocation();
 			
@@ -113,6 +112,8 @@ public class IBall implements ItemType, Listener {
 				if(b.getType() == Material.AIR) continue;
 				b.setType(Material.PACKED_ICE);
 			}
+			
 		}
+		
 	}
 }

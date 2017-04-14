@@ -25,17 +25,18 @@ import net.omniblock.skywars.games.solo.chest.item.object.AddChest;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.types.MatchType;
+import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
+import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
 import net.omniblock.skywars.util.ContaminationUtil.Contamination;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationInfo;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationTroop;
 import net.omniblock.skywars.util.DestructionUtil.Destruction;
 import net.omniblock.skywars.util.DestructionUtil.DestructionInfo;
-import net.omniblock.skywars.util.Schematic;
 import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
@@ -46,8 +47,8 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	
 	private static SoloSkywars gStarter = null;
 	
-	private final static int MIN_PLAYERS_TO_START = 1;
-	private final static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
+	public static int MIN_PLAYERS_TO_START = 1;
+	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 	
 	private final int timeLobby = 15;
 	private int remainingTimeLobby = timeLobby;
@@ -65,7 +66,6 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
@@ -73,8 +73,10 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 				if(remainingTimeLobby <= 0) {
 					
+					NetworkData.broadcaster.read("$ LOCK");
+					
 					chestmanager = new ChestManager();
-					Schematic.removeSchematic(SoloSkywars.lobbyschematic.getLocation());
+					SoloSkywars.lobbyschematic.removePasted();
 					
 					SoloPlayerManager.transferAllPlayersToInGame();
 					SoloPlayerManager.sendAllPlayersToCages(gStarter);
@@ -150,6 +152,9 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				if(remainingTimeCages < 0) {
 				
 					for(Player p : SoloPlayerManager.getPlayersInGameList()) {
+						
+						p.setNoDamageTicks(20 * 10);
+						
 						SoloPlayerManager.playSound(Sound.LEVEL_UP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));
 					}
@@ -178,7 +183,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			
 		} else if(Skywars.getGameState() == SkywarsGameState.IN_GAME) {
 			
-			Map<String, Integer> events = EVENTS;
+			Map<String, Integer> events = MapUtils.clone(EVENTS);
 			for(Map.Entry<String, Integer> k : events.entrySet()) {
 				try {
 					reduceEvent(k.getKey(), 1);
@@ -187,7 +192,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));
@@ -441,7 +446,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	public Map<String, Integer> getEvents() {
 		return EVENTS;
 	}
-	
+
 	public enum InGameTitles {
 		REFILL_TITLE(65, Sound.CHEST_OPEN, new TitleFormat[] { new TitleFormat(5, 45, 5, TextUtil.format("&6&lCofres"),
 															  TextUtil.format("&7¡Rellenado Completado!")) } ),
@@ -500,23 +505,23 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 		INSANE_TITLES(65, new TitleFormat[] { new TitleFormat(5, 45, 5, TextUtil.format("&6&lSkyWars"),
 										   					  TextUtil.format("&7Modo Mejorado")) } ),
-		Z_TITLES(98, new TitleFormat[] { new TitleFormat(2, 16, 0, TextUtil.format("&8&lSkyWars"),
+		Z_TITLES(117, new TitleFormat[] { new TitleFormat(5, 50, 0, TextUtil.format("&8&lSkyWars"),
 				   					 					  TextUtil.format("&7Modo &4&lZ")),
-					 					  new TitleFormat(0, 10, 0, "",
+					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&aCargando mapa...")),
-					 					  new TitleFormat(0, 10, 0, "",
+					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&eReviviendo guardianes...")),
-					 					  new TitleFormat(0, 10, 0, "",
+					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&dPuliendo islas...")),
-					 					  new TitleFormat(0, 10, 0, "",
+					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&cCargando items...")),
-					 					  new TitleFormat(0, 10, 0, "",
+					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&bCargando core...")),
-					 					  new TitleFormat(0, 10, 0, "",
+					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&2Añadiendo cofres...")),
-					 					 new TitleFormat(0, 10, 0, "",
+					 					 new TitleFormat(0, 8, 0, "",
 			 							 		  		  TextUtil.format("&9Añadiendo a Herobrine...")),
-					 					  new TitleFormat(0, 10, 5, "",
+					 					  new TitleFormat(0, 8, 5, "",
 					 							 	 	  TextUtil.format("&4Preparando impulso...")) } );
 		
 		

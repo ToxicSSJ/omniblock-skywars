@@ -7,9 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import net.omniblock.skywars.games.solo.SoloSkywars;
+import net.omniblock.skywars.games.solo.chest.item.ItemInsane;
+import net.omniblock.skywars.games.solo.chest.item.ItemNormal;
 import net.omniblock.skywars.games.solo.chest.item.ItemZ;
 import net.omniblock.skywars.games.solo.chest.item.object.AddChest;
 import net.omniblock.skywars.games.solo.types.MatchType;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.util.Scan;
 
 public class ChestManager {
@@ -18,8 +21,8 @@ public class ChestManager {
 	public static List<Location> trappedchest = new ArrayList<Location>();
 	
 	public ChestManager() {
-		normalchest = Scan.oneMaterial(Material.CHEST);
-		trappedchest = Scan.oneMaterial(Material.TRAPPED_CHEST);
+		normalchest = Scan.oneMaterial(MapManager.CURRENT_MAP, Material.CHEST);
+		trappedchest = Scan.oneMaterial(MapManager.CURRENT_MAP, Material.TRAPPED_CHEST);
 		startChest();
 	}
 
@@ -33,12 +36,12 @@ public class ChestManager {
 
 		switch (mt) {
 		case NORMAL:
-			AddChest itemN = new AddChest(ItemZ.normalChest(), ItemZ.trappedChest(), 6, 10);
+			AddChest itemN = new AddChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 6, 8);
 			itemN.normalChest();
 			itemN.trappedChest();
 			break;
 		case INSANE:
-			AddChest itemI = new AddChest(ItemZ.normalChest(), ItemZ.normalChest(), 6, 8);
+			AddChest itemI = new AddChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 6, 8);
 			itemI.normalChest();
 			itemI.trappedChest();
 			break;

@@ -19,8 +19,8 @@ import net.omniblock.skywars.patch.managers.MapManager;
 public class Scan {
 	
 	@SuppressWarnings("deprecation")
-	public static List<Location> oneMaterial(Material m){    
-		World world = MapManager.getWorld();
+	public static List<Location> oneMaterial(World world, Material m){
+		
 		List<Location> locationblock = new ArrayList<Location>(); 
 		List<Chunk> arrayOfChunk = Arrays.asList(world.getLoadedChunks());
 	    int chunk = arrayOfChunk.size();
@@ -58,8 +58,8 @@ public class Scan {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static Location singleBlock(Material m){
-		World world = MapManager.getWorld();
+	public static Location singleBlock(World world, Material m){
+		
 		Location singleBlock = null;
 		List<Chunk> arrayOfChunk = MCAUtil.getChunksByMCAFiles(world);
 	    int chunk = arrayOfChunk.size();
@@ -92,10 +92,9 @@ public class Scan {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static Map<Material, List<Location>> multipleMaterials(Material... materials){
+	public static Map<Material, List<Location>> multipleMaterials(World world, Material... materials){
 		Map<Material, List<Location>> returnMap = Maps.newHashMap();
 		
-		World world = MapManager.getWorld();
 		List<Chunk> worldChunks = MCAUtil.getChunksByMCAFiles(world);
 		
 		for(int i = 0; i < worldChunks.size(); i++) {

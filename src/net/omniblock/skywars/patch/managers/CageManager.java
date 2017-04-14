@@ -7,7 +7,9 @@
  *  No third party is allowed to modification of the code.
  *
  */
+
 package net.omniblock.skywars.patch.managers;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,8 +44,10 @@ import net.omniblock.skywars.util.ParticleEffect;
 import net.omniblock.skywars.util.ResourceExtractor;
 import net.omniblock.skywars.util.Schematic;
 import omniblock.ot.errorapi.ErrorAPI;
+
 @SuppressWarnings("deprecation")
 public class CageManager {
+	
 	public static Map<Player, Location> cagesdata = new HashMap<Player, Location>();
 	
 	public static List<EditSession> pastedcages = new ArrayList<EditSession>();
@@ -562,8 +566,9 @@ public class CageManager {
 								String code = codeAnimation[start];
 								String path =  "cap." + HashCode  + code + ".schematic";
 								
-								Schematic.pasteSchematic(dir, path, registerPlayer.get(player));
-								Schematic.removeSchematic(registerPlayer.get(player));
+								Schematic schem = new Schematic();
+								schem.pasteSchematic(dir, path, registerPlayer.get(player));
+								schem.removeSchematic();
 
 							}else{
 								
@@ -571,8 +576,9 @@ public class CageManager {
 								String code = codeAnimation[start];
 								String path =  "cap." + HashCode  + code + ".schematic";
 								
-								Schematic.pasteSchematic(dir, path, registerPlayer.get(player));
-								Schematic.removeSchematic(registerPlayer.get(player));
+								Schematic schem = new Schematic();
+								schem.pasteSchematic(dir, path, registerPlayer.get(player));
+								schem.removeSchematic();
 
 							}
 														

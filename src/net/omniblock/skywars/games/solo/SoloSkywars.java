@@ -15,9 +15,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,16 +37,21 @@ import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.EventsManager;
 import net.omniblock.skywars.patch.managers.LobbySchematic;
 import net.omniblock.skywars.patch.managers.MapManager;
+import net.omniblock.skywars.patch.managers.MapManager.MapType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
-import net.omniblock.skywars.util.Scan;
 import net.omniblock.skywars.util.TextUtil;
 import omniblock.on.network.NetworkManager;
+import omniblock.on.network.runnables.NetworkTicker;
+import omniblock.on.server.type.EGameType;
 import omniblock.on.server.type.EServerType;
 
 public class SoloSkywars implements SkywarsStarter {
 
+	public static final int DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS = 12;
+	public static final int DEFAULT_Z_SKYWARS_MAX_PLAYERS = 16;
+	
 	public static LobbySchematic lobbyschematic;
 	
 	public static SkywarsResolver gSkywarsResolver;
@@ -59,6 +62,7 @@ public class SoloSkywars implements SkywarsStarter {
 	
 	@Override
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) {
+		
 		gSkywarsResolver = sr;
 		
 		SoloSkywarsRunnable cacherunnable = new SoloSkywarsRunnable(this);
@@ -66,20 +70,23 @@ public class SoloSkywars implements SkywarsStarter {
 		mainRunnableTask.runTaskTimer(Skywars.getInstance(), 20L, 20L);
 		
 		if(gSkywarsResolver.getListArgs().contains("normal")){
-			System.out.println("MODO NORMAL");
+			
 			startSoloNormalGame();
+			
 		} else if(gSkywarsResolver.getListArgs().contains("insane")){
-			System.out.println("MODO INSANO");
+			
 			startSoloInsaneGame();
+			
 		} else if(gSkywarsResolver.getListArgs().contains("z")){
-			System.out.println("MODO Z");
+			
 			startSoloZGame();
+			
 		} else {
+			
 			new IllegalStateException("SkywarsResolver no fué especificado con un modo correcto y el sistema no sabe cómo continuar: " + gSkywarsResolver.getListArgs());
 			stop();
+			
 		}
-		
-		System.out.println("Continuando...");
 		
 		/*
 		 * Eventos
@@ -87,29 +94,32 @@ public class SoloSkywars implements SkywarsStarter {
 		EventsManager.setupEvents(Skywars.currentMatchType);
 		
 		/*
-		 * Localizaciones
-		 */
-		
-		List<Location> scannedBlocks = Scan.oneMaterial(Material.SPONGE);
-		for(Location loc : scannedBlocks) {
-			Block bl = loc.getBlock();
-			if(bl.getRelative(0,1,0).getType() == Material.WOOD_PLATE) {
-				cagesLocations.add(loc);
-				bl.getRelative(0,1,0).setType(Material.AIR);
-				bl.setType(Material.AIR);
-			}
-		}
-		
-		/*
 		 * Scoreboard
 		 */
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		SoloPlayerScoreboardManager.initialize();
 		
+		/*
+		 * Online Player Add-Adder
+		 */
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			if(!SoloPlayerManager.getPlayersInLobbyList().contains(p)) {
+				SoloPlayerManager.addPlayer(p);
+			}
+		}
+		
+		
 	}
 	
 	private void startSoloNormalGame() {
+		
 		gMatchType = MatchType.NORMAL;
+		
+		NetworkTicker.maxplayers = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
+		MapManager.setCurrentMap(MapType.NORMAL);
+		
+		lobbyschematic.selectMapType(MapType.NORMAL);
+		cagesLocations.addAll(MapManager.MAP_NORMAL_CAGE_LOCATIONS);
 		
 		/*
 		 * SYSTEM VARS (EVENTS)
@@ -126,6 +136,12 @@ public class SoloSkywars implements SkywarsStarter {
 	
 	private void startSoloInsaneGame() {
 		gMatchType = MatchType.INSANE;
+		
+		NetworkTicker.maxplayers = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
+		MapManager.setCurrentMap(MapType.NORMAL);
+		
+		lobbyschematic.selectMapType(MapType.NORMAL);
+		cagesLocations.addAll(MapManager.MAP_NORMAL_CAGE_LOCATIONS);
 		
 		/*
 		 * SYSTEM VARS (EVENTS)
@@ -144,6 +160,12 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloZGame() {
 		gMatchType = MatchType.Z;
 		
+		NetworkTicker.maxplayers = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
+		MapManager.setCurrentMap(MapType.Z);
+		
+		lobbyschematic.selectMapType(MapType.Z);
+		cagesLocations.addAll(MapManager.MAP_Z_CAGE_LOCATIONS);
+		
 		/*
 		 * SYSTEM VARS (EVENTS)
 		 * Only for the game with these specs:
@@ -151,11 +173,10 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Z
 		 */
 
-		
-		//mainRunnableTask.addEvent("&d&lCONTAMINACIÓN:", 60);
+		mainRunnableTask.addEvent("&c&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 60);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 210);
 		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
 	}
@@ -389,7 +410,7 @@ public class SoloSkywars implements SkywarsStarter {
 									
 									p.sendMessage(TextUtil.getCenteredMessage(" &7Kills Totales: &c" + (AccountManager.getKills(AccountManager.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getKills())));
 									p.sendMessage(TextUtil.getCenteredMessage(" &7Asistencias Totales: &b" + (AccountManager.getAssistences(AccountManager.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getAssistences())));
-									p.sendMessage(TextUtil.getCenteredMessage(" &7Promedio Total: &9&l" + k.getKey().getAverage())); // TODO Terminar xd
+									p.sendMessage(TextUtil.getCenteredMessage(" &7Promedio Total: &9&l" + (AccountManager.getAverage(AccountManager.SAVED_ACCOUNTS.get(p).getStats())))); // TODO Terminar xd
 									p.sendMessage(TextUtil.getCenteredMessage("&r"));
 									
 								}
@@ -431,25 +452,88 @@ public class SoloSkywars implements SkywarsStarter {
 
 		cagesLocations.clear();
 		
-		for(Player p : Bukkit.getOnlinePlayers()) {
-			NetworkManager.sendToServer(p, EServerType.SKYWARS_LS);
-		}
+		NetworkManager.sendToServer(Bukkit.getOnlinePlayers(), EServerType.SKYWARS_LS);
 		
-		MapManager.unloadWorldAndPrepareForNextRequest();
+		new BukkitRunnable() {
+			
+			int seconds = 10;
+			int round = 0;
+			
+			@Override
+			public void run() {
+				
+				if(Bukkit.getOnlinePlayers().size() != 0) {
+					
+					if(round != 20) {
+						
+						round++;
+						
+					} else {
+						
+						round = 0;
+						seconds--;
+						
+					}
+					
+					if(seconds == 0) {
+						
+						cancel();
+						
+						for(Player p : Bukkit.getOnlinePlayers()) {
+							p.kickPlayer(TextUtil.format("&7Se ha perdido la conexión con &9&lOmniNetwork \n " + "&7Por favor, Ingresa nuevamente."));
+						}
+						
+						initializeReset();
+						
+					}
+					
+				} else {
+					
+					cancel();
+					initializeReset();
+					
+				}
+				
+			}
+			
+		}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
+		
+		
+		
+	}
+
+	private void initializeReset() {
+		
+		SoloSkywarsRunnable.EVENTS.clear();
+		
+		SoloPlayerScoreboardManager.sbrunnable.cancel();
+		cagesLocations.clear();
 		
 		EventsManager.reset();
 		SoloPlayerBattleListener.reset();
 		
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
+		MapManager.unloadActualWorldsAndReset();
+		MapManager.prepareWorlds();
+		
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		
+		stop();
+		
 	}
-
+	
 	@Override
 	public void stop() {
+		
 		gMatchType = MatchType.NONE;
-		reset();
+		
+		String channel = "addunbusyserver";
+		String opendata = Bukkit.getServerName() + "#" + EGameType.SKYWARS_MASK.toString();
+		
+		NetworkManager.getChannelWrapper().sendToChannel(channel, opendata);
+		
+		NetworkData.broadcaster.read("$ UNLOCK");
 		
 	}
 	

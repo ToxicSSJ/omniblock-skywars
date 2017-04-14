@@ -28,18 +28,14 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class AngryChest implements ItemType, Listener {
 	
-	private static SoloPlayerManager soloplayer;
-	
 	private static List<Block> chestblock = new ArrayList<Block>();
 	private static int CHEST_TYPE = 0;
 	
-	
-	@SuppressWarnings("static-access")
 	@EventHandler
 	public void AngryChests(BlockPlaceEvent event){
 		
 		Player player = event.getPlayer();
-		if(soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(player.getItemInHand().hasItemMeta()){
 				if(player.getItemInHand().getItemMeta().hasDisplayName()){
 					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.COFRE_EXPLOSIVO.getName())){
@@ -58,14 +54,13 @@ public class AngryChest implements ItemType, Listener {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler
 	public void AngryChests(PlayerInteractEvent event){
 		
 		Player player = event.getPlayer();;
 		
-		if(soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(event.getAction() ==  Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK){					
 				if(event.getClickedBlock().getType() == Material.TRAPPED_CHEST){
 					if(chestblock.contains(event.getClickedBlock())){
@@ -79,7 +74,7 @@ public class AngryChest implements ItemType, Listener {
 						switch(CHEST_TYPE){
 						case 1:
 							jail(location, block);
-							Block b = location.getBlock().getRelative(0, -2, 0);
+							@SuppressWarnings("unused") Block b = location.getBlock().getRelative(0, -2, 0);
 							location.getWorld().playSound(location, Sound.EXPLODE, 2, 2);	
 							break;
 						case 2:

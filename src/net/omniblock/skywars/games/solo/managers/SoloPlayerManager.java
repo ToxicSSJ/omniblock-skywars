@@ -33,9 +33,6 @@ public class SoloPlayerManager {
 	public static void deathPlayer(Player p) {
 		
 		if(getPlayersInGameList().contains(p)) {
-			
-			System.out.println("REMOVING!");
-			
 			playersInGame.remove(p);
 		}
 		
@@ -127,10 +124,11 @@ public class SoloPlayerManager {
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	public static boolean addPlayer(Player p) {
 		
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
+			
+			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (SoloPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + SoloSkywars.cagesLocations.size() + ")"));
 			
 			for(Player p2 : getPlayersInLobbyListAsCopy()) {
 				if(p.getUniqueId().equals(p2.getUniqueId())) {

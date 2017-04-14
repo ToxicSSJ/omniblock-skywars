@@ -26,18 +26,16 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 
 public class Bridged implements ItemType, Listener {
 
-	private static SoloPlayerManager soloplayer;
 	private static final int BRIDGE_SIZE = 20;
 	private static List<Block> bridgeremove = new ArrayList<Block>();
 
-	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler
 	public void BridgeHud(BlockPlaceEvent event) {
 		
 		Player player = event.getPlayer();
 	
-		if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+		if (SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 			
 			if (player.getInventory().getItemInHand().hasItemMeta()){
 				if(player.getInventory().getItemInHand().getItemMeta().hasDisplayName()){
@@ -60,13 +58,13 @@ public class Bridged implements ItemType, Listener {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void breakBridged(PlayerMoveEvent event) {
 		
 		Player player = event.getPlayer();
 		
-		if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+		if (SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 			if (player.getLocation().add(0, -1, 0).getBlock().getType() == Material.STAINED_GLASS) {
 				Block block = event.getPlayer().getLocation().add(0, -1, 0).getBlock();
 				if (bridgeremove.contains(block)) {

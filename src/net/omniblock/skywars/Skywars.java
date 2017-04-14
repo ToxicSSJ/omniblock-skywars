@@ -28,6 +28,7 @@ import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.effectlib.EffectLib;
 import net.omniblock.skywars.util.effectlib.EffectManager;
+import net.omniblock.skywars.util.fix.TeleportFixThree;
 import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
 
 public class Skywars extends JavaPlugin {
@@ -57,7 +58,7 @@ public class Skywars extends JavaPlugin {
 		//Ya que boogst no queria usar MapManager.getInstance() ¬¬ tengo que hacer un inicializador del MapManager en el onEnable
 		
 		DebugUtil.info("Iniciando MapManager ...");
-		MapManager.initialize();
+		MapManager.prepareWorlds();
 		
 		// Inicializador de Patchers
 		networkpatcher = new NetworkPatcher();
@@ -74,11 +75,12 @@ public class Skywars extends JavaPlugin {
 		
 		//Utils
 		
+		CitizensAPI.getNPCRegistry().deregisterAll();
+		
 		BossBar.startBossBar();
 		EffectLib.startEffectLib();
+		TeleportFixThree.initialize();
 		InventoryBuilderListener.startInventoryBuilder();
-		
-		CitizensAPI.getNPCRegistry().deregisterAll();
 		
 		effectmanager = new EffectManager(this);
 		
@@ -95,11 +97,15 @@ public class Skywars extends JavaPlugin {
 		
 	}
 	
+	@Deprecated
 	public static void makeTestMatch() {
-		DebugUtil.debugInfo("Haciendo Match de Prueba");
+		
+		DebugUtil.debugInfo("Inicializando Match de prueba...");
+		
 		if(!SkywarsType.SW_Z_SOLO.makeMatch()) {
 			throw new IllegalStateException("Falló al crear un Match con makeMatch()");
 		}
+		
 	}
 	
 	/**

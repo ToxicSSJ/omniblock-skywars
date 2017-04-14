@@ -21,6 +21,7 @@ public class MCAUtil {
 	
 	@SuppressWarnings("unused")
 	public static List<Chunk> getChunksByMCAFiles(World world){
+		
 		//sendMessageToConsole("&7+&8---------------------------------------&7+");
 		//sendMessageToConsole(" &eIniciando sistema de lectura de archivos");
 		//sendMessageToConsole(" &e.mca del mundo " + world.getName());
@@ -89,10 +90,12 @@ public class MCAUtil {
 		        
 		        for(int cx = 0; cx < 32; cx++){
 		        	for(int cz = 0; cz < 32; cz++){
+		        		
 			        	if(resultRegionFile.chunkExists(startChunkIteratorX + cx, startChunkIteratorZ + cz)){
 			        		world.loadChunk(startChunkIteratorX + cx, startChunkIteratorZ + cz);
-			        		chunks.add(world.getChunkAt(startChunkIteratorX + cx, startChunkIteratorZ + cz));
+				        	chunks.add(world.getChunkAt(startChunkIteratorX + cx, startChunkIteratorZ + cz));
 			        	}
+			        	
 			        }
 		        }
 			}

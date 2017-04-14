@@ -48,7 +48,7 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.TitleUtil;
-import net.omniblock.skywars.util.base64.InventoryBase64;
+import net.omniblock.skywars.util.base64.PlayerInventory64;
 import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 import net.omniblock.skywars.util.effectlib.effect.SkyRocketEffect;
 import omniblock.on.util.TextUtil;
@@ -57,7 +57,7 @@ public class Bombardier implements ItemType, Listener {
 	
 	public static Map<Entity, Player> BOMBARDIER_OWNER = new HashMap<Entity, Player>();
 	
-	Map<Player, String> SAVED_INVENTORY = new HashMap<Player, String>();
+	Map<Player, String[]> SAVED_INVENTORY = new HashMap<Player, String[]>();
 	Map<Player, PlayerSavedData> SAVED_STATUS = new HashMap<Player, PlayerSavedData>();
 	
 	Map<Player, ClonData> BOMBARDIER_USE = new HashMap<Player, ClonData>();
@@ -392,10 +392,13 @@ public class Bombardier implements ItemType, Listener {
 				SoloPlayerManager.emptyPlayer(player);
 				
 				PlayerSavedData psd = SAVED_STATUS.get(player);
+				
 				Inventory psi = player.getInventory();
+				ItemStack[] equipment = player.getEquipment().getArmorContents();
 				
 				try {
-					psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+					psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
+					equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -416,7 +419,9 @@ public class Bombardier implements ItemType, Listener {
 				player.setExp(psd.exp);
 				player.setLevel(psd.level);
 				
+				player.getInventory().setArmorContents(equipment);
 				player.getInventory().setContents(psi.getContents());
+				
 				player.updateInventory();
 				
 				player.setGameMode(GameMode.SURVIVAL);
@@ -580,7 +585,7 @@ public class Bombardier implements ItemType, Listener {
 		ClonData data = new ClonData(player, active_loc);
 		data.makeClon();
 		
-		SAVED_INVENTORY.put(player, InventoryBase64.toBase64(player.getInventory()));
+		SAVED_INVENTORY.put(player, PlayerInventory64.playerInventoryToBase64(player.getInventory(), player.getInventory().getArmorContents()));
 		SAVED_STATUS.put(player, new PlayerSavedData(player));
 		
 		SoloPlayerManager.forceFly(player);
@@ -597,8 +602,6 @@ public class Bombardier implements ItemType, Listener {
 		player.setCanPickupItems(false);
 		player.setLevel(0);
 		
-		player.setGameMode(GameMode.SPECTATOR);
-		
 		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false), false);
 		
 		SoundPlayer.sendSound(player, "skywars.bombardier_elevation", 1000);
@@ -611,6 +614,8 @@ public class Bombardier implements ItemType, Listener {
 														}
 													},
 				          20 * 2, false);
+		
+		SoloPlayerManager.forceFly(player);
 		
 		new BukkitRunnable() {
 			
@@ -634,9 +639,6 @@ public class Bombardier implements ItemType, Listener {
 					
 					ItemStack launcher = new ItemBuilder(Material.BLAZE_POWDER).amount(1).name(TextUtil.format("&8&lLANZAR BOMBA DE &c&lTNT")).build();
 					player.getInventory().setItemInHand(launcher);
-					
-					player.setGameMode(GameMode.SURVIVAL);
-					SoloPlayerManager.forceFly(player);
 					
 					new BukkitRunnable() {
 						
@@ -676,9 +678,11 @@ public class Bombardier implements ItemType, Listener {
 												
 												PlayerSavedData psd = SAVED_STATUS.get(player);
 												Inventory psi = player.getInventory();
+												ItemStack[] equipment = player.getEquipment().getArmorContents();
 												
 												try {
-													psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+													psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
+													equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
 												} catch (IOException e) {
 													e.printStackTrace();
 												}
@@ -699,6 +703,7 @@ public class Bombardier implements ItemType, Listener {
 												player.setExp(psd.exp);
 												player.setLevel(psd.level);
 												
+												player.getInventory().setArmorContents(equipment);
 												player.getInventory().setContents(psi.getContents());
 												player.updateInventory();
 												
@@ -722,12 +727,17 @@ public class Bombardier implements ItemType, Listener {
 												
 												PlayerSavedData psd = SAVED_STATUS.get(player);
 												Inventory psi = player.getInventory();
+												ItemStack[] equipment = player.getEquipment().getArmorContents();
 												
 												try {
-													psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+													psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
+													equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
 												} catch (IOException e) {
 													e.printStackTrace();
 												}
+												
+												Location tracker = data.getClon().getEntity().getLocation();
+												player.teleport(tracker);
 												
 												player.removePotionEffect(PotionEffectType.INVISIBILITY);
 												player.setNoDamageTicks(0);
@@ -742,6 +752,7 @@ public class Bombardier implements ItemType, Listener {
 												player.setExp(psd.exp);
 												player.setLevel(psd.level);
 												
+												player.getInventory().setArmorContents(equipment);
 												player.getInventory().setContents(psi.getContents());
 												player.updateInventory();
 												
@@ -808,9 +819,11 @@ public class Bombardier implements ItemType, Listener {
 						
 						PlayerSavedData psd = SAVED_STATUS.get(player);
 						Inventory psi = player.getInventory();
+						ItemStack[] equipment = player.getEquipment().getArmorContents();
 						
 						try {
-							psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+							psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
+							equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -831,6 +844,7 @@ public class Bombardier implements ItemType, Listener {
 						player.setExp(psd.exp);
 						player.setLevel(psd.level);
 						
+						player.getInventory().setArmorContents(equipment);
 						player.getInventory().setContents(psi.getContents());
 						player.updateInventory();
 						
@@ -854,9 +868,11 @@ public class Bombardier implements ItemType, Listener {
 						
 						PlayerSavedData psd = SAVED_STATUS.get(player);
 						Inventory psi = player.getInventory();
+						ItemStack[] equipment = player.getEquipment().getArmorContents();
 						
 						try {
-							psi = InventoryBase64.fromBase64(SAVED_INVENTORY.get(player));
+							psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
+							equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -874,6 +890,7 @@ public class Bombardier implements ItemType, Listener {
 						player.setExp(psd.exp);
 						player.setLevel(psd.level);
 						
+						player.getInventory().setArmorContents(equipment);
 						player.getInventory().setContents(psi.getContents());
 						player.updateInventory();
 						

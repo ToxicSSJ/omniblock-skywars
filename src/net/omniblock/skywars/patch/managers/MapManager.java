@@ -3,22 +3,25 @@ package net.omniblock.skywars.patch.managers;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.SoloSkywars;
-import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.Configuration;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.FileUtil;
+import net.omniblock.skywars.util.NumberUtil;
+import net.omniblock.skywars.util.Scan;
 import net.omniblock.skywars.util.TextUtil;
 
 /**
@@ -38,11 +41,23 @@ import net.omniblock.skywars.util.TextUtil;
 
 public class MapManager {
 	
-	public static String lastUsedMapName;
-	public static String currentMap;
+	public static World CURRENT_MAP = null;
+	
+	public static World NEW_MAP_NORMAL = null;
+	public static World NEW_MAP_Z = null;
+	
+	public static String USED_MAP_NORMAL;
+	public static String CURRENT_MAP_NORMAL;
+	
+	public static String USED_MAP_Z;
+	public static String CURRENT_MAP_Z;
+	
+	public static List<Location> MAP_Z_CAGE_LOCATIONS = Lists.newArrayList();
+	public static List<Location> MAP_NORMAL_CAGE_LOCATIONS = Lists.newArrayList();
+	
 	public static List<String> availablesNormalWorldsNames = Lists.newArrayList();
 	public static List<String> availablesZWorldsNames = Lists.newArrayList();
-	public static World currentWorld;
+	
 	public static MapType currentMapType = MapType.UNKNOWN;
 	
 	/**
@@ -56,14 +71,23 @@ public class MapManager {
 	 * Solamente usado en el onEnable() del plugin, este método tuvo que ser implementado en conveniencia
 	 * de la petición de Boogst en hacer los métodos de manera estáticos (static).
 	 */
-	public static void initialize() {
+	public static void prepareWorlds() {
 		
 		readConfiguration();
 		
 		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
-		for(MatchType mt : MatchType.values()) {
+		
+		SoloSkywars.lobbyschematic = new LobbySchematic();
+		
+		for(MapType mt : MapType.values()) {
+			
+			if(mt == MapType.UNKNOWN) {
+				continue;
+			}
+			
 			MapManager.prepareNextWorld(mt);
 		}
+		
 		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
 		
 	}
@@ -75,42 +99,38 @@ public class MapManager {
 	 * No modificar la visibilidad, no está intencionado para ser usado fuera de esta clase.
 	 */
 	private static void readConfiguration() {
+		
 		Configuration config = ConfigurationType.DEFAULT_CONFIGURATION.getConfig();
 		YamlConfiguration yaml = config.getYaml();
-		yaml.set("worlds.lastUsedMap", (Object) yaml.getString("worlds.currentMap"));
 		
-		lastUsedMapName = yaml.getString("worlds.lastUsedMap");
-		currentMap = yaml.getString("worlds.currentMap", null);
+		yaml.set("worlds.lastUsedMap", (Object) yaml.getString("worlds.currentMap"));
+		yaml.set("worlds.lastUsedZMap", (Object) yaml.getString("worlds.currentZMap"));
+		
+		USED_MAP_NORMAL = yaml.getString("worlds.lastUsedMap");
+		CURRENT_MAP_NORMAL = yaml.getString("worlds.currentMap", null);
+		
+		USED_MAP_Z = yaml.getString("worlds.lastUsedZMap");
+		CURRENT_MAP_Z = yaml.getString("worlds.currentZMap", null);
+		
 		availablesNormalWorldsNames = yaml.getStringList("worlds.mapsNormal");
 		availablesZWorldsNames = yaml.getStringList("worlds.mapsZ");
-	}
-	
-	/**
-	 * Saber si el MapManager tiene un mapa para la partida actual o si no cuenta con un mapa (ejemplo cuando la partida ha terminado
-	 * y el MapManager se encuentra a la espera de cargar un nuevo mapa).
-	 * @return true si hay un mapa cargado en el MapManager.
-	 */
-	public static boolean hasWorld() {
-		return (currentWorld != null);
-	}
-	
-	/**
-	 * Obtiene el Mundo actual cargado en el MapManager.
-	 * @return {@link World} - Mundo cargado en el MapManager.
-	 */
-	public static World getWorld() {
-		return currentWorld;
+		
 	}
 	
 	/**
 	 * Cuando una partia acaba se debe llamar a esta función para que el MapManager descargue el mundo actual,
 	 * restaure el backup y posteriormente se prepare para cargar un nuevo mapa cuando sea necesario.
 	 */
-	public static void unloadWorldAndPrepareForNextRequest() {
-		if(currentWorld != null) {
-			String worldName = currentWorld.getName();
-			Bukkit.unloadWorld(currentWorld, false);
-			currentWorld = null;
+	public static void unloadActualWorldsAndReset() {
+		
+		MAP_Z_CAGE_LOCATIONS.clear();
+		MAP_NORMAL_CAGE_LOCATIONS.clear();
+		
+		if(NEW_MAP_NORMAL != null) {
+			
+			String worldName = NEW_MAP_NORMAL.getName();
+			Bukkit.unloadWorld(NEW_MAP_NORMAL, false);
+			NEW_MAP_NORMAL = null;
 			
 			Configuration config = ConfigurationType.DEFAULT_CONFIGURATION.getConfig();
 			YamlConfiguration yaml = config.getYaml();
@@ -119,102 +139,180 @@ public class MapManager {
 			config.reload();
 			
 			if(mapOnBackup(worldName)) {
-				restoreBackup(worldName, lastUsedMapName);
+				restoreBackup(MapType.NORMAL, worldName, CURRENT_MAP_NORMAL);
 			}
+			
 		}
+		
+		if(NEW_MAP_Z != null) {
+			
+			String worldName = NEW_MAP_Z.getName();
+			Bukkit.unloadWorld(NEW_MAP_Z, false);
+			NEW_MAP_Z = null;
+			
+			Configuration config = ConfigurationType.DEFAULT_CONFIGURATION.getConfig();
+			YamlConfiguration yaml = config.getYaml();
+			yaml.set("worlds.lastUsedZMap", worldName);
+			config.save();
+			config.reload();
+			
+			if(mapOnBackup(worldName)) {
+				restoreBackup(MapType.Z, worldName, CURRENT_MAP_Z);
+			}
+			
+		}
+		
 		currentMapType = MapType.UNKNOWN;
+		
 	}
 	
-	/**
-	 * Usado para cargar el proximo mapa y guardarlo en el backup si no existe.
-	 * @param match {@link MatchType} tipo de match.
-	 */
-	public static void prepareNextWorld(MatchType match) {
+	public static void prepareNextWorld(MapType mt) {
 		
-		DebugUtil.debugInfo("Preparando siguiente mundo.");
-		
-		if(currentWorld != null) {
-			DebugUtil.debugInfo("¡Ya hay un mundo cargado! Descargando mundo antes de preparar el siguiente mundo.");
-			unloadWorldAndPrepareForNextRequest();
-		}
-
-		DebugUtil.debugInfo("Leyendo configuración para actualizar posibles cambios ...");
-		readConfiguration();
-		
-		switch(match) {
-		case NONE:
-		case INSANE:
-			resolveNextMap(MapType.NORMAL, "MODE INSANE", availablesNormalWorldsNames);
-			break;
-		case NORMAL:
-			resolveNextMap(MapType.NORMAL, "MODE NORMAL", availablesNormalWorldsNames);
-			break;
-		case Z:
-			resolveNextMap(MapType.Z, "MODE Z", availablesZWorldsNames);
-			break;
-		
-		}
-	}
-
-	
-	/**
-	 * Metodos PRIVADOS, para resolver el siguiente mapa Z.
-	 * 
-	 * **No cambiar la visibilidad**, su uso no está intencionado para ser usado fuera de MapManager.
-	 */
-	private static void resolveNextMap(MapType map, final String mode, List<String> worldName) {
-		currentMapType = map;
-
-		//Configuration config = ConfigurationType.DEFAULT_CONFIGURATION.getConfig();
-		//YamlConfiguration yaml = config.getYaml();
-		
-		String nextMapName = null;
-		
-		
-		//Si solo hay 1 mapa en el listado (poco probable :v) pues no hacemos el resto del proceso, solo escogemos ese.
-		if(worldName.size() == 1) {
-			nextMapName = worldName.get(0);
-			currentMap = nextMapName;
-		} else {
-			Random rand = new Random();
-			nextMapName = worldName.get(rand.nextInt(worldName.size()));
-			currentMap = nextMapName;
-		}
-		
-		DebugUtil.debugInfo("Mapa seleccionado aleatoriamente: " + nextMapName);
-		DebugUtil.debugInfo("Comprobando si existe el backup para " + nextMapName);
-		
-		if(!mapOnBackup(nextMapName)) {
-			DebugUtil.debugInfo("¡No existe el backup para " + nextMapName + "! Generando BACKUP ...");
-			backupMap(nextMapName);
-		} else { 
-			DebugUtil.debugInfo("El BACKUP para '" + nextMapName + "' existe. No es necesario guardar el mapa. Restaurando BACKUP.");
+		if(mt == MapType.NORMAL) {
 			
-			if(Bukkit.getWorld(nextMapName) != null) {
-				Bukkit.unloadWorld(nextMapName, false);
+			//    [MAPTYPE : NORMAL]
+			// 
+			//  Lo siguiente prepara
+			//  los mapas para el tipo
+			//  MapType normal.
+			//
+			// -------------------
+			
+			String nextMapName = null;
+
+			if(availablesNormalWorldsNames.size() == 1) {
+				
+				nextMapName = availablesNormalWorldsNames.get(0);
+				
+				CURRENT_MAP_NORMAL = nextMapName;
+				
+			} else {
+				
+				nextMapName = availablesNormalWorldsNames.get(NumberUtil.getRandomInt(0 , availablesNormalWorldsNames.size() - 1));
+				CURRENT_MAP_NORMAL = nextMapName;
+				
 			}
 			
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Mapa escogido para el modo: " + mode ));
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Mapa anterior " + lastUsedMapName));
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4+&2 Mapa actual/nuevo " + currentMap));
-			Bukkit.getConsoleSender().sendMessage(TextUtil.format("&c------------------------------------"));
-			restoreBackup(nextMapName, currentMap);
-		}
-		
-		currentWorld = Bukkit.createWorld(new WorldCreator(nextMapName));
-		
-		if(currentWorld == null) {
-			try {
+			if(!mapOnBackup(nextMapName)) {
+				
+				backupMap(nextMapName);
+				
+			} else {
+				
+				if(Bukkit.getWorld(nextMapName) != null) {
+					Bukkit.unloadWorld(nextMapName, false);
+				}
+				
+				restoreBackup(MapType.NORMAL, nextMapName, CURRENT_MAP_NORMAL);
+				
+			}
+			
+			NEW_MAP_NORMAL = Bukkit.createWorld(new WorldCreator(nextMapName));
+			
+			if(NEW_MAP_NORMAL == null) {
+					
 				DebugUtil.debugSevere("No se pudo cargar el mundo (error en Bukkit.createWorld()) ...");
-				throw new Exception("¡Algo falló al cargar el mundo!");
-			} catch (Exception e) {
-				e.printStackTrace();
+				throw new RuntimeException("¡Algo falló al cargar el mundo!");
+				
 			}
+			
+			// PREPARE FOR SOLO_SKYWARS   - >
+			
+			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_NORMAL, mt);
+			
+			List<Location> scannedBlocks = Scan.oneMaterial(NEW_MAP_NORMAL, Material.SPONGE);
+			
+			for(Location loc : scannedBlocks) {
+				Block bl = loc.getBlock();
+				
+				if(bl.getRelative(0, 1, 0).getType() == Material.WOOD_PLATE) {
+					
+					MAP_NORMAL_CAGE_LOCATIONS.add(loc);
+					bl.getRelative(0, 1, 0).setType(Material.AIR);
+					bl.setType(Material.AIR);
+					
+				}
+			}
+			
+		} else {
+			
+			//    [MAPTYPE : Z]
+			// 
+			//  Lo siguiente prepara
+			//  los mapas para el tipo
+			//  MapType z.
+			//
+			// -------------------
+			
+			String nextMapName = null;
+
+			if(availablesZWorldsNames.size() == 1) {
+				
+				nextMapName = availablesZWorldsNames.get(0);
+				CURRENT_MAP_Z = nextMapName;
+				
+			} else {
+				
+				nextMapName = availablesZWorldsNames.get(NumberUtil.getRandomInt(0 , availablesZWorldsNames.size() - 1));
+				CURRENT_MAP_Z = nextMapName;
+				
+			}
+			
+			if(!mapOnBackup(nextMapName)) {
+				
+				backupMap(nextMapName);
+				
+			} else {
+				
+				if(Bukkit.getWorld(nextMapName) != null) {
+					Bukkit.unloadWorld(nextMapName, false);
+				}
+				
+				restoreBackup(MapType.Z, nextMapName, CURRENT_MAP_Z);
+				
+			}
+			
+			NEW_MAP_Z = Bukkit.createWorld(new WorldCreator(nextMapName));
+			
+			if(NEW_MAP_Z == null) {
+					
+				DebugUtil.debugSevere("No se pudo cargar el mundo (error en Bukkit.createWorld()) ...");
+				throw new RuntimeException("¡Algo falló al cargar el mundo!");
+				
+			}
+						
+			// PREPARE FOR SOLO_SKYWARS   - >
+			
+			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_Z, mt);
+			
+			List<Location> scannedBlocks = Scan.oneMaterial(NEW_MAP_Z, Material.SPONGE);
+			
+			for(Location loc : scannedBlocks) {
+				
+				Block bl = loc.getBlock();
+							
+				if(bl.getRelative(0, 1, 0).getType() == Material.WOOD_PLATE) {
+				    
+					MAP_Z_CAGE_LOCATIONS.add(loc);
+					bl.getRelative(0, 1, 0).setType(Material.AIR);
+					bl.setType(Material.AIR);
+					
+				}
+				
+			}	
+			
 		}
 		
-		SoloSkywars.lobbyschematic = new LobbySchematic(MapManager.getMapType());
-		SoloSkywars.lobbyschematic.pasteLobbySchematic();
+	}
 	
+	public static void setCurrentMap(MapType mt) {
+		
+		if(mt == MapType.NORMAL) {
+			CURRENT_MAP = NEW_MAP_NORMAL;
+		} else {
+			CURRENT_MAP = NEW_MAP_Z;
+		}
+		
 	}
 	
 	/**
@@ -266,14 +364,20 @@ public class MapManager {
 	 * Restaura un backup desde la carpeta de backups. Solo efectivo si el backup existe en la carpeta de backups.
 	 * @param name Nombre del mundo a restaurar el backup.
 	 */
-	private static void restoreBackup(String name, String nextmap) {
+	private static void restoreBackup(MapType mt, String name, String nextmap) {
 		if(!mapOnBackup(name)) {
 			return; //no está en el backup
 		}
 		
 		File map = ConfigurationType.DEFAULT_CONFIGURATION.getFile();
 		YamlConfiguration yaml =  YamlConfiguration.loadConfiguration((File) map);
-		yaml.set("worlds.currentMap", (Object) nextmap);
+		
+		if(mt == MapType.NORMAL) {
+			yaml.set("worlds.currentMap", (Object) nextmap);
+		} else {
+			yaml.set("worlds.currentZMap", (Object) nextmap);
+		}
+		
 		try {
 			yaml.save(map);
 			
@@ -296,12 +400,12 @@ public class MapManager {
 	}
 	
 	public static enum MapType {
-		/** Mapa Normal **/
+		
 		NORMAL, 
-		/** Mapa Z **/
 		Z, 
-		/** Desconocido, generalmente usado por DEFAULT cuando el manager aun no ha sido preparado para un mapa **/
+		
 		UNKNOWN;
+		
 	}
 	
 }

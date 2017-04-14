@@ -11,6 +11,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
 import net.omniblock.skywars.games.solo.chest.ChestManager;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.Scan;
@@ -49,7 +50,6 @@ public class AddChest {
 				||chest.getInventory().contains(new ItemBuilder(Material.GOLD_INGOT).amount(1).build()) 
 				|| chest.getInventory().contains(new ItemBuilder(Material.DIAMOND).amount(1).build())){
 				
-				int CHEST_TYPE = NumberUtil.getRandomInt(1, 3);
 				containDiamond(chest);
 				chest.getInventory().clear();
 				additem.add(chest, this.numberofitemN, this.itemN);
@@ -85,7 +85,7 @@ public class AddChest {
 	
 	public static void makeReFill(ItemStack[] array, final int N){
 		
-		List<Location> chestLoc = Scan.oneMaterial(Material.CHEST);
+		List<Location> chestLoc = Scan.oneMaterial(MapManager.CURRENT_MAP, Material.CHEST);
 		List<ItemStack> item = new ArrayList<ItemStack>();
 		addItemToArray(item, array);
 		

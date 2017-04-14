@@ -79,12 +79,15 @@ public class SoloPlayerScoreboardManager {
 						switch(Skywars.getGameState()){
 						
 							case FINISHING:
+								
+								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								for(Player infinish_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
 										infinish_p, 
 										new String[] { 
 													   title,
-													   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+													   TextUtil.format("&7&o   Modo " + FINISHING_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
@@ -99,19 +102,24 @@ public class SoloPlayerScoreboardManager {
 								}
 								break;
 							case IN_GAME:
+								
+								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
+								String INGAME_NEXT_EVENT = getNextEvent();
+								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								for(Player ingame_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
 											ingame_p, 
 											new String[] {
 														   title,
-														   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+														   TextUtil.format("&7&o   Modo " + INGAME_MATCH_PLUS_FORMAT),
 													   	   TextUtil.format(" "),
-													   	   TextUtil.format(getNextEvent()),
+													   	   TextUtil.format(INGAME_NEXT_EVENT),
 													   	   TextUtil.format("  "),
 													   	   TextUtil.format("&b&lAsesinatos: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).kills),
 													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
 													       TextUtil.format("   "),
-													       TextUtil.format("&b&lMapa: &7" + MapManager.getWorld().getName()),
+													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 													       TextUtil.format("&b&lServidor: &7" + NetworkManager.servername),
 													   	   TextUtil.format("&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
 													   	   TextUtil.format("    "),
@@ -119,11 +127,16 @@ public class SoloPlayerScoreboardManager {
 								}
 								break;
 							case IN_LOBBY:
+								
+								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
+								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										SoloPlayerManager.getPlayersInLobbyList(), 
 										new String[] { 
 													   title,
-													   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+													   TextUtil.format("&7&o   Modo " + IN_LOBBY_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
@@ -131,15 +144,17 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&b&lJugadores:"),
 													   TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
 													   TextUtil.format("   "),
-													   TextUtil.format("&b&lMapa: &7" + MapManager.getWorld().getName()),
-													   TextUtil.format("&b&lNetwork Booster: &r" + forkText(NetworkData.generalbooster)),
+													   TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
+													   TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
 													   TextUtil.format("    "),
 													   TextUtil.format("&ewww.omniblock.net")});
 								break;
 							case IN_PRE_GAME:
+								
 								for(Player p : SoloPlayerManager.getPlayersInGameList()){
 									p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 								}
+								
 								break;
 							default:
 								break;
@@ -171,12 +186,15 @@ public class SoloPlayerScoreboardManager {
 						switch(Skywars.getGameState()){
 						
 							case FINISHING:
+								
+								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								for(Player infinish_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
 										infinish_p, 
 										new String[] { 
 													   title,
-													   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+													   TextUtil.format("&7&o   Modo " + FINISHING_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
@@ -191,19 +209,24 @@ public class SoloPlayerScoreboardManager {
 								}
 								break;
 							case IN_GAME:
+								
+								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
+								String INGAME_NEXT_EVENT = getNextEvent();
+								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								for(Player ingame_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
 											ingame_p, 
 											new String[] {
 														   title,
-														   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+														   TextUtil.format("&7&o   Modo " + INGAME_MATCH_PLUS_FORMAT),
 													   	   TextUtil.format(" "),
-													   	   TextUtil.format(getNextEvent()),
+													   	   TextUtil.format(INGAME_NEXT_EVENT),
 													   	   TextUtil.format("  "),
 													   	   TextUtil.format("&b&lAsesinatos: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).kills),
 													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
 													       TextUtil.format("   "),
-													       TextUtil.format("&b&lMapa: &7" + MapManager.getWorld().getName()),
+													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 													       TextUtil.format("&b&lServidor: &7" + NetworkManager.servername),
 													   	   TextUtil.format("&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
 													   	   TextUtil.format("    "),
@@ -211,11 +234,16 @@ public class SoloPlayerScoreboardManager {
 								}
 								break;
 							case IN_LOBBY:
+								
+								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
+								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										SoloPlayerManager.getPlayersInLobbyList(), 
 										new String[] { 
 													   title,
-													   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+													   TextUtil.format("&7&o   Modo " + IN_LOBBY_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
@@ -223,8 +251,8 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&b&lJugadores:"),
 													   TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
 													   TextUtil.format("   "),
-													   TextUtil.format("&b&lMapa: &7" + MapManager.getWorld().getName()),
-													   TextUtil.format("&b&lNetwork Booster: &r" + forkText(NetworkData.generalbooster)),
+													   TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
+													   TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
 													   TextUtil.format("    "),
 													   TextUtil.format("&ewww.omniblock.net")});
 								break;
@@ -263,12 +291,15 @@ public class SoloPlayerScoreboardManager {
 						switch(Skywars.getGameState()){
 						
 							case FINISHING:
+								
+								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								for(Player infinish_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
 										infinish_p, 
 										new String[] { 
 													   title,
-													   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+													   TextUtil.format("&7&o   Modo " + FINISHING_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
@@ -283,19 +314,24 @@ public class SoloPlayerScoreboardManager {
 								}
 								break;
 							case IN_GAME:
+								
+								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
+								String INGAME_NEXT_EVENT = getNextEvent();
+								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								for(Player ingame_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
 											ingame_p, 
 											new String[] {
 														   title,
-														   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+														   TextUtil.format("&7&o   Modo " + INGAME_MATCH_PLUS_FORMAT),
 													   	   TextUtil.format(" "),
-													   	   TextUtil.format(getNextEvent()),
+													   	   TextUtil.format(INGAME_NEXT_EVENT),
 													   	   TextUtil.format("  "),
 													   	   TextUtil.format("&b&lAsesinatos: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).kills),
 													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
 													       TextUtil.format("   "),
-													       TextUtil.format("&b&lMapa: &7" + MapManager.getWorld().getName()),
+													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 													       TextUtil.format("&b&lServidor: &7" + NetworkManager.servername),
 													   	   TextUtil.format("&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
 													   	   TextUtil.format("    "),
@@ -303,11 +339,16 @@ public class SoloPlayerScoreboardManager {
 								}
 								break;
 							case IN_LOBBY:
+								
+								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
+								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										SoloPlayerManager.getPlayersInLobbyList(), 
 										new String[] { 
 													   title,
-													   TextUtil.format("&7&o   Modo " + SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat()),
+													   TextUtil.format("&7&o   Modo " + IN_LOBBY_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
@@ -315,8 +356,8 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&b&lJugadores:"),
 													   TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
 													   TextUtil.format("   "),
-													   TextUtil.format("&b&lMapa: &7" + MapManager.getWorld().getName()),
-													   TextUtil.format("&b&lNetwork Booster: &r" + forkText(NetworkData.generalbooster)),
+													   TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
+													   TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
 													   TextUtil.format("    "),
 													   TextUtil.format("&ewww.omniblock.net")});
 								break;
