@@ -22,9 +22,12 @@ public class ChestManager {
 	public static List<Location> trappedchest = new ArrayList<Location>();
 	
 	public ChestManager() {
+		
 		normalchest = Scan.oneMaterial(MapManager.CURRENT_MAP, Material.CHEST);
 		trappedchest = Scan.oneMaterial(MapManager.CURRENT_MAP, Material.TRAPPED_CHEST);
+		
 		startChest();
+		
 	}
 
 	public void startChest() {

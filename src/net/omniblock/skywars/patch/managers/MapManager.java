@@ -20,6 +20,7 @@ import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.Configuration;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.FileUtil;
+import net.omniblock.skywars.util.MCAUtil;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.Scan;
 import net.omniblock.skywars.util.TextUtil;
@@ -218,8 +219,11 @@ public class MapManager {
 			
 			// PREPARE FOR SOLO_SKYWARS   - >
 			
-			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_NORMAL, mt);
+			if(!Scan.WORLD_CHUNKS.containsKey(NEW_MAP_NORMAL.getName())) {
+				Scan.WORLD_CHUNKS.put(NEW_MAP_NORMAL.getName(), MCAUtil.getChunksByMCAFiles(NEW_MAP_NORMAL));
+			}
 			
+			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_NORMAL, mt);
 			List<Location> scannedBlocks = Scan.oneMaterial(NEW_MAP_NORMAL, Material.SPONGE);
 			
 			for(Location loc : scannedBlocks) {
@@ -283,8 +287,11 @@ public class MapManager {
 						
 			// PREPARE FOR SOLO_SKYWARS   - >
 			
-			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_Z, mt);
+			if(!Scan.WORLD_CHUNKS.containsKey(NEW_MAP_Z.getName())) {
+				Scan.WORLD_CHUNKS.put(NEW_MAP_Z.getName(), MCAUtil.getChunksByMCAFiles(NEW_MAP_Z));
+			}
 			
+			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_Z, mt);
 			List<Location> scannedBlocks = Scan.oneMaterial(NEW_MAP_Z, Material.SPONGE);
 			
 			for(Location loc : scannedBlocks) {

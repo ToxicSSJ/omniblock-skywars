@@ -8,6 +8,7 @@ import net.omniblock.skywars.games.solo.chest.item.z.type.EItem;
 import net.omniblock.skywars.util.ItemBuilder;
 
 public class ItemZ {
+	@SuppressWarnings("deprecation")
 	public static ItemStack[] normalChest(){
 		
 		ItemStack[] item = new ItemStack[]{
@@ -75,6 +76,7 @@ public class ItemZ {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static ItemStack[] trappedChest(){
 		ItemStack[] item = new ItemStack[]{
 				

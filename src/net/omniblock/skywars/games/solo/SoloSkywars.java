@@ -63,8 +63,6 @@ public class SoloSkywars implements SkywarsStarter {
 	@Override
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) {
 		
-		System.out.println("BREAKFAST 1");
-		
 		gSkywarsResolver = sr;
 		
 		SoloSkywarsRunnable cacherunnable = new SoloSkywarsRunnable(this);
@@ -90,8 +88,6 @@ public class SoloSkywars implements SkywarsStarter {
 			
 		}
 		
-		System.out.println("BREAKFAST 2");
-		
 		/*
 		 * Eventos
 		 */
@@ -111,8 +107,6 @@ public class SoloSkywars implements SkywarsStarter {
 				SoloPlayerManager.addPlayer(p);
 			}
 		}
-		
-		System.out.println("BREAKFAST 3");
 		
 	}
 	

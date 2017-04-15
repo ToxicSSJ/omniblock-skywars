@@ -706,7 +706,7 @@ public enum EItem{
 			"§4§k||§r §e§lCofre Explosivo §4§k||", new String[]{
 			"",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7Será como un regalo para",
+			"§9§l» §7Será como un regalo para",
 			"§7tus enemigos.",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
 			"§7§lRareza: §c§lLegendario",
@@ -825,10 +825,11 @@ public enum EItem{
 			"§4§k||§r §e§lBombardero §4§k||", new String[]{
 			"",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7Llamando a base, Lanzando",
+			"§9§l» §7Llamando a base, Lanzando",
 			"§7misiles en 3, 2, 1...",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
 			"§7§lRareza: §c§lLegendario",
+			"§7§lTipo: §7Destructor",
 			"§7§lDaño: §76❤",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
 	}, new Enchantment[]{
@@ -838,7 +839,7 @@ public enum EItem{
 			"§4§k||§r §e§lPoción Purificadora §4§k||", new String[]{
 			"",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7Sal de ese mal momento",
+			"§9§l» §7Sal de ese mal momento",
 			"§7solo tomate esto y dale",
 			"§7un giro a la batalla.",
 			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",

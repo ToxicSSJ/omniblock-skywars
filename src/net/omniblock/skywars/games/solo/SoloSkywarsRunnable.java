@@ -60,8 +60,8 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	
 	private int remainingTimeCages = 5;
 	
-	private ChestManager chestmanager;
-	private FillChest fillchest;
+	public ChestManager chestmanager;
+	public FillChest fillchest;
 	
 	public SoloSkywarsRunnable(SoloSkywars starter) {
 		
@@ -80,6 +80,20 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					
 					chestmanager = new ChestManager();
 					SoloSkywars.lobbyschematic.removePasted();
+					
+					switch (SoloSkywars.getCurrentMatchType()) {
+						case NORMAL:
+							fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 10, 12);
+							break;
+						case INSANE:
+							fillchest = new FillChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 10, 12);
+							break;
+						case Z:
+							fillchest = new FillChest(ItemZ.normalChest(), ItemZ.trappedChest(), 10, 12);
+							break;
+						default:
+							break;
+					}
 					
 					SoloPlayerManager.transferAllPlayersToInGame();
 					SoloPlayerManager.sendAllPlayersToCages(gStarter);
@@ -184,12 +198,14 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 									return;
 								}
 								
-								if(p.getLastDamageCause().getCause() == DamageCause.VOID) {
-									cancel();
-									if(SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.contains(p)) {
-										SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.remove(p);
+								if(p.getLastDamageCause() != null) {
+									if(p.getLastDamageCause().getCause() == DamageCause.VOID) {
+										cancel();
+										if(SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.contains(p)) {
+											SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.remove(p);
+										}
+										return;
 									}
-									return;
 								}
 								
 								if(p.isOnGround()) {
@@ -242,7 +258,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));
@@ -278,29 +294,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
-			
-			switch (SoloSkywars.getCurrentMatchType()) {
-
-			
-			case NORMAL:
-				
-				fillchest.makeReFill(ItemNormal.trappedChest(), 12);
-				break;
-				
-			case INSANE:
-				
-				fillchest.makeReFill(ItemInsane.trappedChest(), 12);
-				break;
-				
-			case Z:
-				
-				fillchest.makeReFill(ItemZ.trappedChest(), 12);
-				break;
-				
-			default:
-				break;
-			
-			}
+			fillchest.fillChest();
 			
 			return;
 			

@@ -1,4 +1,5 @@
 package net.omniblock.skywars.games.solo.chest.item.object;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,11 +10,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.chest.ChestManager;
-import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.util.ItemBuilder;
-import net.omniblock.skywars.util.Scan;
 
 public class FillChest {
 	
@@ -50,8 +51,10 @@ public class FillChest {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	public void startFilled(final List<Chest> CHEST_NORMAL, final List<Chest> CHEST_TRAPPED, final List<ItemStack> ITEM_NORMAL, final List<ItemStack> ITEM_TRAPPED) {
 		
+		@SuppressWarnings("serial")
 		final List<ItemStack> SUPPORT_ITEM_BLOCKS = new ArrayList<ItemStack>(){{
 			
 			add(new ItemBuilder(Material.STONE).amount(40).build());
@@ -64,6 +67,7 @@ public class FillChest {
 					
 		}};
 
+		@SuppressWarnings("serial")
 		final List<ItemStack> SUPPORT_ITEM_FOOD = new ArrayList<ItemStack>(){{
 			
 			add(new ItemBuilder(Material.GOLDEN_APPLE).amount(4).build());
@@ -75,6 +79,7 @@ public class FillChest {
 		}};
 		
 
+		@SuppressWarnings("serial")
 		final List<ItemStack> SUPPORT_ITEM_WEAPONS = new ArrayList<ItemStack>(){{
 			
 			add(new ItemBuilder(Material.DIAMOND_SWORD).amount(1).build());
@@ -117,23 +122,22 @@ public class FillChest {
 			 * 
 			 * */
 			
-			addItemInChest(GET_TRAPPED_CHEST, numberofitemT, ITEM_TRAPPED);
+			Block block = GET_TRAPPED_CHEST.getBlock();
+			byte data = block.getData();
 			
-		}
-	}
-	
-	public void makeReFill(ItemStack[] array, final int N){
-		
-		List<Location> chestLoc = Scan.oneMaterial(MapManager.CURRENT_MAP, Material.CHEST);
-		List<ItemStack> item = new ArrayList<ItemStack>();
-		addItemToArray(item, array);
-		
-		for(int i = 0; i < chestLoc.size(); i++){
+			block.setType(Material.CHEST);
+			block.setData(data);
 			
-			Location chestlocation = chestLoc.get(i);
-			Chest chest = (Chest) chestlocation.getBlock().getState();
-			chest.getInventory().clear();
-			addItemInChest(chest, N, item);
+			block.getLocation().getChunk().load(true);
+			
+			Chest CHEST = (Chest) block.getState();
+			
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					addItemInChest(CHEST, numberofitemT, ITEM_TRAPPED);
+				}
+			}.runTaskLater(Skywars.getInstance(), 3L);
 			
 		}
 	}
@@ -141,11 +145,12 @@ public class FillChest {
 	public void addItemInChest(Chest chest, final int n, List<ItemStack> list){
 
 		Random random = new Random();
+		
 		List<Integer> LIST_ITEM = new ArrayList<Integer>();
 		List<Integer> LIST_SLOT = new ArrayList<Integer>();
-		LIST_ITEM.clear();
-		LIST_SLOT.clear();
+		
 		Collections.shuffle(list);
+		
 		int item = 0;
 		int slot = 0;
 			
@@ -153,31 +158,55 @@ public class FillChest {
 		
 			item = random.nextInt(list.size());
 			slot = random.nextInt(27);
+			
 			if(!LIST_ITEM.contains(item) && !LIST_SLOT.contains(slot)){
+				
 				LIST_ITEM.add(item);
 				LIST_SLOT.add(slot);
+				
 				chest.getInventory().setItem(slot, list.get(item));
+				
 			} else {
+				
 				continue;
+				
 			}
 		}
+		
+		chest.update(true);
+		
 	}
 
 	public List<Chest> getChest(List<Location> list) {
+		
 		List<Chest> ChestBlock = new ArrayList<Chest>();
-		for (int i = 0; i < list.size(); i++) {
-			Location chestlocation = list.get(i);
-			Chest chest = (Chest) chestlocation.getBlock().getState();
-			ChestBlock.add(chest);
+		
+		for (Location loc : list) {
+
+			Block block = loc.getBlock();
+			if(		   block.getType() == Material.CHEST 
+					|| block.getType() == Material.TRAPPED_CHEST 
+					|| block.getType() == Material.ENDER_CHEST){
+				
+				Chest chest = (Chest) block.getState();
+				ChestBlock.add(chest);
+				
+			}
+			
 		}
+		
 		return ChestBlock;
 	}
 	
 	public void containDiamond(Chest chest){
+		
 		if(chest.getInventory().contains(new ItemBuilder(Material.DIAMOND).amount(1).build())){
+			
 			Block block = chest.getBlock();
 			ChestDiamond.add(block);
+			
 		}
+		
 	}
 	
 	public void addItemToArray(List<ItemStack> list, ItemStack[] array) {

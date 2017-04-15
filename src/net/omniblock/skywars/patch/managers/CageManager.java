@@ -531,8 +531,10 @@ public class CageManager {
 	 */
 	
 	public static class CageAnimator {
+		
 		public static Map<Player, Location> registerPlayer = new HashMap<Player, Location>();
 		private Player player;
+		@SuppressWarnings("unused")
 		private String animationType;
 		private String HashCode;
 		private String[] codeAnimation;
