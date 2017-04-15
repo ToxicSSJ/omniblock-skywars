@@ -29,16 +29,12 @@ import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 
 public class ThorA implements ItemType, Listener {
 
-	private static SoloPlayerManager soloplayer;
-
-	@SuppressWarnings("static-access")
 	@EventHandler
 	@Override
 	public void ThorAxe(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		
-		
-		if(soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
@@ -104,7 +100,6 @@ public class ThorA implements ItemType, Listener {
 							for(Block b : cube ){
 								SpawnBlock.bounceBlock(b, (float) 0.8);
 							}
-							
 						}
 					}
 				}

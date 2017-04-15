@@ -28,8 +28,8 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class AngryChest implements ItemType, Listener {
 	
-	private static List<Block> chestblock = new ArrayList<Block>();
-	private static int CHEST_TYPE = 0;
+	private List<Block> chestblock = new ArrayList<Block>();
+	private int CHEST_TYPE = 0;
 	
 	@EventHandler
 	public void AngryChests(BlockPlaceEvent event){

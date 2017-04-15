@@ -19,10 +19,8 @@ import net.omniblock.skywars.util.SoundPlayer;
 
 public class Punch implements ItemType, Listener {
 
-	private static SoloPlayerManager soloplayer;
 	private int DELAY = 0; 
 	
-	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler
 	public void JhonPunch(EntityDamageByEntityEvent event) {
@@ -31,7 +29,7 @@ public class Punch implements ItemType, Listener {
 			Player player = (Player) event.getEntity();
 			if (event.getDamager() instanceof Player) {
 				Player playerdamage = (Player) event.getDamager();
-				if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+				if (SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 					if (playerdamage.getItemInHand().hasItemMeta()) {
 						
 						if(!playerdamage.getItemInHand().getItemMeta().hasDisplayName()) {

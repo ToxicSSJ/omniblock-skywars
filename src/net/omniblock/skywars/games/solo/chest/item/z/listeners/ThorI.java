@@ -27,16 +27,13 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class ThorI implements ItemType, Listener {
 
-	private static SoloPlayerManager soloplayer;
-
-	@SuppressWarnings("static-access")
 	@EventHandler
 	@Override
 	public void ThorIce(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		
 		
-		if(soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
@@ -98,7 +95,6 @@ public class ThorI implements ItemType, Listener {
 								if(b.getType() == Material.AIR) continue;
 								 b.setType(Material.PACKED_ICE);
 							}
-							
 						}
 					}
 				}

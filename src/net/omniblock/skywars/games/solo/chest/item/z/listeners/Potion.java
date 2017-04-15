@@ -20,16 +20,13 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 
 public class Potion implements ItemType, Listener {
 
-	private static SoloPlayerManager soloplayer;
-
-	@SuppressWarnings("static-access")
 	@Override
 	@EventHandler
 	public void HealPot(PlayerInteractEvent event) {
 		
 		Player player = event.getPlayer();
 		
-		if (soloplayer.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+		if (SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 			
 				if(event.getPlayer().getItemInHand().hasItemMeta()){
 					if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){

@@ -10,12 +10,13 @@ import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.chest.item.ItemInsane;
 import net.omniblock.skywars.games.solo.chest.item.ItemNormal;
 import net.omniblock.skywars.games.solo.chest.item.ItemZ;
-import net.omniblock.skywars.games.solo.chest.item.object.AddChest;
+import net.omniblock.skywars.games.solo.chest.item.object.FillChest;
 import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.util.Scan;
 
 public class ChestManager {
+	
 
 	public static List<Location> normalchest = new ArrayList<Location>();
 	public static List<Location> trappedchest = new ArrayList<Location>();
@@ -36,19 +37,16 @@ public class ChestManager {
 
 		switch (mt) {
 		case NORMAL:
-			AddChest itemN = new AddChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 6, 8);
-			itemN.normalChest();
-			itemN.trappedChest();
+			FillChest itemN = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 6, 8);
+			itemN.fillChest();
 			break;
 		case INSANE:
-			AddChest itemI = new AddChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 6, 8);
-			itemI.normalChest();
-			itemI.trappedChest();
+			FillChest itemI = new FillChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 6, 8);
+			itemI.fillChest();
 			break;
 		case Z:
-			AddChest itemZ = new AddChest(ItemZ.normalChest(), ItemZ.trappedChest(), 6, 8);
-			itemZ.normalChest();
-			itemZ.trappedChest();
+			FillChest itemZ = new FillChest(ItemZ.normalChest(), ItemZ.trappedChest(), 6, 8);
+			itemZ.fillChest();
 			break;
 		default:
 			break;

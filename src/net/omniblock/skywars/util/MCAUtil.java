@@ -95,7 +95,6 @@ public class MCAUtil {
 			        		world.loadChunk(startChunkIteratorX + cx, startChunkIteratorZ + cz);
 				        	chunks.add(world.getChunkAt(startChunkIteratorX + cx, startChunkIteratorZ + cz));
 			        	}
-			        	
 			        }
 		        }
 			}

@@ -22,7 +22,7 @@ import net.omniblock.skywars.games.solo.chest.ChestManager;
 import net.omniblock.skywars.games.solo.chest.item.ItemInsane;
 import net.omniblock.skywars.games.solo.chest.item.ItemNormal;
 import net.omniblock.skywars.games.solo.chest.item.ItemZ;
-import net.omniblock.skywars.games.solo.chest.item.object.AddChest;
+import net.omniblock.skywars.games.solo.chest.item.object.FillChest;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -32,13 +32,13 @@ import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
-import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
 import net.omniblock.skywars.util.ContaminationUtil.Contamination;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationInfo;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationTroop;
 import net.omniblock.skywars.util.DestructionUtil.Destruction;
 import net.omniblock.skywars.util.DestructionUtil.DestructionInfo;
+import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
@@ -61,6 +61,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	private int remainingTimeCages = 5;
 	
 	private ChestManager chestmanager;
+	private FillChest fillchest;
 	
 	public SoloSkywarsRunnable(SoloSkywars starter) {
 		
@@ -279,24 +280,25 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
 			
 			switch (SoloSkywars.getCurrentMatchType()) {
+
 			
-				case NORMAL:
-					
-					AddChest.makeReFill(ItemNormal.trappedChest(), 12);
-					break;
-					
-				case INSANE:
-					
-					AddChest.makeReFill(ItemInsane.trappedChest(), 12);
-					break;
-					
-				case Z:
-					
-					AddChest.makeReFill(ItemZ.trappedChest(), 12);
-					break;
-					
-				default:
-					break;
+			case NORMAL:
+				
+				fillchest.makeReFill(ItemNormal.trappedChest(), 12);
+				break;
+				
+			case INSANE:
+				
+				fillchest.makeReFill(ItemInsane.trappedChest(), 12);
+				break;
+				
+			case Z:
+				
+				fillchest.makeReFill(ItemZ.trappedChest(), 12);
+				break;
+				
+			default:
+				break;
 			
 			}
 			
@@ -369,7 +371,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			
 			int delay_another = 1;
 			
-			for(Block b : AddChest.ChestDiamond) {
+			for(Block b : fillchest.ChestDiamond) {
 				
 				new BukkitRunnable() {
 					@Override

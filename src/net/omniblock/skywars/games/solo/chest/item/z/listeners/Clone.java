@@ -30,7 +30,8 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class Clone implements Listener, ItemType {
 	
-	private static Map<Player, ClonData> oneClon = new HashMap<Player, ClonData>();
+	private Map<Player, ClonData> oneClon = new HashMap<Player, ClonData>();
+	
 	@Override
 	@EventHandler
 	public void CloneSpell(PlayerInteractEvent event){

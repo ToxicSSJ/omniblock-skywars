@@ -393,8 +393,8 @@ public class CageManager {
 		}
 	}
 	
-	public static CageAnimator makeAnimation(int delay, CageType ct, AnimationType animation){
-		return new CageAnimator(delay, ct, animation);
+	public static CageAnimator makeAnimation(Player player, int delay, CageType ct, AnimationType animation){
+		return new CageAnimator(player, delay, ct, animation);
 	}
 	
 	public static File getCageSchematic(CageType type){
@@ -531,15 +531,15 @@ public class CageManager {
 	 */
 	
 	public static class CageAnimator {
-		
 		public static Map<Player, Location> registerPlayer = new HashMap<Player, Location>();
-		private static Player player;
-		private static String animationType;
-		private static String HashCode;
+		private Player player;
+		private String animationType;
+		private String HashCode;
 		private String[] codeAnimation;
 		private int delay;
 
-		public CageAnimator(final int delay, CageType ct, AnimationType animationType){
+		public CageAnimator(Player player, final int delay, CageType ct, AnimationType animationType){
+			this.player = player;
 			this.delay = delay;
 			this.codeAnimation = ct.getCodeAnimation();
 			this.animationType = animationType.getName();
@@ -595,30 +595,13 @@ public class CageManager {
 			}
 		}
 		
-		public static void registerPlayer(Player player, Location cageLocation){
+		public void registerPlayer(Player player, Location cageLocation){
 			
 			if(!registerPlayer.containsKey(player)){
-				
 				registerPlayer.put(player, cageLocation);
-				setPlayer(player);
-
 			}else{
 				System.out.println("El jugador " + player + " ya esta registrado!");
 			}	
-		}
-
-		
-		public static void setPlayer(Player player) {
-			CageAnimator.player = player;
-		}
-		public static Player getPlayer() {
-			return player;
-		}
-		public static String getAnimationType() {
-			return animationType;
-		}
-		public static String getHashCode() {
-			return HashCode;
 		}
 	}
 
