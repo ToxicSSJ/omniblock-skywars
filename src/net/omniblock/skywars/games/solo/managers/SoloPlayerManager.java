@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -43,7 +44,16 @@ public class SoloPlayerManager {
 		
 	}
 	
-	@SuppressWarnings("static-access")
+	public static void winnerPlayer(Player p) {
+		
+		emptyPlayer(p);
+		healPlayer(p);
+		forceFly(p);
+		
+		return;
+		
+	}
+	
 	public static void spectatorPlayer(Player p) {
 		
 		emptyPlayer(p);
@@ -139,8 +149,11 @@ public class SoloPlayerManager {
 			emptyPlayer(p);
 			healPlayer(p);
 			
+			p.spigot().setCollidesWithEntities(true);
 			p.teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
 			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
+			
+			p.setGameMode(GameMode.ADVENTURE);
 			
 			AccountManager.saveAccount(p);
 			

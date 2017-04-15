@@ -531,6 +531,7 @@ public class CageManager {
 	 */
 	
 	public static class CageAnimator {
+		
 		public static Map<Player, Location> registerPlayer = new HashMap<Player, Location>();
 		private static Player player;
 		private static String animationType;

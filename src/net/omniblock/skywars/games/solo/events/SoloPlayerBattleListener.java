@@ -42,7 +42,6 @@ public class SoloPlayerBattleListener implements Listener {
 	public static Map<Player, Player> lasthit = new HashMap<Player, Player>();
 	public static Map<Player, BukkitTask> lasthit_timer = new HashMap<Player, BukkitTask>();
 	
-	
 	public static void setBattleInfo() {
 		
 		for(Player k : SoloPlayerManager.getPlayersInGameList()) {
@@ -403,10 +402,6 @@ public class SoloPlayerBattleListener implements Listener {
 			
 		} else {
 			
-			System.out.println("DAMAGER == NULL");
-			System.out.println("FINALDAMAGE = " + event.getFinalDamage());
-			System.out.println("isCanceled() " + event.isCancelled());
-			
 			event.setCancelled(false);
 			
 			if(affected.hasMetadata("ZDAMAGE")) {
@@ -548,16 +543,19 @@ public class SoloPlayerBattleListener implements Listener {
 			return;
 		}
 		
+		System.out.println("xddd apocalipsis test 0");
+		
 		if(e.getEntity().getType() == EntityType.PLAYER) {
-			
+			System.out.println("xddd apocalipsis test 1");
 			Player affected = (Player) e.getEntity(); 
 			if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				System.out.println("xddd apocalipsis test 2");
 				if(e.getCause() != DamageCause.ENTITY_ATTACK) {
-					
+					System.out.println("xddd apocalipsis test 3");
 					if(e.getCause() == DamageCause.VOID) {
-						
+						System.out.println("xddd apocalipsis test 4");
 						if(lasthit.containsKey(affected)) {
-							
+							System.out.println("xddd apocalipsis test 5");
 							e.setCancelled(true);
 							Player damager = lasthit.get(affected);
 							killPlayer(affected, damager);
@@ -565,7 +563,7 @@ public class SoloPlayerBattleListener implements Listener {
 							return;
 							
 						}
-						
+						System.out.println("xddd apocalipsis test 6");
 						e.setCancelled(true);
 						DeathMessages.P2A_VOID.broadcastMessage(affected);
 						killPlayer(affected, null);

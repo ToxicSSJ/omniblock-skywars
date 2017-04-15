@@ -51,6 +51,7 @@ public enum SkywarsType {
 
 	public boolean makeMatch(){
 		try{
+			System.out.println("making match....");
 			Skywars.setSkywarsType(this);
 			ss.run(this, resolver);
 		}catch(Exception e){

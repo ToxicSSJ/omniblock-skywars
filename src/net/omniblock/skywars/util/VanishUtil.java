@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo.EnumPlayerInfoAction;
+import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.util.EntityHider.Policy;
 
 public class VanishUtil {
 	
+	private static EntityHider entityHider;
+	
 	public static List<Player> INVISIBLE_PLAYERS = new ArrayList<Player>();
+	
+	public static void start() {
+		setEntityHider(new EntityHider(Skywars.getInstance(), Policy.BLACKLIST));
+	}
 	
 	public static void updateInvisible() {
 		
@@ -62,23 +66,23 @@ public class VanishUtil {
 	public static void seePlayer(Player see, Player from) {
 		
 	    from.showPlayer(see);
-	    
-	    EntityPlayer nmsFrom = ((CraftPlayer) from).getHandle();
-	    EntityPlayer nmsSee = ((CraftPlayer) see).getHandle();
-	    
-	    nmsFrom.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.REMOVE_PLAYER, nmsSee));
+	    entityHider.showEntity(from, see);
 	    
 	}
 	
 	public static void hidePlayer(Player hiding, Player from) {
 		
 	    from.hidePlayer(hiding);
+	    entityHider.hideEntity(from, hiding);
 	    
-	    EntityPlayer nmsFrom = ((CraftPlayer) from).getHandle();
-	    EntityPlayer nmsHiding = ((CraftPlayer) hiding).getHandle();
-	    
-	    nmsFrom.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, nmsHiding));
-	    
+	}
+
+	public static EntityHider getEntityHider() {
+		return entityHider;
+	}
+
+	public static void setEntityHider(EntityHider entityHider) {
+		VanishUtil.entityHider = entityHider;
 	}
 	
 }

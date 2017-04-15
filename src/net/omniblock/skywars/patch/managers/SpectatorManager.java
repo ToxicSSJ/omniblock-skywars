@@ -3,7 +3,6 @@ package net.omniblock.skywars.patch.managers;
 import java.util.List;
 import java.util.Arrays;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -14,15 +13,12 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
@@ -61,6 +57,7 @@ public class SpectatorManager {
 		p.setFoodLevel(20);
 		p.resetMaxHealth();
 		
+		p.spigot().setCollidesWithEntities(false);
 		p.setCanPickupItems(false);
 		p.setAllowFlight(true);
 		p.setFlying(true);

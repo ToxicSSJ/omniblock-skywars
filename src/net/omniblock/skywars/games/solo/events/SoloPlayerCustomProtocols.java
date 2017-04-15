@@ -13,11 +13,13 @@ import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.Lists;
@@ -30,6 +32,7 @@ import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 
 public class SoloPlayerCustomProtocols implements Listener {
 
+	public static List<Player> PROTECTED_PLAYER_LIST = Lists.newArrayList();
 	public static List<Block> PROTECTED_BLOCK_LIST = Lists.newArrayList();
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -79,6 +82,13 @@ public class SoloPlayerCustomProtocols implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
+	public void itemPickup(PlayerPickupItemEvent e) {
+		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void blockDrag(InventoryDragEvent e) {
 		if(SpectatorManager.playersSpectators.contains((Player) e.getWhoClicked())) {
 			e.setCancelled(true);
@@ -86,9 +96,27 @@ public class SoloPlayerCustomProtocols implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
+	public void damage(EntityDamageEvent e) {
+		
+		if(!(e.getEntity() instanceof Player)) {
+			return;
+		}
+		
+		Player p = (Player) e.getEntity();
+		
+		if(SpectatorManager.playersSpectators.contains(p) || PROTECTED_PLAYER_LIST.contains(p)) {
+			e.setCancelled(true);
+		}
+		
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void spectatorInteract(PlayerInteractEvent e) {
 		
 		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+			
+			e.setCancelled(true);
+			
 			if(e.getPlayer().getItemInHand() != null) {
 				if(e.getPlayer().getItemInHand().hasItemMeta()) {
 					

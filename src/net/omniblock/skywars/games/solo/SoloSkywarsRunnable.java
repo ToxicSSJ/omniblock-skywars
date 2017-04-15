@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,6 +24,7 @@ import net.omniblock.skywars.games.solo.chest.item.ItemNormal;
 import net.omniblock.skywars.games.solo.chest.item.ItemZ;
 import net.omniblock.skywars.games.solo.chest.item.object.AddChest;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
+import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
@@ -93,7 +95,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 				if(remainingTimeLobby == timeLobby || remainingTimeLobby == (timeLobby / 2) || remainingTimeLobby == 10 || remainingTimeLobby <= 5 && remainingTimeLobby > 0) {
 					Bukkit.broadcastMessage(TextUtil.format(" &8&l» &7La partida inicia en &a" + remainingTimeLobby + "&7 segundos."));
-					SoloPlayerManager.playSound(Sound.CLICK, 1F, 1F);
+					SoloPlayerManager.playSound(Sound.CLICK, 1, 15);
 				}
 				
 				for(Player p : SoloPlayerManager.getPlayersInLobbyList()){
@@ -138,25 +140,72 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			if(pregameTitles == true){
 				
 				for(Player p : SoloPlayerManager.getPlayersInGameList()) {
-					SoloPlayerManager.playSound(Sound.CLICK, 1F, 1F);
+					SoloPlayerManager.playSound(Sound.CLICK, 1, 10);
 					TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 				}
 				
 				remainingTimeCages--;
 				
 				for(Player p : SoloPlayerManager.getPlayersInGameList()) {
-					SoloPlayerManager.playSound(Sound.CLICK, 1F, 1F);
+					SoloPlayerManager.playSound(Sound.CLICK, 1, 10);
 					TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 				}
 				
 				if(remainingTimeCages < 0) {
-				
+					
 					for(Player p : SoloPlayerManager.getPlayersInGameList()) {
 						
-						p.setNoDamageTicks(20 * 10);
+						SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.add(p);
+						
+						new BukkitRunnable() {
+							
+							public int seconds = 10;
+							
+							@SuppressWarnings("deprecation")
+							@Override
+							public void run() {
+							
+								seconds--;
+								
+								if(seconds <= 0) {
+									cancel();
+									if(SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.contains(p)) {
+										SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.remove(p);
+									}
+									return;
+								}
+								
+								if(!p.isOnline()) {
+									cancel();
+									if(SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.contains(p)) {
+										SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.remove(p);
+									}
+									return;
+								}
+								
+								if(p.getLastDamageCause().getCause() == DamageCause.VOID) {
+									cancel();
+									if(SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.contains(p)) {
+										SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.remove(p);
+									}
+									return;
+								}
+								
+								if(p.isOnGround()) {
+									cancel();
+									if(SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.contains(p)) {
+										SoloPlayerCustomProtocols.PROTECTED_PLAYER_LIST.remove(p);
+									}
+									return;
+								}
+								
+							}
+							
+						}.runTaskTimer(Skywars.getInstance(), 0l, 20l);
 						
 						SoloPlayerManager.playSound(Sound.LEVEL_UP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));
+						
 					}
 					
 					SoloPlayerBattleListener.setBattleInfo();

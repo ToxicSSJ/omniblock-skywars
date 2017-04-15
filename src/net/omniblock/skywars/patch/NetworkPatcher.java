@@ -17,6 +17,9 @@ import org.bukkit.Bukkit;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.network.NetworkRunnable;
+import net.omniblock.skywars.network.events.inLobby;
+import net.omniblock.skywars.network.events.onJoin;
+import net.omniblock.skywars.network.events.onLeft;
 import net.omniblock.skywars.patch.internal.Patcher;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ArrayUtils;
@@ -30,6 +33,10 @@ public class NetworkPatcher implements Patcher {
 	
 	public void initialize(){
 		
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new inLobby(), Skywars.getInstance());
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new onJoin(), Skywars.getInstance());
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new onLeft(), Skywars.getInstance());
+		
 		networkrunnable = new NetworkRunnable();
 		networkrunnable.runTaskTimer(Skywars.getInstance(), 5L, 40L);
 		
@@ -39,6 +46,8 @@ public class NetworkPatcher implements Patcher {
 
 			@Override
 			public void execute(String data) {
+				
+				System.out.println("executing -> " + data);
 				
 				if(data.contains("#")){
 					

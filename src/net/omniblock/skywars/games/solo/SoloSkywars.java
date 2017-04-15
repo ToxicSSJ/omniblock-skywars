@@ -63,6 +63,8 @@ public class SoloSkywars implements SkywarsStarter {
 	@Override
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) {
 		
+		System.out.println("BREAKFAST 1");
+		
 		gSkywarsResolver = sr;
 		
 		SoloSkywarsRunnable cacherunnable = new SoloSkywarsRunnable(this);
@@ -88,6 +90,8 @@ public class SoloSkywars implements SkywarsStarter {
 			
 		}
 		
+		System.out.println("BREAKFAST 2");
+		
 		/*
 		 * Eventos
 		 */
@@ -108,6 +112,7 @@ public class SoloSkywars implements SkywarsStarter {
 			}
 		}
 		
+		System.out.println("BREAKFAST 3");
 		
 	}
 	
@@ -176,7 +181,7 @@ public class SoloSkywars implements SkywarsStarter {
 		mainRunnableTask.addEvent("&c&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 210);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 60);
 		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
 	}
@@ -195,6 +200,10 @@ public class SoloSkywars implements SkywarsStarter {
 		final PlayerBattleInfo TOP_3 = top.get(3);
 		
 		boolean win = winner != null;
+		
+		if(win) {
+			SoloPlayerManager.winnerPlayer(winner);
+		}
 		
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);

@@ -14,8 +14,6 @@ import org.bukkit.World;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.omniblock.skywars.patch.managers.MapManager;
-
 public class Scan {
 	
 	@SuppressWarnings("deprecation")
