@@ -25,6 +25,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
+import net.omniblock.skywars.games.solo.managers.SoloPlayerLineManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
 import net.omniblock.skywars.games.solo.object.PlayerBattleInfo;
@@ -98,6 +99,7 @@ public class SoloSkywars implements SkywarsStarter {
 		 */
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		SoloPlayerScoreboardManager.initialize();
+		SoloPlayerLineManager.initialize();
 		
 		/*
 		 * Online Player Add-Adder
@@ -510,6 +512,8 @@ public class SoloSkywars implements SkywarsStarter {
 		SoloSkywarsRunnable.EVENTS.clear();
 		
 		SoloPlayerScoreboardManager.sbrunnable.cancel();
+		SoloPlayerLineManager.sbrunnable.cancel();
+		
 		cagesLocations.clear();
 		
 		EventsManager.reset();
@@ -519,9 +523,7 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		MapManager.unloadActualWorldsAndReset();
 		MapManager.prepareWorlds();
-		
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
-		
 		stop();
 		
 	}
@@ -537,6 +539,8 @@ public class SoloSkywars implements SkywarsStarter {
 		NetworkManager.getChannelWrapper().sendToChannel(channel, opendata);
 		
 		NetworkData.broadcaster.read("$ UNLOCK");
+		
+		Skywars.getInstance().getServer().reload();
 		
 	}
 	
