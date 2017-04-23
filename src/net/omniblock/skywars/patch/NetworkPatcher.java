@@ -12,20 +12,19 @@ package net.omniblock.skywars.patch;
 
 import java.util.Calendar;
 
-import org.bukkit.Bukkit;
-
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.network.NetworkRunnable;
-import net.omniblock.skywars.network.events.inLobby;
-import net.omniblock.skywars.network.events.onJoin;
-import net.omniblock.skywars.network.events.onLeft;
+import net.omniblock.skywars.network.events.FullAttributeListener;
+import net.omniblock.skywars.network.events.SkywarsLobbyFilterListener;
 import net.omniblock.skywars.patch.internal.Patcher;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ArrayUtils;
 import omniblock.on.OmniNetwork;
 import omniblock.on.addons.games.NetworkBroadcaster;
-import omniblock.on.network.NetworkManager;
+import omniblock.on.network.packet.Packet;
+import omniblock.on.network.packet.assembler.AssemblyType;
+import omniblock.on.network.packet.modifier.PacketModifier;
 
 public class NetworkPatcher implements Patcher {
 
@@ -33,9 +32,8 @@ public class NetworkPatcher implements Patcher {
 	
 	public void initialize(){
 		
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new inLobby(), Skywars.getInstance());
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new onJoin(), Skywars.getInstance());
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new onLeft(), Skywars.getInstance());
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new FullAttributeListener(), Skywars.getInstance());
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SkywarsLobbyFilterListener(), Skywars.getInstance());
 		
 		networkrunnable = new NetworkRunnable();
 		networkrunnable.runTaskTimer(Skywars.getInstance(), 5L, 40L);
@@ -47,7 +45,7 @@ public class NetworkPatcher implements Patcher {
 			@Override
 			public void execute(String data) {
 				
-				System.out.println("executing -> " + data);
+				System.out.println("data = " + data);
 				
 				if(data.contains("#")){
 					
@@ -77,43 +75,14 @@ public class NetworkPatcher implements Patcher {
 				
 				if(data.contains("$ LOCK")) {
 					
-					String serial = NetworkManager.serial;
-					String servername = NetworkManager.servername;
-					
-					String channel1;
-					String opendata1;
-					
-					channel1 = "lockservername";
-					opendata1 = serial + "#" + servername + "#" + Bukkit.getOnlinePlayers().size() + "#" + Bukkit.getServer().getMaxPlayers();
-					
-					NetworkManager.getChannelWrapper().sendToChannel(channel1, opendata1);
-					
+					Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_LOCK_ATTRIBUTE, new PacketModifier());
 					return;
 					
 				} else if(data.contains("$ UNLOCK")) {
 					
-					String serial = NetworkManager.serial;
-					String servername = NetworkManager.servername;
-					
-					String channel1;
-					String opendata1;
-					
-					channel1 = "unlockservername";
-					opendata1 = serial + "#" + servername + "#" + Bukkit.getOnlinePlayers().size() + "#" + Bukkit.getServer().getMaxPlayers();
-					
-					NetworkManager.getChannelWrapper().sendToChannel(channel1, opendata1);
-					
+					Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_UNLOCK_ATTRIBUTE, new PacketModifier());
 					return;
 					
-				} else if(data.contains("CANCEL")){
-					
-					return;
-				} else if(data.contains("STOP")){
-					
-					return;
-				} else if(data.contains("RESTART")){
-					
-					return;
 				}
 				
 			}

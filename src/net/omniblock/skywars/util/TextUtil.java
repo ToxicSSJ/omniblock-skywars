@@ -34,7 +34,7 @@ import org.bukkit.map.MinecraftFont;
 
 public class TextUtil {
 	
-	 private final static int CENTER_PX = 154;
+	private final static int CENTER_PX = 154;
 	 
 	public static String format(String s){
 	    if(s == null) return null;

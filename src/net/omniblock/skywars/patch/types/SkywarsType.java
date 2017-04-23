@@ -16,6 +16,9 @@ import net.omniblock.skywars.games.teams.TeamSkywars;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
+import omniblock.on.network.packet.Packet;
+import omniblock.on.network.packet.assembler.AssemblyType;
+import omniblock.on.network.packet.modifier.PacketModifier;
 
 public enum SkywarsType {
 	NONE(null, null),
@@ -51,12 +54,17 @@ public enum SkywarsType {
 
 	public boolean makeMatch(){
 		try{
-			System.out.println("making match....");
+			
+			Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_STARTED_ATTRIBUTE, new PacketModifier());
+			
 			Skywars.setSkywarsType(this);
 			ss.run(this, resolver);
+			
 		}catch(Exception e){
+			
 			e.printStackTrace();
 			return false;
+			
 		}
 		return true;
 	}

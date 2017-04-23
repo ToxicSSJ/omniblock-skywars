@@ -38,8 +38,7 @@ public class TeamSkywars implements SkywarsStarter {
 		
 	}
 
-	@Override
-	public void stop() {
+	public static void stop() {
 		
 	}
 

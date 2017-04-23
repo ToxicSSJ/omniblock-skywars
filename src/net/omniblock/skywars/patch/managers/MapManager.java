@@ -2,6 +2,7 @@ package net.omniblock.skywars.patch.managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -65,6 +66,34 @@ public class MapManager {
 	 * Debido a que la clase se comporta como una clase estática, el constructor se establece como privado para evitar posibles confuciones.
 	 */
 	private MapManager() {
+		
+	}
+	
+	public static void unloadWorlds() {
+		
+		List<String> unloaded = new ArrayList<String>();
+		
+		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
+		
+		if(CURRENT_MAP != null) {
+			if(!unloaded.contains(CURRENT_MAP.getName())) {
+				Bukkit.getServer().unloadWorld(CURRENT_MAP, false);
+			}
+		}
+		
+		if(NEW_MAP_NORMAL != null) {
+			if(!unloaded.contains(NEW_MAP_NORMAL.getName())) {
+				Bukkit.getServer().unloadWorld(NEW_MAP_NORMAL, false);
+			}
+		}
+		
+		if(NEW_MAP_Z != null) {
+			if(!unloaded.contains(NEW_MAP_Z.getName())) {
+				Bukkit.getServer().unloadWorld(NEW_MAP_Z, false);
+			}
+		}
+		
+		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
 		
 	}
 	

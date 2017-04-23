@@ -25,6 +25,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
+import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerLineManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
@@ -43,15 +44,21 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
 import net.omniblock.skywars.util.TextUtil;
-import omniblock.on.network.NetworkManager;
-import omniblock.on.network.runnables.NetworkTicker;
-import omniblock.on.server.type.EGameType;
-import omniblock.on.server.type.EServerType;
+import omniblock.on.network.packet.Packet;
+import omniblock.on.network.packet.assembler.AssemblyType;
+import omniblock.on.network.packet.modifier.PacketModifier;
+import omniblock.on.util.lib.omnicore.ServerType;
 
 public class SoloSkywars implements SkywarsStarter {
 
 	public static final int DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS = 12;
 	public static final int DEFAULT_Z_SKYWARS_MAX_PLAYERS = 16;
+	
+	public static final int DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS = 2;
+	public static final int DEFAULT_Z_SKYWARS_MIN_PLAYERS = 2;
+	
+	public static int MAX_PLAYERS = 12;
+	public static int MIN_PLAYERS = 2;
 	
 	public static LobbySchematic lobbyschematic;
 	
@@ -116,7 +123,9 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		gMatchType = MatchType.NORMAL;
 		
-		NetworkTicker.maxplayers = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
+		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
+		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
+		
 		MapManager.setCurrentMap(MapType.NORMAL);
 		
 		lobbyschematic.selectMapType(MapType.NORMAL);
@@ -138,7 +147,9 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloInsaneGame() {
 		gMatchType = MatchType.INSANE;
 		
-		NetworkTicker.maxplayers = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
+		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
+		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
+		
 		MapManager.setCurrentMap(MapType.NORMAL);
 		
 		lobbyschematic.selectMapType(MapType.NORMAL);
@@ -161,7 +172,9 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloZGame() {
 		gMatchType = MatchType.Z;
 		
-		NetworkTicker.maxplayers = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
+		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
+		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
+		
 		MapManager.setCurrentMap(MapType.Z);
 		
 		lobbyschematic.selectMapType(MapType.Z);
@@ -177,7 +190,7 @@ public class SoloSkywars implements SkywarsStarter {
 		mainRunnableTask.addEvent("&c&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 60);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 220);
 		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
 	}
@@ -457,7 +470,14 @@ public class SoloSkywars implements SkywarsStarter {
 
 		cagesLocations.clear();
 		
-		NetworkManager.sendToServer(Bukkit.getOnlinePlayers(), EServerType.SKYWARS_LS);
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			
+			Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_SERVER,
+					   new PacketModifier()
+					   .addString(player.getName())
+					   .addString(ServerType.SKYWARS_LOBBY_SERVER.toString()));
+			
+		}
 		
 		new BukkitRunnable() {
 			
@@ -489,6 +509,7 @@ public class SoloSkywars implements SkywarsStarter {
 						}
 						
 						initializeReset();
+						return;
 						
 					}
 					
@@ -496,6 +517,7 @@ public class SoloSkywars implements SkywarsStarter {
 					
 					cancel();
 					initializeReset();
+					return;
 					
 				}
 				
@@ -507,12 +529,14 @@ public class SoloSkywars implements SkywarsStarter {
 		
 	}
 
-	private void initializeReset() {
+	public static void initializeReset() {
 		
 		SoloSkywarsRunnable.EVENTS.clear();
 		
 		SoloPlayerScoreboardManager.sbrunnable.cancel();
 		SoloPlayerLineManager.sbrunnable.cancel();
+		
+		SoloPlayerToggleListener.Verifier = false;
 		
 		cagesLocations.clear();
 		
@@ -522,25 +546,16 @@ public class SoloSkywars implements SkywarsStarter {
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
 		MapManager.unloadActualWorldsAndReset();
-		MapManager.prepareWorlds();
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
+		
 		stop();
 		
 	}
 	
-	@Override
-	public void stop() {
+	public static void stop() {
 		
-		gMatchType = MatchType.NONE;
-		
-		String channel = "addunbusyserver";
-		String opendata = Bukkit.getServerName() + "#" + EGameType.SKYWARS_MASK.toString();
-		
-		NetworkManager.getChannelWrapper().sendToChannel(channel, opendata);
-		
-		NetworkData.broadcaster.read("$ UNLOCK");
-		
-		Skywars.getInstance().getServer().reload();
+		Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_RELOAD_ATTRIBUTE, new PacketModifier());
+		Bukkit.reload();
 		
 	}
 	

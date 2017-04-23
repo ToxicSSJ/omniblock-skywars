@@ -24,9 +24,12 @@ import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.RowsIntegers;
-import omniblock.on.addons.queue.VirtuaLQueue;
 import omniblock.on.network.NetworkManager;
+import omniblock.on.network.packet.Packet;
+import omniblock.on.network.packet.assembler.AssemblyType;
+import omniblock.on.network.packet.modifier.PacketModifier;
 import omniblock.on.util.TextUtil;
+import omniblock.on.util.lib.omnicore.ServerType;
 
 public class SpectatorManager {
 
@@ -403,12 +406,15 @@ public class SpectatorManager {
 
 					   @Override
 					   public void execute(Player player) {
-
-						   // TODO
 						   
 						   player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
 						   player.sendMessage(TextUtil.format("&bEnviandote a otra partida..."));
-						   VirtuaLQueue.startGame(player, NetworkManager.gametype);
+						   
+						   Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_GAME,
+								   					   new PacketModifier()
+								   					   .addString(player.getName())
+								   					   .addString(NetworkManager.getGamepreset().toString())
+						   							   .addBoolean(true));
 						   return;
 
 					   }
@@ -426,11 +432,15 @@ public class SpectatorManager {
 
 					  @Override
 					  public void execute(Player player) {
-
-						  // TODO
 						  
 						  player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
 						  player.sendMessage(TextUtil.format("&9Volviendo al lobby."));
+						  
+						  Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_SERVER,
+			   					   new PacketModifier()
+			   					   .addString(player.getName())
+			   					   .addString(ServerType.SKYWARS_LOBBY_SERVER.toString()));
+						  
 						  return;
 
 					  }

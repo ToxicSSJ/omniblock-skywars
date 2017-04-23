@@ -26,7 +26,6 @@ import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.util.TimeUtil;
 import net.omniblock.skywars.util.scoreboard.ScoreboardUtil;
-import omniblock.on.network.NetworkManager;
 import omniblock.on.util.TextUtil;
 
 public class SoloPlayerScoreboardManager {
@@ -90,7 +89,7 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&7&o   Modo " + FINISHING_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
-													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
+													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
 													   TextUtil.format("&b&lGanador:"),
 													   TextUtil.format(" &a&l» &7" + "Unknow"),
@@ -120,7 +119,7 @@ public class SoloPlayerScoreboardManager {
 													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
 													       TextUtil.format("   "),
 													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
-													       TextUtil.format("&b&lServidor: &7" + NetworkManager.servername),
+													       TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 													   	   TextUtil.format("&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
 													   	   TextUtil.format("    "),
 													   	   TextUtil.format("&ewww.omniblock.net")});
@@ -139,7 +138,7 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&7&o   Modo " + IN_LOBBY_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
-													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
+													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
 													   TextUtil.format("&b&lJugadores:"),
 													   TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
@@ -197,7 +196,7 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&7&o   Modo " + FINISHING_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
-													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
+													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
 													   TextUtil.format("&b&lGanador:"),
 													   TextUtil.format(" &a&l» &7" + "Unknow"),
@@ -227,7 +226,7 @@ public class SoloPlayerScoreboardManager {
 													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
 													       TextUtil.format("   "),
 													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
-													       TextUtil.format("&b&lServidor: &7" + NetworkManager.servername),
+													       TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 													   	   TextUtil.format("&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
 													   	   TextUtil.format("    "),
 													   	   TextUtil.format("&ewww.omniblock.net")});
@@ -246,7 +245,7 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&7&o   Modo " + IN_LOBBY_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
-													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
+													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
 													   TextUtil.format("&b&lJugadores:"),
 													   TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
@@ -302,7 +301,7 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&7&o   Modo " + FINISHING_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
-													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
+													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
 													   TextUtil.format("&b&lGanador:"),
 													   TextUtil.format(" &a&l» &7" + "Unknow"),
@@ -332,7 +331,7 @@ public class SoloPlayerScoreboardManager {
 													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
 													       TextUtil.format("   "),
 													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
-													       TextUtil.format("&b&lServidor: &7" + NetworkManager.servername),
+													       TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 													   	   TextUtil.format("&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
 													   	   TextUtil.format("    "),
 													   	   TextUtil.format("&ewww.omniblock.net")});
@@ -351,7 +350,7 @@ public class SoloPlayerScoreboardManager {
 													   TextUtil.format("&7&o   Modo " + IN_LOBBY_MATCH_PLUS_FORMAT),
 													   TextUtil.format(" "),
 													   TextUtil.format("&b&lServidor:"),
-													   TextUtil.format(" &a&l» &7" + NetworkManager.servername),
+													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
 													   TextUtil.format("&b&lJugadores:"),
 													   TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),

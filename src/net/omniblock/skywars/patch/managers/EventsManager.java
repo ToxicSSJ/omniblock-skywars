@@ -25,8 +25,7 @@ import net.omniblock.skywars.games.solo.chest.item.z.listeners.ThorA;
 import net.omniblock.skywars.games.solo.chest.item.z.listeners.ThorI;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
-import net.omniblock.skywars.games.solo.events.SoloPlayerJoinListener;
-import net.omniblock.skywars.games.solo.events.SoloPlayerQuitListener;
+import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class EventsManager {
@@ -44,8 +43,7 @@ public class EventsManager {
 			@SuppressWarnings("serial") List<Listener> SW_INSANE_SOLO = new ArrayList<Listener>() {{
 				
 				add(new SoloPlayerBattleListener());
-				add(new SoloPlayerJoinListener());
-				add(new SoloPlayerQuitListener());
+				add(new SoloPlayerToggleListener());
 				add(new SoloPlayerCustomProtocols());
 				
 			}};
@@ -63,8 +61,7 @@ public class EventsManager {
 			@SuppressWarnings("serial") List<Listener> SW_NORMAL_SOLO = new ArrayList<Listener>() {{
 				
 				add(new SoloPlayerBattleListener());
-				add(new SoloPlayerJoinListener());
-				add(new SoloPlayerQuitListener());
+				add(new SoloPlayerToggleListener());
 				add(new SoloPlayerCustomProtocols());
 				
 			}};
@@ -82,8 +79,7 @@ public class EventsManager {
 			@SuppressWarnings("serial") List<Listener> SW_Z_SOLO = new ArrayList<Listener>() {{
 				
 				add(new SoloPlayerBattleListener());
-				add(new SoloPlayerJoinListener());
-				add(new SoloPlayerQuitListener());
+				add(new SoloPlayerToggleListener());
 				add(new SoloPlayerCustomProtocols());
 				
 				add(new AngryChest());

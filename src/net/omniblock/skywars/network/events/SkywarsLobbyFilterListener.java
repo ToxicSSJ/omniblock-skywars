@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 import net.omniblock.skywars.Skywars;
 
-public class inLobby implements Listener {
+public class SkywarsLobbyFilterListener implements Listener {
 
 	@EventHandler
 	public void onDrag(InventoryDragEvent e){

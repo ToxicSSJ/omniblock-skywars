@@ -72,6 +72,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	@Override
 	public void run() {
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
+			
 			if(SoloPlayerManager.getPlayersInLobbyAmount() >= MIN_PLAYERS_TO_START){
 				
 				if(remainingTimeLobby <= 0) {
@@ -166,7 +167,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 				}
 				
-				if(remainingTimeCages < 0) {
+				if(remainingTimeCages <= 0) {
 					
 					for(Player p : SoloPlayerManager.getPlayersInGameList()) {
 						
@@ -258,7 +259,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));

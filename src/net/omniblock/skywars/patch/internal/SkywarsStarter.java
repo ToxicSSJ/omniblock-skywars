@@ -18,6 +18,4 @@ public abstract interface SkywarsStarter {
 	
 	public void reset();
 	
-	public void stop();
-	
 }
