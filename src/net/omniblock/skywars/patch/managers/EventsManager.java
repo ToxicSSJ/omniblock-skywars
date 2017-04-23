@@ -9,23 +9,24 @@ import org.bukkit.event.Listener;
 import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.AngryChest;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bombardier;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bridged;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Clone;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.HealthTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.IBall;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.IceTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.LaserTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Meteoro;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.PorkTurret;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Potion;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Punch;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.ThorA;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.ThorI;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
+import net.omniblock.skywars.patch.managers.chest.item.z.AngryChest;
+import net.omniblock.skywars.patch.managers.chest.item.z.Bombardier;
+import net.omniblock.skywars.patch.managers.chest.item.z.Bridged;
+import net.omniblock.skywars.patch.managers.chest.item.z.Clone;
+import net.omniblock.skywars.patch.managers.chest.item.z.HealthTurret;
+import net.omniblock.skywars.patch.managers.chest.item.z.IBall;
+import net.omniblock.skywars.patch.managers.chest.item.z.IceTurret;
+import net.omniblock.skywars.patch.managers.chest.item.z.Kraken;
+import net.omniblock.skywars.patch.managers.chest.item.z.LaserTurret;
+import net.omniblock.skywars.patch.managers.chest.item.z.Meteoro;
+import net.omniblock.skywars.patch.managers.chest.item.z.PorkTurret;
+import net.omniblock.skywars.patch.managers.chest.item.z.Potion;
+import net.omniblock.skywars.patch.managers.chest.item.z.Punch;
+import net.omniblock.skywars.patch.managers.chest.item.z.ThorA;
+import net.omniblock.skywars.patch.managers.chest.item.z.ThorI;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class EventsManager {
@@ -87,6 +88,7 @@ public class EventsManager {
 				add(new Punch());
 				add(new Bombardier());
 				add(new Bridged());
+				add(new Kraken());
 				add(new IBall());
 				add(new Clone());
 				add(new ThorA());

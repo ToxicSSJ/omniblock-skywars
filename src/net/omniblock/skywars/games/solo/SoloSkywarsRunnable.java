@@ -18,11 +18,6 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.solo.chest.ChestManager;
-import net.omniblock.skywars.games.solo.chest.item.ItemInsane;
-import net.omniblock.skywars.games.solo.chest.item.ItemNormal;
-import net.omniblock.skywars.games.solo.chest.item.ItemZ;
-import net.omniblock.skywars.games.solo.chest.item.object.FillChest;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -30,6 +25,11 @@ import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
+import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
+import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
+import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
+import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
@@ -259,7 +259,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));

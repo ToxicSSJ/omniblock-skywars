@@ -22,10 +22,10 @@ import com.google.common.collect.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywars;
-import net.omniblock.skywars.games.solo.chest.ChestManager;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Bombardier;
-import net.omniblock.skywars.games.solo.chest.item.z.listeners.Meteoro;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.managers.chest.item.z.Bombardier;
+import net.omniblock.skywars.patch.managers.chest.item.z.Meteoro;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
