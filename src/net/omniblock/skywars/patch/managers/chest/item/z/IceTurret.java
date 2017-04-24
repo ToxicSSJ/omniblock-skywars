@@ -29,8 +29,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.TurretType;
@@ -101,8 +101,8 @@ public class IceTurret implements Turret, ItemType, Listener {
 	   	final Location l2 = new Location(l1.getWorld(), l1.getX() + 0.5, l1.getY() + 1.2, l1.getZ() + 0.5);
 	   	final Location l3 = new Location(l1.getWorld(), l1.getX() + 0.5, l1.getY() + 1.5, l1.getZ() + 0.5);
 	   	 
-	   	l1.getBlock().setType(Material.HOPPER); SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.add(l1.getBlock()); awaketurret.components.add(l1.getBlock());
-	   	l2.getBlock().setType(Material.CARPET); SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.add(l2.getBlock()); awaketurret.components.add(l2.getBlock());
+	   	l1.getBlock().setType(Material.HOPPER); CustomProtocolManager.PROTECTED_BLOCK_LIST.add(l1.getBlock()); awaketurret.components.add(l1.getBlock());
+	   	l2.getBlock().setType(Material.CARPET); CustomProtocolManager.PROTECTED_BLOCK_LIST.add(l2.getBlock()); awaketurret.components.add(l2.getBlock());
 	   	 
 	   	@SuppressWarnings("deprecation")
 		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnCreature(l3, EntityType.ARMOR_STAND);

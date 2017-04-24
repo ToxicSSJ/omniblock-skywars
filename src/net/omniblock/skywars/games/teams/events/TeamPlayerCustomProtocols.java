@@ -1,4 +1,4 @@
-package net.omniblock.skywars.games.solo.events;
+package net.omniblock.skywars.games.teams.events;
 
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -21,12 +21,12 @@ import org.bukkit.inventory.ItemStack;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 
-public class SoloPlayerCustomProtocols implements Listener {
+public class TeamPlayerCustomProtocols implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onRemoveBlock(BlockBreakEvent e) {
@@ -132,9 +132,9 @@ public class SoloPlayerCustomProtocols implements Listener {
 	
 	@EventHandler
 	public void onKick(PlayerKickEvent e) {
-		if(		SoloPlayerManager.getPlayersInSpectator().contains(e.getPlayer()) ||
-				SoloPlayerManager.getPlayersInLobbyList().contains(e.getPlayer()) ||
-				SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+		if(		TeamPlayerManager.getPlayersInSpectator().contains(e.getPlayer()) ||
+				TeamPlayerManager.getPlayersInLobbyList().contains(e.getPlayer()) ||
+				TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
 			if (e.getReason().contains("Flying")) {
 				e.setCancelled(true);
 			}
@@ -168,7 +168,7 @@ public class SoloPlayerCustomProtocols implements Listener {
 			
 			Player p = (Player) e.getEntity();
 			
-			if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
+			if(TeamPlayerManager.getPlayersInGameList().contains(p)) {
 				if(currentState == SkywarsGameState.IN_LOBBY) {
 					e.setCancelled(true);
 					e.setFoodLevel(25);

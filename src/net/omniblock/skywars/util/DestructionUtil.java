@@ -13,7 +13,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 
 public class DestructionUtil {
 
@@ -113,7 +113,7 @@ public class DestructionUtil {
 			for(Block b : FACES) {
 				if(!cache_blocks.contains(b)) {
 					if(b.getLocation().distance(center_block.getLocation()) <= distance) {
-						if(b.getType() != Material.AIR && !SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(b)) {
+						if(b.getType() != Material.AIR && !CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b)) {
 							
 							Block lower = getLowestBlockAt(b);
 							if(lower != null) {
@@ -131,7 +131,7 @@ public class DestructionUtil {
 								if(NumberUtil.getRandomInt(1, 4) == 2) {
 									
 									Block friend = b.getRelative(BlockFace.UP);
-									if(friend.getType() != Material.AIR && !SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(friend)) {
+									if(friend.getType() != Material.AIR && !CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(friend)) {
 
 										cache_blocks.add(friend);
 										

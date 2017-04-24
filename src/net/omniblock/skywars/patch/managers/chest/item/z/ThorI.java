@@ -17,11 +17,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
+import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
@@ -61,7 +65,7 @@ public class ThorI implements ItemType, Listener {
 							Player targetplayer = null;
 								
 							for(Player p : player.getWorld().getEntitiesByClass(Player.class)) {
-								if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
+								if((SoloPlayerManager.getPlayersInGameList().contains(p) || TeamPlayerManager.getPlayersInGameList().contains(p))) {
 									if(CameraUtil.getLookingAt(player, p)) {
 										targetplayer = p;
 									}
@@ -76,7 +80,16 @@ public class ThorI implements ItemType, Listener {
 								if(entity.getType() == EntityType.PLAYER) {
 									Player p = (Player) entity;
 									
-									if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
+									if((SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player))) {
+										
+										if(   Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+												   || Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+												   || Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+											
+											TeamPlayerBattleListener.makeZDamage(player, player, 2.5, net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.THORI);
+											continue;
+											
+										}
 										
 										SoloPlayerBattleListener.makeZDamage(p, player, 2.5, DamageCauseZ.THORI);
 										continue;
@@ -95,6 +108,7 @@ public class ThorI implements ItemType, Listener {
 								if(b.getType() == Material.AIR) continue;
 								 b.setType(Material.PACKED_ICE);
 							}
+							
 						}
 					}
 				}

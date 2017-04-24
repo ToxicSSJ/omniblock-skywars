@@ -91,9 +91,9 @@ public class Clone implements Listener, ItemType {
 	public void RemoveClon(Player player, NPC clon){
 
 		ItemStack helmet =  player.getInventory().getHelmet();
-		ItemStack chestplate = player.getInventory().getChestplate();;
-		ItemStack leggings = player.getInventory().getLeggings();;
-		ItemStack boots = player.getInventory().getBoots();;
+		ItemStack chestplate = player.getInventory().getChestplate();
+		ItemStack leggings = player.getInventory().getLeggings();
+		ItemStack boots = player.getInventory().getBoots();
 		
 		player.getInventory().setHelmet(null);	
 		player.getInventory().setChestplate(null);	

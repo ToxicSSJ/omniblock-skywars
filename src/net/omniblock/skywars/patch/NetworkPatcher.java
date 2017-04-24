@@ -45,8 +45,6 @@ public class NetworkPatcher implements Patcher {
 			@Override
 			public void execute(String data) {
 				
-				System.out.println("data = " + data);
-				
 				if(data.contains("#")){
 					
 					SkywarsType swtype = SkywarsType.NONE;
@@ -134,12 +132,6 @@ public class NetworkPatcher implements Patcher {
 		}
 		
 		return SkywarsType.NONE;
-	}
-	
-	public void read(String data){
-		
-		
-		
 	}
 	
 	@Override

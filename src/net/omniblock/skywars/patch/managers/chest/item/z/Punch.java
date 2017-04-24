@@ -13,8 +13,11 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
+import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.SoundPlayer;
 
 public class Punch implements ItemType, Listener {
@@ -26,10 +29,14 @@ public class Punch implements ItemType, Listener {
 	public void JhonPunch(EntityDamageByEntityEvent event) {
 
 		if (event.getEntity() instanceof Player) {
+			
 			Player player = (Player) event.getEntity();
+			
 			if (event.getDamager() instanceof Player) {
 				Player playerdamage = (Player) event.getDamager();
-				if (SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+				
+				if ((SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player)) && player.getGameMode() == GameMode.SURVIVAL) {
+					
 					if (playerdamage.getItemInHand().hasItemMeta()) {
 						
 						if(!playerdamage.getItemInHand().getItemMeta().hasDisplayName()) {
@@ -37,6 +44,18 @@ public class Punch implements ItemType, Listener {
 						}
 						
 						if (playerdamage.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
+							
+							if(   Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+									   || Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+									   || Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+								
+								if(TeamPlayerManager.hasTeam(playerdamage)) {
+									if(TeamPlayerManager.getPlayerTeam(playerdamage).getName() == player.getName()) {
+										return;
+									}
+								}
+								
+							}
 							
 							playerdamage.getInventory().setItemInHand(null);
 							SoundPlayer.sendSound(playerdamage.getLocation(), "skywars.jhonc", 30); 
@@ -55,8 +74,19 @@ public class Punch implements ItemType, Listener {
 								}
 							}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
 
-							player.setVelocity(playerdamage.getLocation().getDirection().add(new Vector(0, 2, 0)).multiply(12.0));
-							SoloPlayerBattleListener.makeZDamage(player, playerdamage, 7.0, DamageCauseZ.JHON_CENA);
+							player.setVelocity(playerdamage.getLocation().getDirection().add(new Vector(0, 1.2, 0)).multiply(12.0));
+							
+							if(   Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+									   || Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+									   || Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+								
+								TeamPlayerBattleListener.makeZDamage(player, playerdamage, 7, net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.JHON_CENA);
+								return;
+								
+							}
+							
+							SoloPlayerBattleListener.makeZDamage(player, playerdamage, 7, DamageCauseZ.JHON_CENA);
+							return;
 							
 						}
 					}

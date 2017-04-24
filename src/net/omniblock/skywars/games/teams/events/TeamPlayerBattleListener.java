@@ -1,4 +1,4 @@
-package net.omniblock.skywars.games.solo.events;
+package net.omniblock.skywars.games.teams.events;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,19 +24,19 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
-import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.NumberUtil;
 import omniblock.on.util.TextUtil;
 
-public class SoloPlayerBattleListener implements Listener {
+public class TeamPlayerBattleListener implements Listener {
 
 	public Map<Player, BukkitTask> contamination_infected = new HashMap<Player, BukkitTask>();
 	
-	public static Map<Player, SoloPlayerBattleInfo> battle_info = new HashMap<Player, SoloPlayerBattleInfo>();
+	public static Map<Player, TeamPlayerBattleInfo> battle_info = new HashMap<Player, TeamPlayerBattleInfo>();
 	public static Map<Player, Map<Player, BukkitTask>> assistence = new HashMap<Player, Map<Player, BukkitTask>>();
 	
 	public static Map<Player, Player> lasthit = new HashMap<Player, Player>();
@@ -44,9 +44,9 @@ public class SoloPlayerBattleListener implements Listener {
 	
 	public static void setBattleInfo() {
 		
-		for(Player k : SoloPlayerManager.getPlayersInGameList()) {
+		for(Player k : TeamPlayerManager.getPlayersInGameList()) {
 			
-			SoloPlayerBattleInfo pbi = new SoloPlayerBattleInfo(k);
+			TeamPlayerBattleInfo pbi = new TeamPlayerBattleInfo(k);
 			battle_info.put(k, pbi);
 			
 		}
@@ -93,6 +93,10 @@ public class SoloPlayerBattleListener implements Listener {
 			return;
 		}
 		
+		if(TeamPlayerManager.hasTeam(damager)) {
+			if(TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) return;
+		}
+		
 		damage = damage * 2;
 		
 		affected.setMetadata("ZDAMAGE", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
@@ -106,7 +110,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(affected == damager) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -126,7 +130,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.METEORO) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -149,7 +153,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.JHON_CENA) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -172,7 +176,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.BOMBARDIER) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -195,7 +199,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.THORA) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -218,7 +222,7 @@ public class SoloPlayerBattleListener implements Listener {
 
 			if(dcz == DamageCauseZ.THORI) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -241,7 +245,7 @@ public class SoloPlayerBattleListener implements Listener {
 
 			if(dcz == DamageCauseZ.IBALL) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -264,7 +268,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.EXP_CHEST) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -287,7 +291,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.EXP_CHEST) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -310,7 +314,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.KRAKEN) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -333,7 +337,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.TURRET_C) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -356,7 +360,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.TURRET_L) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -379,7 +383,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.TURRET_P) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -410,7 +414,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.METEORO) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -442,7 +446,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.BOMBARDIER) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -474,7 +478,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(dcz == DamageCauseZ.THORA) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
@@ -543,19 +547,17 @@ public class SoloPlayerBattleListener implements Listener {
 			return;
 		}
 		
-		System.out.println("xddd apocalipsis test 0");
-		
 		if(e.getEntity().getType() == EntityType.PLAYER) {
-			System.out.println("xddd apocalipsis test 1");
+			
 			Player affected = (Player) e.getEntity(); 
-			if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
-				System.out.println("xddd apocalipsis test 2");
+			
+			if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+				
 				if(e.getCause() != DamageCause.ENTITY_ATTACK) {
-					System.out.println("xddd apocalipsis test 3");
+					
 					if(e.getCause() == DamageCause.VOID) {
-						System.out.println("xddd apocalipsis test 4");
+						
 						if(lasthit.containsKey(affected)) {
-							System.out.println("xddd apocalipsis test 5");
 							e.setCancelled(true);
 							Player damager = lasthit.get(affected);
 							killPlayer(affected, damager);
@@ -563,7 +565,7 @@ public class SoloPlayerBattleListener implements Listener {
 							return;
 							
 						}
-						System.out.println("xddd apocalipsis test 6");
+						
 						e.setCancelled(true);
 						DeathMessages.P2A_VOID.broadcastMessage(affected);
 						killPlayer(affected, null);
@@ -720,10 +722,14 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(!affected.hasMetadata("ZDAMAGE")) {
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
-						SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(damager) &&
+						TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
-					attackFilter(damager, affected, e, false);
+					if(TeamPlayerManager.hasTeam(damager)) {
+						if(TeamPlayerManager.getPlayerTeam(damager) != affected) {
+							attackFilter(damager, affected, e, false);
+						}
+					}
 					
 				}
 				
@@ -742,10 +748,14 @@ public class SoloPlayerBattleListener implements Listener {
 				Player damager = (Player) arrow.getShooter();
 				Player affected = (Player) e.getEntity();
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
-						SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(damager) &&
+						TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
-					attackFilter(damager, affected, e, true);
+					if(TeamPlayerManager.hasTeam(damager)) {
+						if(TeamPlayerManager.getPlayerTeam(damager) != affected) {
+							attackFilter(damager, affected, e, false);
+						}
+					}
 					
 				}
 				
@@ -764,10 +774,14 @@ public class SoloPlayerBattleListener implements Listener {
 				Player damager = (Player) snowball.getShooter();
 				Player affected = (Player) e.getEntity();
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
-						SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(damager) &&
+						TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
-					attackFilter(damager, affected, e, true);
+					if(TeamPlayerManager.hasTeam(damager)) {
+						if(TeamPlayerManager.getPlayerTeam(damager) != affected) {
+							attackFilter(damager, affected, e, false);
+						}
+					}
 					
 				}
 				
@@ -777,7 +791,7 @@ public class SoloPlayerBattleListener implements Listener {
 				Player damager = null;
 				Vector v = snowball.getVelocity();
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if((affected.getHealth() - 0.3) <= 0) {
 						
@@ -819,7 +833,7 @@ public class SoloPlayerBattleListener implements Listener {
 						contamination_infected.put(affected, new BukkitRunnable(){
 							@Override
 							public void run() {
-								if(affected.isOnline() && SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+								if(affected.isOnline() && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 									if(contamination_infected.containsKey(affected)) {
 										contamination_infected.remove(affected);
 									}
@@ -833,7 +847,7 @@ public class SoloPlayerBattleListener implements Listener {
 						contamination_infected.put(affected, new BukkitRunnable(){
 							@Override
 							public void run() {
-								if(affected.isOnline() && SoloPlayerManager.getPlayersInGameList().contains(affected)) {
+								if(affected.isOnline() && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 									if(contamination_infected.containsKey(affected)) {
 										contamination_infected.remove(affected);
 									}
@@ -865,12 +879,12 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			Player damager = (Player) e.getDamager();
 			
-			if(SoloPlayerManager.getPlayersInGameList().contains(damager)) {
+			if(TeamPlayerManager.getPlayersInGameList().contains(damager)) {
 				
 				for(AwakeTurret at : TurretUtil.awake_turrets) {
 					if(at.turret.getEntity() == e.getEntity()) {
 						e.setCancelled(true);
-						if(at.owner != damager) {
+						if(at.owner != damager && !at.extra_exclude.contains(damager)) {
 							at.damage(damager);
 						}
 					}
@@ -886,12 +900,12 @@ public class SoloPlayerBattleListener implements Listener {
 				
 				Player damager = (Player) pj.getShooter();
 				
-				if(SoloPlayerManager.getPlayersInGameList().contains(damager)) {
+				if(TeamPlayerManager.getPlayersInGameList().contains(damager)) {
 					for(AwakeTurret at : TurretUtil.awake_turrets) {
 						if(at.turret.getEntity() == e.getEntity()) {
 							e.setCancelled(true);
 							pj.remove();
-							if(at.owner != damager) {
+							if(at.owner != damager && !at.extra_exclude.contains(damager)) {
 								at.damage(damager);
 							}
 						}
@@ -1186,7 +1200,7 @@ public class SoloPlayerBattleListener implements Listener {
 		
 		if(battle_info.containsKey(helper)) {
 			
-			SoloPlayerBattleInfo pbi = battle_info.get(helper);
+			TeamPlayerBattleInfo pbi = battle_info.get(helper);
 			pbi.assistences += 1;
 			
 			battle_info.remove(helper);
@@ -1198,7 +1212,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 		} else {
 			
-			battle_info.put(helper, new SoloPlayerBattleInfo(helper));
+			battle_info.put(helper, new TeamPlayerBattleInfo(helper));
 			playAssistence(death, helper);
 			return;
 			
@@ -1217,7 +1231,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			if(battle_info.containsKey(killer)) {
 				
-				SoloPlayerBattleInfo pbi = battle_info.get(killer);
+				TeamPlayerBattleInfo pbi = battle_info.get(killer);
 				pbi.kills += 1;
 				
 				battle_info.remove(killer);
@@ -1228,7 +1242,7 @@ public class SoloPlayerBattleListener implements Listener {
 				
 			} else {
 				
-				battle_info.put(killer, new SoloPlayerBattleInfo(killer));
+				battle_info.put(killer, new TeamPlayerBattleInfo(killer));
 				playDeath(death, killer);
 				return;
 				
@@ -1244,7 +1258,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			System.out.println("yeah");
 			
-			SoloPlayerBattleInfo pbi = battle_info.get(death);
+			TeamPlayerBattleInfo pbi = battle_info.get(death);
 			pbi.alive = false;
 			
 			battle_info.remove(death);
@@ -1255,7 +1269,7 @@ public class SoloPlayerBattleListener implements Listener {
 			
 		} else {
 			
-			battle_info.put(death, new SoloPlayerBattleInfo(death));
+			battle_info.put(death, new TeamPlayerBattleInfo(death));
 			playDeath(death, null);
 			return;
 			
@@ -1264,7 +1278,7 @@ public class SoloPlayerBattleListener implements Listener {
 		/**
 		 * @RemovePlayer
 		 */
-		SoloPlayerManager.deathPlayer(death);
+		TeamPlayerManager.deathPlayer(death);
 		return;
 		
 	}
@@ -1293,6 +1307,7 @@ public class SoloPlayerBattleListener implements Listener {
 	}
 	
 	public enum InGameActionBar {
+		ALLIED_DEAD("&f¡Tu aliado a muerto!"),
 		KILL_ENEMY("&f¡Has matado un enemigo &a&l+%a&f!"),
 	    ASSISTENCE("&f¡Has ganado una asistencia &a&l+%a&f!"),
 	    WINNER("&f¡Has ganado la partida &a&l+%a&f!"),

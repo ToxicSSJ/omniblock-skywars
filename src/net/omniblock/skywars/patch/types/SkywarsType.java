@@ -21,6 +21,7 @@ import omniblock.on.network.packet.assembler.AssemblyType;
 import omniblock.on.network.packet.modifier.PacketModifier;
 
 public enum SkywarsType {
+	
 	NONE(null, null),
 	
 	SW_NORMAL_SOLO(new SoloSkywars(), new SkywarsResolver(
@@ -41,7 +42,11 @@ public enum SkywarsType {
 	
 	SW_Z_SOLO(new SoloSkywars(), new SkywarsResolver(
 															NetworkData.serial,
-															new String[] { "antihacks" , "z" , "solo" } ));
+															new String[] { "antihacks" , "z" , "solo" } )),
+	
+	SW_Z_TEAMS(new TeamSkywars(), new SkywarsResolver(
+															NetworkData.serial,
+															new String[] { "antihacks" , "z" , "teams" } ));
 
 	
 	private SkywarsStarter ss;

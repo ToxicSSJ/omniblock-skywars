@@ -1,8 +1,10 @@
-package net.omniblock.skywars.games.solo.managers;
+package net.omniblock.skywars.games.teams.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -14,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.google.common.collect.Lists;
+
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywars;
@@ -22,11 +26,14 @@ import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
+import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
 
-public class SoloPlayerManager {
+public class TeamPlayerManager {
 
+	private static Map<Player, Player> playersTeams = new HashMap<Player, Player>();
+	
 	private static List<Player> playersInLobby = new ArrayList<Player>();
 	private static List<Player> playersInGame = new ArrayList<Player>();
 	private static List<Player> playersInSpectator = new ArrayList<Player>();
@@ -44,7 +51,19 @@ public class SoloPlayerManager {
 		
 	}
 	
-	public static void winnerPlayer(Player p) {
+	public static void winnerTeam(Player p) {
+		
+		if(playersTeams.containsKey(p)) {
+			
+			Player team = getPlayerTeam(p);
+			
+			if(team != null) {
+				emptyPlayer(team);
+				healPlayer(team);
+				forceFly(team);
+			}
+			
+		}
 		
 		emptyPlayer(p);
 		healPlayer(p);
@@ -60,8 +79,8 @@ public class SoloPlayerManager {
 		healPlayer(p);
 		forceFly(p);
 		
-		if(SoloPlayerManager.getPlayersInGameAmount() >= 1) {
-			p.teleport(SoloPlayerManager.getPlayersInGameList().get(0));
+		if(TeamPlayerManager.getPlayersInGameAmount() >= 1) {
+			p.teleport(TeamPlayerManager.getPlayersInGameList().get(0));
 		} else {
 			p.teleport(SoloSkywars.lobbyschematic.getLocation());
 		}
@@ -138,7 +157,7 @@ public class SoloPlayerManager {
 		
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
 			
-			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (SoloPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + SoloSkywars.cagesLocations.size() + ")"));
+			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (SoloSkywars.cagesLocations.size() * 2) + ")"));
 			
 			for(Player p2 : getPlayersInLobbyListAsCopy()) {
 				if(p.getUniqueId().equals(p2.getUniqueId())) {
@@ -168,6 +187,22 @@ public class SoloPlayerManager {
 		return true;
 	}
 	
+	public static boolean addTeam(Player p1, Player p2) {
+			
+		if(playersTeams.containsKey(p1)) {
+			playersTeams.remove(p1);
+		}
+		
+		if(playersTeams.containsKey(p2)) {
+			playersTeams.remove(p2);
+		}
+		
+		playersTeams.put(p1, p2);
+		playersTeams.put(p2, p1);
+		
+		return true;
+	}
+	
 	public static void removePlayer(Player p) {
 		playersInLobby.remove(p);
 		
@@ -175,6 +210,24 @@ public class SoloPlayerManager {
 			//TODO: Eliminar de la partida
 			playersInGame.remove(p);
 		}
+	}
+	
+	public static Player getPlayerTeam(Player p) {
+		
+		if(playersTeams.containsKey(p)) {
+			return playersTeams.get(p);
+		}
+		
+		return null;
+	}
+	
+	public static boolean hasTeam(Player p) {
+		
+		if(playersTeams.containsKey(p)) {
+			return playersTeams.get(p) != null;
+		}
+		
+		return false;
 		
 	}
 	
@@ -209,33 +262,73 @@ public class SoloPlayerManager {
 
 	public static void sendAllPlayersToCages() {
 		
+		List<Player> processed_players = new ArrayList<Player>();
+		
 		List<Location> cageLocations = SoloSkywars.getCageLocations();
 		Collections.shuffle(cageLocations);
 		
 		for(int i = 0; i < getPlayersInGameAmount(); i++) {
 			
-			Player player = playersInGame.get(i);
-			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
+			boolean hasteam = false;
 			
-			if(cage_obj instanceof CageType) {
+			Player player = playersInGame.get(i);
+			Player team = playersTeams.get(player);
+			
+			if(processed_players.contains(player)) continue;
+			
+			if(team != null && team.isOnline()) {
+				if(!processed_players.contains(team)) {
+					hasteam = true;
+				}
+			}
+			
+			processed_players.add(player); if(hasteam) processed_players.add(team);
+			
+			
+			
+			List<Object> cages = Lists.newArrayList();
+			
+			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
+			Object two_obj = null;
+			
+			if(hasteam) {
+				two_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(team).getSelected());
+			}
+			
+			cages.add(cage_obj); if(hasteam && two_obj != null) { cages.add(two_obj); }
+			Object selected_obj = cages.get(NumberUtil.getRandomInt(0, cages.size() - 1));
+			
+			
+			if(selected_obj instanceof CageType) {
 				
 				CageType ct = (CageType) cage_obj;
 				Location cageLocation = cageLocations.get(i);
 				
 				CageManager.registerCage(ct, cageLocation);
-				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
 				
+				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
 				CageManager.cagesdata.put(player, cageLocation);
+				
+				if(hasteam) {
+					team.teleport(cageLocation.clone().add(0.5, 0, 0.5));
+					CageManager.cagesdata.put(team, cageLocation);
+				}
 				
 				continue;
 				
 			} else {
+				
 				Location cageLocation = cageLocations.get(i);
 				
 				CageManager.registerCage(CageType.DEFAULT, cageLocation);
-				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
 				
+				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
 				CageManager.cagesdata.put(player, cageLocation);
+				
+				if(hasteam) {
+					team.teleport(cageLocation.clone().add(0.5, 0, 0.5));
+					CageManager.cagesdata.put(team, cageLocation);
+				}
 				
 				continue;
 				
@@ -255,7 +348,15 @@ public class SoloPlayerManager {
 	}
 
 	public static void setPlayersInSpectator(List<Player> playersInSpectator) {
-		SoloPlayerManager.playersInSpectator = playersInSpectator;
+		TeamPlayerManager.playersInSpectator = playersInSpectator;
+	}
+
+	public static Map<Player, Player> getPlayersTeams() {
+		return playersTeams;
+	}
+
+	public static void setPlayersTeams(Map<Player, Player> playersTeams) {
+		TeamPlayerManager.playersTeams = playersTeams;
 	}
 
 	public enum InGameTitles {

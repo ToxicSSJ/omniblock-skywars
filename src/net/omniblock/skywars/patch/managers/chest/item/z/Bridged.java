@@ -57,6 +57,7 @@ public class Bridged implements ItemType, Listener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void breakBridged(PlayerMoveEvent event) {
 		
@@ -79,6 +80,8 @@ public class Bridged implements ItemType, Listener {
 	
 	public void deleteBirdged(Player player, Block block) {
 		new BukkitRunnable() {
+			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				

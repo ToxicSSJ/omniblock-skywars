@@ -29,8 +29,8 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerLineManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
-import net.omniblock.skywars.games.solo.object.PlayerBattleInfo;
-import net.omniblock.skywars.games.solo.object.PlayerBattleInfo.PlayerBattleInfoUtils;
+import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
+import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo.PlayerBattleInfoUtils;
 import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
@@ -201,12 +201,12 @@ public class SoloSkywars implements SkywarsStarter {
 	
 	public void finalize(Player winner) {
 		
-		final Map<PlayerBattleInfo, Integer> cache_top = PlayerBattleInfoUtils.getTop(SoloPlayerBattleListener.battle_info);
-		final Map<Integer, PlayerBattleInfo> top = PlayerBattleInfoUtils.reverse(cache_top);
+		final Map<SoloPlayerBattleInfo, Integer> cache_top = PlayerBattleInfoUtils.getTop(SoloPlayerBattleListener.battle_info);
+		final Map<Integer, SoloPlayerBattleInfo> top = PlayerBattleInfoUtils.reverse(cache_top);
 		
-		final PlayerBattleInfo TOP_1 = top.get(1);
-		final PlayerBattleInfo TOP_2 = top.get(2);
-		final PlayerBattleInfo TOP_3 = top.get(3);
+		final SoloPlayerBattleInfo TOP_1 = top.get(1);
+		final SoloPlayerBattleInfo TOP_2 = top.get(2);
+		final SoloPlayerBattleInfo TOP_3 = top.get(3);
 		
 		boolean win = winner != null;
 		
@@ -267,7 +267,7 @@ public class SoloSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TOP_2.getTopTierMessage(2));
 					Bukkit.broadcastMessage(TOP_3.getTopTierMessage(3));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
-					for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
+					for(Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 						
 						if(!k.getKey().unknow) {
 							Player p = k.getKey().player;
@@ -282,7 +282,7 @@ public class SoloSkywars implements SkywarsStarter {
 					}
 					for(Player p : SoloPlayerManager.getPlayersInSpectator()) {
 						boolean contains = false;
-						for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
+						for(Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 							if(!k.getKey().unknow) {
 								if(k.getKey().player != null) {
 									if(p == k.getKey().player) {
@@ -310,7 +310,7 @@ public class SoloSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TOP_3.getTopTierMessage(3));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					
-					for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
+					for(Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 						
 						if(!k.getKey().unknow) {
 							Player p = k.getKey().player;
@@ -326,7 +326,7 @@ public class SoloSkywars implements SkywarsStarter {
 					
 					for(Player p : SoloPlayerManager.getPlayersInSpectator()) {
 						boolean contains = false;
-						for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
+						for(Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 							if(!k.getKey().unknow) {
 								if(k.getKey().player != null) {
 									if(p == k.getKey().player) {
@@ -356,7 +356,7 @@ public class SoloSkywars implements SkywarsStarter {
 					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
 				}
 				
-				for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
+				for(Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 					
 					if(!k.getKey().unknow) {
 						if(k.getKey().player != null) {
@@ -407,7 +407,7 @@ public class SoloSkywars implements SkywarsStarter {
 					p.playSound(p.getLocation(), Sound.HORSE_SADDLE, 10, -10);
 				}
 				
-				for(Map.Entry<PlayerBattleInfo, Integer> k : cache_top.entrySet()) {
+				for(Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 					
 					if(!k.getKey().unknow) {
 						if(k.getKey().player != null) {
@@ -559,7 +559,7 @@ public class SoloSkywars implements SkywarsStarter {
 		
 	}
 	
-	public List<Location> getCageLocations() {
+	public static List<Location> getCageLocations() {
 		return cagesLocations;
 	}
 

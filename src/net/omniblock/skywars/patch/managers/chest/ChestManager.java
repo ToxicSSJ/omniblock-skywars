@@ -17,6 +17,7 @@ import net.omniblock.skywars.util.Scan;
 
 public class ChestManager {
 	
+	private static FillChest fillchest = null;
 
 	public static List<Location> normalchest = new ArrayList<Location>();
 	public static List<Location> trappedchest = new ArrayList<Location>();
@@ -40,16 +41,16 @@ public class ChestManager {
 
 		switch (mt) {
 		case NORMAL:
-			FillChest itemN = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 6, 8);
-			itemN.fillChest();
+			fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 6, 8);
+			fillchest.fillChest();
 			break;
 		case INSANE:
-			FillChest itemI = new FillChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 6, 8);
-			itemI.fillChest();
+			fillchest = new FillChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 6, 8);
+			fillchest.fillChest();
 			break;
 		case Z:
-			FillChest itemZ = new FillChest(ItemZ.normalChest(), ItemZ.trappedChest(), 6, 8);
-			itemZ.fillChest();
+			fillchest = new FillChest(ItemZ.normalChest(), ItemZ.trappedChest(), 6, 8);
+			fillchest.fillChest();
 			break;
 		default:
 			break;
@@ -57,6 +58,10 @@ public class ChestManager {
 		
 	}
 
+	public FillChest getFillChest() {
+		return fillchest;
+	}
+	
 	public List<Location> getNormalchest() {
 		return normalchest;
 	}

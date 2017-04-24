@@ -38,13 +38,16 @@ import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
-import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.ClonData;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.PlayerSavedData;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
+import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.TitleUtil;
@@ -192,7 +195,16 @@ public class Bombardier implements ItemType, Listener {
 					if(entity.getType() == EntityType.PLAYER) {
 						Player p = (Player) entity;
 						
-						if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
+						if((SoloPlayerManager.getPlayersInGameList().contains(p) || TeamPlayerManager.getPlayersInGameList().contains(p))) {
+							
+							if(   Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+									   || Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+									   || Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+								
+								TeamPlayerBattleListener.makeZDamage(p, damager, 6, net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.BOMBARDIER);
+								continue;
+								
+							}
 							
 							SoloPlayerBattleListener.makeZDamage(p, damager, 6, DamageCauseZ.BOMBARDIER);
 							continue;
@@ -206,7 +218,7 @@ public class Bombardier implements ItemType, Listener {
 				
 			    for(Block b : cube){
 					if(b != null){
-						if(!SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(b)){
+						if(!CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b)){
 							if(NumberUtil.getRandomInt(1, 8) == 2) {
 								bounceBlock(b, (float) (0.5), true);
 							} else {

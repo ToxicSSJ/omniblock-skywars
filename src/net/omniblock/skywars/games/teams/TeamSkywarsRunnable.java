@@ -1,4 +1,4 @@
-package net.omniblock.skywars.games.solo;
+package net.omniblock.skywars.games.teams;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,13 +18,14 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
-import net.omniblock.skywars.games.solo.types.MatchType;
+import net.omniblock.skywars.games.teams.TeamSkywars;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.games.teams.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.CageManager;
-import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
 import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
@@ -32,24 +33,24 @@ import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
+import net.omniblock.skywars.util.MapUtils;
+import net.omniblock.skywars.util.SoundPlayer;
+import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
 import net.omniblock.skywars.util.ContaminationUtil.Contamination;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationInfo;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationTroop;
 import net.omniblock.skywars.util.DestructionUtil.Destruction;
 import net.omniblock.skywars.util.DestructionUtil.DestructionInfo;
-import net.omniblock.skywars.util.MapUtils;
-import net.omniblock.skywars.util.SoundPlayer;
-import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
 import omniblock.on.util.TextUtil;
 import omniblock.ot.errorapi.ErrorAPI;
 
-public class SoloSkywarsRunnable extends BukkitRunnable {
+public class TeamSkywarsRunnable extends BukkitRunnable {
+
+	private static TeamSkywars gStarter = null;
 	
-	private static SoloSkywars gStarter = null;
-	
-	public static int MIN_PLAYERS_TO_START = 1;
+	public static int MIN_PLAYERS_TO_START = 2;
 	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 	
 	private final int timeLobby = 15;
@@ -63,7 +64,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	public ChestManager chestmanager;
 	public FillChest fillchest;
 	
-	public SoloSkywarsRunnable(SoloSkywars starter) {
+	public TeamSkywarsRunnable(TeamSkywars starter) {
 		
 		gStarter = starter;
 		
@@ -73,16 +74,16 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	public void run() {
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
 			
-			if(SoloPlayerManager.getPlayersInLobbyAmount() >= MIN_PLAYERS_TO_START){
+			if(TeamPlayerManager.getPlayersInLobbyAmount() >= MIN_PLAYERS_TO_START){
 				
 				if(remainingTimeLobby <= 0) {
 					
 					NetworkData.broadcaster.read("$ LOCK");
 					
 					chestmanager = new ChestManager();
-					SoloSkywars.lobbyschematic.removePasted();
+					TeamSkywars.lobbyschematic.removePasted();
 					
-					switch (SoloSkywars.getCurrentMatchType()) {
+					switch (TeamSkywars.getCurrentMatchType()) {
 						case NORMAL:
 							fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 10, 12);
 							break;
@@ -96,12 +97,12 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							break;
 					}
 					
-					SoloPlayerManager.transferAllPlayersToInGame();
-					SoloPlayerManager.sendAllPlayersToCages();
+					TeamPlayerManager.transferAllPlayersToInGame();
+					TeamPlayerManager.sendAllPlayersToCages();
 					
 					Skywars.updateGameState(SkywarsGameState.IN_PRE_GAME);
 					
-					sendPreGameTitles(getGameTitle(SoloSkywars.getCurrentMatchType()));
+					sendPreGameTitles(getGameTitle(TeamSkywars.getCurrentMatchType()));
 					
 				}
 				
@@ -111,10 +112,10 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 				if(remainingTimeLobby == timeLobby || remainingTimeLobby == (timeLobby / 2) || remainingTimeLobby == 10 || remainingTimeLobby <= 5 && remainingTimeLobby > 0) {
 					Bukkit.broadcastMessage(TextUtil.format(" &8&l» &7La partida inicia en &a" + remainingTimeLobby + "&7 segundos."));
-					SoloPlayerManager.playSound(Sound.CLICK, 1, 15);
+					TeamPlayerManager.playSound(Sound.CLICK, 1, 15);
 				}
 				
-				for(Player p : SoloPlayerManager.getPlayersInLobbyList()){
+				for(Player p : TeamPlayerManager.getPlayersInLobbyList()){
 					
 					if(remainingTimeLobby != 0){
 						
@@ -145,7 +146,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					
 				}
 				
-				for(Player p : SoloPlayerManager.getPlayersInLobbyList()){
+				for(Player p : TeamPlayerManager.getPlayersInLobbyList()){
 					ActionBarApi.sendActionBar(p, TextUtil.format("&8&m&l-[&c&m&l--&r&7 Esperando a más jugadores  &c&m&l--&8&m&l]-"));
 				}
 
@@ -157,7 +158,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 				remainingTimeCages--;
 				
-				for(Player p : SoloPlayerManager.getPlayersInGameList()) {
+				for(Player p : TeamPlayerManager.getPlayersInGameList()) {
 					
 					if(remainingTimeCages <= 5) {
 						p.playSound(p.getLocation(), Sound.CLICK, 1, 10);
@@ -171,7 +172,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				
 				if(remainingTimeCages <= 0) {
 					
-					for(Player p : SoloPlayerManager.getPlayersInGameList()) {
+					for(Player p : TeamPlayerManager.getPlayersInGameList()) {
 						
 						CustomProtocolManager.PROTECTED_PLAYER_LIST.add(p);
 						
@@ -223,22 +224,22 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							
 						}.runTaskTimer(Skywars.getInstance(), 0l, 20l);
 						
-						SoloPlayerManager.playSound(Sound.LEVEL_UP, 1F, 1F);
+						TeamPlayerManager.playSound(Sound.LEVEL_UP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));
 						
 					}
 					
-					SoloPlayerBattleListener.setBattleInfo();
+					TeamPlayerBattleListener.setBattleInfo();
 					
 					CageManager.removeCages();
 					
-					if(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
-						for(Player p : SoloPlayerManager.getPlayersInGameList()) {
+					if(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
+						for(Player p : TeamPlayerManager.getPlayersInGameList()) {
 							if(CageManager.cagesdata.containsKey(p)) {
 								CageZCameraUtil.makeElevation(p, CageManager.cagesdata.get(p));
 								continue;
 							} else {
-								SoloPlayerManager.deathPlayer(p);
+								TeamPlayerManager.deathPlayer(p);
 								continue;
 							}
 						}
@@ -261,12 +262,12 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
+			if(TeamPlayerManager.getPlayersInGameAmount() == 2) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
-				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));
+				gStarter.finalize(TeamPlayerManager.getPlayersInGameList().get(0));
 				
-			} else if(SoloPlayerManager.getPlayersInGameAmount() <= 0) {
+			} else if(TeamPlayerManager.getPlayersInGameAmount() <= 0) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(null);
@@ -351,7 +352,6 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			}
 			
 			SoundPlayer.sendSound(apocalipsis.getLobbySchematicLoc(), "skywars.apocalipsis_intro", 5000);
-			
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -403,7 +403,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		 * @Titles
 		 */
 		for(TitleFormat title : ingametitle.getTitles()){
-			for(Player p : SoloPlayerManager.getPlayersInGameList()){
+			for(Player p : TeamPlayerManager.getPlayersInGameList()){
 				title.send(p);
 			}
 		}
@@ -412,7 +412,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		 * @Sounds
 		 */
 		if(ingametitle.getSound() != null) {
-			for(Player p : SoloPlayerManager.getPlayersInGameList()){
+			for(Player p : TeamPlayerManager.getPlayersInGameList()){
 				p.playSound(p.getLocation(), ingametitle.getSound(), 5, -5);
 			}
 		}
@@ -439,7 +439,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				new BukkitRunnable(){
 					@Override
 					public void run(){
-						for(Player p : SoloPlayerManager.getPlayersInGameList()){
+						for(Player p : TeamPlayerManager.getPlayersInGameList()){
 							title.send(p);
 						}
 					}
@@ -453,7 +453,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			
 			TitleFormat title = pregametitles.getTitles()[0];
 			
-			for(Player p : SoloPlayerManager.getPlayersInGameList()){
+			for(Player p : TeamPlayerManager.getPlayersInGameList()){
 				title.send(p);
 			}
 			
@@ -569,7 +569,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					 					  new TitleFormat(0, 8, 0, "",
 					 							 		  TextUtil.format("&2Añadiendo cofres...")),
 					 					 new TitleFormat(0, 8, 0, "",
-			 							 		  		  TextUtil.format("&9Añadiendo a Herobrine...")),
+			 							 		  		  TextUtil.format("&9Añadiendo a 2 Herobrines...")),
 					 					  new TitleFormat(0, 8, 5, "",
 					 							 	 	  TextUtil.format("&4Preparando impulso...")) } );
 		

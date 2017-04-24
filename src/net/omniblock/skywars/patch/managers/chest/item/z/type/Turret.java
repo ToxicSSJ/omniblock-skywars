@@ -28,8 +28,10 @@ import com.google.common.collect.Lists;
 
 import net.citizensnpcs.api.npc.NPC;
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.AwakeTurret;
+import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 import omniblock.on.util.TextUtil;
@@ -71,6 +73,19 @@ public interface Turret {
 				
 				this.owner = owner;
 				extra_exclude.add(owner);
+				
+				if(   Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+				   || Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+				   || Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+					
+					if(TeamPlayerManager.hasTeam(owner)) {
+						
+						Player team = TeamPlayerManager.getPlayerTeam(owner);
+						extra_exclude.add(team);
+						
+					}
+					
+				}
 				
 			}
 			
@@ -239,8 +254,8 @@ public interface Turret {
 				
 				for(Block b : components) {
 					
-					if(SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.contains(b)) {
-						SoloPlayerCustomProtocols.PROTECTED_BLOCK_LIST.remove(b);
+					if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b)) {
+						CustomProtocolManager.PROTECTED_BLOCK_LIST.remove(b);
 					}
 					
 					if(b.getType() == Material.HOPPER) {

@@ -1,4 +1,4 @@
-package net.omniblock.skywars.games.solo.object;
+package net.omniblock.skywars.games.teams.object;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,13 +9,16 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.util.TextUtil;
 
-public class PlayerBattleInfo {
+public class TeamPlayerBattleInfo {
 	
 	public Player player;
+	public Player team;
+	
 	public boolean unknow = false;
 	
 	public static final int money_kill = 20;
@@ -41,13 +44,14 @@ public class PlayerBattleInfo {
 	public int kills = 0;
 	public int assistences = 0;
 	
-	public PlayerBattleInfo(Player player) {
+	public TeamPlayerBattleInfo(Player player) {
 		
 		this.player = player;
+		this.team = TeamPlayerManager.getPlayerTeam(player);
 		
 	}
 	
-	public PlayerBattleInfo(boolean unknow) {
+	public TeamPlayerBattleInfo(boolean unknow) {
 		
 		this.unknow = unknow;
 		this.alive = false;
@@ -117,13 +121,13 @@ public class PlayerBattleInfo {
 		
 	}
 	
-	public int getTopNumber(Map<PlayerBattleInfo, Integer> topmap) {
+	public int getTopNumber(Map<TeamPlayerBattleInfo, Integer> topmap) {
 		
 		int top = 0;
 		
 		if(!unknow) {
 			
-			for(Map.Entry<PlayerBattleInfo, Integer> k : topmap.entrySet()) {
+			for(Map.Entry<TeamPlayerBattleInfo, Integer> k : topmap.entrySet()) {
 				if(k.getKey().player == player) {
 					top = k.getValue();
 					break;
@@ -181,24 +185,24 @@ public class PlayerBattleInfo {
 	public static class PlayerBattleInfoUtils {
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static Map<PlayerBattleInfo, Integer> getTop(Map<Player, PlayerBattleInfo> pbi){
+		public static Map<TeamPlayerBattleInfo, Integer> getTop(Map<Player, TeamPlayerBattleInfo> battle_info){
 			
 			int posx = 1;
 			List<Player> pasted = new ArrayList<Player>();
 			
-			Map<PlayerBattleInfo, Integer> top = new HashMap<PlayerBattleInfo, Integer>();
-			Map<PlayerBattleInfo, Double> average = new HashMap<PlayerBattleInfo, Double>();
+			Map<TeamPlayerBattleInfo, Integer> top = new HashMap<TeamPlayerBattleInfo, Integer>();
+			Map<TeamPlayerBattleInfo, Double> average = new HashMap<TeamPlayerBattleInfo, Double>();
 			
-			int amount = pbi.size();
+			int amount = battle_info.size();
 			if(amount >= 1) {
 				
-				for(Map.Entry<Player, PlayerBattleInfo> k : pbi.entrySet()) {
+				for(Map.Entry<Player, TeamPlayerBattleInfo> k : battle_info.entrySet()) {
 					
 					if(!pasted.contains(k.getKey())) {
 						
 						pasted.add(k.getKey());
 						
-						PlayerBattleInfo cache_pbi = k.getValue();
+						TeamPlayerBattleInfo cache_pbi = k.getValue();
 						average.put(cache_pbi, cache_pbi.getAverage());
 						
 					}
@@ -209,13 +213,13 @@ public class PlayerBattleInfo {
 
 				Arrays.sort(a, new Comparator() {
 					public int compare(Object o1, Object o2) {
-				        return ((Map.Entry<PlayerBattleInfo, Double>) o2).getValue()
-				                   .compareTo(((Map.Entry<PlayerBattleInfo, Double>) o1).getValue());
+				        return ((Map.Entry<TeamPlayerBattleInfo, Double>) o2).getValue()
+				                   .compareTo(((Map.Entry<TeamPlayerBattleInfo, Double>) o1).getValue());
 				    }
 				});
 				
 				for (Object e : a) {
-					top.put(((Map.Entry<PlayerBattleInfo, Double>) e).getKey(), posx);
+					top.put(((Map.Entry<TeamPlayerBattleInfo, Double>) e).getKey(), posx);
 					posx++;
 				}
 				
@@ -224,7 +228,7 @@ public class PlayerBattleInfo {
 			if(top.size() < 3) {
 				
 				for(int i = top.size(); i <= 3; i++) {
-					top.put(new PlayerBattleInfo(true), i);
+					top.put(new TeamPlayerBattleInfo(true), i);
 				}
 				
 			}
