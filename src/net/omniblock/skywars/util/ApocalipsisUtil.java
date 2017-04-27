@@ -21,8 +21,8 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.Bombardier;
 import net.omniblock.skywars.patch.managers.chest.item.z.Meteoro;
@@ -79,7 +79,7 @@ public class ApocalipsisUtil {
 					
 					rusher_cooldown = NumberUtil.getRandomInt(15, 30);
 					
-					Location based_loc = SoloSkywars.lobbyschematic.getLocation();
+					Location based_loc = MapManager.lobbyschematic.getLocation();
 					
 					new BukkitRunnable() {
 						
@@ -224,7 +224,7 @@ public class ApocalipsisUtil {
 					|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
 					|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO){
 				
-				return SoloSkywars.lobbyschematic.getLocation();
+				return MapManager.lobbyschematic.getLocation();
 				
 			} else {
 				

@@ -154,6 +154,9 @@ public class SoloPlayerBattleInfo {
 	}
 	
 	public String getTopTierMessage(int top) {
+		
+		System.out.println("top -> " + top);
+		
 		if(top >= 1 && top <= 3) {
 			if(top == 1) {
 				if(isUnknow()) {

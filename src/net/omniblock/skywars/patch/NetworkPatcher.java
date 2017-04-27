@@ -114,6 +114,8 @@ public class NetworkPatcher implements Patcher {
 
 	public SkywarsType getTypeByBestResolver(String[] args){
 		
+		System.out.println(args.toString());
+		
 		String[][] cacheresolver = getResolversArgs();
 		String[] exact = ArrayUtils.getBestAssert(args, cacheresolver);
 		

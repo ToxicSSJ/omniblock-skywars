@@ -49,6 +49,8 @@ public class SoloPlayerToggleListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		
+		System.out.println("JOIN IN SOLO PLAYER TEAM EVENT");
+		
 		if(Verifier == false) {
 			Verifier = true;
 		}

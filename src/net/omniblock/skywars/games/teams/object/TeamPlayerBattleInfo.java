@@ -157,7 +157,30 @@ public class TeamPlayerBattleInfo {
 		
 	}
 	
+	public String getAlliedStatus() {
+		
+		if(team == null) {
+			
+			return TextUtil.format("&7Sin equipo.");
+			
+		} else {
+			
+			if(!team.isOnline() || team.isDead() || !TeamPlayerManager.getPlayersInGameList().contains(team)) {
+				
+				return TextUtil.format("&7" + team.getName() + " ✖");
+				
+			} else {
+				
+				return TextUtil.format("&a" + team.getName() + " ❤");
+				
+			}
+			
+		}
+		
+	}
+	
 	public String getTopTierMessage(int top) {
+		
 		if(top >= 1 && top <= 3) {
 			if(top == 1) {
 				if(isUnknow()) {
@@ -179,6 +202,7 @@ public class TeamPlayerBattleInfo {
 				}
 			}
 		}
+		
 		return TextUtil.getCenteredMessage("&r           &c&l? Lugar&r &8&l&m-&r &7zlToxicNetherlz &8&l(&c8 K &8&l&m-&r &34 A&8&l)");
 	}
 	

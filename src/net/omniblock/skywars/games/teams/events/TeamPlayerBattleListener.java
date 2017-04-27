@@ -47,6 +47,15 @@ public class TeamPlayerBattleListener implements Listener {
 		for(Player k : TeamPlayerManager.getPlayersInGameList()) {
 			
 			TeamPlayerBattleInfo pbi = new TeamPlayerBattleInfo(k);
+			
+			if(TeamPlayerManager.hasTeam(k)) {
+				
+				pbi.team = TeamPlayerManager.getPlayerTeam(k);
+				battle_info.put(k, pbi);
+				continue;
+				
+			}
+			
 			battle_info.put(k, pbi);
 			
 		}

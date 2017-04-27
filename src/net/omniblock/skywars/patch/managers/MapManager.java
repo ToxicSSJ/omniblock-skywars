@@ -16,7 +16,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.Configuration;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
@@ -61,6 +60,7 @@ public class MapManager {
 	public static List<String> availablesZWorldsNames = Lists.newArrayList();
 	
 	public static MapType currentMapType = MapType.UNKNOWN;
+	public static LobbySchematic lobbyschematic;
 	
 	/**
 	 * Debido a que la clase se comporta como una clase estática, el constructor se establece como privado para evitar posibles confuciones.
@@ -107,7 +107,7 @@ public class MapManager {
 		
 		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
 		
-		SoloSkywars.lobbyschematic = new LobbySchematic();
+		lobbyschematic = new LobbySchematic();
 		
 		for(MapType mt : MapType.values()) {
 			
@@ -252,7 +252,8 @@ public class MapManager {
 				Scan.WORLD_CHUNKS.put(NEW_MAP_NORMAL.getName(), MCAUtil.getChunksByMCAFiles(NEW_MAP_NORMAL));
 			}
 			
-			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_NORMAL, mt);
+			lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_NORMAL, mt);
+			
 			List<Location> scannedBlocks = Scan.oneMaterial(NEW_MAP_NORMAL, Material.SPONGE);
 			
 			for(Location loc : scannedBlocks) {
@@ -320,7 +321,8 @@ public class MapManager {
 				Scan.WORLD_CHUNKS.put(NEW_MAP_Z.getName(), MCAUtil.getChunksByMCAFiles(NEW_MAP_Z));
 			}
 			
-			SoloSkywars.lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_Z, mt);
+			lobbyschematic.scanAndPasteLobbySchematic(NEW_MAP_Z, mt);
+			
 			List<Location> scannedBlocks = Scan.oneMaterial(NEW_MAP_Z, Material.SPONGE);
 			
 			for(Location loc : scannedBlocks) {

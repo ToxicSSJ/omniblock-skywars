@@ -3,6 +3,9 @@ package net.omniblock.skywars.games.teams.managers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -20,18 +23,20 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.solo.SoloSkywars;
+import net.omniblock.skywars.games.teams.TeamSkywars;
 import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
+import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
 
 public class TeamPlayerManager {
-
+	
 	private static Map<Player, Player> playersTeams = new HashMap<Player, Player>();
 	
 	private static List<Player> playersInLobby = new ArrayList<Player>();
@@ -82,7 +87,7 @@ public class TeamPlayerManager {
 		if(TeamPlayerManager.getPlayersInGameAmount() >= 1) {
 			p.teleport(TeamPlayerManager.getPlayersInGameList().get(0));
 		} else {
-			p.teleport(SoloSkywars.lobbyschematic.getLocation());
+			p.teleport(MapManager.lobbyschematic.getLocation());
 		}
 		
 		SpectatorManager.addPlayerToSpectator(p);
@@ -157,7 +162,7 @@ public class TeamPlayerManager {
 		
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
 			
-			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (SoloSkywars.cagesLocations.size() * 2) + ")"));
+			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (TeamSkywars.cagesLocations.size() * 2) + ")"));
 			
 			for(Player p2 : getPlayersInLobbyListAsCopy()) {
 				if(p.getUniqueId().equals(p2.getUniqueId())) {
@@ -169,7 +174,7 @@ public class TeamPlayerManager {
 			healPlayer(p);
 			
 			p.spigot().setCollidesWithEntities(true);
-			p.teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
+			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
 			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
 			
 			p.setGameMode(GameMode.ADVENTURE);
@@ -203,13 +208,93 @@ public class TeamPlayerManager {
 		return true;
 	}
 	
+	public static void fillTeams() {
+		
+		HashSet<Player> noteamed = new LinkedHashSet<Player>();
+		HashSet<Player> cache = new LinkedHashSet<Player>();
+		
+		for(Map.Entry<Player, Player> k : playersTeams.entrySet()) {
+			
+			if(k.getValue() != null) {
+				cache.add(k.getValue());
+			}
+			
+			if(k.getKey() != null) {
+				cache.add(k.getKey());
+			}
+			
+		}
+		
+		for(Player p : playersInLobby) {
+			
+			System.out.println("p = " + p.getName());
+			
+			if(!cache.contains(p)) {
+				noteamed.add(p);
+			}
+			
+		} cache.clear();
+		
+		Iterator<Player> iterate = noteamed.iterator();
+		
+		while(iterate.hasNext()) {
+			
+			Player p1 = iterate.next();
+			
+			if(iterate.hasNext()) {
+				
+				Player p2 = iterate.next();
+				addTeam(p1, p2);
+				continue;
+				
+			} else {
+				
+				playersTeams.put(p1, null);
+				break;
+				
+			}
+			
+		}
+		
+		
+	}
+	
+	public static boolean removeTeam(Player p) {
+		
+		if(playersTeams.containsKey(p)) {
+			playersTeams.remove(p);
+		}
+		
+		if(playersTeams.containsValue(p)) {
+			
+			for(Map.Entry<Player, Player> k : MapUtils.clone(playersTeams).entrySet()) {
+				
+				if(k.getValue() == null) continue;
+				
+				Player val = k.getValue();
+				if(val == p) {
+					playersTeams.put(k.getKey(), null);
+					break;
+				}
+				
+				continue;
+				
+			}
+			
+		}
+		
+		return true;
+		
+	}
+	
 	public static void removePlayer(Player p) {
+		
 		playersInLobby.remove(p);
 		
 		if(playersInGame.contains(p)) {
-			//TODO: Eliminar de la partida
 			playersInGame.remove(p);
 		}
+		
 	}
 	
 	public static Player getPlayerTeam(Player p) {
@@ -232,8 +317,12 @@ public class TeamPlayerManager {
 	}
 	
 	public static void transferAllPlayersToInGame() {
+		
+		fillTeams();
+		
 		playersInGame.addAll(playersInLobby);
 		playersInLobby.clear();
+		
 	}
 	
 	public static int getPlayersInLobbyAmount() {
@@ -264,7 +353,7 @@ public class TeamPlayerManager {
 		
 		List<Player> processed_players = new ArrayList<Player>();
 		
-		List<Location> cageLocations = SoloSkywars.getCageLocations();
+		List<Location> cageLocations = TeamSkywars.getCageLocations();
 		Collections.shuffle(cageLocations);
 		
 		for(int i = 0; i < getPlayersInGameAmount(); i++) {

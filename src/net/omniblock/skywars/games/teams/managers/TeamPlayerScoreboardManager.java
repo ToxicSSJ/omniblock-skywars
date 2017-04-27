@@ -19,9 +19,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.SoloSkywars;
-import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
-import net.omniblock.skywars.games.solo.types.MatchType;
+import net.omniblock.skywars.games.teams.TeamSkywars;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
+import net.omniblock.skywars.games.teams.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.util.TimeUtil;
@@ -52,7 +52,7 @@ public class TeamPlayerScoreboardManager {
 	
 	public static void initialize(){
 		
-		MatchType matchtype = SoloSkywars.getCurrentMatchType();
+		MatchType matchtype = TeamSkywars.getCurrentMatchType();
 		
 		switch(matchtype){
 			case INSANE:
@@ -79,7 +79,7 @@ public class TeamPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -94,8 +94,8 @@ public class TeamPlayerScoreboardManager {
 													   TextUtil.format("&b&lGanador:"),
 													   TextUtil.format(" &a&l» &7" + "Unknow"),
 													   TextUtil.format("   "),
-													   TextUtil.format("&b&lOmnicoins: &a&l+&a" + SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
-													   TextUtil.format("&b&lExperiencia: &9&l+&9" + SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
+													   TextUtil.format("&b&lOmnicoins: &a&l+&a" + TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
+													   TextUtil.format("&b&lExperiencia: &9&l+&9" + TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
 													   TextUtil.format("    "),
 													   TextUtil.format("&ewww.omniblock.net")});
 								}
@@ -104,7 +104,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -115,13 +115,15 @@ public class TeamPlayerScoreboardManager {
 													   	   TextUtil.format(" "),
 													   	   TextUtil.format(INGAME_NEXT_EVENT),
 													   	   TextUtil.format("  "),
-													   	   TextUtil.format("&b&lAsesinatos: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).kills),
-													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
-													       TextUtil.format("   "),
+													   	   TextUtil.format("&b&lEquipo: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).getAlliedStatus()),
+													   	   TextUtil.format("   "),
+													   	   TextUtil.format("&b&lAsesinatos: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).kills),
+													       TextUtil.format("&b&lAsistencias: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).assistences),
+													       TextUtil.format("    "),
 													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 													       TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 													   	   TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-													   	   TextUtil.format("    "),
+													   	   TextUtil.format("     "),
 													   	   TextUtil.format("&ewww.omniblock.net")});
 								}
 								break;
@@ -129,7 +131,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										TeamPlayerManager.getPlayersInLobbyList(), 
@@ -186,7 +188,7 @@ public class TeamPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -201,8 +203,8 @@ public class TeamPlayerScoreboardManager {
 													   TextUtil.format("&b&lGanador:"),
 													   TextUtil.format(" &a&l» &7" + "Unknow"),
 													   TextUtil.format("   "),
-													   TextUtil.format("&b&lOmnicoins: &a&l+&a" + SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
-													   TextUtil.format("&b&lExperiencia: &9&l+&9" + SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
+													   TextUtil.format("&b&lOmnicoins: &a&l+&a" + TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
+													   TextUtil.format("&b&lExperiencia: &9&l+&9" + TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
 													   TextUtil.format("    "),
 													   TextUtil.format("&ewww.omniblock.net")});
 								}
@@ -211,7 +213,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -222,13 +224,15 @@ public class TeamPlayerScoreboardManager {
 													   	   TextUtil.format(" "),
 													   	   TextUtil.format(INGAME_NEXT_EVENT),
 													   	   TextUtil.format("  "),
-													   	   TextUtil.format("&b&lAsesinatos: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).kills),
-													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
-													       TextUtil.format("   "),
+													   	   TextUtil.format("&b&lEquipo: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).getAlliedStatus()),
+													   	   TextUtil.format("   "),
+													   	   TextUtil.format("&b&lAsesinatos: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).kills),
+													       TextUtil.format("&b&lAsistencias: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).assistences),
+													       TextUtil.format("    "),
 													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 													       TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 													   	   TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-													   	   TextUtil.format("    "),
+													   	   TextUtil.format("     "),
 													   	   TextUtil.format("&ewww.omniblock.net")});
 								}
 								break;
@@ -236,7 +240,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										TeamPlayerManager.getPlayersInLobbyList(), 
@@ -291,7 +295,7 @@ public class TeamPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -303,11 +307,11 @@ public class TeamPlayerScoreboardManager {
 													   TextUtil.format("&b&lServidor:"),
 													   TextUtil.format(" &a&l» &7" + Bukkit.getServerName()),
 													   TextUtil.format("  "),
-													   TextUtil.format("&b&lGanador:"),
-													   TextUtil.format(" &a&l» &7" + "Unknow"),
+													   TextUtil.format("&b&lGanadores:"),
+													   TextUtil.format(" &a&l» &7" + "Unknow & Unknow"),
 													   TextUtil.format("   "),
-													   TextUtil.format("&b&lOmnicoins: &a&l+&a" + SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
-													   TextUtil.format("&b&lExperiencia: &9&l+&9" + SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
+													   TextUtil.format("&b&lOmnicoins: &a&l+&a" + TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
+													   TextUtil.format("&b&lExperiencia: &9&l+&9" + TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
 													   TextUtil.format("    "),
 													   TextUtil.format("&ewww.omniblock.net")});
 								}
@@ -316,7 +320,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -327,13 +331,15 @@ public class TeamPlayerScoreboardManager {
 													   	   TextUtil.format(" "),
 													   	   TextUtil.format(INGAME_NEXT_EVENT),
 													   	   TextUtil.format("  "),
-													   	   TextUtil.format("&b&lAsesinatos: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).kills),
-													       TextUtil.format("&b&lAsistencias: &a" + SoloPlayerBattleListener.battle_info.get(ingame_p).assistences),
-													       TextUtil.format("   "),
+													   	   TextUtil.format("&b&lEquipo: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).getAlliedStatus()),
+													   	   TextUtil.format("   "),
+													   	   TextUtil.format("&b&lAsesinatos: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).kills),
+													       TextUtil.format("&b&lAsistencias: &a" + TeamPlayerBattleListener.battle_info.get(ingame_p).assistences),
+													       TextUtil.format("    "),
 													       TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 													       TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 													   	   TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-													   	   TextUtil.format("    "),
+													   	   TextUtil.format("     "),
 													   	   TextUtil.format("&ewww.omniblock.net")});
 								}
 								break;
@@ -341,7 +347,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										TeamPlayerManager.getPlayersInLobbyList(), 
@@ -383,7 +389,7 @@ public class TeamPlayerScoreboardManager {
 	
 	public static String getNextEvent(){
 		
-		Map<String, Integer> map = SoloSkywars.mainRunnableTask.getEvents();
+		Map<String, Integer> map = TeamSkywars.mainRunnableTask.getEvents();
 		String[] eventinfo = getEvent(map);
 		
 		if(eventinfo.length >= 2){

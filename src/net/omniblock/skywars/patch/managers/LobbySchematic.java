@@ -23,6 +23,7 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
+import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.Scan;
 import omniblock.ot.errorapi.ErrorAPI;
 
@@ -75,7 +76,14 @@ public class LobbySchematic {
 				}
 				
 				bl.getRelative(0,1,0).setType(Material.AIR);
+				return;
+				
 			}
+			
+		} else {
+			
+			DebugUtil.debugSevere("ERROR - El mapa: " + world.getName() + " no tiene la (bedrock + placa de madera) para definir el lobby!");
+			return;
 			
 		}
 		

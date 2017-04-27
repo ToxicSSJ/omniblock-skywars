@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -24,6 +25,7 @@ import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
@@ -80,7 +82,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					NetworkData.broadcaster.read("$ LOCK");
 					
 					chestmanager = new ChestManager();
-					SoloSkywars.lobbyschematic.removePasted();
+					MapManager.lobbyschematic.removePasted();
 					
 					switch (SoloSkywars.getCurrentMatchType()) {
 						case NORMAL:
@@ -160,12 +162,12 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				for(Player p : SoloPlayerManager.getPlayersInGameList()) {
 					
 					if(remainingTimeCages <= 5) {
-						p.playSound(p.getLocation(), Sound.CLICK, 1, 10);
-						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", (remainingTimeCages > 3) ? TextUtil.format("&e&l" + String.valueOf(remainingTimeCages)) : TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
+						p.playSound(p.getLocation(), Sound.CLICK, 1, remainingTimeCages);
+						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7La partida Inicia en:"), (remainingTimeCages > 3) ? TextUtil.format("&e&l" + String.valueOf(remainingTimeCages)) : TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 						continue;
 					}
 					
-					p.playSound(p.getLocation(), Sound.CLICK, 1, 20);
+					p.playSound(p.getLocation(), Sound.CLICK, 1, 10);
 					
 				}
 				
@@ -173,6 +175,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					
 					for(Player p : SoloPlayerManager.getPlayersInGameList()) {
 						
+						p.setGameMode(GameMode.SURVIVAL);
 						CustomProtocolManager.PROTECTED_PLAYER_LIST.add(p);
 						
 						new BukkitRunnable() {
@@ -223,13 +226,12 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							
 						}.runTaskTimer(Skywars.getInstance(), 0l, 20l);
 						
-						SoloPlayerManager.playSound(Sound.LEVEL_UP, 1F, 1F);
+						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));
 						
 					}
 					
 					SoloPlayerBattleListener.setBattleInfo();
-					
 					CageManager.removeCages();
 					
 					if(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
@@ -261,7 +263,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));

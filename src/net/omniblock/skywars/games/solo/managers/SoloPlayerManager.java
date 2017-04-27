@@ -20,6 +20,7 @@ import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TextUtil;
@@ -63,7 +64,7 @@ public class SoloPlayerManager {
 		if(SoloPlayerManager.getPlayersInGameAmount() >= 1) {
 			p.teleport(SoloPlayerManager.getPlayersInGameList().get(0));
 		} else {
-			p.teleport(SoloSkywars.lobbyschematic.getLocation());
+			p.teleport(MapManager.lobbyschematic.getLocation());
 		}
 		
 		SpectatorManager.addPlayerToSpectator(p);
@@ -150,7 +151,7 @@ public class SoloPlayerManager {
 			healPlayer(p);
 			
 			p.spigot().setCollidesWithEntities(true);
-			p.teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
+			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
 			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
 			
 			p.setGameMode(GameMode.ADVENTURE);

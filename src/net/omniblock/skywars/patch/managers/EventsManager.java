@@ -12,6 +12,9 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerCustomProtocols;
 import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
+import net.omniblock.skywars.games.teams.events.TeamPlayerCustomProtocols;
+import net.omniblock.skywars.games.teams.events.TeamPlayerToggleListener;
 import net.omniblock.skywars.patch.managers.chest.item.z.AngryChest;
 import net.omniblock.skywars.patch.managers.chest.item.z.Bombardier;
 import net.omniblock.skywars.patch.managers.chest.item.z.Bridged;
@@ -56,6 +59,18 @@ public class EventsManager {
 			break;
 		case SW_INSANE_TEAMS:
 			
+			@SuppressWarnings("serial") List<Listener> SW_INSANE_TEAMS = new ArrayList<Listener>() {{
+				
+				add(new TeamPlayerBattleListener());
+				add(new TeamPlayerToggleListener());
+				add(new TeamPlayerCustomProtocols());
+				
+			}};
+			
+			for(Listener listener : SW_INSANE_TEAMS) {
+				addEvents(true, listener);
+			}
+			
 			break;
 		case SW_NORMAL_SOLO:
 			
@@ -73,6 +88,18 @@ public class EventsManager {
 			
 			break;
 		case SW_NORMAL_TEAMS:
+			
+			@SuppressWarnings("serial") List<Listener> SW_NORMAL_TEAMS = new ArrayList<Listener>() {{
+				
+				add(new TeamPlayerBattleListener());
+				add(new TeamPlayerToggleListener());
+				add(new TeamPlayerCustomProtocols());
+				
+			}};
+			
+			for(Listener listener : SW_NORMAL_TEAMS) {
+				addEvents(true, listener);
+			}
 			
 			break;
 		case SW_Z_SOLO:
@@ -102,6 +129,37 @@ public class EventsManager {
 			}};
 			
 			for(Listener listener : SW_Z_SOLO) {
+				addEvents(true, listener);
+			}
+			
+			break;
+		case SW_Z_TEAMS:
+			
+			@SuppressWarnings("serial") List<Listener> SW_Z_TEAMS = new ArrayList<Listener>() {{
+				
+				add(new TeamPlayerBattleListener());
+				add(new TeamPlayerToggleListener());
+				add(new TeamPlayerCustomProtocols());
+				
+				add(new AngryChest());
+				add(new Meteoro());
+				add(new Punch());
+				add(new Bombardier());
+				add(new Bridged());
+				add(new Kraken());
+				add(new IBall());
+				add(new Clone());
+				add(new ThorA());
+				add(new ThorI());
+				add(new PorkTurret());
+				add(new LaserTurret());
+				add(new IceTurret());
+				add(new HealthTurret());
+				add(new Potion());
+				
+			}};
+			
+			for(Listener listener : SW_Z_TEAMS) {
 				addEvents(true, listener);
 			}
 			

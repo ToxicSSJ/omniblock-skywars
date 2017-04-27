@@ -36,13 +36,13 @@ import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.ClonData;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.PlayerSavedData;
@@ -151,7 +151,7 @@ public class Bombardier implements ItemType, Listener {
 				SoloPlayerManager.forceFly(e.getPlayer());
 				
 				e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
-				e.getPlayer().teleport(SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5));
+				e.getPlayer().teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5));
 				return;
 				
 			}
@@ -236,7 +236,7 @@ public class Bombardier implements ItemType, Listener {
 	
 	public static void launchNoPlaneBomb(Location loc) {
 		
-		Location based_loc = SoloSkywars.lobbyschematic.getLocation();
+		Location based_loc = MapManager.lobbyschematic.getLocation();
 		
 		new BukkitRunnable() {
 			
@@ -275,7 +275,7 @@ public class Bombardier implements ItemType, Listener {
 	
 	public static void launchNaturallyBomb(Location loc) {
 		
-		Location based_loc = SoloSkywars.lobbyschematic.getLocation();
+		Location based_loc = MapManager.lobbyschematic.getLocation();
 		
 		Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
 		Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ());
@@ -451,7 +451,7 @@ public class Bombardier implements ItemType, Listener {
 				
 			}
 			
-			Location based_loc = SoloSkywars.lobbyschematic.getLocation();
+			Location based_loc = MapManager.lobbyschematic.getLocation();
 			
 			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
 			Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ());
@@ -588,7 +588,7 @@ public class Bombardier implements ItemType, Listener {
 	@SuppressWarnings("serial")
 	public void useBombardier(Player player) {
 		
-		Location tp_loc = SoloSkywars.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
+		Location tp_loc = MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
 		tp_loc.setYaw(90L);
 		tp_loc.setPitch(90L);
 		

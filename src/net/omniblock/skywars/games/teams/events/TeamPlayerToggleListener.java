@@ -49,6 +49,8 @@ public class TeamPlayerToggleListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		
+		System.out.println("JOIN IN TEAM PLAYER TEAM EVENT");
+		
 		if(Verifier == false) {
 			Verifier = true;
 		}
@@ -78,6 +80,10 @@ public class TeamPlayerToggleListener implements Listener {
 		TeamPlayerManager.removePlayer(e.getPlayer());
 		
 		SkywarsGameState currentState = Skywars.getGameState();
+		
+		if(currentState == SkywarsGameState.IN_LOBBY) {
+			TeamPlayerManager.removeTeam(e.getPlayer());
+		}
 		
 		new BukkitRunnable() {
 			@Override

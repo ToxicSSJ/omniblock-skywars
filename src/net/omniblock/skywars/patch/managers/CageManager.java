@@ -412,7 +412,7 @@ public class CageManager {
 		} else {
 			
 			String dir = "/data/cages/team/";
-			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap." + code + ".schematic");
+			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap2p." + code + ".schematic");
 			
 			return file;
 			

@@ -38,7 +38,6 @@ import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
 import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.EventsManager;
-import net.omniblock.skywars.patch.managers.LobbySchematic;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
 import net.omniblock.skywars.patch.types.SkywarsType;
@@ -55,13 +54,11 @@ public class TeamSkywars implements SkywarsStarter {
 	public static final int DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS = 24;
 	public static final int DEFAULT_Z_SKYWARS_MAX_PLAYERS = 32;
 	
-	public static final int DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS = 4;
-	public static final int DEFAULT_Z_SKYWARS_MIN_PLAYERS = 4;
+	public static final int DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS = 2;
+	public static final int DEFAULT_Z_SKYWARS_MIN_PLAYERS = 2;
 	
 	public static int MAX_PLAYERS = 24;
-	public static int MIN_PLAYERS = 4;
-	
-	public static LobbySchematic lobbyschematic;
+	public static int MIN_PLAYERS = 2;
 	
 	public static SkywarsResolver gSkywarsResolver;
 	public  static TeamSkywarsRunnable mainRunnableTask;
@@ -129,7 +126,7 @@ public class TeamSkywars implements SkywarsStarter {
 		
 		MapManager.setCurrentMap(MapType.NORMAL);
 		
-		lobbyschematic.selectMapType(MapType.NORMAL);
+		MapManager.lobbyschematic.selectMapType(MapType.NORMAL);
 		cagesLocations.addAll(MapManager.MAP_NORMAL_CAGE_LOCATIONS);
 		
 		/*
@@ -146,6 +143,9 @@ public class TeamSkywars implements SkywarsStarter {
 	}
 	
 	private void startTeamsInsaneGame() {
+		
+		System.out.println("AAAAxd");
+		
 		gMatchType = MatchType.INSANE;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
@@ -153,7 +153,7 @@ public class TeamSkywars implements SkywarsStarter {
 		
 		MapManager.setCurrentMap(MapType.NORMAL);
 		
-		lobbyschematic.selectMapType(MapType.NORMAL);
+		MapManager.lobbyschematic.selectMapType(MapType.NORMAL);
 		cagesLocations.addAll(MapManager.MAP_NORMAL_CAGE_LOCATIONS);
 		
 		/*
@@ -178,7 +178,7 @@ public class TeamSkywars implements SkywarsStarter {
 		
 		MapManager.setCurrentMap(MapType.Z);
 		
-		lobbyschematic.selectMapType(MapType.Z);
+		MapManager.lobbyschematic.selectMapType(MapType.Z);
 		cagesLocations.addAll(MapManager.MAP_Z_CAGE_LOCATIONS);
 		
 		/*
@@ -222,7 +222,7 @@ public class TeamSkywars implements SkywarsStarter {
 		
 		new BukkitRunnable() {
 			
-			Location fix_loc = lobbyschematic.getLocation().getWorld().getHighestBlockAt(lobbyschematic.getLocation()).getLocation();
+			Location fix_loc = MapManager.lobbyschematic.getLocation().getWorld().getHighestBlockAt(MapManager.lobbyschematic.getLocation()).getLocation();
 			int launched = 0;
 			
 			@Override
@@ -422,7 +422,7 @@ public class TeamSkywars implements SkywarsStarter {
 								p.sendMessage(TextUtil.format("&7&l» &7Estadisticas Generales/Stats&8&l:"));
 								p.sendMessage(TextUtil.getCenteredMessage("&r"));
 								p.sendMessage(TextUtil.getCenteredMessage(" &7Servidor: &2&l" + Bukkit.getServerName()));
-								p.sendMessage(TextUtil.getCenteredMessage(" &7Mapa: &6&l" + lobbyschematic.getLocation().getWorld().getName()));
+								p.sendMessage(TextUtil.getCenteredMessage(" &7Mapa: &6&l" + MapManager.lobbyschematic.getLocation().getWorld().getName()));
 								p.sendMessage(TextUtil.getCenteredMessage("&r"));
 								
 								if(AccountManager.SAVED_ACCOUNTS.containsKey(p)) {
