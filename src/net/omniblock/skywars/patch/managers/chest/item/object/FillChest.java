@@ -18,7 +18,7 @@ import net.omniblock.skywars.util.ItemBuilder;
 
 public class FillChest {
 	
-	public List<Block> ChestDiamond = new ArrayList<Block>();
+	public static List<Block> ChestDiamond = new ArrayList<Block>();
 	
 	private ItemStack[] arrayofitemN;
 	private ItemStack[] arrayofitemT;
@@ -49,7 +49,6 @@ public class FillChest {
 		startFilled(NORMAL, TRAPPED, ITEMS_NORMAL, ITEMS_TRAPPED);
 			
 	}
-	
 	
 	@SuppressWarnings("deprecation")
 	public void startFilled(final List<Chest> CHEST_NORMAL, final List<Chest> CHEST_TRAPPED, final List<ItemStack> ITEM_NORMAL, final List<ItemStack> ITEM_TRAPPED) {
@@ -114,7 +113,7 @@ public class FillChest {
 				GET_NORMAL_CHEST.getInventory().clear();
 				addItemInChest(GET_NORMAL_CHEST, numberofitemN, ITEM_NORMAL);
 				addItemInChest(GET_NORMAL_CHEST, 5, SUPPORT_ITEM_WEAPONS);
-				containDiamond(GET_NORMAL_CHEST);
+				ChestDiamond.add(GET_NORMAL_CHEST.getBlock());
 			
 			}			
 		}
@@ -174,6 +173,16 @@ public class FillChest {
 		
 		chest.update(true);
 		
+	}
+	
+	public static void clearChest(List<Location> list){
+		
+		for(Location loc : list){
+			
+			Chest chest = (Chest) loc.getBlock().getState();
+			chest.getInventory().clear();
+		
+		}
 	}
 
 	public List<Chest> getChest(List<Location> list) {

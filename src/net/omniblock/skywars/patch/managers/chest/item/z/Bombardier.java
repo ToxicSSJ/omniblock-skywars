@@ -31,10 +31,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import net.omniblock.skywars.util.Cinematix;
-import net.omniblock.skywars.util.ItemBuilder;
-import net.omniblock.skywars.util.NumberUtil;
-import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
@@ -50,6 +46,10 @@ import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.CameraUtil;
+import net.omniblock.skywars.util.Cinematix;
+import net.omniblock.skywars.util.ItemBuilder;
+import net.omniblock.skywars.util.NumberUtil;
+import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.base64.PlayerInventory64;
 import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
@@ -71,7 +71,7 @@ public class Bombardier implements ItemType, Listener {
 		
 		Player player = event.getPlayer();
 		
-		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){

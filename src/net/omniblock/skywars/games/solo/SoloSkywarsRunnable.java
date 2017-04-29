@@ -370,9 +370,10 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			
 		} else if(str.contains("DESTRUCCIÓN")) {
 			
+			FillChest.clearChest(ChestManager.normalchest);
 			int delay_another = 1;
 			
-			for(Block b : chestmanager.getFillChest().ChestDiamond) {
+			for(Block b : FillChest.ChestDiamond) {
 				
 				new BukkitRunnable() {
 					@Override

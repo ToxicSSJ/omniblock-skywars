@@ -28,12 +28,13 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret;
-import net.omniblock.skywars.patch.managers.chest.item.z.type.TurretType;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.TurretBuilder;
+import net.omniblock.skywars.patch.managers.chest.item.z.type.TurretType;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 import net.omniblock.skywars.util.effectlib.effect.LineEffect;
@@ -45,7 +46,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 	
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
-		if(SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+		if(SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer()) || TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
 			if(e.getBlockPlaced().getType() == type.getMaterial()) {
 				build(e.getPlayer(), e.getBlockPlaced());
 			}

@@ -19,13 +19,6 @@ public class ItemInsane {
 				/* ARMADURA */ new ItemBuilder(Material.DIAMOND_HELMET).amount(1).build(),
 				/* ARMADURA */ new ItemBuilder(Material.DIAMOND_LEGGINGS).amount(1).build(),
 				
-				/* ARMA */ new ItemBuilder(Material.DIAMOND_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.GOLD_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.IRON_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.STONE_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.WOOD_SWORD).amount(1).build(),
-				/* ARMA */  new ItemBuilder(Material.BOW).amount(1).build(),
-				
 				/* ARMADURA ENC */ new ItemBuilder(Material.IRON_CHESTPLATE).amount(1).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build(),
 				/* ARMADURA ENC */ new ItemBuilder(Material.IRON_CHESTPLATE).amount(1).enchant(Enchantment.PROTECTION_PROJECTILE, 2).build(),
 				/* ARMADURA ENC */ new ItemBuilder(Material.DIAMOND_BOOTS).amount(1).enchant(Enchantment.DURABILITY, 1).build(),
@@ -75,9 +68,6 @@ public class ItemInsane {
 				/* ARMADURA ENC */ new ItemBuilder(Material.DIAMOND_CHESTPLATE).amount(1).enchant(Enchantment.PROTECTION_EXPLOSIONS, 2).build(),
 				/* ARMADURA ENC */ new ItemBuilder(Material.DIAMOND_CHESTPLATE).amount(1).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).enchant(Enchantment.THORNS, 1).build(),
 			
-				/* ARMA */	new ItemBuilder(Material.IRON_SWORD).amount(1).build(),
-				/* ARMA */  new ItemBuilder(Material.DIAMOND_SWORD).amount(1).build(),
-				/* ARMA */ 	new ItemBuilder(Material.BOW).amount(1).build(),
 				/* ARMA */	new ItemBuilder(Material.IRON_PICKAXE).amount(1).build(),
 			
 				/* ARMA ENC */ new ItemBuilder(Material.IRON_PICKAXE).amount(1).enchant(Enchantment.DURABILITY, 1).build(),
@@ -96,15 +86,9 @@ public class ItemInsane {
 				/* ARMA ENC */ new ItemBuilder(Material.BLAZE_POWDER).amount(1).enchant(Enchantment.FIRE_ASPECT, 3).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.FEATHER).amount(1).enchant(Enchantment.KNOCKBACK, 3).build(),
 			
-				/* ALIMENTOS */ new ItemBuilder(Material.APPLE).amount(4).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.APPLE).amount(8).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.COOKED_BEEF).amount(10).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.COOKED_CHICKEN).amount(6).build(),
+				/* ALIMENTOS */ new ItemBuilder(Material.GOLDEN_APPLE).amount(6).build(),
 			
 				/* BLOQUES */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
-				/* BLOQUES */ new ItemBuilder(Material.COBBLESTONE).amount(46).build(),
-				/* BLOQUES */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),
-				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(10).build(),
 				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(20).build(),
 			
 

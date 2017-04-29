@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 import net.citizensnpcs.api.npc.NPC;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.ClonData;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
@@ -37,7 +38,7 @@ public class Clone implements Listener, ItemType {
 	public void CloneSpell(PlayerInteractEvent event){
 		Player player = event.getPlayer();
 
-		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){

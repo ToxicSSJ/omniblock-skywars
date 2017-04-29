@@ -35,23 +35,10 @@ public class ItemZ {
 				/* ARMADURA ENC */ EItem.ItemBuilder(Material.GOLD_LEGGINGS, EItem.PANTALON_TITAN, 3),
 				/* ARMADURA ENC */ EItem.ItemBuilder(Material.GOLD_BOOTS, EItem.BOTAS_TITAN, 3),
 				
-				/* ARMA */ new ItemBuilder(Material.DIAMOND_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.GOLD_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.IRON_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.STONE_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.WOOD_SWORD).amount(1).build(),
-				/* ARMA */  new ItemBuilder(Material.BOW).amount(1).build(),
-				
 				/* ARMA ENC */ new ItemBuilder(Material.IRON_PICKAXE).amount(1).enchant(Enchantment.DURABILITY, 1).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.DIAMOND_SWORD).amount(1).enchant(Enchantment.DAMAGE_ALL, 1).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.WOOD_AXE).amount(1).enchant(Enchantment.DAMAGE_ALL, 2).enchant(Enchantment.FIRE_ASPECT, 1).build(),
 
-		
-				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
-				/* BLOQUE */ new ItemBuilder(Material.COBBLESTONE).amount(46).build(),
-				/* BLOQUE */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),
-				/* BLOQUE */ new ItemBuilder(Material.STONE).amount(10).build(),
-				/* BLOQUE */ new ItemBuilder(Material.STONE).amount(20).build(),
 				/* BLOQUE */ EItem.ItemBuilder(Material.SPONGE, EItem.TORRETA_LASER, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.HARD_CLAY, EItem.TORRETA_PORCINA, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.TRAPPED_CHEST, EItem.COFRE_EXPLOSIVO, 1),
@@ -72,8 +59,6 @@ public class ItemZ {
 				/* ITEMS */ EItem.ItemBuilder(Material.getMaterial(2256), EItem.METEORITO, 1)
 		};
 		return item;
-	
-		
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -128,8 +113,7 @@ public class ItemZ {
 				/* ARMA ENC */ EItem.ItemBuilder(Material.DIAMOND_SPADE, EItem.PALA_DEL_PODER, 2),
 				/* ARMA ENC */ EItem.ItemBuilder(Material.DIAMOND_SWORD, EItem.ESPADA_EXTRAÑA, 3),
 				
-				/* ALIMENTOS */ new ItemBuilder(Material.APPLE).amount(4).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.COOKED_BEEF).amount(14).build(),
+				/* ALIMENTOS */ new ItemBuilder(Material.GOLDEN_APPLE).amount(4).build(),
 				
 				/* BLOQUE */  EItem.ItemBuilder(Material.TNT, EItem.TNT, 1),
 				/* BLOQUE */ EItem.ItemBuilder(Material.SPONGE, EItem.TORRETA_LASER, 1),

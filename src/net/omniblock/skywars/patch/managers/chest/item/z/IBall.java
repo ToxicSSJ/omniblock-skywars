@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.util.block.SpawnBlock;
@@ -36,7 +37,7 @@ public class IBall implements ItemType, Listener {
 		
 		Player player = event.getPlayer();
 		
-		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(player.getItemInHand().hasItemMeta()){
 				if(player.getItemInHand().getItemMeta().hasDisplayName()){
 					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.BOLA_CONGELACEREBROS.getName())){

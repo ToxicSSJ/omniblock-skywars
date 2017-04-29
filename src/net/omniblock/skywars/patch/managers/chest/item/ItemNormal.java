@@ -15,23 +15,11 @@ public class ItemNormal {
 				/* ARMADURA */ new ItemBuilder(Material.IRON_HELMET).amount(1).build(),
 				/* ARMADURA */ new ItemBuilder(Material.IRON_BOOTS).amount(1).build(),
 				
-				/* ARMA */ new ItemBuilder(Material.STONE_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.WOOD_SWORD).amount(1).build(),
-				/* ARMA */ new ItemBuilder(Material.IRON_SWORD).amount(1).build(),
-				/* ARMA */  new ItemBuilder(Material.BOW).amount(1).build(),
-				
 				/* ARMADURA ENC */ new ItemBuilder(Material.IRON_HELMET).amount(1).enchant(Enchantment.PROTECTION_PROJECTILE, 1).build(),
 				/* ARMADURA ENC */ new ItemBuilder(Material.IRON_CHESTPLATE).amount(1).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build(),
 				
 				/* ARMA ENC */ new ItemBuilder(Material.BOW).amount(1).enchant(Enchantment.ARROW_KNOCKBACK, 1).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.IRON_SWORD).amount(1).enchant(Enchantment.DAMAGE_ALL, 1).build(),
-				
-				/* ALIMENTOS */ new ItemBuilder(Material.BREAD).amount(13).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.COOKIE).amount(28).build(),
-				
-				/* BLOQUES */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
-				/* BLOQUES */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),
-				
 
 				/* ITEMS */ new ItemBuilder(Material.WATER_BUCKET).amount(1).build(),
 				/* ITEMS */ new ItemBuilder(Material.LAVA_BUCKET).amount(1).build(),
@@ -67,11 +55,7 @@ public class ItemNormal {
 				/* ARMADURA ENC */ new ItemBuilder(Material.LEATHER_LEGGINGS).amount(1).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
 				/* ARMADURA ENC */ new ItemBuilder(Material.IRON_BOOTS).amount(1).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build(),
 				/* ARMADURA ENC */ new ItemBuilder(Material.IRON_CHESTPLATE).amount(1).enchant(Enchantment.PROTECTION_EXPLOSIONS, 2).build(),
-		
-				/* ARMA */	new ItemBuilder(Material.IRON_SWORD).amount(1).build(),
-				/* ARMA */	new ItemBuilder(Material.WOOD_SWORD).amount(1).build(),
-				/* ARMA */ 	new ItemBuilder(Material.STONE_SWORD).amount(1).build(),
-				/* ARMA */ 	new ItemBuilder(Material.BOW).amount(1).build(),
+	
 				/* ARMA */	new ItemBuilder(Material.IRON_PICKAXE).amount(1).build(),
 		
 				/* ARMA ENC */ new ItemBuilder(Material.WOOD_SWORD).amount(1).enchant(Enchantment.KNOCKBACK, 2).build(),
@@ -81,15 +65,9 @@ public class ItemNormal {
 				/* ARMA ENC */ new ItemBuilder(Material.WOOD_SWORD).amount(1).enchant(Enchantment.DAMAGE_ALL, 1).build(),
 				/* ARMA ENC */ new ItemBuilder(Material.IRON_SWORD).amount(1).enchant(Enchantment.DAMAGE_ALL, 1).build(),
 		
-				/* ALIMENTOS */ new ItemBuilder(Material.APPLE).amount(4).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.APPLE).amount(8).build(),
-				/* ALIMENTOS */ new ItemBuilder(Material.COOKED_BEEF).amount(10).build(),
+				/* ALIMENTOS */ new ItemBuilder(Material.GOLDEN_APPLE).amount(4).build(),
 		
 				/* BLOQUES */ new ItemBuilder(Material.COBBLESTONE).amount(23).build(),
-				/* BLOQUES */ new ItemBuilder(Material.COBBLESTONE).amount(46).build(),
-				/* BLOQUES */ new ItemBuilder(Material.SANDSTONE).amount(20).build(),
-				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(10).build(),
-				/* BLOQUES */ new ItemBuilder(Material.STONE).amount(20).build(),
 				/* BLOQUES */ new ItemBuilder(Material.ENCHANTMENT_TABLE).amount(1).build(),
 		
 
