@@ -21,9 +21,10 @@ import org.bukkit.scheduler.BukkitTask;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
-import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.MapManager;
+import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.util.TimeUtil;
 import net.omniblock.skywars.util.scoreboard.ScoreboardUtil;
 import omniblock.on.util.TextUtil;
@@ -52,7 +53,7 @@ public class SoloPlayerScoreboardManager {
 	
 	public static void initialize(){
 		
-		MatchType matchtype = SoloSkywars.getCurrentMatchType();
+		MatchType matchtype = ChestManager.getCurrentMatchType();
 		
 		switch(matchtype){
 			case INSANE:
@@ -79,7 +80,7 @@ public class SoloPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -104,7 +105,7 @@ public class SoloPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -129,7 +130,7 @@ public class SoloPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										SoloPlayerManager.getPlayersInLobbyList(), 
@@ -186,7 +187,7 @@ public class SoloPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -211,7 +212,7 @@ public class SoloPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -236,7 +237,7 @@ public class SoloPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										SoloPlayerManager.getPlayersInLobbyList(), 
@@ -291,7 +292,7 @@ public class SoloPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -316,7 +317,7 @@ public class SoloPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : SoloPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -341,7 +342,7 @@ public class SoloPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = SoloSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = ChestManager.gMatchType.getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										SoloPlayerManager.getPlayersInLobbyList(), 

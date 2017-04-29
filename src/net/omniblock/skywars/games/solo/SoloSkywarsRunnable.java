@@ -21,17 +21,17 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
-import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.CageManager;
+import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
-import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
 import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
 import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
@@ -62,7 +62,8 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	
 	private int remainingTimeCages = 8;
 	
-	public ChestManager chestmanager;
+	public ChestManager chestmanager
+	;
 	public FillChest fillchest;
 	
 	public SoloSkywarsRunnable(SoloSkywars starter) {
@@ -84,7 +85,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					chestmanager = new ChestManager();
 					MapManager.lobbyschematic.removePasted();
 					
-					switch (SoloSkywars.getCurrentMatchType()) {
+					switch (ChestManager.getCurrentMatchType()) {
 						case NORMAL:
 							fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 10, 12);
 							break;
@@ -103,7 +104,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					
 					Skywars.updateGameState(SkywarsGameState.IN_PRE_GAME);
 					
-					sendPreGameTitles(getGameTitle(SoloSkywars.getCurrentMatchType()));
+					sendPreGameTitles(getGameTitle(ChestManager.getCurrentMatchType()));
 					
 				}
 				

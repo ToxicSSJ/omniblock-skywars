@@ -19,10 +19,8 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.teams.TeamSkywars;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.games.teams.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
@@ -33,17 +31,18 @@ import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
 import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
 import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
-import net.omniblock.skywars.util.MapUtils;
-import net.omniblock.skywars.util.SoundPlayer;
-import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.ApocalipsisUtil.Apocalipsis;
 import net.omniblock.skywars.util.ContaminationUtil.Contamination;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationInfo;
 import net.omniblock.skywars.util.ContaminationUtil.ContaminationTroop;
 import net.omniblock.skywars.util.DestructionUtil.Destruction;
 import net.omniblock.skywars.util.DestructionUtil.DestructionInfo;
+import net.omniblock.skywars.util.MapUtils;
+import net.omniblock.skywars.util.SoundPlayer;
+import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
 import omniblock.on.util.TextUtil;
 import omniblock.ot.errorapi.ErrorAPI;
@@ -85,8 +84,8 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 					
 					chestmanager = new ChestManager();
 					MapManager.lobbyschematic.removePasted();
-					
-					switch (TeamSkywars.getCurrentMatchType()) {
+			
+					switch (ChestManager.getCurrentMatchType()) {
 						case NORMAL:
 							fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 10, 12);
 							break;
@@ -105,7 +104,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 					
 					Skywars.updateGameState(SkywarsGameState.IN_PRE_GAME);
 					
-					sendPreGameTitles(getGameTitle(TeamSkywars.getCurrentMatchType()));
+					sendPreGameTitles(getGameTitle(ChestManager.getCurrentMatchType()));
 					
 				}
 				
@@ -302,7 +301,6 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
-			fillchest.fillChest();
 			
 			return;
 			

@@ -21,9 +21,10 @@ import org.bukkit.scheduler.BukkitTask;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.teams.TeamSkywars;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
-import net.omniblock.skywars.games.teams.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.managers.MapManager;
+import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.util.TimeUtil;
 import net.omniblock.skywars.util.scoreboard.ScoreboardUtil;
 import omniblock.on.util.TextUtil;
@@ -52,7 +53,7 @@ public class TeamPlayerScoreboardManager {
 	
 	public static void initialize(){
 		
-		MatchType matchtype = TeamSkywars.getCurrentMatchType();
+		MatchType matchtype = ChestManager.getCurrentMatchType();
 		
 		switch(matchtype){
 			case INSANE:
@@ -79,7 +80,7 @@ public class TeamPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -104,7 +105,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -131,7 +132,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										TeamPlayerManager.getPlayersInLobbyList(), 
@@ -188,7 +189,7 @@ public class TeamPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -213,7 +214,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -240,7 +241,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										TeamPlayerManager.getPlayersInLobbyList(), 
@@ -295,7 +296,7 @@ public class TeamPlayerScoreboardManager {
 						
 							case FINISHING:
 								
-								String FINISHING_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String FINISHING_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player infinish_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -320,7 +321,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String INGAME_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String INGAME_NEXT_EVENT = getNextEvent();
-								String INGAME_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String INGAME_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								for(Player ingame_p : TeamPlayerManager.getPlayersInGameList()) {
 									ScoreboardUtil.unrankedSidebarDisplay(
@@ -347,7 +348,7 @@ public class TeamPlayerScoreboardManager {
 								
 								String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
 								String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
-								String IN_LOBBY_MATCH_PLUS_FORMAT = TeamSkywars.getCurrentMatchType().getName() + " " + getTimeFormat();
+								String IN_LOBBY_MATCH_PLUS_FORMAT = ChestManager.getCurrentMatchType().getName() + " " + getTimeFormat();
 								
 								ScoreboardUtil.unrankedSidebarDisplay(
 										TeamPlayerManager.getPlayersInLobbyList(), 

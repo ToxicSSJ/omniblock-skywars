@@ -31,7 +31,6 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo.PlayerBattleInfoUtils;
-import net.omniblock.skywars.games.solo.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
@@ -39,6 +38,8 @@ import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.EventsManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
+import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
@@ -62,8 +63,7 @@ public class SoloSkywars implements SkywarsStarter {
 	public static SkywarsResolver gSkywarsResolver;
 	public  static SoloSkywarsRunnable mainRunnableTask;
 	
-	public static List<Location> cagesLocations = Lists.newArrayList();
-	private static MatchType gMatchType = MatchType.NONE;
+	public static List<Location> cagesLocations = Lists.newArrayList();;
 	
 	@Override
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) {
@@ -118,7 +118,7 @@ public class SoloSkywars implements SkywarsStarter {
 	
 	private void startSoloNormalGame() {
 		
-		gMatchType = MatchType.NORMAL;
+		ChestManager.gMatchType = MatchType.NORMAL;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -142,7 +142,8 @@ public class SoloSkywars implements SkywarsStarter {
 	}
 	
 	private void startSoloInsaneGame() {
-		gMatchType = MatchType.INSANE;
+		
+		ChestManager.gMatchType = MatchType.INSANE;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -167,7 +168,7 @@ public class SoloSkywars implements SkywarsStarter {
 	}
 	
 	private void startSoloZGame() {
-		gMatchType = MatchType.Z;
+		ChestManager.gMatchType = MatchType.Z;
 		
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
@@ -190,10 +191,6 @@ public class SoloSkywars implements SkywarsStarter {
 		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 220);
 		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
-	}
-	
-	public static MatchType getCurrentMatchType() {
-		return gMatchType;
 	}
 	
 	public void finalize(Player winner) {
@@ -458,7 +455,7 @@ public class SoloSkywars implements SkywarsStarter {
 	@Override
 	public void reset() {
 		
-		gMatchType = MatchType.NONE;
+		ChestManager.gMatchType = MatchType.NONE;
 		
 		if(mainRunnableTask != null) {
 			mainRunnableTask.cancel();

@@ -24,7 +24,6 @@ import com.google.common.collect.Lists;
 import net.citizensnpcs.api.CitizensAPI;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
-import net.omniblock.skywars.games.teams.TeamSkywarsRunnable;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.events.TeamPlayerToggleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerLineManager;
@@ -32,7 +31,6 @@ import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerScoreboardManager;
 import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo;
 import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo.PlayerBattleInfoUtils;
-import net.omniblock.skywars.games.teams.types.MatchType;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
@@ -40,6 +38,8 @@ import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.EventsManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
+import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
@@ -64,7 +64,6 @@ public class TeamSkywars implements SkywarsStarter {
 	public  static TeamSkywarsRunnable mainRunnableTask;
 	
 	public static List<Location> cagesLocations = Lists.newArrayList();
-	private static MatchType gMatchType = MatchType.NONE;
 	
 	@Override
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) {
@@ -119,7 +118,7 @@ public class TeamSkywars implements SkywarsStarter {
 	
 	private void startTeamsNormalGame() {
 		
-		gMatchType = MatchType.NORMAL;
+		ChestManager.gMatchType = MatchType.NORMAL;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -144,9 +143,7 @@ public class TeamSkywars implements SkywarsStarter {
 	
 	private void startTeamsInsaneGame() {
 		
-		System.out.println("AAAAxd");
-		
-		gMatchType = MatchType.INSANE;
+		ChestManager.gMatchType = MatchType.INSANE;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -171,7 +168,7 @@ public class TeamSkywars implements SkywarsStarter {
 	}
 	
 	private void startTeamsZGame() {
-		gMatchType = MatchType.Z;
+		ChestManager.gMatchType = MatchType.Z;
 		
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
@@ -194,10 +191,6 @@ public class TeamSkywars implements SkywarsStarter {
 		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 220);
 		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
 		
-	}
-	
-	public static MatchType getCurrentMatchType() {
-		return gMatchType;
 	}
 	
 	public void finalize(Player winner) {
@@ -462,7 +455,7 @@ public class TeamSkywars implements SkywarsStarter {
 	@Override
 	public void reset() {
 		
-		gMatchType = MatchType.NONE;
+		ChestManager.gMatchType = MatchType.NONE;
 		
 		if(mainRunnableTask != null) {
 			mainRunnableTask.cancel();
