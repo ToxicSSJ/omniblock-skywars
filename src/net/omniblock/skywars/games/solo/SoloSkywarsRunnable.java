@@ -31,6 +31,7 @@ import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
 import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
 import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
+import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
@@ -51,7 +52,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	
 	private static SoloSkywars gStarter = null;
 	
-	public static int MIN_PLAYERS_TO_START = 1;
+	public static int MIN_PLAYERS_TO_START = 2;
 	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 	
 	private final int timeLobby = 15;
@@ -99,6 +100,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							break;
 					}
 					
+					PowerItemManager.applyVotes();
 					SoloPlayerManager.transferAllPlayersToInGame();
 					SoloPlayerManager.sendAllPlayersToCages();
 					
@@ -163,8 +165,11 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				for(Player p : SoloPlayerManager.getPlayersInGameList()) {
 					
 					if(remainingTimeCages <= 5) {
+						
+						p.playSound(p.getLocation(), Sound.ORB_PICKUP, 1, remainingTimeCages);
 						p.playSound(p.getLocation(), Sound.CLICK, 1, remainingTimeCages);
-						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7La partida Inicia en:"), (remainingTimeCages > 3) ? TextUtil.format("&e&l" + String.valueOf(remainingTimeCages)) : TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
+						
+						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7¡Preparate para Pelear!"), (remainingTimeCages > 3) ? TextUtil.format("&e&l" + String.valueOf(remainingTimeCages)) : TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 						continue;
 					}
 					
@@ -176,6 +181,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					
 					for(Player p : SoloPlayerManager.getPlayersInGameList()) {
 						
+						p.setFallDistance(0);
 						p.setGameMode(GameMode.SURVIVAL);
 						CustomProtocolManager.PROTECTED_PLAYER_LIST.add(p);
 						
@@ -189,7 +195,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							
 								seconds--;
 								
-								if(seconds <= 0) {
+								if(seconds == 0) {
 									cancel();
 									if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(p)) {
 										CustomProtocolManager.PROTECTED_PLAYER_LIST.remove(p);

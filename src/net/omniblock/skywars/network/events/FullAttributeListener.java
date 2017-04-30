@@ -24,16 +24,20 @@ public class FullAttributeListener implements Listener {
 	
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e){
+		
 		if(Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
 			Packet.ASSEMBLER.sendPacket(AssemblyType.SERVER_SEND_FULL_ATTRIBUTE, new PacketModifier());
 		}
+		
 	}
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e){
+		
 		if(Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()) {
 			Packet.ASSEMBLER.sendPacket(AssemblyType.SERVER_SEND_UNFULL_ATTRIBUTE, new PacketModifier());
 		}
+		
 	}
 	
 }

@@ -10,7 +10,12 @@
 
 package net.omniblock.skywars.patch;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.network.NetworkData;
@@ -19,7 +24,6 @@ import net.omniblock.skywars.network.events.FullAttributeListener;
 import net.omniblock.skywars.network.events.SkywarsLobbyFilterListener;
 import net.omniblock.skywars.patch.internal.Patcher;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import net.omniblock.skywars.util.ArrayUtils;
 import omniblock.on.OmniNetwork;
 import omniblock.on.addons.games.NetworkBroadcaster;
 import omniblock.on.network.packet.Packet;
@@ -47,12 +51,14 @@ public class NetworkPatcher implements Patcher {
 				
 				if(data.contains("#")){
 					
+					if(Skywars.currentMatchType == null) Skywars.currentMatchType = SkywarsType.NONE;
+					if(Skywars.currentMatchType != SkywarsType.NONE) return;
+					
 					SkywarsType swtype = SkywarsType.NONE;
 					
 					String[] matchanddata = data.split("#");
 					
-					swtype = getTypeByBestResolver(new String[] { matchanddata[0],
-															      matchanddata[1] });
+					swtype = getTypeByBestResolver(matchanddata);
 					
 					if(swtype != SkywarsType.NONE){
 						
@@ -88,52 +94,59 @@ public class NetworkPatcher implements Patcher {
 		};
 		
 	}
-	
-	
-	
-	public String[][] getResolversArgs(){
-		
-		int index = 0;
-		String[][] cacheresolver = new String[10][10];
-		
-		for(SkywarsType k : SkywarsType.values()){
-			
-			if(k != SkywarsType.NONE){
-				
-				String[] cacheargs = k.getResolver().getArgs();
-				cacheresolver[index] = cacheargs;
-				
-				index++;
-				
-			}
-			
-		}
-		
-		return cacheresolver;
-	}
 
 	public SkywarsType getTypeByBestResolver(String[] args){
 		
-		System.out.println(args.toString());
+		SkywarsType type = SkywarsType.SW_INSANE_SOLO;
+		int lastassert = 0;
 		
-		String[][] cacheresolver = getResolversArgs();
-		String[] exact = ArrayUtils.getBestAssert(args, cacheresolver);
-		
-		for(SkywarsType k : SkywarsType.values()){
+		List<String> resolver = new ArrayList<String>() {
 			
-			if(k != SkywarsType.NONE){
+			private static final long serialVersionUID = 103020293947854356L;
+
+			{
+				for(String s : args) {
+					add(s);
+				}
+			}
+		};
+		
+		Map<SkywarsType, Integer> asserts = new HashMap<SkywarsType, Integer>();
+		
+		for(SkywarsType cache : SkywarsType.values()) {
+			
+			if(cache == SkywarsType.NONE) continue;
+			
+			int cacheinteger = 0;
+			
+			List<String> cacheargs = cache.getResolver().getListArgs();
+			Iterator<String> iterate = resolver.iterator();
+			
+			while(iterate.hasNext()) {
 				
-				if(exact.equals(k.getResolver().getArgs())){
-					
-					return k;
-					
+				String str = iterate.next();
+				if(cacheargs.contains(str)) {
+					cacheinteger++;
 				}
 				
 			}
 			
+			asserts.put(cache, cacheinteger);
+			
 		}
 		
-		return SkywarsType.NONE;
+		for(Map.Entry<SkywarsType, Integer> k : asserts.entrySet()) {
+			
+			if(k.getValue() >= lastassert) {
+				
+				lastassert = k.getValue();
+				type = k.getKey();
+				
+			}
+			
+		}
+		
+		return type;
 	}
 	
 	@Override

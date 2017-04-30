@@ -70,6 +70,7 @@ public class InventoryBuilder {
     }
     
     public InventoryBuilder(String name, int size, boolean deleteOnClose) {
+    	
         this.name = TextUtil.format(name);
         this.size = size;
         this.actions = new HashMap<Integer, Action>();
@@ -77,6 +78,7 @@ public class InventoryBuilder {
         this.bukkitInventory = Bukkit.createInventory((InventoryHolder)null, (int)this.size, (String)this.name);
         this.editableSlots = new HashSet<Integer>();
         InventoryBuilderListener.inventoryByUUID.put(this.id, this);
+        
     }
     
     public void setSlotsEditable(int ... slots) {

@@ -40,7 +40,7 @@ import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.NumberUtil;
-import net.omniblock.skywars.util.effectlib.effect.SmokeEffect;
+import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 
 public class Meteoro implements ItemType, Listener  {
 	
@@ -142,15 +142,21 @@ public class Meteoro implements ItemType, Listener  {
 					
 				}
 				
-				List<Block> cube = circle(fb.getLocation(), 3,1,false,true,-1);
+				List<Block> cube = circle(fb.getLocation(), 2, 1, false, true, -1);
 				
 			    for(Block b : cube){
 					if(b != null){
 						if(!CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b)){
-							if(NumberUtil.getRandomInt(1, 8) == 4) {
+							if(NumberUtil.getRandomInt(1, 10) == 5) {
+								
 								bounceBlock(b, (float) (0.5));
+								continue;
+								
 							} else {
+								
 								b.setType(Material.AIR);
+								continue;
+								
 							}
 						}
 					 }
@@ -221,12 +227,9 @@ public class Meteoro implements ItemType, Listener  {
 		new BukkitRunnable() {
 			
 			int power = 2;
-			double deintegred_power = 0.0;
 			
-			boolean deintegred_sound = false;
 			boolean unintegred_sound = false;
 			
-			List<FallingBlock> emergencyback = Lists.newArrayList();
 			List<Block> destructor = Lists.newArrayList();
 			
 			@Override
@@ -236,83 +239,32 @@ public class Meteoro implements ItemType, Listener  {
 						
 					cancel();
 					
-					
+					boolean soundend = false;
 					
 					for(FallingBlock exterminator : meteoro) {
 							
 						if(exterminator.isDead()) {
 							continue;
 						}
-							
-						if(!deintegred_sound) {
-							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.LAVA_POP, 10, -15);
-							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.EXPLODE, 10, 10);
-							deintegred_sound = true;
-						}
 						
 						Location loc = exterminator.getLocation();
 						exterminator.remove();
 							
-						loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.EXPLODE, 15, -5);
-						loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.PISTON_RETRACT, 15, -15);
+						if(soundend == false) {
 							
-						final FallingBlock deintegredmeteoro = loc.getWorld().spawnFallingBlock(loc, Material.COAL_BLOCK, (byte) 0);
-						deintegredmeteoro.setMetadata("METEORO", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
-						deintegredmeteoro.setVelocity(new Vector(NumberUtil.getRandomDouble(0.0 , deintegred_power), -2, NumberUtil.getRandomDouble(0.0 , 1.2)));
+							soundend = true;
 							
-						if(player != null) {
-							METEORO_OWNER.put(deintegredmeteoro, player);
+							loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.EXPLODE, 15, -5);
+							loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.PISTON_RETRACT, 15, -15);
+							
+							ExplodeEffect ef = new ExplodeEffect(Skywars.effectmanager);
+							ef.visibleRange = 300;
+							ef.setLocation(loc);
+							ef.start();
+							
 						}
-						
-						deintegredmeteoro.setTicksLived(20 * 5);
-						emergencyback.add(deintegredmeteoro);
-						
-						deintegred_power += 0.2;
-						
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-									
-								if(deintegredmeteoro.isDead()) {
-									cancel();
-									return;
-								}
-									
-								List<Block> explosion = circle(deintegredmeteoro.getLocation(), 1, 1, false, true, -1);
-								for(Block b : explosion) {
-									if(b.getType() != Material.AIR) {
-											
-										cancel();
-										deintegredmeteoro.remove();
-											
-										if(b.getType() != Material.BEDROCK && b.getType() != Material.WATER && 
-												b.getType() != Material.OBSIDIAN) {
-												
-											deintegredmeteoro.getLocation().getWorld().playSound(deintegredmeteoro.getLocation(), Sound.EXPLODE, 5, -15);
-											deintegredmeteoro.getLocation().getWorld().playSound(deintegredmeteoro.getLocation(), Sound.PISTON_RETRACT, 5, -15);
-												
-											deintegredmeteoro.getLocation().getWorld().playSound(deintegredmeteoro.getLocation(), Sound.FALL_BIG, 15, -15);
-											deintegredmeteoro.getLocation().getWorld().playSound(deintegredmeteoro.getLocation(), Sound.EXPLODE, 15, -25);
-												
-											loc.getWorld().playSound(b.getLocation(), Sound.SWIM, 15, -15);
-												
-											b.setType(Material.AIR);
-												
-											SmokeEffect ef = new SmokeEffect(Skywars.effectmanager);
-												
-											ef.visibleRange = 300;
-											ef.delay = 1;
-												
-											ef.setLocation(deintegredmeteoro.getLocation());
-											ef.start();
-												
-										}
-									}
-								}
-							}
-						}.runTaskTimer(Skywars.getInstance(), 3L, 3L);
+					
 					}
-					return;
 					
 				} else {
 					
@@ -350,13 +302,6 @@ public class Meteoro implements ItemType, Listener  {
 									exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.EXPLODE, 15, -25);
 									
 									b.setType(Material.AIR);
-									
-									SmokeEffect ef = new SmokeEffect(Skywars.effectmanager);
-									
-									ef.visibleRange = 300;
-									
-									ef.setLocation(b.getLocation());
-									ef.start();
 									
 									continue;
 									

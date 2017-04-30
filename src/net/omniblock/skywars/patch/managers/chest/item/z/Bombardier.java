@@ -419,7 +419,6 @@ public class Bombardier implements ItemType, Listener {
 				player.teleport(tracker);
 				
 				player.removePotionEffect(PotionEffectType.INVISIBILITY);
-				player.setNoDamageTicks(0);
 				
 				player.setFoodLevel(psd.food);
 				
@@ -603,9 +602,6 @@ public class Bombardier implements ItemType, Listener {
 		SoloPlayerManager.forceFly(player);
 		SoloPlayerManager.emptyPlayer(player);
 		
-		player.setMaximumNoDamageTicks(9000 * 20);
-		player.setNoDamageTicks(8000 * 20);
-		
 		player.setFoodLevel(20);
 		
 		player.setHealth(player.getMaxHealth());
@@ -703,7 +699,6 @@ public class Bombardier implements ItemType, Listener {
 												player.teleport(tracker);
 												
 												player.removePotionEffect(PotionEffectType.INVISIBILITY);
-												player.setNoDamageTicks(0);
 												
 												player.setFoodLevel(psd.food);
 												
@@ -752,7 +747,6 @@ public class Bombardier implements ItemType, Listener {
 												player.teleport(tracker);
 												
 												player.removePotionEffect(PotionEffectType.INVISIBILITY);
-												player.setNoDamageTicks(0);
 												
 												player.setFoodLevel(psd.food);
 												
@@ -844,7 +838,6 @@ public class Bombardier implements ItemType, Listener {
 						player.teleport(tracker);
 						
 						player.removePotionEffect(PotionEffectType.INVISIBILITY);
-						player.setNoDamageTicks(0);
 						
 						player.setFoodLevel(psd.food);
 						
@@ -890,7 +883,6 @@ public class Bombardier implements ItemType, Listener {
 						}
 						
 						player.removePotionEffect(PotionEffectType.INVISIBILITY);
-						player.setNoDamageTicks(0);
 						
 						player.setFoodLevel(psd.food);
 						

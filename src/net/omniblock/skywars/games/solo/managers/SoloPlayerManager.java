@@ -22,6 +22,7 @@ import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
+import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
@@ -156,6 +157,7 @@ public class SoloPlayerManager {
 			
 			p.setGameMode(GameMode.ADVENTURE);
 			
+			LobbyManager.giveItems(p);
 			AccountManager.saveAccount(p);
 			
 			playersInLobby.add(p);
@@ -217,6 +219,8 @@ public class SoloPlayerManager {
 			
 			Player player = playersInGame.get(i);
 			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
+			
+			emptyPlayer(player);
 			
 			if(cage_obj instanceof CageType) {
 				

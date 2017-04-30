@@ -539,10 +539,22 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
-		MapManager.unloadActualWorldsAndReset();
-		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				
+				if(Bukkit.getOnlinePlayers().size() <= 0) {
+					cancel();
+					MapManager.unloadActualWorldsAndReset();
+					Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
+					
+					stop();
+				}
+				
+			}
+		}.runTaskTimer(Skywars.getInstance(), 20l, 20l);
 		
-		stop();
+		
 		
 	}
 	

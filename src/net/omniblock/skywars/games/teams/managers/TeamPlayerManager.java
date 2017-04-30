@@ -28,6 +28,7 @@ import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
+import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.MapUtils;
@@ -179,6 +180,7 @@ public class TeamPlayerManager {
 			
 			p.setGameMode(GameMode.ADVENTURE);
 			
+			LobbyManager.giveItems(p);
 			AccountManager.saveAccount(p);
 			
 			playersInLobby.add(p);
@@ -373,14 +375,18 @@ public class TeamPlayerManager {
 			
 			processed_players.add(player); if(hasteam) processed_players.add(team);
 			
-			
-			
 			List<Object> cages = Lists.newArrayList();
 			
 			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
 			Object two_obj = null;
 			
+			player.setFallDistance(0);
+			
+			emptyPlayer(player);
+			
 			if(hasteam) {
+				team.setFallDistance(0);
+				emptyPlayer(team);
 				two_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(team).getSelected());
 			}
 			

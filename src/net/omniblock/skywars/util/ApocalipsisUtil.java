@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.Bombardier;
@@ -220,18 +221,7 @@ public class ApocalipsisUtil {
 		
 		public Location getLobbySchematicLoc() {
 			
-			if(Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO 
-					|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
-					|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO){
-				
-				return MapManager.lobbyschematic.getLocation();
-				
-			} else {
-				
-				// TODO
-				return null;
-				
-			}
+			return MapManager.lobbyschematic.getLocation();
 			
 		}
 		
@@ -245,15 +235,9 @@ public class ApocalipsisUtil {
 				
 			} else {
 				
-				// TODO
-				return new ArrayList<Player>();
+				return TeamPlayerManager.getPlayersInGameListAsCopy();
 				
 			}
-			
-		}
-
-		public void startTroop() {
-			// TODO Auto-generated method stub
 			
 		}
 		

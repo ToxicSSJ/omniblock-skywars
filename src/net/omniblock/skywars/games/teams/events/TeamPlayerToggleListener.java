@@ -49,7 +49,7 @@ public class TeamPlayerToggleListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		
-		System.out.println("JOIN IN TEAM PLAYER TEAM EVENT");
+		e.setJoinMessage(null);
 		
 		if(Verifier == false) {
 			Verifier = true;
@@ -76,6 +76,8 @@ public class TeamPlayerToggleListener implements Listener {
 	
 	@EventHandler
 	public void onLeft(PlayerQuitEvent e) {
+		
+		e.setQuitMessage(null);
 		
 		TeamPlayerManager.removePlayer(e.getPlayer());
 		

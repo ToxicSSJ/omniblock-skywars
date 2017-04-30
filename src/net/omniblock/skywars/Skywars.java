@@ -21,6 +21,7 @@ import net.omniblock.skywars.patch.MapPatcher;
 import net.omniblock.skywars.patch.NetworkPatcher;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.MapManager;
+import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.BossBar;
@@ -79,11 +80,13 @@ public class Skywars extends JavaPlugin {
 		
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
-		VanishUtil.start();
-		MultiLineAPI.start();
 		BossBar.startBossBar();
 		EffectLib.startEffectLib();
+		VanishUtil.start();
+		LobbyManager.start();
+		MultiLineAPI.start();
 		TeleportFixThree.initialize();
+		
 		InventoryBuilderListener.startInventoryBuilder();
 		
 		effectmanager = new EffectManager(this);
