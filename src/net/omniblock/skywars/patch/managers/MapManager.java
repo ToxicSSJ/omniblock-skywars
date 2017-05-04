@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -24,6 +25,7 @@ import net.omniblock.skywars.util.MCAUtil;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.Scan;
 import net.omniblock.skywars.util.TextUtil;
+import net.omniblock.skywars.util.chunk.CleanroomChunkGenerator;
 
 /**
  * Esta clase se encarga de:
@@ -70,8 +72,6 @@ public class MapManager {
 	}
 	
 	public static void unloadWorlds() {
-		
-		
 		
 		List<String> unloaded = new ArrayList<String>();
 		
@@ -239,7 +239,12 @@ public class MapManager {
 				
 			}
 			
-			NEW_MAP_NORMAL = Bukkit.createWorld(new WorldCreator(nextMapName));
+			WorldCreator creator = new WorldCreator(nextMapName);
+			
+			creator.environment(Environment.NORMAL);
+			creator.generator(new CleanroomChunkGenerator("."));
+			
+			NEW_MAP_NORMAL = Bukkit.createWorld(creator);
 			
 			if(NEW_MAP_NORMAL == null) {
 					
@@ -308,7 +313,12 @@ public class MapManager {
 				
 			}
 			
-			NEW_MAP_Z = Bukkit.createWorld(new WorldCreator(nextMapName));
+			WorldCreator creator = new WorldCreator(nextMapName);
+			
+			creator.environment(Environment.NORMAL);
+			creator.generator(new CleanroomChunkGenerator("."));
+			
+			NEW_MAP_Z = Bukkit.createWorld(creator);
 			
 			if(NEW_MAP_Z == null) {
 					
