@@ -1,7 +1,7 @@
 name: Skywars
 main: net.omniblock.skywars.Skywars
 softdepend: [OmniNetwork, WorldEdit, Citizens]
-version: 1.0
+version: 12.0.2
 commands:
    chest:
       description: testeando los kakichest!.

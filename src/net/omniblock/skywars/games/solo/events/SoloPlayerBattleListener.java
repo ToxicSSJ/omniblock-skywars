@@ -111,7 +111,7 @@ public class SoloPlayerBattleListener implements Listener {
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
 						killPlayer(affected, damager);
-						DeathMessages.P2P_SUICIDE.broadcastMessage(affected);
+						DeathMessages.P2P_SUICIDE.broadcastMessage(affected, damager);
 						
 					} else {
 						
@@ -913,13 +913,15 @@ public class SoloPlayerBattleListener implements Listener {
 			killPlayer(affected, damager);
 			
 			if(arrow) {
-				DeathMessages.P2P_ARROWS.broadcastMessage(affected);
+				DeathMessages.P2P_ARROWS.broadcastMessage(affected, damager);
 				return;
 			}
-			DeathMessages.P2P_WEAPON.broadcastMessage(affected);
+			
+			DeathMessages.P2P_WEAPON.broadcastMessage(affected, damager);
 			return;
 			
 		} else {
+			
 			addToAssistence(damager, affected, 8);
 			addToLastHitList(damager, affected, 8);
 			return;
@@ -1207,8 +1209,6 @@ public class SoloPlayerBattleListener implements Listener {
 
 	public static void playDeath(Player death, Player killer) {
 		
-		System.out.println("xddd");
-		
 		/**
 		 * @MakeKill
 		 */
@@ -1240,8 +1240,6 @@ public class SoloPlayerBattleListener implements Listener {
 		 * @MakeDeath
 		 */
 		if(battle_info.containsKey(death)) {
-			
-			System.out.println("yeah");
 			
 			SoloPlayerBattleInfo pbi = battle_info.get(death);
 			pbi.alive = false;

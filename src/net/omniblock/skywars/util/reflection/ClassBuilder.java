@@ -9,6 +9,7 @@ public abstract class ClassBuilder {
 
 	public static Object buildWitherSpawnPacket(int id, Location loc, Object dataWatcher) throws Exception {
 		Object packet = NMSClass.PacketPlayOutSpawnEntityLiving.newInstance();
+		
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("a")).set(packet, id);
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("b")).set(packet, 64);// TODO: Find correct entity type id
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("c")).set(packet, (int) loc.getX());
@@ -23,6 +24,15 @@ public abstract class ClassBuilder {
 		return packet;
 	}
 
+	public static Object buildHideWitherPacket(int id) throws Exception {
+		
+		Object packet = NMSClass.PacketPlayOutEntityDestroy.newInstance();
+		
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("a")).set(packet, new int[] { id });
+
+		return packet;
+	}
+	
 	public static Object buildWitherSkullSpawnPacket(Object skull) throws Exception {
 		@SuppressWarnings("deprecation")
 		Object spawnPacketSkull = NMSClass.PacketPlayOutSpawnEntity.getConstructor(NMSClass.Entity, int.class).newInstance(skull, EntityType.WITHER_SKULL.getTypeId());
@@ -130,6 +140,7 @@ public abstract class ClassBuilder {
 	}
 
 	public static Object buildTeleportPacket(int id, Location loc, boolean onGround, boolean heightCorrection) throws Exception {
+		
 		Object packet = NMSClass.PacketPlayOutEntityTeleport.newInstance();
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("a")).set(packet, id);
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("b")).set(packet, (int) (loc.getX() * 32D));

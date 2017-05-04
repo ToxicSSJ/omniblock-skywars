@@ -124,7 +124,7 @@ public class TeamPlayerBattleListener implements Listener {
 					if(affected.getHealth() - event.getFinalDamage() <= 0) {
 						
 						killPlayer(affected, damager);
-						DeathMessages.P2P_SUICIDE.broadcastMessage(affected);
+						DeathMessages.P2P_SUICIDE.broadcastMessage(affected, damager);
 						
 					} else {
 						
@@ -735,9 +735,11 @@ public class TeamPlayerBattleListener implements Listener {
 						TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(TeamPlayerManager.hasTeam(damager)) {
-						if(TeamPlayerManager.getPlayerTeam(damager) != affected) {
+						if(TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
 							attackFilter(damager, affected, e, false);
 						}
+					} else {
+						attackFilter(damager, affected, e, false);
 					}
 					
 				}
@@ -761,9 +763,11 @@ public class TeamPlayerBattleListener implements Listener {
 						TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(TeamPlayerManager.hasTeam(damager)) {
-						if(TeamPlayerManager.getPlayerTeam(damager) != affected) {
+						if(TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
 							attackFilter(damager, affected, e, false);
 						}
+					} else {
+						attackFilter(damager, affected, e, false);
 					}
 					
 				}
@@ -787,9 +791,11 @@ public class TeamPlayerBattleListener implements Listener {
 						TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 					
 					if(TeamPlayerManager.hasTeam(damager)) {
-						if(TeamPlayerManager.getPlayerTeam(damager) != affected) {
+						if(TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
 							attackFilter(damager, affected, e, false);
 						}
+					} else {
+						attackFilter(damager, affected, e, false);
 					}
 					
 				}
@@ -805,6 +811,7 @@ public class TeamPlayerBattleListener implements Listener {
 					if((affected.getHealth() - 0.3) <= 0) {
 						
 						if(contamination_infected.containsKey(affected)) {
+							
 							if(lasthit.containsKey(affected)) {
 								e.setCancelled(true);
 								damager = lasthit.get(affected);
@@ -817,6 +824,7 @@ public class TeamPlayerBattleListener implements Listener {
 								DeathMessages.P2A_Z_CONTAMINATION.broadcastMessage(affected);
 								return;
 							}
+							
 						}
 						
 					} else {
@@ -930,20 +938,28 @@ public class TeamPlayerBattleListener implements Listener {
 	
 	public void attackFilter(Player damager, Player affected, EntityDamageByEntityEvent e, boolean arrow) {
 		
+		if(TeamPlayerManager.hasTeam(damager)) {
+			if(TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) {
+				return;
+			}
+		}
+		
 		double health = affected.getHealth();
+		
 		if((health - e.getFinalDamage()) <= 0) {
 			
 			e.setCancelled(true);
 			killPlayer(affected, damager);
 			
 			if(arrow) {
-				DeathMessages.P2P_ARROWS.broadcastMessage(affected);
+				DeathMessages.P2P_ARROWS.broadcastMessage(affected, damager);
 				return;
 			}
-			DeathMessages.P2P_WEAPON.broadcastMessage(affected);
+			DeathMessages.P2P_WEAPON.broadcastMessage(affected, damager);
 			return;
 			
 		} else {
+			
 			addToAssistence(damager, affected, 8);
 			addToLastHitList(damager, affected, 8);
 			return;
@@ -1231,8 +1247,6 @@ public class TeamPlayerBattleListener implements Listener {
 
 	public static void playDeath(Player death, Player killer) {
 		
-		System.out.println("xddd");
-		
 		/**
 		 * @MakeKill
 		 */
@@ -1264,8 +1278,6 @@ public class TeamPlayerBattleListener implements Listener {
 		 * @MakeDeath
 		 */
 		if(battle_info.containsKey(death)) {
-			
-			System.out.println("yeah");
 			
 			TeamPlayerBattleInfo pbi = battle_info.get(death);
 			pbi.alive = false;

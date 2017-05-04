@@ -17,8 +17,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywars;
-import net.omniblock.skywars.patch.managers.AccountManager;
-import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
@@ -26,6 +24,8 @@ import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
 
 public class SoloPlayerManager {
 
@@ -158,7 +158,7 @@ public class SoloPlayerManager {
 			p.setGameMode(GameMode.ADVENTURE);
 			
 			LobbyManager.giveItems(p);
-			AccountManager.saveAccount(p);
+			SkywarsBase.saveAccount(p);
 			
 			playersInLobby.add(p);
 			
@@ -172,10 +172,10 @@ public class SoloPlayerManager {
 	}
 	
 	public static void removePlayer(Player p) {
+		
 		playersInLobby.remove(p);
 		
 		if(playersInGame.contains(p)) {
-			//TODO: Eliminar de la partida
 			playersInGame.remove(p);
 		}
 		
@@ -218,7 +218,7 @@ public class SoloPlayerManager {
 		for(int i = 0; i < getPlayersInGameAmount(); i++) {
 			
 			Player player = playersInGame.get(i);
-			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
+			Object cage_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE, SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
 			
 			emptyPlayer(player);
 			

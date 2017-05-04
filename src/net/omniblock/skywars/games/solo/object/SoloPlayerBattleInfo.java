@@ -10,8 +10,8 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 
 import net.omniblock.skywars.network.NetworkData;
-import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.util.TextUtil;
+import omniblock.on.addons.games.general.BankBase;
 
 public class SoloPlayerBattleInfo {
 	
@@ -148,8 +148,8 @@ public class SoloPlayerBattleInfo {
 			total_exp = total_exp *2;
 		}
 		
-		AccountManager.setMoney(player, AccountManager.getMoney(player) + total_money);
-		AccountManager.setExp(player, AccountManager.getExp(player) + total_exp);
+		BankBase.setMoney(player, BankBase.getMoney(player) + total_money);
+		BankBase.setExp(player, BankBase.getExp(player) + total_exp);
 		
 	}
 	

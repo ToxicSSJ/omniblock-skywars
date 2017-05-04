@@ -24,8 +24,6 @@ import com.google.common.collect.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.teams.TeamSkywars;
-import net.omniblock.skywars.patch.managers.AccountManager;
-import net.omniblock.skywars.patch.managers.AccountManager.SelectedItemType;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
@@ -35,6 +33,8 @@ import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
 
 public class TeamPlayerManager {
 	
@@ -181,7 +181,7 @@ public class TeamPlayerManager {
 			p.setGameMode(GameMode.ADVENTURE);
 			
 			LobbyManager.giveItems(p);
-			AccountManager.saveAccount(p);
+			SkywarsBase.saveAccount(p);
 			
 			playersInLobby.add(p);
 			
@@ -377,7 +377,7 @@ public class TeamPlayerManager {
 			
 			List<Object> cages = Lists.newArrayList();
 			
-			Object cage_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(player).getSelected());
+			Object cage_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE, SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
 			Object two_obj = null;
 			
 			player.setFallDistance(0);
@@ -387,7 +387,7 @@ public class TeamPlayerManager {
 			if(hasteam) {
 				team.setFallDistance(0);
 				emptyPlayer(team);
-				two_obj = AccountManager.getSelectedItem(SelectedItemType.CAGE, AccountManager.SAVED_ACCOUNTS.get(team).getSelected());
+				two_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE, SkywarsBase.SAVED_ACCOUNTS.get(team).getSelected());
 			}
 			
 			cages.add(cage_obj); if(hasteam && two_obj != null) { cages.add(two_obj); }

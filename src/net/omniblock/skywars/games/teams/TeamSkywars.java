@@ -34,7 +34,6 @@ import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo.PlayerBattl
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
-import net.omniblock.skywars.patch.managers.AccountManager;
 import net.omniblock.skywars.patch.managers.EventsManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
@@ -44,6 +43,7 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
 import net.omniblock.skywars.util.TextUtil;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
 import omniblock.on.network.packet.Packet;
 import omniblock.on.network.packet.assembler.AssemblyType;
 import omniblock.on.network.packet.modifier.PacketModifier;
@@ -418,11 +418,11 @@ public class TeamSkywars implements SkywarsStarter {
 								p.sendMessage(TextUtil.getCenteredMessage(" &7Mapa: &6&l" + MapManager.lobbyschematic.getLocation().getWorld().getName()));
 								p.sendMessage(TextUtil.getCenteredMessage("&r"));
 								
-								if(AccountManager.SAVED_ACCOUNTS.containsKey(p)) {
+								if(SkywarsBase.SAVED_ACCOUNTS.containsKey(p)) {
 									
-									p.sendMessage(TextUtil.getCenteredMessage(" &7Kills Totales: &c" + (AccountManager.getKills(AccountManager.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getKills())));
-									p.sendMessage(TextUtil.getCenteredMessage(" &7Asistencias Totales: &b" + (AccountManager.getAssistences(AccountManager.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getAssistences())));
-									p.sendMessage(TextUtil.getCenteredMessage(" &7Promedio Total: &9&l" + (AccountManager.getAverage(AccountManager.SAVED_ACCOUNTS.get(p).getStats())))); // TODO Terminar xd
+									p.sendMessage(TextUtil.getCenteredMessage(" &7Kills Totales: &c" + (SkywarsBase.getKills(SkywarsBase.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getKills())));
+									p.sendMessage(TextUtil.getCenteredMessage(" &7Asistencias Totales: &b" + (SkywarsBase.getAssistences(SkywarsBase.SAVED_ACCOUNTS.get(p).getStats()) + k.getKey().getAssistences())));
+									p.sendMessage(TextUtil.getCenteredMessage(" &7Promedio Total: &9&l" + (SkywarsBase.getAverage(SkywarsBase.SAVED_ACCOUNTS.get(p).getStats()))));
 									p.sendMessage(TextUtil.getCenteredMessage("&r"));
 									
 								}

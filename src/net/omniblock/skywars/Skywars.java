@@ -24,7 +24,6 @@ import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
-import net.omniblock.skywars.util.BossBar;
 import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.MultiLineAPI;
 import net.omniblock.skywars.util.VanishUtil;
@@ -33,8 +32,10 @@ import net.omniblock.skywars.util.effectlib.EffectLib;
 import net.omniblock.skywars.util.effectlib.EffectManager;
 import net.omniblock.skywars.util.fix.TeleportFixThree;
 import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
+import omniblock.on.network.updater.object.Updatable;
+import omniblock.on.network.updater.type.PluginType;
 
-public class Skywars extends JavaPlugin {
+public class Skywars extends JavaPlugin implements Updatable {
 
 	private static Skywars instance;
 	
@@ -51,19 +52,17 @@ public class Skywars extends JavaPlugin {
 	
 	@Override
 	public void onEnable(){
+		
 		instance = this;
 		
-		//logger
-		DebugUtil.setupLogger();
+		if(update(PluginType.SKYWARS, this)) return;
 		
-		//data
+		DebugUtil.setupLogger();
 		CageManager.extractCages();
-		//Ya que boogst no queria usar MapManager.getInstance() ¬¬ tengo que hacer un inicializador del MapManager en el onEnable
 		
 		DebugUtil.info("Iniciando MapManager ...");
 		MapManager.prepareWorlds();
 		
-		// Inicializador de Patchers
 		networkpatcher = new NetworkPatcher();
 		networkpatcher.initialize();
 		
@@ -76,11 +75,8 @@ public class Skywars extends JavaPlugin {
 		ActionBarApi.nmsver = Bukkit.getServer().getClass().getPackage().getName();
 		ActionBarApi.nmsver = ActionBarApi.nmsver.substring(ActionBarApi.nmsver.lastIndexOf(".") + 1);
 		
-		//Utils
-		
 		CitizensAPI.getNPCRegistry().deregisterAll();
 		
-		BossBar.startBossBar();
 		EffectLib.startEffectLib();
 		VanishUtil.start();
 		LobbyManager.start();

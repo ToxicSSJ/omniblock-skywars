@@ -12,10 +12,12 @@ package net.omniblock.skywars.network.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.omniblock.skywars.Skywars;
 
@@ -32,6 +34,13 @@ public class SkywarsLobbyFilterListener implements Listener {
 	public void onDrop(PlayerDropItemEvent e){
 		if(Skywars.inlobby || Skywars.inpregame){
 			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPhysics(PlayerInteractEvent e){
+		if(Skywars.inlobby || Skywars.inpregame){
+			if(e.getAction() == Action.PHYSICAL) e.setCancelled(true);
 		}
 	}
 	

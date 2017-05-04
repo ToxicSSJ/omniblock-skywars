@@ -14,21 +14,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.omniblock.skywars.util.BossBarAPI;
 import net.omniblock.skywars.util.TextUtil;
+import omniblock.on.util.lib.bukkit.bossbar.BarAPI;
 
 public class NetworkRunnable extends BukkitRunnable {
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		
 		if(NetworkData.generalbooster) {
 			for(Player p : Bukkit.getOnlinePlayers()) {
-				BossBarAPI.setMessage(p, TextUtil.format("&d&l¡NETWORK BOOSTER&r &7Activado por Unknow!"), 1, 2);
+				BarAPI.setMessage(p, TextUtil.format("&d&l¡NETWORK BOOSTER&r &7Activado por Unknow!"));
 			}
 		} else {
 			for(Player p : Bukkit.getOnlinePlayers()) {
-				BossBarAPI.setMessage(p, TextUtil.format("&9&lOMNIBLOCK NETWORK &8&l« &fSkyWars"), 1, 2);
+				BarAPI.setMessage(p, TextUtil.format("&9&lOMNIBLOCK NETWORK &8&l« &fSkyWars"));
 			}
 		}
 		
