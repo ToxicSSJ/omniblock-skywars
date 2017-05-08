@@ -447,6 +447,7 @@ public class MapManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public static enum MapType {
