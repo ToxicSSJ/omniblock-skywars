@@ -166,21 +166,6 @@ public class SoloPlayerManager {
 			LobbyManager.giveItems(p);
 			SkywarsBase.saveAccount(p);
 			
-			if(ChestManager.getCurrentMatchType() == MatchType.Z){
-				
-				new BukkitRunnable(){
-					@Override
-					public void run(){
-						
-						Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TEXTUREPACK, new PacketModifier()
-								.addString(p.getName())
-								.addString("SKWZ"));
-						
-					}
-				}.runTaskLater(Skywars.getInstance(), 20 * 2);
-				
-			}
-			
 			
 			
 			playersInLobby.add(p);
@@ -188,6 +173,21 @@ public class SoloPlayerManager {
 		} else {
 			
 			spectatorPlayer(p);
+			
+		}
+		
+		if(ChestManager.getCurrentMatchType() == MatchType.Z){
+			
+			new BukkitRunnable(){
+				@Override
+				public void run(){
+					
+					Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TEXTUREPACK, new PacketModifier()
+							.addString(p.getName())
+							.addString("SKWZ"));
+					
+				}
+			}.runTaskLater(Skywars.getInstance(), 20 * 2);
 			
 		}
 		
