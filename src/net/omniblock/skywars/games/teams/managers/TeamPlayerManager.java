@@ -190,7 +190,7 @@ public class TeamPlayerManager {
 		
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
 			
-			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p) + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (TeamSkywars.cagesLocations.size() * 2) + ")"));
+			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p, 'a') + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (TeamSkywars.cagesLocations.size() * 2) + ")"));
 			
 			for(Player p2 : getPlayersInLobbyListAsCopy()) {
 				if(p.getUniqueId().equals(p2.getUniqueId())) {
