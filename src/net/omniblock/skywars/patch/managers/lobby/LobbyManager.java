@@ -175,7 +175,7 @@ public class LobbyManager implements Listener {
 	public static enum LobbyItem {
 		
 		EXIT(new ItemBuilder(Material.ACACIA_DOOR_ITEM).amount(1)
-				.name(TextUtil.format("&c&lABANDONAR"))
+				.name(TextUtil.format("&c&lAbandonar"))
 				.lore(TextUtil.format(""))
 				.lore(TextUtil.format("&9&l- &7Abandonar la partida y volver"))
 				.lore(TextUtil.format("&7al lobby de la modalidad de Skywars."))
@@ -391,7 +391,7 @@ public class LobbyManager implements Listener {
 								return;
 							}
 							
-							player.sendMessage(TextUtil.format("&7No eres &6&lVIP para acceder a los poderes, En nuestra tienda encuentra todas "
+							player.sendMessage(TextUtil.format("&7No eres &6&lVIP&7 para acceder a los poderes, En nuestra tienda encuentra todas "
 									+ "las ofertas posibles para adquirir un rango mayor: &6&lwww.omniblock.net"));
 							return;
 							
@@ -693,7 +693,7 @@ public class LobbyManager implements Listener {
 							return;
 						}
 						
-						player.sendMessage(TextUtil.format("&7No eres &6&lVIP para acceder a los poderes, En nuestra tienda encuentra todas "
+						player.sendMessage(TextUtil.format("&7No eres &6&lVIP&7 para acceder a los poderes, En nuestra tienda encuentra todas "
 								+ "las ofertas posibles para adquirir un rango mayor: &6&lwww.omniblock.net"));
 						return;
 						

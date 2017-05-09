@@ -26,6 +26,7 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.util.ActionBarApi;
@@ -547,6 +548,11 @@ public class SoloPlayerBattleListener implements Listener {
 			
 			Player affected = (Player) e.getEntity(); 
 			
+			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)){
+				e.setCancelled(true);
+				return;
+			}
+			
 			if(SoloPlayerManager.getPlayersInGameList().contains(affected)) {
 				
 				if(e.getCause() != DamageCause.ENTITY_ATTACK) {
@@ -717,6 +723,11 @@ public class SoloPlayerBattleListener implements Listener {
 			Player damager = (Player) e.getDamager();
 			Player affected = (Player) e.getEntity();
 			
+			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)){
+				e.setCancelled(true);
+				return;
+			}
+			
 			if(!affected.hasMetadata("ZDAMAGE")) {
 				
 				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
@@ -741,6 +752,11 @@ public class SoloPlayerBattleListener implements Listener {
 				Player damager = (Player) arrow.getShooter();
 				Player affected = (Player) e.getEntity();
 				
+				if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)){
+					e.setCancelled(true);
+					return;
+				}
+				
 				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
 						SoloPlayerManager.getPlayersInGameList().contains(affected)) {
 					
@@ -762,6 +778,11 @@ public class SoloPlayerBattleListener implements Listener {
 				
 				Player damager = (Player) snowball.getShooter();
 				Player affected = (Player) e.getEntity();
+				
+				if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)){
+					e.setCancelled(true);
+					return;
+				}
 				
 				if(SoloPlayerManager.getPlayersInGameList().contains(damager) &&
 						SoloPlayerManager.getPlayersInGameList().contains(affected)) {

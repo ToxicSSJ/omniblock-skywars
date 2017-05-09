@@ -26,6 +26,7 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.util.ActionBarApi;
@@ -560,6 +561,11 @@ public class TeamPlayerBattleListener implements Listener {
 			
 			Player affected = (Player) e.getEntity(); 
 			
+			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)){
+				e.setCancelled(true);
+				return;
+			}
+			
 			if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 				
 				if(e.getCause() != DamageCause.ENTITY_ATTACK) {
@@ -728,6 +734,11 @@ public class TeamPlayerBattleListener implements Listener {
 			
 			Player damager = (Player) e.getDamager();
 			Player affected = (Player) e.getEntity();
+			
+			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)){
+				e.setCancelled(true);
+				return;
+			}
 			
 			if(!affected.hasMetadata("ZDAMAGE")) {
 				

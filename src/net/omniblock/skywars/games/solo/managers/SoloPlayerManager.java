@@ -26,6 +26,7 @@ import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
+import omniblock.on.addons.games.general.RankBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
 import omniblock.on.network.packet.Packet;
@@ -145,7 +146,7 @@ public class SoloPlayerManager {
 		
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
 			
-			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (SoloPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + SoloSkywars.cagesLocations.size() + ")"));
+			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p) + "&7 ha ingresado a la partida. (" + (SoloPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + SoloSkywars.cagesLocations.size() + ")"));
 			
 			for(Player p2 : getPlayersInLobbyListAsCopy()) {
 				if(p.getUniqueId().equals(p2.getUniqueId())) {

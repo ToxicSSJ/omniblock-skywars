@@ -29,6 +29,16 @@ import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 public class TeamPlayerCustomProtocols implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDamage(EntityDamageEvent e){
+		if(e.getEntity() instanceof Player){
+			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains((Player) e.getEntity())){
+				e.setCancelled(true);
+				return;
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onRemoveBlock(BlockBreakEvent e) {
 		if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
 			e.setCancelled(true);

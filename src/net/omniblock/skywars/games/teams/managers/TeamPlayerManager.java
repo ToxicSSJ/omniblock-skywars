@@ -33,6 +33,7 @@ import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
+import omniblock.on.addons.games.general.RankBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
 
@@ -127,6 +128,27 @@ public class TeamPlayerManager {
 		
 	}
 	
+	public static boolean isTeamWin(){
+		
+		if(getPlayersInGameAmount() == 2){
+			
+			Player player = getPlayersInGameList().get(0);
+			Player team = getPlayersInGameList().get(1);
+			
+			if(isTeam(player, team)){
+				return true;
+			}
+			
+		} else if(getPlayersInGameAmount() == 1){
+			
+			return true;
+			
+		}
+		
+		return false;
+		
+	}
+	
 	public static void forceFly(Player p) {
 		
 		new BukkitRunnable() {
@@ -163,7 +185,7 @@ public class TeamPlayerManager {
 		
 		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
 			
-			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + p.getName() + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (TeamSkywars.cagesLocations.size() * 2) + ")"));
+			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p) + "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + (TeamSkywars.cagesLocations.size() * 2) + ")"));
 			
 			for(Player p2 : getPlayersInLobbyListAsCopy()) {
 				if(p.getUniqueId().equals(p2.getUniqueId())) {
@@ -228,8 +250,6 @@ public class TeamPlayerManager {
 		}
 		
 		for(Player p : playersInLobby) {
-			
-			System.out.println("p = " + p.getName());
 			
 			if(!cache.contains(p)) {
 				noteamed.add(p);
@@ -306,6 +326,16 @@ public class TeamPlayerManager {
 		}
 		
 		return null;
+	}
+	
+	public static boolean isTeam(Player p, Player p2) {
+		
+		if(playersTeams.containsKey(p)) {
+			return playersTeams.get(p).equals(p2);
+		}
+		
+		return false;
+		
 	}
 	
 	public static boolean hasTeam(Player p) {

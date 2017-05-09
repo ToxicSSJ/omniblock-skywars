@@ -192,7 +192,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							@SuppressWarnings("deprecation")
 							@Override
 							public void run() {
-							
+								
 								seconds--;
 								
 								if(seconds == 0) {
@@ -231,7 +231,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 								
 							}
 							
-						}.runTaskTimer(Skywars.getInstance(), 0l, 20l);
+						}.runTaskTimer(Skywars.getInstance(), 10l, 20l);
 						
 						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));

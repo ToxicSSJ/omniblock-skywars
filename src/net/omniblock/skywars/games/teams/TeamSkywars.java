@@ -43,6 +43,7 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
 import net.omniblock.skywars.util.TextUtil;
+import omniblock.on.addons.games.general.RankBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
 import omniblock.on.network.packet.Packet;
 import omniblock.on.network.packet.assembler.AssemblyType;
@@ -202,9 +203,15 @@ public class TeamSkywars implements SkywarsStarter {
 		final TeamPlayerBattleInfo TOP_2 = top.get(2);
 		final TeamPlayerBattleInfo TOP_3 = top.get(3);
 		
+		Player team = null;
 		boolean win = winner != null;
 		
 		if(win) {
+			
+			if(TeamPlayerManager.hasTeam(winner)){
+				TeamPlayerManager.getPlayerTeam(team);
+			}
+			
 			TeamPlayerManager.winnerTeam(winner);
 		}
 		
@@ -255,7 +262,8 @@ public class TeamSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					Bukkit.broadcastMessage(TextUtil.format("&7&l» &7Tabla de Posiciones/Scores&8&l:"));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
-					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r         &a&lGANADOR&r &a&l&m-&r &7" + winner.getName()));
+					Bukkit.broadcastMessage(TextUtil.getCenteredMessage(team != null ? "&r         &a&lGANADORES&r &a&l&m-&r &7" + RankBase.getRank(winner).getCustomName(winner) + "&7," + RankBase.getRank(team).getCustomName(team) :
+																		"&r         &a&lGANADOR&r &a&l&m-&r &7" + RankBase.getRank(winner).getCustomName(winner)));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TOP_1.getTopTierMessage(1));
 					Bukkit.broadcastMessage(TOP_2.getTopTierMessage(2));

@@ -232,7 +232,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 								
 							}
 							
-						}.runTaskTimer(Skywars.getInstance(), 0l, 20l);
+						}.runTaskTimer(Skywars.getInstance(), 10l, 20l);
 						
 						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));
@@ -272,12 +272,12 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(TeamPlayerManager.getPlayersInGameAmount() == 1) {
+			if(TeamPlayerManager.isTeamWin()) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(TeamPlayerManager.getPlayersInGameList().get(0));
 				
-			} else if(TeamPlayerManager.getPlayersInGameAmount() <= 0) {
+			} else if(TeamPlayerManager.getPlayersInGameAmount() == 0) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(null);
