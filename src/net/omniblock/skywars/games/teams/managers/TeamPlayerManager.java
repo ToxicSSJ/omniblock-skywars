@@ -443,7 +443,6 @@ public class TeamPlayerManager {
 			cages.add(cage_obj); if(hasteam && two_obj != null) { cages.add(two_obj); }
 			Object selected_obj = cages.get(NumberUtil.getRandomInt(0, cages.size() - 1));
 			
-			
 			if(selected_obj instanceof CageType) {
 				
 				CageType ct = (CageType) cage_obj;

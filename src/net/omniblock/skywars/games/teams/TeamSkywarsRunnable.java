@@ -1,5 +1,6 @@
 package net.omniblock.skywars.games.teams;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 		
 	}
 	
+	@SuppressWarnings("serial")
 	@Override
 	public void run() {
 		
@@ -244,14 +246,38 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 					CageManager.removeCages();
 					
 					if(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
+						
+						List<Player> sucess = new ArrayList<Player>();
+						
 						for(Player p : TeamPlayerManager.getPlayersInGameList()) {
+							
+							if(sucess.contains(p)) continue;
+							
 							if(CageManager.cagesdata.containsKey(p)) {
+								
+								if(TeamPlayerManager.hasTeam(p)){
+									
+									Player team = TeamPlayerManager.getPlayerTeam(p);
+									CageZCameraUtil.makeElevation(new ArrayList<Player>(){
+										{ add(p); add(team); }
+									}, CageManager.cagesdata.get(p));
+									
+									sucess.add(p); sucess.add(team);
+									continue;
+									
+								}
+								
 								CageZCameraUtil.makeElevation(p, CageManager.cagesdata.get(p));
+								sucess.add(p);
 								continue;
+								
 							} else {
+								
 								TeamPlayerManager.deathPlayer(p);
 								continue;
+								
 							}
+							
 						}
 					}
 					

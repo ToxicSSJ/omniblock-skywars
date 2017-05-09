@@ -496,6 +496,34 @@ public class CageManager {
 	
 	public static class CageZCameraUtil {
 		
+		public static void makeElevation(List<Player> players, Location cl) {
+			
+			if(players.size() <= 0) return;
+			
+			int x = cl.getBlockX();
+			int z = cl.getBlockZ();
+			
+			List<Location> points = Lists.newArrayList();
+			Location toLoc = players.get(0).getLocation().clone().add(0, 40, 0);
+			
+			for(int y = 0; y < 256; y++) {
+				Location cache = new Location(players.get(0).getWorld(), x, y, z);
+				if(cache.getBlock().getType() != Material.AIR) {
+					if(cache.getBlock().getType() == Material.STAINED_GLASS ||
+							cache.getBlock().getType() == Material.GLASS) {
+						toLoc = cache;
+						break;
+					}
+				}
+			}
+			
+			points.add(players.get(0).getLocation());
+			points.add(toLoc.clone().add(0.5, 1.5, 0.5));
+			
+			CameraUtil.travel(players, points, toLoc.getBlock(), 20 * 3);
+			
+		}
+		
 		public static void makeElevation(Player p, Location cl) {
 			
 			int x = cl.getBlockX();
