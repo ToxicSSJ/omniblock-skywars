@@ -28,7 +28,6 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
@@ -50,7 +49,7 @@ public class Kraken implements Listener, ItemType {
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
-					if(event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.KRAKEN.getName())){
+					if(event.getPlayer().getItemInHand().getType() == Material.RECORD_6){
 						if(event.getAction() == Action.RIGHT_CLICK_AIR 
 								|| event.getAction() == Action.RIGHT_CLICK_BLOCK
 								|| event.getAction() == Action.LEFT_CLICK_AIR 

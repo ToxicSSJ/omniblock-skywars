@@ -28,9 +28,7 @@ import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
-import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
-import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
-import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
+import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.types.MatchType;
@@ -89,17 +87,17 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 					MapManager.lobbyschematic.removePasted();
 			
 					switch (ChestManager.getCurrentMatchType()) {
-						case NORMAL:
-							fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 10, 12);
-							break;
-						case INSANE:
-							fillchest = new FillChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 10, 12);
-							break;
-						case Z:
-							fillchest = new FillChest(ItemZ.normalChest(), ItemZ.trappedChest(), 10, 12);
-							break;
-						default:
-							break;
+					case NORMAL:
+						fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest(), 6, 8);
+						break;
+					case INSANE:
+						fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest(),6,8);
+						break;
+					case Z:
+						fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest(), 6,8);
+						break;
+					default:
+						break;
 					}
 					
 					PowerItemManager.applyVotes();
@@ -334,7 +332,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
-			
+			fillchest.startReFillChest();
 			return;
 			
 		} else if(str.contains("CONTAMINACIÓN")) {

@@ -6,953 +6,718 @@ import org.bukkit.inventory.ItemStack;
 
 import net.omniblock.skywars.util.ItemBuilder;
 
+
 public enum EItem{
 	
 	/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ Items Epicos ]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 	
 	HACHA_VIKINGA(
-			"§8§k||§r §c§lHacha Vikinga §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Usada por los",
-			"§7vikingos mas temidos",
-			"§7se dice que se",
-			"§7llamaban Vikingos Z.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_ALL,
-			Enchantment.DURABILITY
-	}),
+		new ItemBuilder(Material.IRON_AXE)
+		.amount(1)
+		.name("&8&k||&r &c&lHacha Vikinga &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Usada por los")
+		.lore("&7vikingos mas temidos")
+		.lore("&7para destrozar a sus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 3)
+		.enchant(Enchantment.DURABILITY, 3).build()),
 	OZ_INFERNAL(
-			"§8§k||§r §c§lOz Infernal §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Proviene de la",
-			"§7más temida Muerte, A",
-			"§7cobrar Venganza!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT,
-			Enchantment.DAMAGE_ALL
-	}),
-	TRIDENTE(
-			"§8§k||§r §c§lTridente §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Proveniente de el",
-			"§7legendario Dios Poseidon!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.KNOCKBACK,
-			Enchantment.DAMAGE_ALL
-	}),
+		new ItemBuilder(Material.DIAMOND_HOE)
+		.amount(1)
+		.name("&8&k||&r &c&lOz Infernal &lore8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Proviene de la")
+		.lore("&7más temida Muerte, a")
+		.lore("&7cobrar Venganza!")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.FIRE_ASPECT, 3)
+		.enchant(Enchantment.DAMAGE_ALL, 3).build()),
 	MATRIX(
-			"§8§k||§r §c§lMatrix §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Cuenta la leyenda",
-			"§7que los endermans",
-			"§7engendraron esta piedra.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY
-	}),
+		new ItemBuilder(Material.ENDER_PEARL)
+		.amount(1)
+		.name("&8&k||&r &c&lMatrix &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Una reliquia")
+		.lore("&7de los endermans,")
+		.lore("&7tiene un misterioso poder")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.KNOCKBACK,1).build()),
 	CASCO_BRILLANTE(
-			"§8§k||§r §c§lCasco Brillante §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Un casco no tan",
-			"§7comun.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_HELMET)
+		.amount(1)
+		.name("&8&k||&r &c&lCasco Brillante &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Forjado por los guerreros")
+		.lore("&7del cielo, para resistir")
+		.lore("las arduas batallas")
+		.lore("&7con sus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	PETO_BRILLANTE(
-			"§8§k||§r §c§lPeto Brillante §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Un peto un tanto",
-			"§7peculiar.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_HELMET)
+		.amount(1)
+		.name("&8&k||&r &c&lPeto Brillante &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Forjado por los guerreros")
+		.lore("&7del cielo, para resistir")
+		.lore("las arduas batallas")
+		.lore("&7con sus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	PANTALONES_BRILLANTES(
-			"§8§k||§r §c§lPantalones Brillantes §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Unos pantalones",
-			"§7no tan extraños.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_LEGGINGS)
+		.amount(1)
+		.name("&8&k||&r &c&lPantalones Brillantes &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Forjado por los guerreros")
+		.lore("&7del cielo, para resistir")
+		.lore("las arduas batallas")
+		.lore("&7con sus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	BOTAS_BRILLANTES(
-			"§8§k||§r §c§lBotas Brillantes §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Unas Botas hechas",
-			"§7en la cuna del Nether.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_BOOTS)
+		.amount(1)
+		.name("&8&k||&r &c&lBotas Brillantes &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Forjado por los guerreros")
+		.lore("&7del cielo, para resistir")
+		.lore("las arduas batallas")
+		.lore("&7con sus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	ARCO_PODEROSO(
-			"§8§k||§r §c§lArco Poderoso §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Se dice que con",
-			"§7sus flechas hace arder",
-			"§7a sus enemigos.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.ARROW_DAMAGE,
-			Enchantment.ARROW_FIRE
-	}),
+		new ItemBuilder(Material.BOW)
+		.amount(1)
+		.name("&8&k||&r &c&lArco Poderoso &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Con sus flechas")
+		.lore("&7hace arder a sus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.ARROW_FIRE, 3)
+		.enchant(Enchantment.ARROW_DAMAGE, 1).build()),
 	TNT(
-			"§8§k||§r §c§lTNT §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Explota el mundo",
-			"§7entero.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.TNT)
+		.amount(1)
+		.name("&8&k||&r &c&lTNT &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Dificulta el paso de tus")
+		.lore("&7enemigos con una gran ")
+		.lore("&7explosion")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	CASCO_BRILLANTE_II(
-			"§8§k||§r §c§lCasco Brillante II §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Un casco no tan",
-			"§7comun.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_HELMET)
+		.amount(1)
+		.name("&8&k||&r &c&lCasco Brillante II &8&k||")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Usado por los guerreros")
+		.lore("&7mas fuertes del cielo.")
+		.lore("&7considerados la elite")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FALL,2)
+		.enchant(Enchantment.DURABILITY,2).build()),
 	PETO_BRILLANTE_II(
-			"§8§k||§r §c§lPeto Brillante II §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Un peto un tanto",
-			"§7peculiar.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_CHESTPLATE)
+		.amount(1)
+		.name("&8&k||&r &c&lPeto Brillante II &8&k||")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Usado por los guerreros")
+		.lore("&7mas fuertes del cielo.")
+		.lore("&7considerados la elite")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FALL,2)
+		.enchant(Enchantment.DURABILITY,2).build()),
 	PANTALONES_BRILLANTES_II(
-			"§8§k||§r §c§lPantalones Brillantes II §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Unos pantalones",
-			"§7no tan extraños.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.IRON_LEGGINGS)
+		.amount(1)
+		.name("&8&k||&r &c&lPantalones Brillantes II &8&k||")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Usado por los guerreros")
+		.lore("&7mas fuertes del cielo.")
+		.lore("&7considerados la elite")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FALL,2)
+		.enchant(Enchantment.DURABILITY,2).build()),
 	BOTAS_BRILLANTES_II(
-			"§8§k||§r §c§lBotas Brillantes II §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Unas Botas hechas",
-			"§7en la cuna del Nether.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
-	ARCO_DE_LAS_TINIEBLAS(
-			"§8§k||§r §c§lArco de las Tinieblas §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7No te caigas,",
-			"§7porque el impacto te",
-			"§7movera al vacio.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.ARROW_DAMAGE,
-			Enchantment.ARROW_KNOCKBACK
-	}),
+		new ItemBuilder(Material.IRON_BOOTS)
+		.amount(1)
+		.name("&8&k||&r &c&lBotas Brillantes II &8&k||")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Usado por los guerreros")
+		.lore("&7mas fuertes del cielo,")
+		.lore("&7considerados la elite")
+		.lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FALL,2)
+		.enchant(Enchantment.DURABILITY,2).build()),
 	ESPADA_HECHIZADA(
-			"§8§k||§r §c§lEspada Hechizada §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Esta espada",
-			"§7no deja rastros del",
-			"§7enemigo.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_UNDEAD
-	}),
+		new ItemBuilder(Material.DIAMOND_SWORD)
+		.amount(1)
+		.name("&8&k||&r &c&lEspada Hechizada &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Esta espada")
+		.lore("&7no deja rastros del")
+		.lore("&7enemigo")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 2).build()),
 	ESPADA_HECHIZADA_II(
-			"§8§k||§r §c§lEspada Hechizada II §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Esta espada",
-			"§7no deja rastros del",
-			"§7enemigo.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_UNDEAD
-	}),
+		new ItemBuilder(Material.DIAMOND_SWORD)
+		.amount(1)
+		.name("&8&k||&r &c&lEspada Hechizada II &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Su poder de hechizo")
+		.lore("&7genera temor, algunos")
+		.lore("&7temen tocarla.")
+		.lore("&7Malignos hechizos")
+		.lore("&7emanan de esta espada")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 2)
+		.enchant(Enchantment.FIRE_ASPECT, 2).build()),
 	HACHA_DEL_DRAGON(
-			"§8§k||§r §c§lHacha del Dragon §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7El hacha forjada",
-			"§7por las manos del dragon.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_UNDEAD,
-			Enchantment.FIRE_ASPECT
-	}),
-	ESPADA_DEL_DRAGON("§8§k||§r §c§lEspada del Dragon §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Una espada forjada",
-			"§7por las manos del dragon.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_UNDEAD,
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.IRON_AXE)
+		.amount(1)
+		.name("&8&k||&r &c&lHacha del Dragon &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Temida y odiada por")
+		.lore("&7los Dioses, por su masivo")
+		.lore("&7poder")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 4)
+		.enchant(Enchantment.FIRE_ASPECT, 1)
+		.enchant(Enchantment.KNOCKBACK, 1).build()),
+	ESPADA_DEL_DRAGON(
+		new ItemBuilder(Material.IRON_SWORD)
+		.amount(1)
+		.name("&8&k||&r &c&lEspada del Dragon &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7La primera espada echa")
+		.lore("&7por los dragones.")
+		.lore("&7No es tan poderosa")
+		.lore("&7pero algunos dioses")
+		.lore("&7han sido decapitados")
+		.lore("&7por su afilada hoja")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.FIRE_ASPECT, 1)
+		.enchant(Enchantment.DAMAGE_ALL, 2).build()),
 	OZ_DEL_DRAGON(
-			"§8§k||§r §c§lOz del Dragon §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Una Oz forjada",
-			"§7por las manos del dragon.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_UNDEAD,
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.DIAMOND_HOE)
+		.amount(1)
+		.name("&8&k||&r &c&lOz del Dragon &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7La burla de algunos")
+		.lore("&7provocó su inmediata")
+		.lore("&7muerte.")
+		.lore("&7La arma mas simple, pero")
+		.lore("&7la mas audaz para")
+		.lore("&7decapitar")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 6)
+		.enchant(Enchantment.KNOCKBACK, 2).build()),
 	HACHA_DE_RAIZ(
-			"§8§k||§r §c§lHacha de Raiz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde la raiz de",
-			"§7los arboles legendarios.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_UNDEAD,
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.WOOD_AXE)
+		.amount(1)
+		.name("&8&k||&r &c&lHacha de Raiz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7por defender sus sagradas")
+		.lore("&7tierras, profanaron")
+		.lore("&7sus arboles.")
+		.lore("&7Esta simple, pero")
+		.lore("&7sagrada arma,")
+		.lore("&7aleja a sus mas")
+		.lore("&7mortiferos enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.KNOCKBACK, 4).build()),
 	PICO_DE_RAIZ(
-			"§8§k||§r §c§lPico de Raiz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde la raiz de",
-			"§7los arboles legendarios.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DIG_SPEED,
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.WOOD_PICKAXE)
+		.amount(1)
+		.name("&8&k||&r &c&lPico de Raiz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7por defender sus sagradas")
+		.lore("&7tierras, profanaron")
+		.lore("&7sus arboles.")
+		.lore("&7Esta simple, pero")
+		.lore("&7sagrada arma,")
+		.lore("&7aleja a sus mas")
+		.lore("&7mortiferos enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.KNOCKBACK, 4)
+		.enchant(Enchantment.DURABILITY, 10).build()),
 	ESPADA_DE_RAIZ(
-			"§8§k||§r §c§lEspada de Raiz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde la raiz de",
-			"§7los arboles legendarios.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.KNOCKBACK,
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.WOOD_SWORD)
+		.amount(1)
+		.name("&8&k||&r &c&lEspada de Raiz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7por defender sus sagradas")
+		.lore("&7tierras, profanaron")
+		.lore("&7sus arboles.")
+		.lore("&7Esta simple, pero")
+		.lore("&7sagrada arma,")
+		.lore("&7aleja a sus mas")
+		.lore("&7mortiferos enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.KNOCKBACK, 4)
+		.enchant(Enchantment.DAMAGE_ALL, 4).build()),
 	CASCO_MECANICO(
-			"§8§k||§r §c§lCasco Mecanico §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Proviene de las,",
-			"§7villas mecanicas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.THORNS
-	}),
+		new ItemBuilder(Material.IRON_HELMET)
+		.amount(1)
+		.name("&8&k||&r &c&lCasco Mecanico &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Estas civilizaciones")
+		.lore("&7tenian un objetivo")
+		.lore("&7claro, aniquilar")
+		.lore("&7a sus estupidos")
+		.lore("&7enemigos.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 3)
+		.enchant(Enchantment.DURABILITY, 5)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).build()),
 	PECHERA_MECANICA(
-			"§8§k||§r §c§lPechera Mecanica §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Proviene de las,",
-			"§7villas mecanicas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.THORNS
-	}),
+		new ItemBuilder(Material.IRON_CHESTPLATE)
+		.amount(1)
+		.name("&8&k||&r &c&lPechera Mecanica &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Estas civilizaciones")
+		.lore("&7tenian un objetivo")
+		.lore("&7claro, aniquilar")
+		.lore("&7a sus estupidos")
+		.lore("&7enemigos.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 3)
+		.enchant(Enchantment.DURABILITY, 5)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).build()),
 	PANTALONES_MECANICOS(
-			"§8§k||§r §c§lPantalones Mecanicos §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Proviene de las,",
-			"§7villas mecanicas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.THORNS
-	}),
+		new ItemBuilder(Material.IRON_LEGGINGS)
+		.amount(1)
+		.name("&8&k||&r &c&lPantalones Mecanicos &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Estas civilizaciones")
+		.lore("&7tenian un objetivo")
+		.lore("&7claro, aniquilar")
+		.lore("&7a sus estupidos")
+		.lore("&7enemigos.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 3)
+		.enchant(Enchantment.DURABILITY, 5)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).build()),
 	BOTAS_MECANICOS(
-			"§8§k||§r §c§lBotas Mecanicas §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Proviene de las,",
-			"§7villas mecanicas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.THORNS
-	}),
+		new ItemBuilder(Material.IRON_BOOTS)
+		.amount(1)
+		.name("&8&k||&r &c&lBotas Mecanicas &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Estas civilizaciones")
+		.lore("&7tenian un objetivo")
+		.lore("&7claro, aniquilar")
+		.lore("&7a sus estupidos")
+		.lore("&7enemigos.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 3)
+		.enchant(Enchantment.DURABILITY, 5)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).build()),
 	CASCO_FUGAZ(
-			"§8§k||§r §c§lCasco Fugaz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde el Cosmos",
-			"§7caen como meteoros.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS,
-			Enchantment.PROTECTION_FALL,
-			Enchantment.PROTECTION_PROJECTILE
-	}),
+		new ItemBuilder(Material.DIAMOND_HELMET)
+		.amount(1)
+		.name("&8&k||&r &c&lCasco Fugaz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Nadie sabe quien fue")
+		.lore("&7el herrero de tan ")
+		.lore("&7perfectas armaduras,")
+		.lore("&7sin duda, un misterio.")
+		.lore("&7Algunos piensan que fue")
+		.lore("&7el cosmos, para poner")
+		.lore("&7fin a las inagotables")
+		.lore("&7batallas")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5)
+		.enchant(Enchantment.PROTECTION_EXPLOSIONS, 2)
+		.enchant(Enchantment.PROTECTION_FIRE, 2)
+		.enchant(Enchantment.PROTECTION_PROJECTILE, 2).build()),
 	PECHERA_FUGAZ(
-			"§8§k||§r §c§lPechera Fugaz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde el Cosmos",
-			"§7caen como meteoros.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS,
-			Enchantment.PROTECTION_FALL,
-			Enchantment.PROTECTION_PROJECTILE
-	}),
+		new ItemBuilder(Material.DIAMOND_CHESTPLATE)
+		.amount(1)
+		.name("&8&k||&r &c&lPechera Fugaz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Nadie sabe quien fue")
+		.lore("&7el herrero de tan ")
+		.lore("&7perfectas armaduras,")
+		.lore("&7sin duda, un misterio.")
+		.lore("&7Algunos piensan que fue")
+		.lore("&7el cosmos, para poner")
+		.lore("&7fin a las inagotables")
+		.lore("&7batallas")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5)
+		.enchant(Enchantment.PROTECTION_EXPLOSIONS, 2)
+		.enchant(Enchantment.PROTECTION_FIRE, 2)
+		.enchant(Enchantment.PROTECTION_PROJECTILE, 2).build()),
 	PANTALON_FUGAZ(
-			"§8§k||§r §c§lPantalon Fugaz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde el Cosmos",
-			"§7caen como meteoros.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS,
-			Enchantment.PROTECTION_FALL,
-			Enchantment.PROTECTION_PROJECTILE
-	}),
+		new ItemBuilder(Material.DIAMOND_LEGGINGS)
+		.amount(1)
+		.name("&8&k||&r &c&lPantalon Fugaz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Nadie sabe quien fue")
+		.lore("&7el herrero de tan ")
+		.lore("&7perfectas armaduras,")
+		.lore("&7sin duda, un misterio.")
+		.lore("&7Algunos piensan que fue")
+		.lore("&7el cosmos, para poner")
+		.lore("&7fin a las inagotables")
+		.lore("&7batallas")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5)
+		.enchant(Enchantment.PROTECTION_EXPLOSIONS, 2)
+		.enchant(Enchantment.PROTECTION_FIRE, 2)
+		.enchant(Enchantment.PROTECTION_PROJECTILE, 2).build()),
 	BOTAS_FUGAZ(
-			"§8§k||§r §c§lBotas Fugaz §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde el Cosmos",
-			"§7caen como meteoros.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS,
-			Enchantment.PROTECTION_FALL,
-			Enchantment.PROTECTION_PROJECTILE
-	}),
+		new ItemBuilder(Material.DIAMOND_BOOTS)
+		.amount(1)
+		.name("&8&k||&r &c&lBotas Fugaz &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Nadie sabe quien fue")
+		.lore("&7el herrero de tan ")
+		.lore("&7perfectas armaduras,")
+		.lore("&7sin duda, un misterio.")
+		.lore("&7Algunos piensan que fue")
+		.lore("&7el cosmos, para poner")
+		.lore("&7fin a las inagotables")
+		.lore("&7batallas")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5)
+		.enchant(Enchantment.PROTECTION_EXPLOSIONS, 2)
+		.enchant(Enchantment.PROTECTION_FIRE, 2)
+		.enchant(Enchantment.PROTECTION_PROJECTILE, 2).build()),
 	CASCO_FENIX(
-			"§8§k||§r §c§lCasco Fenix §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Creación de las",
-			"§7poderosas llamas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS
-	}),
+		new ItemBuilder(Material.GOLD_HELMET)
+		.amount(1)
+		.name("&8&k||&r &c&lCasco Fenix &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7considerada armadura de")
+		.lore("&7elite, por resistir las")
+		.lore("&7abrasadoras llamas")
+		.lore("&7de Dios")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 10)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).build()),
 	PECHERA_FENIX(
-			"§8§k||§r §c§lPecheraFenix §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Creación de las",
-			"§7poderosas llamas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS
-	}),
+		new ItemBuilder(Material.GOLD_CHESTPLATE)
+		.amount(1)
+		.name("&8&k||&r &c&lPecheraFenix &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7considerada armadura de")
+		.lore("&7elite, por resistir las")
+		.lore("&7abrasadoras llamas")
+		.lore("&7de Dios")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 10)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).build()),
 	PANTALON_FENIX(
-			"§8§k||§r §c§lPantalon Fenix §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Creación de las",
-			"§7poderosas llamas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS
-	}),
+		new ItemBuilder(Material.GOLD_LEGGINGS)
+		.amount(1)
+		.name("&8&k||&r &c&lPantalon Fenix &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7considerada armadura de")
+		.lore("&7elite, por resistir las")
+		.lore("&7abrasadoras llamas")
+		.lore("&7de Dios")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 10)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).build()),
 	BOTAS_FENIX(
-			"§8§k||§r §c§lBotas Fenix §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Creación de las",
-			"§7poderosas llamas.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_EXPLOSIONS
-	}),
+		new ItemBuilder(Material.GOLD_BOOTS)
+		.amount(1)
+		.name("&8&k||&r &c&lBotas Fenix &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7considerada armadura de")
+		.lore("&7elite, por resistir las")
+		.lore("&7abrasadoras llamas")
+		.lore("&7de Dios")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_FIRE, 10)
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).build()),
 	ESPADA_X(
-			"§8§k||§r §c§lEspada X §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7La nave que la",
-			"§7trajo dejo entendido",
-			"§7que provenia del futuro",
-			"§7con un mensaje extraño:",
-			"§701101001 01000011",
-			"§701110010 01100001",
-			"§701100110 01110100",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_ALL,
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.IRON_SWORD)
+		.amount(1)
+		.name("&8&k||&r &c&lEspada X &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7La nave que la")
+		.lore("&7trajo dejo entendido")
+		.lore("&7que provenia del futuro")
+		.lore("&7con un mensaje extraño:")
+		.lore("&701101001 01000011")
+		.lore("&701110010 01100001")
+		.lore("&701100110 01110100")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 3)
+		.enchant(Enchantment.KNOCKBACK, 1)
+		.enchant(Enchantment.FIRE_ASPECT, 2).build()),
 	PALA_DEL_PODER(
-			"§8§k||§r §c§lPala del Poder §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7En algún lugar del",
-			"§7mundo se utilizo para",
-			"§7combatir un wither gigante.",
-			"§7¿Sabes en donde fue?",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_ALL,
-			Enchantment.DAMAGE_UNDEAD
-	}),
+		new ItemBuilder(Material.DIAMOND_SPADE)
+		.amount(1)
+		.name("&8&k||&r &c&lPala del Poder &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7fue utilizada para")
+		.lore("&7sepultar a los guerreros y")
+		.lore("&7Dioses, se dice que")
+		.lore("&7adquirio los poderes")
+		.lore("&7de algunos dioses y")
+		.lore("&7el alma de un feroz")
+		.lore("&7guerrero")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.KNOCKBACK, 3)
+		.enchant(Enchantment.FIRE_ASPECT, 3).build()),
 	ESPADA_EXTRAÑA(
-			"§8§k||§r §c§lEspada Extraña §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7No hay datos de",
-			"§7donde o como se creo.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"	
-	}, new Enchantment[]{
-			Enchantment.DAMAGE_ALL
-	}),
+		new ItemBuilder(Material.IRON_SWORD)
+		.amount(1)
+		.name("&8&k||&r &c&lEspada Extraña &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7No hay datos de")
+		.lore("&7donde o como se creo.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DAMAGE_ALL, 2).build()),
 	PECHERA_ESTELAR(
-			"§8§k||§r §c§lPechera Estelar §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Los Astros la",
-			"§7denominaron superior.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.DIAMOND_CHESTPLATE)
+		.amount(1)
+		.name("&8&k||&r &c&lPechera Estelar &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Los Astros la")
+		.lore("&7denominaron superior.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 6).build()),
 	PANTALON_ESTELAR(
-			"§8§k||§r §c§lPantalon Estelar §8§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Los Astros la",
-			"§7denominaron superior.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §d§lEpico",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.DIAMOND_LEGGINGS)
+		.amount(1)
+		.name("&8&k||&r &c&lPantalon Estelar &8&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Los Astros la")
+		.lore("&7denominaron superior.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 6).build()),
 	
 	/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━[ Items Legendarios ]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 	
-	CASCO_DE_OSCURIDAD(
-			"§4§k||§r §e§lCasco de la Oscuridad §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hecho por la",
-			"§7maldad pura...",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	},new Enchantment[]{
-			Enchantment.DURABILITY
-	}),
-	PETO_DE_LA_OSCURIDAD(
-			"§4§k||§r §e§lPeto de la Oscuridad §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hecho por la",
-			"§7maldad pura...",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"	
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
-	PANTALON_DE_LA_OSCURIDAD(
-			"§4§k||§r §e§lPantalon de la Oscuridad §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hecho por la",
-			"§7maldad pura...",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
-	BOTAS_DE_LA_OSCURIDAD(
-			"§4§k||§r §e§lBotas de la Oscuridad §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hecho por la",
-			"§7maldad pura...",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_FALL
-	}),
+	
 	CASCO_DE_TITAN(
-			"§4§k||§r §e§lCasco Titan §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hace miles de años",
-			"§7los titanes forjaron este",
-			"§7peculiar casco para",
-			"§7proteger el Reino Titan!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_FIRE,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.LEATHER_HELMET)
+		.amount(1)
+		.name("&4&k||&r &e&lCasco Titan &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Hace miles de años")
+		.lore("&7los titanes forjaron esta")
+		.lore("&7armadura para")
+		.lore("&7proteger el reino Titan")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 12).build()),
 	PETO_TITAN(
-			"§4§k||§r §e§lPeto Titan §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hace miles de años",
-			"§7los titanes forjaron este",
-			"§7peculiar peto para",
-			"§7proteger el Reino Titan!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_FIRE,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.LEATHER_CHESTPLATE)
+		.amount(1)
+		.name("&4&k||&r &e&lPeto Titan &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Hace miles de años")
+		.lore("&7los titanes forjaron esta")
+		.lore("&7armadura para")
+		.lore("&7proteger el reino Titan")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 12).build()),
+
 	PANTALON_TITAN(
-			"§4§k||§r §e§lPantalon Titan §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hace miles de años",
-			"§7los titanes forjaron este",
-			"§7peculiar pantalon para",
-			"§7proteger el Reino Titan!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_FIRE,
-			Enchantment.PROTECTION_ENVIRONMENTAL
-	}),
+		new ItemBuilder(Material.LEATHER_LEGGINGS)
+		.amount(1)
+		.name("&4&k||&r &e&lPantalon Titan &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Hace miles de años")
+		.lore("&7los titanes forjaron esta")
+		.lore("&7armadura para")
+		.lore("&7proteger el reino Titan")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 12).build()),
 	BOTAS_TITAN(
-			"§4§k||§r §e§lBotas Titan §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Hace miles de años",
-			"§7los titanes forjaron estas",
-			"§7peculiares botas para",
-			"§7proteger el Reino Titan!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Protección",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY,
-			Enchantment.PROTECTION_FIRE,
-			Enchantment.PROTECTION_ENVIRONMENTAL,
-			Enchantment.PROTECTION_FALL
-	}),
+		new ItemBuilder(Material.LEATHER_BOOTS)
+		.amount(1)
+		.name("&4&k||&r &e&lBotas Titan &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Hace miles de años")
+		.lore("&7los titanes forjaron esta")
+		.lore("&7armadura para")
+		.lore("&7proteger el reino Titan")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 12).build()),
 	TORRETA_LASER(
-			"§4§k||§r §e§lTorreta Laser§4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7El destroza almas",
-			"§7ha regresado!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §70.5❤ x Disparo",
-			"§7§lTipo: §7Laser",
-			"§7§lTiempo: §7 3 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.SPONGE)
+		.amount(1)
+		.name("&4&k||&r &e&lTorreta Laser&4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Destroza a tus enemigos")
+		.lore("&7con un brutal laser.")
+		.lore("")
+		.lore("&7Daño: &70.5❤ x Disparo")
+		.lore("&7&lTiempo: &7 3 seg")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	TORRETA_PORCINA(
-			"§4§k||§r §e§lTorreta Porcina §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Oink, Oink, Oink",
-			"§7Oink.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §73❤",
-			"§7§lOtras: ",
-		    "§7Ceguera II ; 3 seg",
-		    "§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.HARD_CLAY)
+		.amount(1)
+		.name("&4&k||&r &e&lTorreta Porcina &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Masacra a tus enemigos")
+		.lore("&7con cerdos explosivos")
+		.lore("")
+		.lore("&7&lDaño: &73❤")
+		.lore("&7Ceguera II ; 3 seg")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	COFRE_EXPLOSIVO(
-			"§4§k||§r §e§lCofre Explosivo §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Será como un regalo para",
-			"§7tus enemigos.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §73❤",
-			"§7§lOtras: ",
-			"    §7Ceguera II ; 3 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.TRAPPED_CHEST)
+		.amount(1)
+		.name("&4&k||&r &e&lCofre Explosivo &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Será como un regalo para")
+		.lore("&7tus enemigos.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
 	TORRETA_SANADORA(
-			"§4§k||§r §e§lTorreta Sanadora §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Te curara si estas",
-			"§7cerca de ella.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lCura: §71❤ x Rayo",
-			"§7§lTipo: §7Sanadora",
-			"§7§lTiempo: §7 4 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.NOTE_BLOCK)
+		.amount(1)
+		.name("&4&k||&r &e&lTorreta Sanadora &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Te curara si estas")
+		.lore("&7cerca de ella.")
+		.lore("")
+		.lore("&7&lCura: &71❤ x Rayo")
+		.lore("&7&lTiempo: &7 4 seg")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	TORRETA_CONGELADORA(
-			"§4§k||§r §e§lTorreta Congeladora §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Disparara bolas de",
-			"§7nieve que congelaran a tus",
-			"§7enemigos de una manera",
-			"§7rapida!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lCongela: §7+1 x Disparo",
-			"§7§lTipo: §7Congeladora",
-			"§7§lTiempo: §7 1 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
-	PUENTE_FUTURISTICO(
-			"§4§k||§r §e§lPuente Futuristico §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Colocalo mirando",
-			"§7hacia una dirección X",
-			"§7crearas un puente donde",
-			"§7solo tu podrás pasar!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Construcción",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.DURABILITY
-	}),
+		new ItemBuilder(Material.JUKEBOX)
+		.amount(1)
+		.name("&4&k||&r &e&lTorreta Congeladora &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Disparara bolas de")
+		.lore("&7enemigos de una manera")
+		.lore("&7rapida!")
+		.lore("")
+		.lore("&7&lCongela: &7+1 x Disparo")
+		.lore("&7&lTiempo: &7 1 seg")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
+	PUNTE_FUTURISTICO(
+		new ItemBuilder(Material.MELON_BLOCK)
+		.amount(1)
+		.name("&4&k||&r &e&lPuente Futuristico &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Colocalo mirando")
+		.lore("&7hacia una dirección X")
+		.lore("&7crearas un puente donde")
+		.lore("&7solo tu podrás pasar!")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	BOLA_CONGELACEREBROS(
-			"§4§k||§r §e§lBola Congelacerebros §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7A congelar cerebros!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §75❤ x Disparo",
-			"§7§lOtras: ",
-			"    §7Lentitud X ; 5 seg",
-			"    §7Fatiga II ; 20 seg",
-			"    §7Ceguera I ; 2 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.SNOW_BALL)
+		.amount(1)
+		.name("&4&k||&r &e&lBola Congelacerebros &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7A congelar cerebros!")
+		.lore("")
+		.lore("&7&lDaño: &75❤ x Disparo")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	RAYO(
-			"§4§k||§r §e§lRayo §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Lanza el rayo de",
-			"§7tus sueños!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §75❤",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.RECORD_8)
+		.amount(1)
+		.name("&4&k||&r &e&lRayo &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Lanza el rayo de")
+		.lore("&7tus sueños!")
+		.lore("")
+		.lore("&7&lDaño: &77❤")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	VARITA_MAGICA(
-			"§4§k||§r §e§lVarita Magica §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Engaña a tu",
-			"§7adversario!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lGenera: §71 Clon",
-			"§7§lTe da: ",
-			"   §7Velocidad II ; 7 seg",
-			"   §7Invisibilidad I ; 7 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.RECORD_7)
+		.amount(1)
+		.name("&4&k||&r &e&lVarita Magica &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Engaña a tu")
+		.lore("&7adversario!")
+		.lore("")
+		.lore("&7&lGenera: &71 Clon")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	KRAKEN(
-			"§4§k||§r §e§lKraken §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Ha lanzar el",
-			"§7kraken!",
-			"§7§lOtras: ",
-			"    §7Ceguera II ; 15 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.RECORD_6)
+		.amount(1)
+		.name("&4&k||&r &e&lKraken &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Lanza un kraken")
+		.lore("&7a tus enemigos")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	BOMBARDERO(
-			"§4§k||§r §e§lBombardero §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Llamando a base, Lanzando",
-			"§7misiles en 3, 2, 1...",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Destructor",
-			"§7§lDaño: §76❤",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.BLAZE_POWDER)
+		.amount(1)
+		.name("&4&k||&r &e&lBombardero &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Llamando a base, Lanzando")
+		.lore("&7misiles en 3, 2, 1...")
+		.lore("")
+		.lore("&7&lDaño: &76❤")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	POCION_PURIFICADORA(
-			"§4§k||§r §e§lPoción Purificadora §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Sal de ese mal momento",
-			"§7solo tomate esto y dale",
-			"§7un giro a la batalla.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lOtras: ",
-			"    §7Rellena el nivel de hambre",
-			"    §7Rellena el nivel de vida",
-			"    §7Remueve todas las pociones",
-			"    §7Vision Nocturna II ; 0.5 seg",
-			"    §7Regeneracion II ; 2 seg",
-			"    §7Resistencia ; 2 seg",
-			"    §7Velocidad ; 4 seg",
-		
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.POTION)
+		.amount(1)
+		.name("&4&k||&r &e&lPoción Purificadora &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Sal de ese mal momento,")
+		.lore("&7pero cuidado al comienzo")
+		.lore("&7te dejara devil.")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
 	RAYO_CONGELADO(
-			"§4§k||§r §e§lRayo Congelado §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7Dale un toque de hielo a",
-			"§7una zona.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §72.5❤",
-			"§7§lOtras: ",
-			"    §7Ceguera I ; 5 seg",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.getMaterial(2259))
+		.amount(1)
+		.name("&4&k||&r &e&lRayo Congelado &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Dale un toque de hielo a")
+		.lore("&7una zona.")
+		.lore("")
+		.lore("&7&lDaño: &72.5❤")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build()),
 	PUÑO_DE_JHONCENA(
-			"§4§k||§r §e§lPuño de JhonCena §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7Uno de los puños más epicos",
-			"§7y mortales de la WWE.",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lDaño: §75❤",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	}),
+		new ItemBuilder(Material.getMaterial(2257))
+		.amount(1)
+		.name("&4&k||&r &e&lPuño de JhonCena &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Uno de los puños más epicos")
+		.lore("&7y mortales de la WWE.")
+		.lore("")
+		.lore("&7&lDaño: &74❤")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.FIRE_ASPECT, 1).build()),
 	METEORITO(
-			"§4§k||§r §e§lMeteorito §4§k||", new String[]{
-			"",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§9§l» §7Desde el cosmos",
-			"§7podrás invocar un enorme",
-			"§7meteorito a distancia!",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━",
-			"§7§lRareza: §c§lLegendario",
-			"§7§lTipo: §7Destructor",
-			"§7§lDaño: §74❤",
-			"§8━━━━━━━━━━━━━━━━━━━━━━━━━"
-	}, new Enchantment[]{
-			Enchantment.FIRE_ASPECT
-	});
-	
-	private String name;
-	private String[] string;
-	private Enchantment[] enchantment;
-
-		EItem(String name, String[] string, Enchantment[] enchantment){
-			this.name = name;
-			this.string = string;
-			this.enchantment = enchantment;
+		new ItemBuilder(Material.getMaterial(2256))
+		.amount(1)
+		.name("&4&k||&r &e&lMeteorito &4&k||")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.lore("&7Desde el cosmos")
+		.lore("&7podrás invocar un enorme")
+		.lore("&7meteorito a distancia!")
+		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
+		.enchant(Enchantment.DURABILITY, 1).build());
 			
-	}
-		
-	public String[] getString() {
-		return string;
+	private ItemStack item;
+
+	EItem(ItemStack item){
+		this.item = item;
 	}
 
-	public void setString(String[] string) {
-		this.string = string;
+	public ItemStack getItem() {
+		return item;
 	}
 
-
-	public String getName() {
-		return name;
+	public void setItem(ItemStack item) {
+		this.item = item;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public Enchantment[] getEnchantment() {
-		return enchantment;
-	}
-
-	public void setEnchantment(Enchantment[] enchantment) {
-		this.enchantment = enchantment;
-	}
-	
-	
-	public static ItemStack ItemBuilder(Material m, EItem lore, int level){
-		
-		ItemBuilder item = new ItemBuilder(m);
-		
-		for(int i = 0; i < lore.getString().length; i++){
-			item.lore(lore.getString()[i]);
-	
-		}
-		
-		for(int k = 0; k < lore.getEnchantment().length; k++){
-			item.enchant(lore.getEnchantment()[k], level);
-		
-		}
-		
-		return item.material(m).name(lore.getName()).build();
-	}
-	
 }

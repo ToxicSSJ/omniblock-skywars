@@ -16,7 +16,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 
 public class Potion implements ItemType, Listener {
@@ -31,7 +30,7 @@ public class Potion implements ItemType, Listener {
 			
 				if(event.getPlayer().getItemInHand().hasItemMeta()){
 					if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
-						if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.POCION_PURIFICADORA.getName())) {
+						if (event.getPlayer().getItemInHand().getType() == Material.POTION) {
 
 							if (event.getAction() == Action.LEFT_CLICK_BLOCK 
 									|| event.getAction() == Action.RIGHT_CLICK_BLOCK

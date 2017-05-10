@@ -27,9 +27,7 @@ import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
-import net.omniblock.skywars.patch.managers.chest.item.ItemInsane;
-import net.omniblock.skywars.patch.managers.chest.item.ItemNormal;
-import net.omniblock.skywars.patch.managers.chest.item.ItemZ;
+import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.types.MatchType;
@@ -52,7 +50,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	
 	private static SoloSkywars gStarter = null;
 	
-	public static int MIN_PLAYERS_TO_START = 2;
+	public static int MIN_PLAYERS_TO_START = 1;
 	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 	
 	private final int timeLobby = 15;
@@ -87,17 +85,17 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 					MapManager.lobbyschematic.removePasted();
 					
 					switch (ChestManager.getCurrentMatchType()) {
-						case NORMAL:
-							fillchest = new FillChest(ItemNormal.normalChest(), ItemNormal.trappedChest(), 10, 12);
-							break;
-						case INSANE:
-							fillchest = new FillChest(ItemInsane.normalChest(), ItemInsane.trappedChest(), 10, 12);
-							break;
-						case Z:
-							fillchest = new FillChest(ItemZ.normalChest(), ItemZ.trappedChest(), 10, 12);
-							break;
-						default:
-							break;
+					case NORMAL:
+						fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest(), 6, 8);
+						break;
+					case INSANE:
+						fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest(),6,8);
+						break;
+					case Z:
+						fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest(), 6,8);
+						break;
+					default:
+						break;
 					}
 					
 					PowerItemManager.applyVotes();
@@ -270,7 +268,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));
@@ -306,7 +304,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
-			fillchest.fillChest();
+			fillchest.startReFillChest();
 			
 			return;
 			

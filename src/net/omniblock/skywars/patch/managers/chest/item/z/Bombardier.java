@@ -39,7 +39,6 @@ import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.ClonData;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.PlayerSavedData;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
@@ -75,7 +74,7 @@ public class Bombardier implements ItemType, Listener {
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
-					if(event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.BOMBARDERO.getName())){
+					if(event.getPlayer().getItemInHand().getType() == Material.BLAZE_POWDER){
 						if(event.getAction() == Action.RIGHT_CLICK_AIR 
 								|| event.getAction() == Action.RIGHT_CLICK_BLOCK
 								|| event.getAction() == Action.LEFT_CLICK_AIR 

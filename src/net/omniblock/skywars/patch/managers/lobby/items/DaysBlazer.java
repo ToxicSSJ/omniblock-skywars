@@ -43,6 +43,8 @@ import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
+import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ItemBuilder;
@@ -121,6 +123,8 @@ public class DaysBlazer implements PowerItem, Listener {
 	
 	public static int CHANGE_TIME_OFFSET = 0;
 	public static int MAX_CHANGE_TIME_OFFSET = 4;
+	
+	private FillChest fillChest;
 	
 	public static List<DayType> DAYS = new ArrayList<DayType>() {
 
@@ -382,7 +386,7 @@ public class DaysBlazer implements PowerItem, Listener {
 								Block b = e.getBlock();
 								b.setType(Material.CHEST);
 								
-								// TODO REFILL CHEST!
+								fillChest = new FillChest(SkywarsItem.getOnlyItemLegendady(), 10).startFilledOneChest(b.getLocation());
 								
 							}
 							

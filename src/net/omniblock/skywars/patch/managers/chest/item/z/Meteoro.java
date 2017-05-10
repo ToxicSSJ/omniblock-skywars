@@ -35,7 +35,6 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
@@ -55,7 +54,7 @@ public class Meteoro implements ItemType, Listener  {
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
-					if(event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.METEORITO.getName())){
+					if(event.getPlayer().getItemInHand().getType() == Material.getMaterial(2256)){
 						if(event.getAction() == Action.RIGHT_CLICK_AIR 
 								|| event.getAction() == Action.RIGHT_CLICK_BLOCK
 								|| event.getAction() == Action.LEFT_CLICK_AIR 

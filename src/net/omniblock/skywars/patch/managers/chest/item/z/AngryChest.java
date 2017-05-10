@@ -22,7 +22,6 @@ import org.bukkit.util.Vector;
 
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
@@ -39,16 +38,11 @@ public class AngryChest implements ItemType, Listener {
 		if(SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(player.getItemInHand().hasItemMeta()){
 				if(player.getItemInHand().getItemMeta().hasDisplayName()){
-					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.COFRE_EXPLOSIVO.getName())){
-						if(event.getBlockPlaced().getType() == Material.TRAPPED_CHEST){
-												
-							player.playSound(player.getLocation(), Sound.ZOMBIE_WOOD, 5, -10);
-							player.getWorld().playEffect(event.getBlockPlaced().getLocation(), Effect.SMOKE, 10);
-							chestblock.add(event.getBlockPlaced().getLocation().getBlock());
+					if(player.getItemInHand().getType() == Material.TRAPPED_CHEST){		
+						player.playSound(player.getLocation(), Sound.ZOMBIE_WOOD, 5, -10);
+						player.getWorld().playEffect(event.getBlockPlaced().getLocation(), Effect.SMOKE, 10);
+						chestblock.add(event.getBlockPlaced().getLocation().getBlock());
 							
-						}
-					}else{
-						return;
 					}
 				}
 			}
@@ -61,7 +55,7 @@ public class AngryChest implements ItemType, Listener {
 		
 		Player player = event.getPlayer();;
 		
-		if(SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
+		if(SoloPlayerManager.getPlayersInGameList().contains(player) ||  TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
 			if(event.getAction() ==  Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK){					
 				if(event.getClickedBlock().getType() == Material.TRAPPED_CHEST){
 					if(chestblock.contains(event.getClickedBlock())){
@@ -75,7 +69,7 @@ public class AngryChest implements ItemType, Listener {
 						switch(CHEST_TYPE){
 						case 1:
 							jail(location, block);
-							@SuppressWarnings("unused") Block b = location.getBlock().getRelative(0, -2, 0);
+							Block b = location.getBlock().getRelative(0, -2, 0);
 							location.getWorld().playSound(location, Sound.EXPLODE, 2, 2);	
 							break;
 						case 2:

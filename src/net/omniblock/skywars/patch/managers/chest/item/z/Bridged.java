@@ -22,7 +22,6 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 
 public class Bridged implements ItemType, Listener {
@@ -37,21 +36,18 @@ public class Bridged implements ItemType, Listener {
 		Player player = event.getPlayer();
 	
 		if (SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
-			
+
 			if (player.getInventory().getItemInHand().hasItemMeta()){
 				if(player.getInventory().getItemInHand().getItemMeta().hasDisplayName()){
 					
-					if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUENTE_FUTURISTICO.getName())){
-						if(event.getBlockPlaced().getType() == Material.MELON_BLOCK){
-							Block block = event.getBlock();
-							
-								CreateBridged(player, block, player.getWorld());
-								player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, -2);
+					if(event.getBlockPlaced().getType() == Material.MELON_BLOCK){
+						Block block = event.getBlock();
+						CreateBridged(player, block, player.getWorld());
+						player.getWorld().playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, -2);
 														
-						}else{
-							return;
-						
-						}
+					}else{
+						return;
+					
 					}
 				}
 			}	
@@ -64,7 +60,7 @@ public class Bridged implements ItemType, Listener {
 		
 		Player player = event.getPlayer();
 		
-		if (SoloPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+		if (SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
 			if (player.getLocation().add(0, -1, 0).getBlock().getType() == Material.STAINED_GLASS) {
 				Block block = event.getPlayer().getLocation().add(0, -1, 0).getBlock();
 				if (bridgeremove.contains(block)) {

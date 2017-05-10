@@ -1,6 +1,7 @@
 package net.omniblock.skywars.patch.managers.chest.item.z;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +16,6 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCa
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.SoundPlayer;
@@ -43,7 +43,7 @@ public class Punch implements ItemType, Listener {
 							return;
 						}
 						
-						if (playerdamage.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.PUÑO_DE_JHONCENA.getName())) {
+						if (playerdamage.getItemInHand().getType() == Material.getMaterial(2257)) {
 							
 							if(   Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
 									   || Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS

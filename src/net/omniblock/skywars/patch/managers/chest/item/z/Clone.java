@@ -24,7 +24,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.item.type.EItem;
 import net.omniblock.skywars.patch.managers.chest.item.z.object.ClonData;
 import net.omniblock.skywars.patch.managers.chest.item.z.type.ItemType;
 import net.omniblock.skywars.util.block.SpawnBlock;
@@ -42,8 +41,9 @@ public class Clone implements Listener, ItemType {
 			
 			if(event.getPlayer().getItemInHand().hasItemMeta()){
 				if(event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()){
-					if(event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(EItem.VARITA_MAGICA.getName())){
-						
+					if(event.getPlayer().getItemInHand().getType() == Material.RECORD_7){
+							
+
 						if (event.getAction() == Action.LEFT_CLICK_BLOCK 
 								|| event.getAction() == Action.RIGHT_CLICK_BLOCK
 								|| event.getAction() == Action.RIGHT_CLICK_AIR
@@ -90,7 +90,8 @@ public class Clone implements Listener, ItemType {
 	}
 	
 	public void RemoveClon(Player player, NPC clon){
-
+		
+		ItemStack hand = player.getItemInHand();
 		ItemStack helmet =  player.getInventory().getHelmet();
 		ItemStack chestplate = player.getInventory().getChestplate();
 		ItemStack leggings = player.getInventory().getLeggings();
@@ -111,10 +112,11 @@ public class Clone implements Listener, ItemType {
 					if(clon.isSpawned()){
 						if(TIME == 140){
 							
+							player.getInventory().remove(hand);
+							
 							oneClon.get(player).remove();
 							oneClon.remove(player);
 							
-							player.getInventory().setItemInHand(null);
 							player.getInventory().setHelmet(helmet);
 							player.getInventory().setChestplate(chestplate);
 							player.getInventory().setLeggings(leggings);
