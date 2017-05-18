@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.omniblock.skywars.Skywars;
@@ -25,6 +27,7 @@ import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
+import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class TeamPlayerCustomProtocols implements Listener {
 	
@@ -34,6 +37,15 @@ public class TeamPlayerCustomProtocols implements Listener {
 			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains((Player) e.getEntity())){
 				e.setCancelled(true);
 				return;
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDamage(EntityDamageByEntityEvent e){
+		if(e.getDamager() instanceof Player){
+			if(SpectatorManager.playersSpectators.contains(e.getDamager())){
+				e.setCancelled(true);
 			}
 		}
 	}
@@ -140,7 +152,7 @@ public class TeamPlayerCustomProtocols implements Listener {
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKick(PlayerKickEvent e) {
 		if(		TeamPlayerManager.getPlayersInSpectator().contains(e.getPlayer()) ||
 				TeamPlayerManager.getPlayersInLobbyList().contains(e.getPlayer()) ||
@@ -152,7 +164,7 @@ public class TeamPlayerCustomProtocols implements Listener {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void explode(EntityChangeBlockEvent e){
 		if(e.getEntity() instanceof FallingBlock){
 			
@@ -170,8 +182,23 @@ public class TeamPlayerCustomProtocols implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onQuit(PlayerQuitEvent e){
+		
+		if(		Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS || 
+				Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS ||
+				Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+			
+			TeamPlayerManager.removeFromPreTeam(e.getPlayer());
+			return;
+			
+		}
+		
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onFoodLevelChange(FoodLevelChangeEvent e) {
+		
 		SkywarsGameState currentState = Skywars.getGameState();
 		
 		if(e.getEntity() instanceof Player) {
@@ -179,18 +206,19 @@ public class TeamPlayerCustomProtocols implements Listener {
 			Player p = (Player) e.getEntity();
 			
 			if(TeamPlayerManager.getPlayersInGameList().contains(p)) {
+				
 				if(currentState == SkywarsGameState.IN_LOBBY) {
-					e.setCancelled(true);
 					e.setFoodLevel(25);
+					return;
 				}
 				
-				return;
 			} else {
-				e.setCancelled(true);
-				e.setFoodLevel(25);
 				
+				e.setFoodLevel(25);
 				return;
+				
 			}
+			
 		}
 		
 	}

@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -34,6 +35,15 @@ public class SoloPlayerCustomProtocols implements Listener {
 			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains((Player) e.getEntity())){
 				e.setCancelled(true);
 				return;
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDamage(EntityDamageByEntityEvent e){
+		if(e.getDamager() instanceof Player){
+			if(SpectatorManager.playersSpectators.contains(e.getDamager())){
+				e.setCancelled(true);
 			}
 		}
 	}

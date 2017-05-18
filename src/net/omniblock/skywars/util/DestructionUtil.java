@@ -2,21 +2,31 @@ package net.omniblock.skywars.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
+import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
+import net.omniblock.skywars.patch.managers.MapManager;
+import net.omniblock.skywars.util.lib.bukkit.FallingBlockWrapper;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
+import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
 
 public class DestructionUtil {
 
+	public static Map<Player, Boolean> SPAWN_FB = new HashMap<Player, Boolean>();
+	
 	public static class Destruction extends BukkitRunnable {
 		
 		public boolean enabled = false;
@@ -120,12 +130,6 @@ public class DestructionUtil {
 								
 								cache_blocks.add(lower);
 								
-								if(NumberUtil.getRandomInt(1, 3) == 2) {
-									@SuppressWarnings("deprecation")
-									FallingBlock fallingblock = lower.getWorld().spawnFallingBlock(lower.getLocation(), lower.getType(), lower.getData());
-									fallingblock.setVelocity(new Vector(0, -2, 0));
-								}
-								
 								lower.setType(Material.AIR);
 								
 								if(NumberUtil.getRandomInt(1, 4) == 2) {
@@ -134,13 +138,6 @@ public class DestructionUtil {
 									if(friend.getType() != Material.AIR && !CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(friend)) {
 
 										cache_blocks.add(friend);
-										
-										if(NumberUtil.getRandomInt(1, 3) == 2) {
-											@SuppressWarnings("deprecation")
-											FallingBlock friendfallingblock = friend.getWorld().spawnFallingBlock(friend.getLocation(), friend.getType(), friend.getData());
-											friendfallingblock.setVelocity(new Vector(0, -2, 0));
-										}
-										
 										friend.setType(Material.AIR);
 										
 									}
@@ -169,6 +166,39 @@ public class DestructionUtil {
 			}
 			
 			return null;
+		}
+		
+		@SuppressWarnings("deprecation")
+		public static void genDestructionBlock(Block block){
+			
+			Material material = block.getType();
+			byte subid = block.getData();
+			
+			for(Player p : MapManager.CURRENT_MAP.getPlayers()){
+				
+				if(Skywars.ingame){
+					
+					if(SoloPlayerManager.getPlayersInGameList().contains(p) || TeamPlayerManager.getPlayersInGameList().contains(p)){
+						
+						if(SkywarsBase.SAVED_ACCOUNTS.get(p) == null) continue;
+						
+						if(SkywarsBase.getSelectedItem(SelectedItemType.EXTRA_INFO, SkywarsBase.SAVED_ACCOUNTS.get(p).getSelected()).equals("K0")){
+							continue;
+						}
+						
+						FallingBlockWrapper.sendPacket(p, material, subid);
+						continue;
+						
+					}
+					
+					continue;
+					
+				}
+				
+			}
+			
+			
+			
 		}
 		
 		public ArrayList <Block> getBlocks(Block start, int radius) {

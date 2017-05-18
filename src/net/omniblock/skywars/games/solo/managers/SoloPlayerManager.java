@@ -20,18 +20,13 @@ import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
-import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
-import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
 import omniblock.on.addons.games.general.RankBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
-import omniblock.on.network.packet.Packet;
-import omniblock.on.network.packet.assembler.AssemblyType;
-import omniblock.on.network.packet.modifier.PacketModifier;
 
 public class SoloPlayerManager {
 
@@ -166,28 +161,11 @@ public class SoloPlayerManager {
 			LobbyManager.giveItems(p);
 			SkywarsBase.saveAccount(p);
 			
-			
-			
 			playersInLobby.add(p);
 			
 		} else {
 			
 			spectatorPlayer(p);
-			
-		}
-		
-		if(ChestManager.getCurrentMatchType() == MatchType.Z){
-			
-			new BukkitRunnable(){
-				@Override
-				public void run(){
-					
-					Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TEXTUREPACK, new PacketModifier()
-							.addString(p.getName())
-							.addString("SKWZ"));
-					
-				}
-			}.runTaskLater(Skywars.getInstance(), 20 * 2);
 			
 		}
 		

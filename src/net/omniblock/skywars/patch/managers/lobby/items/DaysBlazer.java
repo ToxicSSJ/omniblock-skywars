@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,6 +14,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,6 +53,8 @@ import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
+import net.omniblock.skywars.util.effectlib.effect.FlameEffect;
+import net.omniblock.skywars.util.effectlib.util.ParticleEffect;
 
 public class DaysBlazer implements PowerItem, Listener {
 
@@ -124,8 +128,6 @@ public class DaysBlazer implements PowerItem, Listener {
 	public static int CHANGE_TIME_OFFSET = 0;
 	public static int MAX_CHANGE_TIME_OFFSET = 4;
 	
-	private FillChest fillChest;
-	
 	public static List<DayType> DAYS = new ArrayList<DayType>() {
 
 		private static final long serialVersionUID = 6475319426294174885L;
@@ -174,6 +176,19 @@ public class DaysBlazer implements PowerItem, Listener {
 					@Override
 					public void run() {
 						
+						if(!Skywars.ingame){
+							
+							cancel();
+							return;
+							
+						}
+						
+						for(Entity e : MapManager.CURRENT_MAP.getEntities()){
+							if(e.getType() == EntityType.ARROW){
+								e.remove();
+							}
+						}
+						
 						for(Player p : getInGamePlayers()) {
 							
 							Map<Integer, ? extends ItemStack> bows = p.getInventory().all(Material.BOW);
@@ -199,6 +214,35 @@ public class DaysBlazer implements PowerItem, Listener {
 					
 				}.runTaskTimer(Skywars.getInstance(), 0L, 35L);
 				
+				Listener listener_000 = new Listener() {
+					
+					@EventHandler(priority = EventPriority.MONITOR)
+					public void onInteract(PlayerInteractEvent e) {
+						
+						if(Skywars.getGameState() != SkywarsGameState.IN_GAME) return;
+						
+						if(getInGamePlayers().contains(e.getPlayer())) {
+							
+							if(e.getItem() == null) return;
+							if(!e.getItem().hasItemMeta()) return;
+							if(!e.getItem().getItemMeta().hasDisplayName()) return;
+							if(e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(TextUtil.format("&c&lSUPER AMETRALLADORA"))){
+								
+								Arrow arrow = e.getPlayer().launchProjectile(Arrow.class);
+								arrow.setVelocity(arrow.getVelocity().multiply(-1.5D));
+								return;
+								
+							}
+							
+						}
+						
+					}
+					
+				};
+				
+				Skywars.getInstance().getServer().getPluginManager().registerEvents(listener_000, Skywars.getInstance());
+				CURRENT_LISTENERS.add(listener_000);
+				
 				break;
 				
 			case INVISIBLE_PLAYERS:
@@ -209,13 +253,9 @@ public class DaysBlazer implements PowerItem, Listener {
 					public void run() {
 						
 						for(Player p : getInGamePlayers()) {
-							
-							if(!p.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 								
-								p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 2, 1));
-								continue;
-								
-							}
+							p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 2, 1));
+							continue;
 							
 						}
 						
@@ -271,7 +311,15 @@ public class DaysBlazer implements PowerItem, Listener {
 								e.setCancelled(true);
 								
 								player.getWorld().playSound(player.getLocation(), Sound.CAT_MEOW, 10, 1);
-								player.playEffect(EntityEffect.VILLAGER_HEART);
+								
+								FlameEffect ef = new FlameEffect(Skywars.effectmanager);
+								
+								ef.visibleRange = 300;
+								ef.particle = ParticleEffect.HEART;
+								ef.iterations = 3;
+								
+								ef.setLocation(player.getLocation());
+								ef.start();
 								
 							}
 							
@@ -354,7 +402,7 @@ public class DaysBlazer implements PowerItem, Listener {
 								
 							}
 							
-							Bukkit.broadcastMessage(("&4En &8" + (55 - round) + "&4 segundos alguien morirá!"));
+							Bukkit.broadcastMessage((TextUtil.format("&4En &8" + (55 - round) + "&4 segundos alguien morirá!")));
 							
 							return;
 						}
@@ -370,7 +418,7 @@ public class DaysBlazer implements PowerItem, Listener {
 				Listener listener_003 = new Listener() {
 					
 					@EventHandler(priority = EventPriority.MONITOR)
-					public void onDamage(EntityChangeBlockEvent e) {
+					public void onBlockChange(EntityChangeBlockEvent e) {
 					
 						if(Skywars.getGameState() != SkywarsGameState.IN_GAME) return;
 						
@@ -386,7 +434,7 @@ public class DaysBlazer implements PowerItem, Listener {
 								Block b = e.getBlock();
 								b.setType(Material.CHEST);
 								
-								fillChest = new FillChest(SkywarsItem.getOnlyItemLegendady(), 10).startFilledOneChest(b.getLocation());
+								new FillChest(SkywarsItem.getOnlyItemLegendady(), 10).startFilledOneChest(b.getLocation());
 								
 							}
 							
@@ -504,7 +552,7 @@ public class DaysBlazer implements PowerItem, Listener {
 							
 						}
 						
-						if(NumberUtil.getRandomInt(1, 7) == 7) {
+						if(NumberUtil.getRandomInt(1, 4) == 4) {
 							
 							List<Player> players = getInGamePlayers();
 							

@@ -11,13 +11,18 @@
 package net.omniblock.skywars.patch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.network.NetworkRunnable;
 import net.omniblock.skywars.network.events.FullAttributeListener;
@@ -49,7 +54,31 @@ public class NetworkPatcher implements Patcher {
 			@Override
 			public void execute(String data) {
 				
-				if(data.contains("#")){
+				if(data.contains("$ TEAM ") && data.contains(",")){
+					
+					if(		Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS || 
+							Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS ||
+							Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
+						
+						data = data.replaceFirst("$ TEAM ", "");
+						List<Player> party = new ArrayList<Player>();
+						
+						Arrays.asList(data.split(",")).stream().forEach(player ->
+						{
+							
+							if(Bukkit.getPlayer(player) != null){
+								party.add(Bukkit.getPlayer(player));
+							}
+							
+						});
+						
+						TeamPlayerManager.addPreTeam(party);
+						return;
+						
+					}
+					return;
+					
+				} else if(data.contains("#")){
 					
 					if(Skywars.currentMatchType == null) Skywars.currentMatchType = SkywarsType.NONE;
 					if(Skywars.currentMatchType != SkywarsType.NONE) return;

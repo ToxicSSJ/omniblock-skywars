@@ -10,8 +10,10 @@
 
 package net.omniblock.skywars.games.solo;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -544,24 +546,66 @@ public class SoloSkywars implements SkywarsStarter {
 			public void run() {
 				
 				if(Bukkit.getOnlinePlayers().size() <= 0) {
+					
 					cancel();
-					MapManager.unloadActualWorldsAndReset();
 					Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 					
 					stop();
 				}
 				
 			}
-		}.runTaskTimer(Skywars.getInstance(), 20l, 20l);
-		
-		
+		}.runTaskTimer(Skywars.getInstance(), 20l, 60l);
 		
 	}
 	
 	public static void stop() {
 		
 		Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_RELOAD_ATTRIBUTE, new PacketModifier());
-		Bukkit.reload();
+		MapManager.unloadWorlds();
+		
+		new Thread( new Runnable(){
+			
+			@Override
+			public void run(){
+				
+				System.out.println("Reiniciando servidor en 3 segundos, presione CTRL + C si desea cancelar el reinicio.");
+				sleep(3);
+				
+				try {
+					
+					System.out.println("");
+					System.out.println("                          [MODO AUTOMATICO]");
+					System.out.println(" 1 # Apartir de ahora el servidor funcionará en modo automatico. ");
+					System.out.println(" 2 # Si deseas cancelar el modo de función automatico que es activado ");
+					System.out.println(" de manera interna, Deberás colocar el comando: fuser -k " + Bukkit.getPort() + "/tcp");
+					System.out.println(" 3 # Este sistema es totalmente interno y está en fase experimental.");
+					System.out.println(" 4 # El actual log es almacenado en 'logs/lastest.txt'.");
+					System.out.println("");
+					
+					Runtime.getRuntime().exec("fuser -k " + Bukkit.getPort() + "/tcp");
+		            Runtime.getRuntime().exec("java -server -Xms1G -Xmx1G -jar SPIGOT_1_8.jar");
+		            
+		        } catch (IOException e) {
+		            System.out.println(e.getMessage());
+		        }
+				
+			}
+			
+			public void sleep(int seconds){
+            	
+            	try {
+            		
+					TimeUnit.SECONDS.sleep(seconds);
+					
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+					
+				}
+            	
+            }
+			
+		}).start();
 		
 	}
 	

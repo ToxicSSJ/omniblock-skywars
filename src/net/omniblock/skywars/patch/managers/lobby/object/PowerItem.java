@@ -91,14 +91,14 @@ public interface PowerItem {
 			
 			for(PowerItemType pit : actived_powers) {
 				
+				broadcastModule(pit);
+				
 				if(		pit == PowerItemType.TIME_ALTERATOR_AFTERNOON ||
 						pit == PowerItemType.TIME_ALTERATOR_DEFAULT ||
 						pit == PowerItemType.TIME_ALTERATOR_MIDDAY ||
 					    pit == PowerItemType.TIME_ALTERATOR_MIDNIGHT ||
 						pit == PowerItemType.TIME_ALTERATOR_MORNING ||
 						pit == PowerItemType.TIME_ALTERATOR_NIGHT) {
-					
-					broadcastModule(pit);
 					
 					TimeAlterator.SELECTED_TIME = TimeType.getByPit(pit);
 					
@@ -114,7 +114,6 @@ public interface PowerItem {
 					DaysBlazer blazer = new DaysBlazer();
 					blazer.setup();
 					
-					broadcastModule(pit);
 					continue;
 					
 				}
@@ -122,7 +121,9 @@ public interface PowerItem {
 				if(pit == PowerItemType.MORE_INSANE_ITEMS ||
 						pit == PowerItemType.MORE_LEGENDARY_ITEMS) {
 					
-					broadcastModule(pit);
+					
+					
+					
 					continue;
 					
 				}
@@ -135,7 +136,6 @@ public interface PowerItem {
 						
 					} else { TeamSkywars.mainRunnableTask.addEvent("&d&lCONTAMINACIÓN:", 120); }
 					
-					broadcastModule(pit);
 					continue;
 					
 				}

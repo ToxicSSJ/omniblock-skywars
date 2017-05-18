@@ -674,6 +674,7 @@ public enum EItem{
 		.lore("&7pero cuidado al comienzo")
 		.lore("&7te dejara devil.")
 		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
+	@SuppressWarnings("deprecation")
 	RAYO_CONGELADO(
 		new ItemBuilder(Material.getMaterial(2259))
 		.amount(1)
@@ -685,6 +686,7 @@ public enum EItem{
 		.lore("&7&lDaño: &72.5❤")
 		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
 		.enchant(Enchantment.DURABILITY, 1).build()),
+	@SuppressWarnings("deprecation")
 	PUÑO_DE_JHONCENA(
 		new ItemBuilder(Material.getMaterial(2257))
 		.amount(1)
@@ -696,6 +698,7 @@ public enum EItem{
 		.lore("&7&lDaño: &74❤")
 		.lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
 		.enchant(Enchantment.FIRE_ASPECT, 1).build()),
+	@SuppressWarnings("deprecation")
 	METEORITO(
 		new ItemBuilder(Material.getMaterial(2256))
 		.amount(1)

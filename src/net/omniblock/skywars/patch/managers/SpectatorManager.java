@@ -3,6 +3,7 @@ package net.omniblock.skywars.patch.managers;
 import java.util.List;
 import java.util.Arrays;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -18,12 +19,14 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.RowsIntegers;
+import omniblock.on.addons.games.general.RankBase;
 import omniblock.on.network.NetworkManager;
 import omniblock.on.network.packet.Packet;
 import omniblock.on.network.packet.assembler.AssemblyType;
@@ -87,91 +90,105 @@ public class SpectatorManager {
 							@Override
 							public void execute(Player player) {
 				
-								if(   Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO 
-										   || Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
-										   || Skywars.currentMatchType == SkywarsType.SW_Z_SOLO){
+								if(getInGamePlayers().size() >= 1) {
 									
-									if(SoloPlayerManager.getPlayersInGameAmount() >= 1) {
+									int size = getInventorySize();
+									
+									InventoryBuilder ib = new InventoryBuilder(TextUtil.format("&8&lSeleccionar Jugador"), size * 9, true);
+									List<Integer> pos_arr = Lists.newArrayList();
+									
+									if(size == 4) {
 										
-										int size = getInventorySize();
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_2.getIntegers()));
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_3.getIntegers()));
 										
-										InventoryBuilder ib = new InventoryBuilder(TextUtil.format("&8&lSeleccionar Jugador"), size * 9, true);
-										List<Integer> pos_arr = Lists.newArrayList();
+									} else if(size == 3) {
 										
-										if(size == 4) {
-											
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_2.getIntegers()));
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_3.getIntegers()));
-											
-										} else if(size == 3) {
-											
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_2.getIntegers()));
-											
-										} else {
-											
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_2.getIntegers()));
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_3.getIntegers()));
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_4.getIntegers()));
-											pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_5.getIntegers()));
-											
-										}
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_2.getIntegers()));
 										
-										int round = 0;
-										int pos_x = pos_arr.get(round);
+									} else {
 										
-										for(Player p : SoloPlayerManager.getPlayersInGameList()) {
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_2.getIntegers()));
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_3.getIntegers()));
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_4.getIntegers()));
+										pos_arr.addAll(Arrays.asList(RowsIntegers.NON_LATERAL_ROW_5.getIntegers()));
+										
+									}
+									
+									int round = 0;
+									int pos_x = pos_arr.get(round);
+									
+									for(Player p : getInGamePlayers()) {
+										
+										String name = p.getName();
+										round++;
+										
+										ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+						                SkullMeta sk = (SkullMeta) item.getItemMeta();
+						                
+						                sk.setDisplayName(TextUtil.format("&7" + RankBase.getRank(p).getCustomName(p, 'a') + " &a&l" + p.getHealth() + "❤"));
+						                sk.setOwner(p.getName());
+						                
+						                item.setItemMeta(sk);
+						                
+										ib.addItem(item, pos_x, new Action() {
 											
-											round++;
-											
-											ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-							                SkullMeta sk = (SkullMeta) item.getItemMeta();
-							                
-							                sk.setDisplayName(TextUtil.format("&f" + p.getName() + " &c&l" + p.getHealth() + "❤"));
-							                sk.setOwner(p.getName());
-							                
-							                item.setItemMeta(sk);
-							                
-											ib.addItem(item, pos_x, new Action() {
+											@Override
+											public void click(ClickType click, Player player) {
 												
-												@Override
-												public void click(ClickType click, Player player) {
-													
-													if(p.isOnline()) {
-														if(SoloPlayerManager.getPlayersInGameList().contains(p)) {
-															
-															player.sendMessage(TextUtil.format("&aTeletransportado a: &f" + p.getName()));
-															player.teleport(p);
-															
-															player.closeInventory();
-															return;
-															
-														}
-													}
-													
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
+												Player warrior = Bukkit.getPlayer(name);
+												
+												if(warrior == null || !warrior.isOnline()){
 													player.sendMessage(TextUtil.format("&cEl jugador ya murió."));
+													return;
+												}
+												
+												if(getInGamePlayers().contains(warrior)) {
+													
+													player.sendMessage(TextUtil.format("&aTeletransportado a: &f" + warrior.getName()));
+													player.teleport(warrior);
+													
+													player.closeInventory();
 													return;
 													
 												}
 												
-											});
+												player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
+												player.sendMessage(TextUtil.format("&cEl jugador ya murió."));
+												return;
+												
+											}
 											
-											pos_x = pos_arr.get(round);
-											
-											player.playSound(player.getLocation(), Sound.CLICK, 2, -5);
-											ib.open(player);
-											
-										}
-											
-									} else {
+										});
 										
-										player.sendMessage(TextUtil.format("&cNo hay jugadores para espectear."));
-										return;
+										pos_x = pos_arr.get(round);
+										
+										player.playSound(player.getLocation(), Sound.CLICK, 2, -5);
+										ib.open(player);
 										
 									}
+										
+								} else {
+									
+									player.sendMessage(TextUtil.format("&cNo hay jugadores para espectear."));
+									return;
 									
 								}
 				
+							}
+							
+							public List<Player> getInGamePlayers(){
+								
+								if(		Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO ||
+										Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO ||
+										Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
+									
+									return SoloPlayerManager.getPlayersInGameListAsCopy();
+									
+								}
+								
+								return TeamPlayerManager.getPlayersInGameListAsCopy();
+								
 							}
 							
 							public int getInventorySize() {
@@ -485,8 +502,6 @@ public class SpectatorManager {
 		public void setSlot(int slot) {
 			this.slot = slot;
 		}
-		
-		
 		
 	}
 	

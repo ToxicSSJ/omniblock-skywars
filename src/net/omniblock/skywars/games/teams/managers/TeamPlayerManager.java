@@ -26,9 +26,7 @@ import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.teams.TeamSkywars;
 import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
-import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
-import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.MapUtils;
@@ -38,17 +36,36 @@ import net.omniblock.skywars.util.TitleUtil;
 import omniblock.on.addons.games.general.RankBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
 import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
-import omniblock.on.network.packet.Packet;
-import omniblock.on.network.packet.assembler.AssemblyType;
-import omniblock.on.network.packet.modifier.PacketModifier;
 
 public class TeamPlayerManager {
 	
+	public static List<List<Player>> playersPreTeams = new ArrayList<List<Player>>();
 	private static Map<Player, Player> playersTeams = new HashMap<Player, Player>();
 	
 	private static List<Player> playersInLobby = new ArrayList<Player>();
 	private static List<Player> playersInGame = new ArrayList<Player>();
 	private static List<Player> playersInSpectator = new ArrayList<Player>();
+	
+	public static void removeFromPreTeam(Player player){
+		
+		playersPreTeams.stream().forEach(players ->
+					{
+						if(players.contains(player)){
+							players.remove(player);
+							return;
+						}
+					}
+		);
+		return;
+		
+	}
+	
+	public static void addPreTeam(List<Player> team){
+		
+		playersPreTeams.add(team);
+		return;
+		
+	}
 	
 	public static void deathPlayer(Player p) {
 		
@@ -218,21 +235,6 @@ public class TeamPlayerManager {
 			
 		}
 		
-		if(ChestManager.getCurrentMatchType() == MatchType.Z){
-			
-			new BukkitRunnable(){
-				@Override
-				public void run(){
-					
-					Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TEXTUREPACK, new PacketModifier()
-							.addString(p.getName())
-							.addString("SKWZ"));
-					
-				}
-			}.runTaskLater(Skywars.getInstance(), 20 * 2);
-			
-		}
-		
 		return true;
 	}
 	
@@ -256,6 +258,30 @@ public class TeamPlayerManager {
 		
 		HashSet<Player> noteamed = new LinkedHashSet<Player>();
 		HashSet<Player> cache = new LinkedHashSet<Player>();
+		
+		for(List<Player> player : playersPreTeams){
+			
+			Iterator<Player> iterate = player.iterator();
+			
+			while(iterate.hasNext()){
+				
+				Player member = iterate.next();
+				Player team = null;
+				
+				if(iterate.hasNext()) team = iterate.next();
+				
+				if(member != null && team != null){
+					
+					playersTeams.put(member, team);
+					continue;
+					
+				}
+				
+				break;
+				
+			}
+			
+		}
 		
 		for(Map.Entry<Player, Player> k : playersTeams.entrySet()) {
 			

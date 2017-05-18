@@ -268,7 +268,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));
