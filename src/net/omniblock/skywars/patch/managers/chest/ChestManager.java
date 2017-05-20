@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
+import net.omniblock.skywars.patch.managers.chest.item.object.FillChest.FilledType;
 import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.util.Scan;
 
@@ -17,7 +18,7 @@ public class ChestManager {
 	private FillChest fillchest = null;
 
 	public static MatchType gMatchType = MatchType.NONE;
-	
+
 	public static List<Location> normalchest = new ArrayList<Location>();
 	public static List<Location> trappedchest = new ArrayList<Location>();
 	
@@ -39,16 +40,13 @@ public class ChestManager {
 
 		switch (mt) {
 		case NORMAL:
-			fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest(), 6, 8);
-			fillchest.startFilled();
+			fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest()).startFilled(FilledType.FILLED);
 			break;
 		case INSANE:
-			fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest(),6,8);
-			fillchest.startFilled();
+			fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest()).startFilled(FilledType.FILLED);
 			break;
 		case Z:
-			fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest(), 6,8);
-			fillchest.startFilled();
+			fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest()).startFilled(FilledType.FILLED);
 			break;
 		default:
 			break;

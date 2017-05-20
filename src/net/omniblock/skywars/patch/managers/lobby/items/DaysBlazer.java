@@ -47,6 +47,7 @@ import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
+import net.omniblock.skywars.patch.managers.chest.item.object.FillChest.FilledType;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ItemBuilder;
@@ -434,7 +435,7 @@ public class DaysBlazer implements PowerItem, Listener {
 								Block b = e.getBlock();
 								b.setType(Material.CHEST);
 								
-								new FillChest(SkywarsItem.getOnlyItemLegendady(), 10).startFilledOneChest(b.getLocation());
+								new FillChest(SkywarsItem.getOnlyItemLegendady(), b).startFilled(FilledType.ONE_CHEST);
 								
 							}
 							

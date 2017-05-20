@@ -30,6 +30,7 @@ import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.ChestManager;
 import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
 import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
+import net.omniblock.skywars.patch.managers.chest.item.object.FillChest.FilledType;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
@@ -88,13 +89,13 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 			
 					switch (ChestManager.getCurrentMatchType()) {
 					case NORMAL:
-						fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest(), 6, 8);
+						fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest());
 						break;
 					case INSANE:
-						fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest(),6,8);
+						fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest());
 						break;
 					case Z:
-						fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest(), 6,8);
+						fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest());
 						break;
 					default:
 						break;
@@ -332,7 +333,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
-			fillchest.startReFillChest();
+			fillchest.startFilled(FilledType.RE_FILLED);
 			return;
 			
 		} else if(str.contains("CONTAMINACIÓN")) {
@@ -400,7 +401,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 			
 		} else if(str.contains("DESTRUCCIÓN")) {
 			
-			FillChest.clearChest(ChestManager.normalchest);
+			fillchest.startFilled(FilledType.CLEAR);
 			int delay_another = 1;
 			
 			for(Block b : FillChest.ChestDiamond) {
