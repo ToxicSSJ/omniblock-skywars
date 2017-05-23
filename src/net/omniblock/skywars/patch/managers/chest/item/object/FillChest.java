@@ -25,10 +25,12 @@ public class FillChest {
 	public static List<Block> ChestDiamond = new ArrayList<Block>();
 	
 	private List<ItemStack> getItem = new ArrayList<ItemStack>();
+	
 	private List<ItemStack> getItemChest = new ArrayList<ItemStack>();
 	private List<ItemStack> getItemTrappedChest = new ArrayList<ItemStack>();
 	
 	private final int NUMBER_OF_ITEM = 13;
+	
 	private final int NUMBER_OF_ITEM_CHEST = 8;
 	private final int NUMBER_OF_ITEM_TRAPPEDCHEST = 10;
 	
@@ -353,8 +355,6 @@ public class FillChest {
 		
 		case BLOCK:
 			
-			int b = 0;
-			
 			for(int x = 0; x < n; x++){
 					
 				item = random.nextInt(list.size());
@@ -394,7 +394,7 @@ public class FillChest {
 				
 				}else{
 					
-					x--;
+					continue;
 				}
 			}
 				
@@ -437,7 +437,7 @@ public class FillChest {
 					}
 				}else{
 					
-					x--;
+					continue;
 				}
 			}
 			
