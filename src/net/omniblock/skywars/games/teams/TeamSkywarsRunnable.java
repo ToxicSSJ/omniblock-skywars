@@ -46,7 +46,6 @@ import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
 import omniblock.on.util.TextUtil;
-import omniblock.ot.errorapi.ErrorAPI;
 
 public class TeamSkywarsRunnable extends BukkitRunnable {
 
@@ -293,7 +292,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 				try {
 					reduceEvent(k.getKey(), 1);
 				}catch(Exception e) {
-					ErrorAPI.sendError(e);
+					e.printStackTrace();
 				}
 			}
 			

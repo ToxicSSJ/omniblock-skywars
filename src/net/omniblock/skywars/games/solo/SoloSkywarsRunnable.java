@@ -45,7 +45,6 @@ import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
 import omniblock.on.util.TextUtil;
-import omniblock.ot.errorapi.ErrorAPI;
 
 public class SoloSkywarsRunnable extends BukkitRunnable {
 	
@@ -265,11 +264,11 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				try {
 					reduceEvent(k.getKey(), 1);
 				}catch(Exception e) {
-					ErrorAPI.sendError(e);
+					e.printStackTrace();
 				}
 			}
 			
-			if(SoloPlayerManager.getPlayersInGameAmount() == 2) {
+			if(SoloPlayerManager.getPlayersInGameAmount() == 1) {
 				
 				Skywars.updateGameState(SkywarsGameState.FINISHING);
 				gStarter.finalize(SoloPlayerManager.getPlayersInGameList().get(0));

@@ -43,7 +43,6 @@ import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.ParticleEffect;
 import net.omniblock.skywars.util.ResourceExtractor;
 import net.omniblock.skywars.util.Schematic;
-import omniblock.ot.errorapi.ErrorAPI;
 
 @SuppressWarnings("deprecation")
 public class CageManager {
@@ -315,7 +314,6 @@ public class CageManager {
 					map.put(session, cc);
 					return map;
 				} catch (MaxChangedBlocksException | DataException | IOException e) {
-					ErrorAPI.sendError(e);
 					e.printStackTrace();
 				}
                 
@@ -459,7 +457,7 @@ public class CageManager {
 				animations.add(bt);
 			}
 		}catch(Exception e){
-			ErrorAPI.sendError(e);
+			e.printStackTrace();
 		}
 		
 	}

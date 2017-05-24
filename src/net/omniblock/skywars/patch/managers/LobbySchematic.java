@@ -25,7 +25,6 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
 import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.Scan;
-import omniblock.ot.errorapi.ErrorAPI;
 
 @SuppressWarnings("deprecation")
 public class LobbySchematic {
@@ -155,7 +154,6 @@ public class LobbySchematic {
 				map.put(session, cc);
 				return map;
 			} catch (MaxChangedBlocksException | DataException | IOException e) {
-				ErrorAPI.sendError(e);
 				e.printStackTrace();
 			}
             
