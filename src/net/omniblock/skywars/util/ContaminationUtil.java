@@ -21,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class ContaminationUtil {
@@ -59,8 +60,7 @@ public class ContaminationUtil {
 			if(trooptarget == SkywarsType.SW_NORMAL_SOLO || trooptarget == SkywarsType.SW_INSANE_SOLO || trooptarget == SkywarsType.SW_Z_SOLO) {
 				trooptargets = SoloPlayerManager.getPlayersInGameList();
 			} else {
-				//trooptargets = TeamPlayerManager.getPlayersInGameList(); TODO
-				return;
+				trooptargets = TeamPlayerManager.getPlayersInGameList();
 			}
 			
 			for(Player p : trooptargets) {
@@ -233,9 +233,8 @@ public class ContaminationUtil {
 			if(!(i < 50)) {
 				
 				cancel();
-				pos_block.getWorld().playSound(pos_block.getLocation(), Sound.WOLF_DEATH, 20, -10);
-				
 				return;
+				
 			}
 			
 			if(!enabled || pos_block == null) {
