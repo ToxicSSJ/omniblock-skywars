@@ -30,7 +30,6 @@ import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.effectlib.EffectLib;
 import net.omniblock.skywars.util.effectlib.EffectManager;
-import net.omniblock.skywars.util.fix.TeleportFixThree;
 import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
 import omniblock.on.network.updater.object.Updatable;
 import omniblock.on.network.updater.type.PluginType;
@@ -81,7 +80,6 @@ public class Skywars extends JavaPlugin implements Updatable {
 		VanishUtil.start();
 		LobbyManager.start();
 		MultiLineAPI.start();
-		TeleportFixThree.initialize();
 		
 		InventoryBuilderListener.startInventoryBuilder();
 		
