@@ -21,6 +21,8 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import net.omniblock.network.handlers.Handlers;
+import net.omniblock.network.handlers.games.NetworkBroadcaster;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.network.NetworkData;
@@ -28,18 +30,16 @@ import net.omniblock.skywars.network.NetworkRunnable;
 import net.omniblock.skywars.network.events.FullAttributeListener;
 import net.omniblock.skywars.network.events.SkywarsLobbyFilterListener;
 import net.omniblock.skywars.patch.internal.Patcher;
+import net.omniblock.skywars.patch.readers.GameReader;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import omniblock.on.OmniNetwork;
-import omniblock.on.addons.games.NetworkBroadcaster;
-import omniblock.on.network.packet.Packet;
-import omniblock.on.network.packet.assembler.AssemblyType;
-import omniblock.on.network.packet.modifier.PacketModifier;
 
 public class NetworkPatcher implements Patcher {
 
 	public static NetworkRunnable networkrunnable;
 	
 	public void initialize(){
+		
+		GameReader.start();
 		
 		Skywars.getInstance().getServer().getPluginManager().registerEvents(new FullAttributeListener(), Skywars.getInstance());
 		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SkywarsLobbyFilterListener(), Skywars.getInstance());
@@ -96,7 +96,7 @@ public class NetworkPatcher implements Patcher {
 					}
 					
 				} else {
-					OmniNetwork.sendError("SKYWARS: No puedes ejecutar la partida sin alternación de cáracteres en "
+					Handlers.LOGGER.sendError("SKYWARS: No puedes ejecutar la partida sin alternación de cáracteres en "
 										+ "la data. [ERR-NetworkPatcher:35]");
 					return;
 				}
@@ -108,12 +108,10 @@ public class NetworkPatcher implements Patcher {
 				
 				if(data.contains("$ LOCK")) {
 					
-					Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_LOCK_ATTRIBUTE, new PacketModifier());
 					return;
 					
 				} else if(data.contains("$ UNLOCK")) {
 					
-					Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_UNLOCK_ATTRIBUTE, new PacketModifier());
 					return;
 					
 				}

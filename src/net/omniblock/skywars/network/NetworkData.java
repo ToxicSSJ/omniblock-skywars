@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import net.omniblock.network.handlers.games.NetworkBroadcaster;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import omniblock.on.addons.games.NetworkBroadcaster;
 
 public class NetworkData {
 

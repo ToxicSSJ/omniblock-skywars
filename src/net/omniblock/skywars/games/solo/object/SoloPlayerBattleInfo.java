@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
+import net.omniblock.network.handlers.base.bases.type.BankBase;
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.network.NetworkData;
-import net.omniblock.skywars.util.TextUtil;
-import omniblock.on.addons.games.general.BankBase;
 
 public class SoloPlayerBattleInfo {
 	

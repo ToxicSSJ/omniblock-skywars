@@ -23,15 +23,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
-import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil;
-import net.omniblock.skywars.patch.managers.chest.item.z.type.Turret.TurretUtil.AwakeTurret;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.NumberUtil;
-import omniblock.on.util.TextUtil;
 
 public class SoloPlayerBattleListener implements Listener {
 

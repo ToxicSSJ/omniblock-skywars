@@ -13,9 +13,11 @@ import org.bukkit.WorldCreator;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
 
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.Configuration;
@@ -24,23 +26,7 @@ import net.omniblock.skywars.util.FileUtil;
 import net.omniblock.skywars.util.MCAUtil;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.Scan;
-import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.chunk.CleanroomChunkGenerator;
-
-/**
- * Esta clase se encarga de:
- * 
- * <ul>
- * 		<li>Guardar un mapa en el Backup. (Por ejemplo, antes de que un mapa sea usado).</li>
- * 		<li>Restaurar un mapa desde el Backup. (Por ejemplo, despues de que un mapa fue usado).</li>
- * 		<li>Seleccionar un mapa aleatorio del listado de mapas (siempre y cuando sea distinto al mapa usado previamente)</li>
- * 		<li>Cargar un mapa de la lista de <i>Mapas Normales</i> y <i>Mapas Z</i> sin necesidad de un plugin externo (Multiverse).</li>
- * </ul>
- * 
- * @author Wirlie
- * @since Primera Versión
- *
- */
 
 public class MapManager {
 	
@@ -65,7 +51,7 @@ public class MapManager {
 	public static LobbySchematic lobbyschematic;
 	
 	/**
-	 * Debido a que la clase se comporta como una clase estática, el constructor se establece como privado para evitar posibles confuciones.
+	 * Debido a que la clase se comporta como una clase estática, el constructor se establece como privado para evitar posibles confusiones.
 	 */
 	private MapManager() {
 		
@@ -105,22 +91,31 @@ public class MapManager {
 	 */
 	public static void prepareWorlds() {
 		
-		readConfiguration();
-		
-		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
-		
-		lobbyschematic = new LobbySchematic();
-		
-		for(MapType mt : MapType.values()) {
+		new BukkitRunnable(){
 			
-			if(mt == MapType.UNKNOWN) {
-				continue;
+			@Override
+			public void run(){
+				
+				readConfiguration();
+				
+				Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
+				
+				lobbyschematic = new LobbySchematic();
+				
+				for(MapType mt : MapType.values()) {
+					
+					if(mt == MapType.UNKNOWN) {
+						continue;
+					}
+					
+					MapManager.prepareNextWorld(mt);
+				}
+				
+				Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
+				
 			}
 			
-			MapManager.prepareNextWorld(mt);
-		}
-		
-		Bukkit.getConsoleSender().sendMessage(TextUtil.format("&4------------------------------------"));
+		}.runTaskLater(Skywars.getInstance(), 20L);
 		
 	}
 	

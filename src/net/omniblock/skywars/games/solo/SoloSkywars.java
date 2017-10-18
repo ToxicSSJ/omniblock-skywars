@@ -10,10 +10,8 @@
 
 package net.omniblock.skywars.games.solo;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +22,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.google.common.collect.Lists;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.network.library.utils.RestarterUtil;
+import net.omniblock.network.library.utils.TextUtil;
+import net.omniblock.packets.network.Packets;
+import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
+import net.omniblock.packets.network.structure.type.PacketSenderType;
+import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -39,28 +44,22 @@ import net.omniblock.skywars.patch.internal.SkywarsStarter;
 import net.omniblock.skywars.patch.managers.EventsManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
-import net.omniblock.skywars.patch.managers.chest.ChestManager;
+import net.omniblock.skywars.patch.managers.chest.Chests;
 import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.LocationUtil;
 import net.omniblock.skywars.util.RandomFirework;
-import net.omniblock.skywars.util.TextUtil;
-import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
-import omniblock.on.network.packet.Packet;
-import omniblock.on.network.packet.assembler.AssemblyType;
-import omniblock.on.network.packet.modifier.PacketModifier;
-import omniblock.on.util.lib.omnicore.ServerType;
 
 public class SoloSkywars implements SkywarsStarter {
 
 	public static final int DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS = 12;
 	public static final int DEFAULT_Z_SKYWARS_MAX_PLAYERS = 16;
 	
-	public static final int DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS = 2;
-	public static final int DEFAULT_Z_SKYWARS_MIN_PLAYERS = 2;
+	public static final int DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS = 1;
+	public static final int DEFAULT_Z_SKYWARS_MIN_PLAYERS = 1;
 	
 	public static int MAX_PLAYERS = 12;
-	public static int MIN_PLAYERS = 2;
+	public static int MIN_PLAYERS = 1;
 	
 	public static SkywarsResolver gSkywarsResolver;
 	public  static SoloSkywarsRunnable mainRunnableTask;
@@ -120,7 +119,7 @@ public class SoloSkywars implements SkywarsStarter {
 	
 	private void startSoloNormalGame() {
 		
-		ChestManager.gMatchType = MatchType.NORMAL;
+		Chests.currentMatchType = MatchType.NORMAL;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -137,15 +136,15 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Normal
 		 */
 		
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 80);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 80);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 340);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 320);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 520);
 		
 	}
 	
 	private void startSoloInsaneGame() {
 		
-		ChestManager.gMatchType = MatchType.INSANE;
+		Chests.currentMatchType = MatchType.INSANE;
 		
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -162,15 +161,15 @@ public class SoloSkywars implements SkywarsStarter {
 		 *   - Mejorado (Insano)
 		 */
 		
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 80);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 140);
-		mainRunnableTask.addEvent("&c&lDUELO:", 260);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 340);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 320);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 520);
 		
 	}
 	
 	private void startSoloZGame() {
-		ChestManager.gMatchType = MatchType.Z;
+		
+		Chests.currentMatchType = MatchType.Z;
 		
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
@@ -188,10 +187,10 @@ public class SoloSkywars implements SkywarsStarter {
 		 */
 
 		mainRunnableTask.addEvent("&c&lDESTRUCCIÓN:", 60);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 100);
-		mainRunnableTask.addEvent("&6&lRELLENADO:", 150);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 220);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 260);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 160);
+		mainRunnableTask.addEvent("&6&lRELLENADO:", 260);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 460);
+		mainRunnableTask.addEvent("&8&lELECCIÓN:", 560);
 		
 	}
 	
@@ -433,6 +432,8 @@ public class SoloSkywars implements SkywarsStarter {
 								
 							}
 							
+							k.getKey().redeemPrizes();
+							
 						}
 					}
 					
@@ -457,7 +458,7 @@ public class SoloSkywars implements SkywarsStarter {
 	@Override
 	public void reset() {
 		
-		ChestManager.gMatchType = MatchType.NONE;
+		Chests.currentMatchType = MatchType.NONE;
 		
 		if(mainRunnableTask != null) {
 			mainRunnableTask.cancel();
@@ -468,10 +469,11 @@ public class SoloSkywars implements SkywarsStarter {
 		
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			
-			Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_SERVER,
-					   new PacketModifier()
-					   .addString(player.getName())
-					   .addString(ServerType.SKYWARS_LOBBY_SERVER.toString()));
+			Packets.STREAMER.streamPacket(new PlayerSendToServerPacket()
+					.setPlayername(player.getName())
+					.setServertype(ServerType.SKYWARS_LOBBY_SERVER)
+					.setParty(false)
+					.build().setReceiver(PacketSenderType.OMNICORE));
 			
 		}
 		
@@ -559,53 +561,21 @@ public class SoloSkywars implements SkywarsStarter {
 	}
 	
 	public static void stop() {
-		
-		Packet.ASSEMBLER.sendPacket(AssemblyType.GAME_SEND_RELOAD_ATTRIBUTE, new PacketModifier());
+
 		MapManager.unloadWorlds();
 		
-		new Thread( new Runnable(){
+		System.out.println("Reiniciando servidor en 3 segundos, presione CTRL + C si desea cancelar el reinicio.");
+		
+		new BukkitRunnable(){
 			
 			@Override
 			public void run(){
 				
-				System.out.println("Reiniciando servidor en 3 segundos, presione CTRL + C si desea cancelar el reinicio.");
-				sleep(3);
-				
-				try {
-					
-					System.out.println("");
-					System.out.println("                          [MODO AUTOMATICO]");
-					System.out.println(" 1 # Apartir de ahora el servidor funcionará en modo automatico. ");
-					System.out.println(" 2 # Si deseas cancelar el modo de función automatico que es activado ");
-					System.out.println(" de manera interna, Deberás colocar el comando: fuser -k " + Bukkit.getPort() + "/tcp");
-					System.out.println(" 3 # Este sistema es totalmente interno y está en fase experimental.");
-					System.out.println(" 4 # El actual log es almacenado en 'logs/lastest.txt'.");
-					System.out.println("");
-					
-					Runtime.getRuntime().exec("fuser -k " + Bukkit.getPort() + "/tcp");
-		            Runtime.getRuntime().exec("java -server -Xms1G -Xmx1G -jar SPIGOT_1_8.jar");
-		            
-		        } catch (IOException e) {
-		            System.out.println(e.getMessage());
-		        }
+				RestarterUtil.sendRestart();
 				
 			}
 			
-			public void sleep(int seconds){
-            	
-            	try {
-            		
-					TimeUnit.SECONDS.sleep(seconds);
-					
-				} catch (InterruptedException e) {
-					
-					e.printStackTrace();
-					
-				}
-            	
-            }
-			
-		}).start();
+		}.runTaskLater(Skywars.getInstance(), 20 * 3);
 		
 	}
 	

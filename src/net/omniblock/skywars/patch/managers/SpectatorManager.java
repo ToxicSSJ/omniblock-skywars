@@ -18,6 +18,14 @@ import org.bukkit.potion.PotionEffectType;
 import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
+import net.omniblock.network.handlers.base.bases.type.RankBase;
+import net.omniblock.network.handlers.network.NetworkManager;
+import net.omniblock.network.library.utils.TextUtil;
+import net.omniblock.packets.network.Packets;
+import net.omniblock.packets.network.structure.packet.PlayerSendToGamePacket;
+import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
+import net.omniblock.packets.network.structure.type.PacketSenderType;
+import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
@@ -26,13 +34,6 @@ import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.RowsIntegers;
-import omniblock.on.addons.games.general.RankBase;
-import omniblock.on.network.NetworkManager;
-import omniblock.on.network.packet.Packet;
-import omniblock.on.network.packet.assembler.AssemblyType;
-import omniblock.on.network.packet.modifier.PacketModifier;
-import omniblock.on.util.TextUtil;
-import omniblock.on.util.lib.omnicore.ServerType;
 
 public class SpectatorManager {
 
@@ -126,7 +127,7 @@ public class SpectatorManager {
 										ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 						                SkullMeta sk = (SkullMeta) item.getItemMeta();
 						                
-						                sk.setDisplayName(TextUtil.format("&7" + RankBase.getRank(p).getCustomName(p, 'a') + " &a&l" + p.getHealth() + "❤"));
+						                sk.setDisplayName(TextUtil.format("&7" + RankBase.getRank(p).getCustomName(p, 'a') + " &a&l" + p.getHealth() + "â�¤"));
 						                sk.setOwner(p.getName());
 						                
 						                item.setItemMeta(sk);
@@ -139,7 +140,7 @@ public class SpectatorManager {
 												Player warrior = Bukkit.getPlayer(name);
 												
 												if(warrior == null || !warrior.isOnline()){
-													player.sendMessage(TextUtil.format("&cEl jugador ya murió."));
+													player.sendMessage(TextUtil.format("&cEl jugador ya muriÃ³."));
 													return;
 												}
 												
@@ -154,7 +155,7 @@ public class SpectatorManager {
 												}
 												
 												player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
-												player.sendMessage(TextUtil.format("&cEl jugador ya murió."));
+												player.sendMessage(TextUtil.format("&cEl jugador ya muriÃ³."));
 												return;
 												
 											}
@@ -215,7 +216,7 @@ public class SpectatorManager {
 										.name(TextUtil.format("&e&lVotar Ganador"))
 										.lore("")
 										.lore(TextUtil.format("&9&l- &7Vota por el jugador que crees"))
-										.lore(TextUtil.format("&7que ganará la partida, si aciertas, ganarás"))
+										.lore(TextUtil.format("&7que ganarÃ¡ la partida, si aciertas, ganarÃ¡s"))
 										.lore(TextUtil.format("&7coins."))
 										.lore(""), 3,
 										
@@ -233,7 +234,7 @@ public class SpectatorManager {
 					}),
  
 		SETTINGS(new ItemBuilder(Material.REDSTONE_COMPARATOR).amount(1)
-									 .name(TextUtil.format("&8&lConfiguración"))
+									 .name(TextUtil.format("&8&lConfiguraciÃ³n"))
 									 .lore("")
 									 .lore(TextUtil.format("&9&l- &7Elige las opciones de espectador"))
 									 .lore(TextUtil.format("&7mas convenientes para ti."))
@@ -255,8 +256,8 @@ public class SpectatorManager {
 							
 							ItemBuilder RESET = new ItemBuilder(Material.MILK_BUCKET, 1).name(TextUtil.format("&c&lResetear Efectos"));
 							
-							ItemBuilder NOCTURNE_VISION = new ItemBuilder(Material.EYE_OF_ENDER, 1).name(TextUtil.format("&c&lDesactivar Visión Nocturna"));
-							ItemBuilder NORMAL_VISION = new ItemBuilder(Material.ENDER_PEARL, 1).name(TextUtil.format("&9&lActivar Visión Nocturna"));
+							ItemBuilder NOCTURNE_VISION = new ItemBuilder(Material.EYE_OF_ENDER, 1).name(TextUtil.format("&c&lDesactivar VisiÃ³n Nocturna"));
+							ItemBuilder NORMAL_VISION = new ItemBuilder(Material.ENDER_PEARL, 1).name(TextUtil.format("&9&lActivar VisiÃ³n Nocturna"));
 							
 							for(PotionEffect pe : player.getActivePotionEffects()) {
 								
@@ -427,11 +428,13 @@ public class SpectatorManager {
 						   player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
 						   player.sendMessage(TextUtil.format("&bEnviandote a otra partida..."));
 						   
-						   Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_GAME,
-								   					   new PacketModifier()
-								   					   .addString(player.getName())
-								   					   .addString(NetworkManager.getGamepreset().toString())
-						   							   .addBoolean(true));
+						   Packets.STREAMER.streamPacket(new PlayerSendToGamePacket()
+									
+									.setPlayername(player.getName())
+									.setPreset(NetworkManager.getGamepreset())
+									.useParty(true)
+									
+									.build().setReceiver(PacketSenderType.OMNICORD));
 						   return;
 
 					   }
@@ -441,7 +444,7 @@ public class SpectatorManager {
 		EXIT_DOOR(new ItemBuilder(Material.ACACIA_DOOR).amount(1)
 									   .name(TextUtil.format("&c&lSalir"))
 									   .lore("")
-									   .lore(TextUtil.format("&9&l- &7Te devolverá al lobby de la"))
+									   .lore(TextUtil.format("&9&l- &7Te devolverÃ¡ al lobby de la"))
 									   .lore(TextUtil.format("&7modalidad de Skywars."))
 									   .lore(""), 7,
 
@@ -453,11 +456,13 @@ public class SpectatorManager {
 						  player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
 						  player.sendMessage(TextUtil.format("&9Volviendo al lobby."));
 						  
-						  Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_SERVER,
-			   					   new PacketModifier()
-			   					   .addString(player.getName())
-			   					   .addString(ServerType.SKYWARS_LOBBY_SERVER.toString()));
-						  
+						  Packets.STREAMER.streamPacket(new PlayerSendToServerPacket()
+									
+									.setPlayername(player.getName())
+									.setServertype(ServerType.SKYWARS_LOBBY_SERVER)
+									.setParty(false)
+									
+									.build().setReceiver(PacketSenderType.OMNICORD));
 						  return;
 
 					  }

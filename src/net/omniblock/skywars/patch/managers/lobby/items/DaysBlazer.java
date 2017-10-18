@@ -36,6 +36,7 @@ import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
 
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -44,15 +45,13 @@ import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
-import net.omniblock.skywars.patch.managers.chest.ChestManager;
-import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
-import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
-import net.omniblock.skywars.patch.managers.chest.item.object.FillChest.FilledType;
+import net.omniblock.skywars.patch.managers.chest.Chests;
+import net.omniblock.skywars.patch.managers.chest.handler.ChestFillerHandler.ChestFillType;
+import net.omniblock.skywars.patch.managers.chest.handler.ChestGetterHandler.ChestType;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
-import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
 import net.omniblock.skywars.util.effectlib.effect.FlameEffect;
 import net.omniblock.skywars.util.effectlib.util.ParticleEffect;
@@ -90,7 +89,8 @@ public class DaysBlazer implements PowerItem, Listener {
 							   "&7Mira en el cielo!"} ),
 		/* WITCHER("Del Mago", 
 				new String[] { "&8&m-&r&7 No uses armas ni nada extraño, Con el ",
-		   					   "&7simple click, Serás el mejor mago de todos!"} ), */
+		   					   "&7simple click, Serás el mejor mago de todos los",
+		   					   "&7tiempos!"} ), */
 		
 		BOW_TO_MACHINE_GUNS("¡De arcos a ametralladoras!", 
 				new String[] { "&8&m-&r&7 ¿Quien necesita arcos? ¡Cuando pueden ",
@@ -435,7 +435,7 @@ public class DaysBlazer implements PowerItem, Listener {
 								Block b = e.getBlock();
 								b.setType(Material.CHEST);
 								
-								new FillChest(SkywarsItem.getOnlyItemLegendady(), b).startFilled(FilledType.ONE_CHEST);
+								Chests.FILLER.promptChestFill((Chest) b.getState(), ChestFillType.MORE_ITEM_Z_CHEST);
 								
 							}
 							
@@ -564,7 +564,7 @@ public class DaysBlazer implements PowerItem, Listener {
 									}
 									
 									List<Location> chestLocations = Lists.newArrayList();
-									chestLocations.addAll(ChestManager.trappedchest);
+									Chests.FILLER.getChestBlocks(ChestType.MEGA_CHEST).stream().forEach(k -> chestLocations.add(k.getLocation()));
 									
 									addAll(chestLocations);
 									

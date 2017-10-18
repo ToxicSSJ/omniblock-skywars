@@ -24,9 +24,10 @@ import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.MapManager;
-import net.omniblock.skywars.patch.managers.chest.ChestManager;
-import net.omniblock.skywars.patch.managers.chest.item.z.Bombardier;
-import net.omniblock.skywars.patch.managers.chest.item.z.Meteoro;
+import net.omniblock.skywars.patch.managers.chest.Chests;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.Bombardier;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.Meteoro;
+import net.omniblock.skywars.patch.managers.chest.handler.ChestGetterHandler.ChestType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
@@ -161,7 +162,7 @@ public class ApocalipsisUtil {
 							}
 							
 							List<Location> chestLocations = Lists.newArrayList();
-							chestLocations.addAll(ChestManager.trappedchest);
+							Chests.FILLER.getChestBlocks(ChestType.MEGA_CHEST).stream().forEach(k -> chestLocations.add(k.getLocation()));
 							
 							addAll(chestLocations);
 							
@@ -195,7 +196,7 @@ public class ApocalipsisUtil {
 							}
 							
 							List<Location> chestLocations = Lists.newArrayList();
-							chestLocations.addAll(ChestManager.trappedchest);
+							Chests.FILLER.getChestBlocks(ChestType.MEGA_CHEST).stream().forEach(k -> chestLocations.add(k.getLocation()));
 							
 							addAll(chestLocations);
 							

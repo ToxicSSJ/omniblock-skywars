@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.teams.TeamSkywars;
@@ -17,7 +18,6 @@ import net.omniblock.skywars.patch.managers.lobby.items.DaysBlazer;
 import net.omniblock.skywars.patch.managers.lobby.items.TimeAlterator;
 import net.omniblock.skywars.patch.managers.lobby.items.TimeAlterator.TimeType;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import net.omniblock.skywars.util.TextUtil;
 
 public interface PowerItem {
 

@@ -23,8 +23,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.util.ItemBuilder;
-import omniblock.on.util.TextUtil;
 
 public class InventoryBuilder {
 

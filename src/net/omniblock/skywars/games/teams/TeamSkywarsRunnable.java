@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -18,6 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
 
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
@@ -27,10 +27,9 @@ import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageZCameraUtil;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
-import net.omniblock.skywars.patch.managers.chest.ChestManager;
-import net.omniblock.skywars.patch.managers.chest.item.SkywarsItem;
-import net.omniblock.skywars.patch.managers.chest.item.object.FillChest;
-import net.omniblock.skywars.patch.managers.chest.item.object.FillChest.FilledType;
+import net.omniblock.skywars.patch.managers.chest.Chests;
+import net.omniblock.skywars.patch.managers.chest.handler.ChestFillerHandler.ChestFillType;
+import net.omniblock.skywars.patch.managers.chest.handler.ChestGetterHandler.ChestType;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.types.SkywarsType;
@@ -45,7 +44,6 @@ import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.TitleUtil.TitleFormat;
-import omniblock.on.util.TextUtil;
 
 public class TeamSkywarsRunnable extends BukkitRunnable {
 
@@ -61,9 +59,6 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 	private boolean pregameTitles = false;
 	
 	private int remainingTimeCages = 8;
-	
-	public ChestManager chestmanager;
-	public FillChest fillchest;
 	
 	public TeamSkywarsRunnable(TeamSkywars starter) {
 		
@@ -83,22 +78,10 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 					
 					NetworkData.broadcaster.read("$ LOCK");
 					
-					chestmanager = new ChestManager();
 					MapManager.lobbyschematic.removePasted();
 			
-					switch (ChestManager.getCurrentMatchType()) {
-					case NORMAL:
-						fillchest = new FillChest(SkywarsItem.itemGameNormalChest(), SkywarsItem.itemGameNormalTrappedChest());
-						break;
-					case INSANE:
-						fillchest = new FillChest(SkywarsItem.itemGameInsaneChest(), SkywarsItem.itemGameInsaneTrappedChest());
-						break;
-					case Z:
-						fillchest = new FillChest(SkywarsItem.itemGameZChest(), SkywarsItem.itemGameZTrappedChest());
-						break;
-					default:
-						break;
-					}
+					Chests.FILLER.setupFiller(Chests.currentMatchType, MapManager.CURRENT_MAP);
+					Chests.FILLER.makeFill(ChestFillType.COMMON_FILL_CHEST);
 					
 					PowerItemManager.applyVotes();
 					TeamPlayerManager.transferAllPlayersToInGame();
@@ -106,7 +89,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 					
 					Skywars.updateGameState(SkywarsGameState.IN_PRE_GAME);
 					
-					sendPreGameTitles(getGameTitle(ChestManager.getCurrentMatchType()));
+					sendPreGameTitles(getGameTitle(Chests.currentMatchType));
 					
 				}
 				
@@ -332,18 +315,18 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 		if(str.contains("RELLENADO")) {
 			
 			sendInGameTitle(InGameTitles.REFILL_TITLE);
-			fillchest.startFilled(FilledType.RE_FILLED);
+			Chests.FILLER.makeFill(ChestFillType.COMMON_REFILL_CHEST);
 			return;
 			
 		} else if(str.contains("CONTAMINACIÓN")) {
 
-			List<Location> chestLocations = Lists.newArrayList();
-			chestLocations.addAll(ChestManager.normalchest);
-			chestLocations.addAll(ChestManager.trappedchest);
+			List<Block> chestBlocks = Lists.newArrayList();
+			chestBlocks.addAll(Chests.FILLER.getChestBlocks(ChestType.FOOD_CHEST));
+			chestBlocks.addAll(Chests.FILLER.getChestBlocks(ChestType.MEGA_CHEST));
 			
-			for(Location l : chestLocations) {
+			for(Block block : chestBlocks) {
 				
-				ContaminationInfo ci = new ContaminationInfo(l.getWorld().getHighestBlockAt(l), l.getWorld());
+				ContaminationInfo ci = new ContaminationInfo(block.getWorld().getHighestBlockAt(block.getLocation()), block.getWorld());
 				
 				Contamination contamination = new Contamination();
 				contamination.setContaminationDefaults(ci);
@@ -400,16 +383,15 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 			
 		} else if(str.contains("DESTRUCCIÓN")) {
 			
-			fillchest.startFilled(FilledType.CLEAR);
 			int delay_another = 1;
 			
-			for(Block b : FillChest.ChestDiamond) {
+			for(Block block : Chests.FILLER.getChestBlocks(ChestType.TOOLS_CHEST)) {
 				
 				new BukkitRunnable() {
 					@Override
 					public void run() {
 						
-						DestructionInfo di = new DestructionInfo(b, b.getWorld());
+						DestructionInfo di = new DestructionInfo(block, block.getWorld());
 						
 						Destruction destruction = new Destruction();
 						destruction.setDestructionDefaults(di);
@@ -493,14 +475,6 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 			
 		}
 		
-	}
-	
-	public ChestManager getChestmanager() {
-		return chestmanager;
-	}
-
-	public void setChestmanager(ChestManager chestmanager) {
-		this.chestmanager = chestmanager;
 	}
 
 	public void reduceEvent(String event, int seconds) {

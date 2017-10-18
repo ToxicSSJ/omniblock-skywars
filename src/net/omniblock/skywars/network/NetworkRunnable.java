@@ -14,8 +14,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.omniblock.skywars.util.TextUtil;
-import omniblock.on.util.lib.bukkit.bossbar.BarAPI;
+import net.omniblock.network.library.helpers.bossbar.BarAPI;
+import net.omniblock.network.library.utils.TextUtil;
 
 public class NetworkRunnable extends BukkitRunnable {
 	

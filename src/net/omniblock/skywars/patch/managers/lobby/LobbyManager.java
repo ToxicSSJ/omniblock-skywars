@@ -14,6 +14,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.omniblock.packets.network.Packets;
+import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
+import net.omniblock.packets.network.structure.type.PacketSenderType;
+import net.omniblock.packets.object.external.ServerType;
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -22,13 +27,8 @@ import net.omniblock.skywars.patch.managers.lobby.object.PowerItem;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemType;
 import net.omniblock.skywars.util.ItemBuilder;
-import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
-import omniblock.on.network.packet.Packet;
-import omniblock.on.network.packet.assembler.AssemblyType;
-import omniblock.on.network.packet.modifier.PacketModifier;
-import omniblock.on.util.lib.omnicore.ServerType;
 
 public class LobbyManager implements Listener {
 
@@ -188,11 +188,13 @@ public class LobbyManager implements Listener {
 							
 							player.sendMessage(TextUtil.format("&bConectandote al lobby de Skywars..."));
 							
-							Packet.ASSEMBLER.sendPacket(AssemblyType.PLAYER_SEND_TO_SERVER,
-									   new PacketModifier()
-									   .addString(player.getName())
-									   .addString(ServerType.SKYWARS_LOBBY_SERVER.toString()));
-							
+							Packets.STREAMER.streamPacket(new PlayerSendToServerPacket()
+									
+									.setPlayername(player.getName())
+									.setServertype(ServerType.SKYWARS_LOBBY_SERVER)
+									.setParty(false)
+									
+									.build().setReceiver(PacketSenderType.OMNICORE));
 							return;
 							
 						}

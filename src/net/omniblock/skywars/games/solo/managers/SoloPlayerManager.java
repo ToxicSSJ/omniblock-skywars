@@ -14,6 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
+import net.omniblock.network.handlers.base.bases.type.RankBase;
+import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywars;
@@ -22,11 +26,7 @@ import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
-import net.omniblock.skywars.util.TextUtil;
 import net.omniblock.skywars.util.TitleUtil;
-import omniblock.on.addons.games.general.RankBase;
-import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase;
-import omniblock.on.addons.games.lobby.adapter.skywars.SkywarsBase.SelectedItemType;
 
 public class SoloPlayerManager {
 
