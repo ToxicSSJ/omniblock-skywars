@@ -25,64 +25,65 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import net.omniblock.skywars.Skywars;
 
 public class InventoryBuilderListener implements Listener {
-	
-    public static Map<UUID, UUID> currentInventory = new HashMap<UUID, UUID>();
-    public static Map<UUID, InventoryBuilder> inventoryByUUID = new HashMap<UUID, InventoryBuilder>();
-    public static List<UUID> kappa = new ArrayList<UUID>();
 
-    public static void startInventoryBuilder() {
-    	
-    	Skywars.getInstance().getServer().getPluginManager().registerEvents(new InventoryBuilderListener(), Skywars.getInstance());
-    	
-    }
-    
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
-        UUID u = p.getUniqueId();
-        if (kappa.contains(u)) {
-            kappa.remove(u);
-        }
-        if (currentInventory.containsKey(u)) {
-        	InventoryBuilder inv;
-            UUID invU = currentInventory.get(u);
-            currentInventory.remove(u);
-            if (inventoryByUUID.containsKey(invU) && (inv = inventoryByUUID.get(invU)).isDeleteOnClose()) {
-                inv.delete();
-            }
-        }
-    }
+	public static Map<UUID, UUID> currentInventory = new HashMap<UUID, UUID>();
+	public static Map<UUID, InventoryBuilder> inventoryByUUID = new HashMap<UUID, InventoryBuilder>();
+	public static List<UUID> kappa = new ArrayList<UUID>();
 
-    @EventHandler
-    public void onClose(InventoryCloseEvent e) {
-        Player p = (Player)e.getPlayer();
-        UUID pU = p.getUniqueId();
-        if (kappa.contains(pU)) {
-            kappa.remove(pU);
-            return;
-        }
-        UUID u = currentInventory.get(pU);
-        currentInventory.remove(pU);
-        if (u != null) {
-        	InventoryBuilder inv = inventoryByUUID.get(u);
-            inv.close(p);
-        }
-    }
+	public static void startInventoryBuilder() {
 
-    @EventHandler
-    public void onClick(InventoryClickEvent e) {
-        if (!(e.getWhoClicked() instanceof Player)) {
-            return;
-        }
-        Player p = (Player)e.getWhoClicked();
-        UUID u = currentInventory.get(p.getUniqueId());
-        if (u != null) {
-            e.setCancelled(true);
-            InventoryBuilder inventory = inventoryByUUID.get(u);
-            InventoryBuilder.Action action = inventory.getActions().get(e.getSlot());
-            if (action != null) {
-                action.click(e.getClick(), p);
-            }
-        }
-    }
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new InventoryBuilderListener(),
+				Skywars.getInstance());
+
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		Player p = e.getPlayer();
+		UUID u = p.getUniqueId();
+		if (kappa.contains(u)) {
+			kappa.remove(u);
+		}
+		if (currentInventory.containsKey(u)) {
+			InventoryBuilder inv;
+			UUID invU = currentInventory.get(u);
+			currentInventory.remove(u);
+			if (inventoryByUUID.containsKey(invU) && (inv = inventoryByUUID.get(invU)).isDeleteOnClose()) {
+				inv.delete();
+			}
+		}
+	}
+
+	@EventHandler
+	public void onClose(InventoryCloseEvent e) {
+		Player p = (Player) e.getPlayer();
+		UUID pU = p.getUniqueId();
+		if (kappa.contains(pU)) {
+			kappa.remove(pU);
+			return;
+		}
+		UUID u = currentInventory.get(pU);
+		currentInventory.remove(pU);
+		if (u != null) {
+			InventoryBuilder inv = inventoryByUUID.get(u);
+			inv.close(p);
+		}
+	}
+
+	@EventHandler
+	public void onClick(InventoryClickEvent e) {
+		if (!(e.getWhoClicked() instanceof Player)) {
+			return;
+		}
+		Player p = (Player) e.getWhoClicked();
+		UUID u = currentInventory.get(p.getUniqueId());
+		if (u != null) {
+			e.setCancelled(true);
+			InventoryBuilder inventory = inventoryByUUID.get(u);
+			InventoryBuilder.Action action = inventory.getActions().get(e.getSlot());
+			if (action != null) {
+				action.click(e.getClick(), p);
+			}
+		}
+	}
 }

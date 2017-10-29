@@ -15,7 +15,7 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 public abstract interface SkywarsStarter {
 
 	public void run(SkywarsType skywarsType, SkywarsResolver sr) throws RuntimeException;
-	
+
 	public void reset();
-	
+
 }

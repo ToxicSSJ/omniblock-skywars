@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class ItemListener implements Listener {
 	public static final String ITEM_IDENTIFIER = "EffectItem";
-	
+
 	@EventHandler
 	public void onItemPickup(PlayerPickupItemEvent event) {
 		if (event.getItem().hasMetadata(ITEM_IDENTIFIER)) {
@@ -17,9 +17,9 @@ public class ItemListener implements Listener {
 		}
 	}
 
-	@EventHandler (priority = EventPriority.HIGHEST)
-	public void onItemDespawn(ItemDespawnEvent event){
-		if(event.getEntity().hasMetadata(ITEM_IDENTIFIER)){
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onItemDespawn(ItemDespawnEvent event) {
+		if (event.getEntity().hasMetadata(ITEM_IDENTIFIER)) {
 			event.setCancelled(true);
 			return;
 		}

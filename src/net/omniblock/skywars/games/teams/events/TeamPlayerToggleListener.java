@@ -20,103 +20,107 @@ public class TeamPlayerToggleListener implements Listener {
 
 	public static boolean Lock = false;
 	public static boolean Verifier = false;
-	
+
 	@EventHandler
 	public void onPlayerPreJoin(AsyncPlayerPreLoginEvent e) {
-		
-		if(Verifier == false) {
+
+		if (Verifier == false) {
 			Verifier = true;
 		}
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
-		if(currentState != SkywarsGameState.IN_LOBBY) {
-			
+
+		if (currentState != SkywarsGameState.IN_LOBBY) {
+
 			e.disallow(Result.KICK_OTHER, "¡El juego está en progreso!");
 			return;
-			
+
 		} else {
-			
-			if(Bukkit.getOnlinePlayers().size() > TeamSkywars.MAX_PLAYERS) {
+
+			if (Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS) {
 				e.disallow(Result.KICK_OTHER, "La partida está llena!");
 			}
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		
+
 		e.setJoinMessage(null);
-		
-		if(Verifier == false) {
+
+		if (Verifier == false) {
 			Verifier = true;
 		}
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
-		if(Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS && !Lock && currentState == SkywarsGameState.IN_LOBBY) {
-		
+
+		if (Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS && !Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = true;
 			NetworkData.broadcaster.read("$ LOCK");
-			
-		} else if(Bukkit.getOnlinePlayers().size() <= TeamSkywars.MIN_PLAYERS && Lock && currentState == SkywarsGameState.IN_LOBBY){
-			
+
+		} else if (Bukkit.getOnlinePlayers().size() <= TeamSkywars.MIN_PLAYERS && Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = false;
 			NetworkData.broadcaster.read("$ UNLOCK");
-			
+
 		}
-			
+
 		TeamPlayerManager.addPlayer(e.getPlayer());
 		VanishUtil.updateInvisible();
-		
+
 	}
-	
+
 	@EventHandler
 	public void onLeft(PlayerQuitEvent e) {
-		
+
 		e.setQuitMessage(null);
-		
+
 		TeamPlayerManager.removePlayer(e.getPlayer());
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
-		if(currentState == SkywarsGameState.IN_LOBBY) {
+
+		if (currentState == SkywarsGameState.IN_LOBBY) {
 			TeamPlayerManager.removeTeam(e.getPlayer());
 		}
-		
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				
-				if(TeamPlayerToggleListener.Verifier || currentState == SkywarsGameState.IN_LOBBY) {
-					if(TeamPlayerManager.getPlayersInLobbyAmount() <= 0 || Bukkit.getOnlinePlayers().size() <= 0) {
-						
+
+				if (TeamPlayerToggleListener.Verifier || currentState == SkywarsGameState.IN_LOBBY) {
+					if (TeamPlayerManager.getPlayersInLobbyAmount() <= 0 || Bukkit.getOnlinePlayers().size() <= 0) {
+
 						TeamSkywars.initializeReset();
 						return;
-						
+
 					}
 				}
-				
+
 			}
 		}.runTaskLater(Skywars.getInstance(), 1L);
-		
-		if(Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS && !Lock && currentState == SkywarsGameState.IN_LOBBY) {
-		
+
+		if (Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS && !Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = true;
 			NetworkData.broadcaster.read("$ LOCK");
 			return;
-			
-		} else if(Bukkit.getOnlinePlayers().size() <= TeamSkywars.MIN_PLAYERS && Lock && currentState == SkywarsGameState.IN_LOBBY){
-			
+
+		} else if (Bukkit.getOnlinePlayers().size() <= TeamSkywars.MIN_PLAYERS && Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = false;
 			NetworkData.broadcaster.read("$ UNLOCK");
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 }

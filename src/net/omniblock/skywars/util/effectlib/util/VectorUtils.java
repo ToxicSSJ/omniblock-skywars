@@ -44,7 +44,8 @@ public final class VectorUtils {
 		// ny = (y * cosX - z * sinX) * (x * sinZ + y * cosZ);
 		// nz = (y * sinX + z * cosX) * (-x * sinY + z * cosY);
 		// return v.setX(nx).setY(ny).setZ(nz);
-		// Having some strange behavior up there.. Have to look in it later. TODO
+		// Having some strange behavior up there.. Have to look in it later.
+		// TODO
 		rotateAroundAxisX(v, angleX);
 		rotateAroundAxisY(v, angleY);
 		rotateAroundAxisZ(v, angleZ);

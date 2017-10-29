@@ -67,7 +67,7 @@ public final class EntityManager {
 		add(i, duration);
 		return i;
 	}
-	
+
 	public Entity spawnEntity(EntityType type, Location loc, int duration) {
 		Entity e = loc.getWorld().spawnEntity(loc, type);
 		e.setMetadata(ItemListener.ITEM_IDENTIFIER, new FixedMetadataValue(EffectLib.instance(), 0));

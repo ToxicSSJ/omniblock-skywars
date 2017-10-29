@@ -22,15 +22,15 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 public class NetworkData {
 
 	public static NetworkBroadcaster broadcaster;
-	
+
 	public static boolean generalbooster = true;
-	
+
 	public static String serial = "Unknow";
 	public static NetworkRunnable runnable;
-	
+
 	public static Date date;
-	
+
 	public static SkywarsType swtype = SkywarsType.NONE;
 	public static List<Player> serverplayers = new ArrayList<Player>();
-	
+
 }

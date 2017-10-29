@@ -17,12 +17,12 @@ public class SkywarsResolver {
 
 	private String serial = "Unknow";
 	private String[] args = new String[] { "unranked" };
-	
-	public SkywarsResolver(String serial, String[] args){
+
+	public SkywarsResolver(String serial, String[] args) {
 		this.serial = serial;
 		this.args = args;
 	}
-	
+
 	public String getSerial() {
 		return serial;
 	}
@@ -38,13 +38,13 @@ public class SkywarsResolver {
 	public void setArgs(String[] args) {
 		this.args = args;
 	}
-	
-	public List<String> getListArgs(){
+
+	public List<String> getListArgs() {
 		List<String> r = new ArrayList<String>();
-	    for(String s : getArgs()){
-	    	r.add(s);
-	    }
-	    return r;
+		for (String s : getArgs()) {
+			r.add(s);
+		}
+		return r;
 	}
-	
+
 }

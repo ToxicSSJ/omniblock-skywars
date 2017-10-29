@@ -16,11 +16,13 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.omniblock.network.library.helpers.fixer.TeleportFix;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
@@ -30,197 +32,202 @@ import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class TeamPlayerCustomProtocols implements Listener {
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onJoin(PlayerJoinEvent e) {
+		TeleportFix.makeFix(e.getPlayer());
+	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onDamage(EntityDamageEvent e){
-		if(e.getEntity() instanceof Player){
-			if(CustomProtocolManager.PROTECTED_PLAYER_LIST.contains((Player) e.getEntity())){
+	public void onDamage(EntityDamageEvent e) {
+		if (e.getEntity() instanceof Player) {
+			if (CustomProtocolManager.PROTECTED_PLAYER_LIST.contains((Player) e.getEntity())) {
 				e.setCancelled(true);
 				return;
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onDamage(EntityDamageByEntityEvent e){
-		if(e.getDamager() instanceof Player){
-			if(SpectatorManager.playersSpectators.contains(e.getDamager())){
+	public void onDamage(EntityDamageByEntityEvent e) {
+		if (e.getDamager() instanceof Player) {
+			if (SpectatorManager.playersSpectators.contains(e.getDamager())) {
 				e.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onRemoveBlock(BlockBreakEvent e) {
-		if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
+		if (CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
 			e.setCancelled(true);
 			return;
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onExplodeBlock(BlockExplodeEvent e) {
-		if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
+		if (CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
 			e.setCancelled(true);
 			return;
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void blockChange(BlockPlaceEvent e) {
-		if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
+		if (CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getBlock())) {
 			e.setCancelled(true);
 			return;
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
-    public void blockCanBuild(BlockCanBuildEvent e){
-        e.setBuildable(true);
-    }
-	
+	public void blockCanBuild(BlockCanBuildEvent e) {
+		e.setBuildable(true);
+	}
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void blockInteract(PlayerInteractEvent e) {
-		if(e.getClickedBlock() != null) {
-			if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getClickedBlock())) {
+		if (e.getClickedBlock() != null) {
+			if (CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(e.getClickedBlock())) {
 				e.setCancelled(true);
 				return;
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void blockDrop(PlayerDropItemEvent e) {
-		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+		if (SpectatorManager.playersSpectators.contains(e.getPlayer())) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void itemPickup(PlayerPickupItemEvent e) {
-		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+		if (SpectatorManager.playersSpectators.contains(e.getPlayer())) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void blockDrag(InventoryDragEvent e) {
-		if(SpectatorManager.playersSpectators.contains((Player) e.getWhoClicked())) {
+		if (SpectatorManager.playersSpectators.contains((Player) e.getWhoClicked())) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void damage(EntityDamageEvent e) {
-		
-		if(!(e.getEntity() instanceof Player)) {
+
+		if (!(e.getEntity() instanceof Player)) {
 			return;
 		}
-		
+
 		Player p = (Player) e.getEntity();
-		
-		if(SpectatorManager.playersSpectators.contains(p) || CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(p)) {
+
+		if (SpectatorManager.playersSpectators.contains(p) || CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(p)) {
 			e.setCancelled(true);
 		}
-		
+
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void spectatorInteract(PlayerInteractEvent e) {
-		
-		if(SpectatorManager.playersSpectators.contains(e.getPlayer())) {
-			
+
+		if (SpectatorManager.playersSpectators.contains(e.getPlayer())) {
+
 			e.setCancelled(true);
-			
-			if(e.getPlayer().getItemInHand() != null) {
-				if(e.getPlayer().getItemInHand().hasItemMeta()) {
-					
+
+			if (e.getPlayer().getItemInHand() != null) {
+				if (e.getPlayer().getItemInHand().hasItemMeta()) {
+
 					String display_name = e.getPlayer().getItemInHand().getItemMeta().getDisplayName();
-					if(display_name != null) {
-						
-						for(SpectatorItem si : SpectatorItem.values()) {
-							if(si.getItem().getDisplayname().contains(display_name)) {
+					if (display_name != null) {
+
+						for (SpectatorItem si : SpectatorItem.values()) {
+							if (si.getItem().getDisplayname().contains(display_name)) {
 								si.getExecutor().execute(e.getPlayer());
 							}
 						}
-						
+
 					}
-					
+
 				}
 			}
 		}
-		
+
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKick(PlayerKickEvent e) {
-		if(		TeamPlayerManager.getPlayersInSpectator().contains(e.getPlayer()) ||
-				TeamPlayerManager.getPlayersInLobbyList().contains(e.getPlayer()) ||
-				TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+		if (TeamPlayerManager.getPlayersInSpectator().contains(e.getPlayer())
+				|| TeamPlayerManager.getPlayersInLobbyList().contains(e.getPlayer())
+				|| TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
 			if (e.getReason().contains("Flying")) {
 				e.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void explode(EntityChangeBlockEvent e){
-		if(e.getEntity() instanceof FallingBlock){
-			
+	public void explode(EntityChangeBlockEvent e) {
+		if (e.getEntity() instanceof FallingBlock) {
+
 			FallingBlock fb = (FallingBlock) e.getEntity();
-			
-			if(fb.hasMetadata("REMOVE")){
-				
+
+			if (fb.hasMetadata("REMOVE")) {
+
 				e.setCancelled(true);
 				e.getBlock().breakNaturally(new ItemStack(e.getTo(), 1, e.getData()));
-				
+
 				fb.remove();
-				
+
 			}
-			
+
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onQuit(PlayerQuitEvent e){
-		
-		if(		Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS || 
-				Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS ||
-				Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
-			
+	public void onQuit(PlayerQuitEvent e) {
+
+		if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+				|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+				|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
+
 			TeamPlayerManager.removeFromPreTeam(e.getPlayer());
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onFoodLevelChange(FoodLevelChangeEvent e) {
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
-		if(e.getEntity() instanceof Player) {
-			
+
+		if (e.getEntity() instanceof Player) {
+
 			Player p = (Player) e.getEntity();
-			
-			if(TeamPlayerManager.getPlayersInGameList().contains(p)) {
-				
-				if(currentState == SkywarsGameState.IN_LOBBY) {
+
+			if (TeamPlayerManager.getPlayersInGameList().contains(p)) {
+
+				if (currentState == SkywarsGameState.IN_LOBBY) {
 					e.setFoodLevel(25);
 					return;
 				}
-				
+
 			} else {
-				
+
 				e.setFoodLevel(25);
 				return;
-				
+
 			}
-			
+
 		}
-		
+
 	}
-	
+
 }

@@ -9,33 +9,47 @@ public abstract class ClassBuilder {
 
 	public static Object buildWitherSpawnPacket(int id, Location loc, Object dataWatcher) throws Exception {
 		Object packet = NMSClass.PacketPlayOutSpawnEntityLiving.newInstance();
-		
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("a")).set(packet, id);
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("b")).set(packet, 64);// TODO: Find correct entity type id
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("c")).set(packet, (int) loc.getX());
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("d")).set(packet, MathUtil.floor(loc.getY() * 32D));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("e")).set(packet, (int) loc.getZ());
 
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("i")).set(packet, (byte) MathUtil.d(loc.getYaw() * 256F / 360F));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("j")).set(packet, (byte) MathUtil.d(loc.getPitch() * 256F / 360F));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("k")).set(packet, (byte) MathUtil.d(loc.getPitch() * 256F / 360F));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("l")).set(packet, dataWatcher);
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("a")).set(packet, id);
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("b")).set(packet, 64);// TODO:
+																												// Find
+																												// correct
+																												// entity
+																												// type
+																												// id
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("c")).set(packet,
+				(int) loc.getX());
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("d")).set(packet,
+				MathUtil.floor(loc.getY() * 32D));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("e")).set(packet,
+				(int) loc.getZ());
+
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("i")).set(packet,
+				(byte) MathUtil.d(loc.getYaw() * 256F / 360F));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("j")).set(packet,
+				(byte) MathUtil.d(loc.getPitch() * 256F / 360F));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("k")).set(packet,
+				(byte) MathUtil.d(loc.getPitch() * 256F / 360F));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("l")).set(packet,
+				dataWatcher);
 
 		return packet;
 	}
 
 	public static Object buildHideWitherPacket(int id) throws Exception {
-		
+
 		Object packet = NMSClass.PacketPlayOutEntityDestroy.newInstance();
-		
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("a")).set(packet, new int[] { id });
+
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("a")).set(packet,
+				new int[] { id });
 
 		return packet;
 	}
-	
+
 	public static Object buildWitherSkullSpawnPacket(Object skull) throws Exception {
 		@SuppressWarnings("deprecation")
-		Object spawnPacketSkull = NMSClass.PacketPlayOutSpawnEntity.getConstructor(NMSClass.Entity, int.class).newInstance(skull, EntityType.WITHER_SKULL.getTypeId());
+		Object spawnPacketSkull = NMSClass.PacketPlayOutSpawnEntity.getConstructor(NMSClass.Entity, int.class)
+				.newInstance(skull, EntityType.WITHER_SKULL.getTypeId());
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntity.getDeclaredField("j")).set(spawnPacketSkull, 66);
 
 		return spawnPacketSkull;
@@ -43,15 +57,25 @@ public abstract class ClassBuilder {
 
 	public static Object buildSkullMetaPacket(int id, Object dataWatcher) throws Exception {
 		setDataWatcherValue(dataWatcher, 0, (byte) 32);
-		Object packet = NMSClass.PacketPlayOutEntityMetadata.getConstructor(int.class, NMSClass.DataWatcher, boolean.class).newInstance(id, dataWatcher, true);
+		Object packet = NMSClass.PacketPlayOutEntityMetadata
+				.getConstructor(int.class, NMSClass.DataWatcher, boolean.class).newInstance(id, dataWatcher, true);
 
 		return packet;
 	}
 
-	public static Object buildNameMetadataPacket(int id, Object dataWatcher, int nameIndex, int visibilityIndex, String name) throws Exception {
-		dataWatcher = setDataWatcherValue(dataWatcher, nameIndex, name != null ? name : "");// Pass an empty string to avoid exceptions
-		dataWatcher = setDataWatcherValue(dataWatcher, visibilityIndex, (byte) (name != null && !name.isEmpty() ? 1 : 0));
-		Object metaPacket = NMSClass.PacketPlayOutEntityMetadata.getConstructor(int.class, NMSClass.DataWatcher, boolean.class).newInstance(id, dataWatcher, true);
+	public static Object buildNameMetadataPacket(int id, Object dataWatcher, int nameIndex, int visibilityIndex,
+			String name) throws Exception {
+		dataWatcher = setDataWatcherValue(dataWatcher, nameIndex, name != null ? name : "");// Pass
+																							// an
+																							// empty
+																							// string
+																							// to
+																							// avoid
+																							// exceptions
+		dataWatcher = setDataWatcherValue(dataWatcher, visibilityIndex,
+				(byte) (name != null && !name.isEmpty() ? 1 : 0));
+		Object metaPacket = NMSClass.PacketPlayOutEntityMetadata
+				.getConstructor(int.class, NMSClass.DataWatcher, boolean.class).newInstance(id, dataWatcher, true);
 
 		return metaPacket;
 	}
@@ -73,21 +97,24 @@ public abstract class ClassBuilder {
 	}
 
 	public static Object buildWatchableObject(int type, int index, Object value) throws Exception {
-		return NMSClass.WatchableObject.getConstructor(int.class, int.class, Object.class).newInstance(type, index, value);
+		return NMSClass.WatchableObject.getConstructor(int.class, int.class, Object.class).newInstance(type, index,
+				value);
 	}
 
 	public static Object setDataWatcherValue(Object dataWatcher, int index, Object value) throws Exception {
 		int type = getDataWatcherValueType(value);
 
 		Object map = AccessUtil.setAccessible(NMSClass.DataWatcher.getDeclaredField("dataValues")).get(dataWatcher);
-		NMUClass.gnu_trove_map_hash_TIntObjectHashMap.getDeclaredMethod("put", int.class, Object.class).invoke(map, index, buildWatchableObject(type, index, value));
+		NMUClass.gnu_trove_map_hash_TIntObjectHashMap.getDeclaredMethod("put", int.class, Object.class).invoke(map,
+				index, buildWatchableObject(type, index, value));
 
 		return dataWatcher;
 	}
 
 	public static Object getDataWatcherValue(Object dataWatcher, int index) throws Exception {
 		Object map = AccessUtil.setAccessible(NMSClass.DataWatcher.getDeclaredField("dataValues")).get(dataWatcher);
-		Object value = NMUClass.gnu_trove_map_hash_TIntObjectHashMap.getDeclaredMethod("get", int.class).invoke(map, index);
+		Object value = NMUClass.gnu_trove_map_hash_TIntObjectHashMap.getDeclaredMethod("get", int.class).invoke(map,
+				index);
 
 		return value;
 	}
@@ -123,7 +150,8 @@ public abstract class ClassBuilder {
 			type = 4;
 		} else if (value != null && value.getClass().equals(NMSClass.ItemStack)) {
 			type = 5;
-		} else if (value != null && (value.getClass().equals(NMSClass.ChunkCoordinates) || value.getClass().equals(NMSClass.BlockPosition))) {
+		} else if (value != null && (value.getClass().equals(NMSClass.ChunkCoordinates)
+				|| value.getClass().equals(NMSClass.BlockPosition))) {
 			type = 6;
 		} else if (value != null && value.getClass().equals(NMSClass.Vector3f)) {
 			type = 7;
@@ -133,21 +161,28 @@ public abstract class ClassBuilder {
 	}
 
 	public static Object buildArmorStandSpawnPacket(Object armorStand) throws Exception {
-		Object spawnPacket = NMSClass.PacketPlayOutSpawnEntityLiving.getConstructor(NMSClass.EntityLiving).newInstance(armorStand);
+		Object spawnPacket = NMSClass.PacketPlayOutSpawnEntityLiving.getConstructor(NMSClass.EntityLiving)
+				.newInstance(armorStand);
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutSpawnEntityLiving.getDeclaredField("b")).setInt(spawnPacket, 30);
 
 		return spawnPacket;
 	}
 
-	public static Object buildTeleportPacket(int id, Location loc, boolean onGround, boolean heightCorrection) throws Exception {
-		
+	public static Object buildTeleportPacket(int id, Location loc, boolean onGround, boolean heightCorrection)
+			throws Exception {
+
 		Object packet = NMSClass.PacketPlayOutEntityTeleport.newInstance();
 		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("a")).set(packet, id);
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("b")).set(packet, (int) (loc.getX() * 32D));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("c")).set(packet, (int) (loc.getY() * 32D));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("d")).set(packet, (int) (loc.getZ() * 32D));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("e")).set(packet, (byte) (int) (loc.getYaw() * 256F / 360F));
-		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("f")).set(packet, (byte) (int) (loc.getPitch() * 256F / 360F));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("b")).set(packet,
+				(int) (loc.getX() * 32D));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("c")).set(packet,
+				(int) (loc.getY() * 32D));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("d")).set(packet,
+				(int) (loc.getZ() * 32D));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("e")).set(packet,
+				(byte) (int) (loc.getYaw() * 256F / 360F));
+		AccessUtil.setAccessible(NMSClass.PacketPlayOutEntityTeleport.getDeclaredField("f")).set(packet,
+				(byte) (int) (loc.getPitch() * 256F / 360F));
 
 		return packet;
 	}
