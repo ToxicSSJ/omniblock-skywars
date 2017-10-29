@@ -28,105 +28,103 @@ import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class FullAttributeListener implements Listener {
-	
+
 	@EventHandler
-	public void onLogin(PlayerLoginEvent e){
-		
-		if(Skywars.currentMatchType == null || Skywars.currentMatchType == SkywarsType.NONE) {
+	public void onLogin(PlayerLoginEvent e) {
+
+		if (Skywars.currentMatchType == null || Skywars.currentMatchType == SkywarsType.NONE) {
 
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
-					.setServername(Bukkit.getServerName())
-					.setMapname("####")
-					.setMaximiumPlayers(Bukkit.getMaxPlayers())
-					.setOnlinePlayers(0)
-					.setOpened(true)
-					
+
+					.setServername(Bukkit.getServerName()).setMapname("####").setMaximiumPlayers(Bukkit.getMaxPlayers())
+					.setOnlinePlayers(0).setOpened(true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		}
-		
-		if(Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO ||
-				Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO ||
-				Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
-				
+
+		if (Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
+
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName() : MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName()
+							: MapManager.NEW_MAP_NORMAL.getName())
 					.setMaximiumPlayers(SoloSkywars.MAX_PLAYERS)
-					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount())
-					.setOpened(Skywars.ingame == true ? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
-					
+					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
+							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		} else {
-			
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
+
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName() : MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName()
+							: MapManager.NEW_MAP_NORMAL.getName())
 					.setMaximiumPlayers(TeamSkywars.MAX_PLAYERS)
-					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount())
-					.setOpened(Skywars.ingame == true ? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
-					
+					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
+							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 	@EventHandler
-	public void onQuit(PlayerQuitEvent e){
-		
-		if(Skywars.currentMatchType == null || Skywars.currentMatchType == SkywarsType.NONE) {
-			
+	public void onQuit(PlayerQuitEvent e) {
+
+		if (Skywars.currentMatchType == null || Skywars.currentMatchType == SkywarsType.NONE) {
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
-					.setServername(Bukkit.getServerName())
-					.setMapname("####")
-					.setMaximiumPlayers(Bukkit.getMaxPlayers())
-					.setOnlinePlayers(0)
-					.setOpened(true)
-					
+
+					.setServername(Bukkit.getServerName()).setMapname("####").setMaximiumPlayers(Bukkit.getMaxPlayers())
+					.setOnlinePlayers(0).setOpened(true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		}
-		
-		if(Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO ||
-				Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO ||
-				Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
-				
+
+		if (Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
+
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName() : MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName()
+							: MapManager.NEW_MAP_NORMAL.getName())
 					.setMaximiumPlayers(SoloSkywars.MAX_PLAYERS)
-					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount())
-					.setOpened(Skywars.ingame == true ? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
-					
+					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
+							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		} else {
-			
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
+
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName() : MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName()
+							: MapManager.NEW_MAP_NORMAL.getName())
 					.setMaximiumPlayers(TeamSkywars.MAX_PLAYERS)
-					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount())
-					.setOpened(Skywars.ingame == true ? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
-					
+					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
+							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 }

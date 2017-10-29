@@ -14,41 +14,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ArrayUtils {
-	
-	public static String[] getBestAssert(String[] def, String[]... anothers){
-		
+
+	public static String[] getBestAssert(String[] def, String[]... anothers) {
+
 		Map<String[], Integer> asserts = new HashMap<String[], Integer>();
-		
+
 		String[] cachearray = new String[] { "none" };
 		int cacheinteger = 0;
-		
-		for(String[] k : anothers){
+
+		for (String[] k : anothers) {
 			int found = assertArgs(def, k);
 			asserts.put(k, found);
 		}
-		
-		for(Map.Entry<String[], Integer> k : asserts.entrySet()){
-			if(cacheinteger < k.getValue()){
-				cachearray   = k.getKey();
+
+		for (Map.Entry<String[], Integer> k : asserts.entrySet()) {
+			if (cacheinteger < k.getValue()) {
+				cachearray = k.getKey();
 				cacheinteger = k.getValue();
 			}
 		}
-		
+
 		return cachearray;
 	}
-	
-	public static int assertArgs(String[] def, String[] another){
-		
+
+	public static int assertArgs(String[] def, String[] another) {
+
 		int asserts = 0;
-		
-		for(String k : def){
-			for(String p : another){
-				if(k.equalsIgnoreCase(p)) asserts++;
+
+		for (String k : def) {
+			for (String p : another) {
+				if (k.equalsIgnoreCase(p))
+					asserts++;
 			}
 		}
-		
+
 		return asserts;
 	}
-	
-	
+
 }

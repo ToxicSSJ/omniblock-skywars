@@ -18,25 +18,26 @@ import org.bukkit.entity.Player;
  */
 public class ReflectionUtil {
 	public static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
-	    String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-	    String name = "net.minecraft.server." + version + nmsClassString;
-	    Class<?> nmsClass = Class.forName(name);
-	    return nmsClass;
+		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+		String name = "net.minecraft.server." + version + nmsClassString;
+		Class<?> nmsClass = Class.forName(name);
+		return nmsClass;
 	}
-	
+
 	public static Class<?> getCraftBukkitClass(String nmsClassString) throws ClassNotFoundException {
-	    String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-	    String name = "org.bukkit.craftbukkit." + version + nmsClassString;
-	    Class<?> nmsClass = Class.forName(name);
-	    return nmsClass;
+		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+		String name = "org.bukkit.craftbukkit." + version + nmsClassString;
+		Class<?> nmsClass = Class.forName(name);
+		return nmsClass;
 	}
-	
-	public static Object getPlayerConnection(Player player) throws SecurityException, NoSuchMethodException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-	    Method getHandle = player.getClass().getMethod("getHandle");
-	    Object nmsPlayer = getHandle.invoke(player);
-	    Field conField = nmsPlayer.getClass().getField("playerConnection");
-	    Object con = conField.get(nmsPlayer);
-	    return con;
+
+	public static Object getPlayerConnection(Player player) throws SecurityException, NoSuchMethodException,
+			NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		Method getHandle = player.getClass().getMethod("getHandle");
+		Object nmsPlayer = getHandle.invoke(player);
+		Field conField = nmsPlayer.getClass().getField("playerConnection");
+		Object con = conField.get(nmsPlayer);
+		return con;
 	}
 
 	/**
@@ -44,11 +45,12 @@ public class ReflectionUtil {
 	 */
 	public static String getNMSVersion() {
 		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-	    return version;
+		return version;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void putInPrivateStaticMap(Class<?> clazz, String fieldName, Object key, Object value) throws Exception {
+	public static void putInPrivateStaticMap(Class<?> clazz, String fieldName, Object key, Object value)
+			throws Exception {
 		Field field = clazz.getDeclaredField(fieldName);
 		field.setAccessible(true);
 		Map map = (Map) field.get(null);
@@ -60,7 +62,7 @@ public class ReflectionUtil {
 		field.setAccessible(true);
 		field.set(handle, value);
 	}
-	
+
 	public static Object getPrivateField(Class<?> clazz, Object handle, String fieldName) throws Exception {
 		Field field = clazz.getDeclaredField(fieldName);
 		field.setAccessible(true);

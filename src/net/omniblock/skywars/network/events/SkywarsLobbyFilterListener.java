@@ -24,38 +24,39 @@ import net.omniblock.skywars.Skywars;
 public class SkywarsLobbyFilterListener implements Listener {
 
 	@EventHandler
-	public void onDrag(InventoryDragEvent e){
-		if(Skywars.inlobby || Skywars.inpregame){
+	public void onDrag(InventoryDragEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
-	public void onDrop(PlayerDropItemEvent e){
-		if(Skywars.inlobby || Skywars.inpregame){
+	public void onDrop(PlayerDropItemEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
-	public void onPhysics(PlayerInteractEvent e){
-		if(Skywars.inlobby || Skywars.inpregame){
-			if(e.getAction() == Action.PHYSICAL) e.setCancelled(true);
+	public void onPhysics(PlayerInteractEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame) {
+			if (e.getAction() == Action.PHYSICAL)
+				e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
-	public void onBlock(BlockPlaceEvent e){
-		if(Skywars.inlobby || Skywars.inpregame){
+	public void onBlock(BlockPlaceEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
-	public void onBreak(BlockBreakEvent e){
-		if(Skywars.inlobby || Skywars.inpregame){
+	public void onBreak(BlockBreakEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 }

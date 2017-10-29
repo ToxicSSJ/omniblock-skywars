@@ -137,9 +137,9 @@ public final class EffectLib extends JavaPlugin {
 		return instance;
 	}
 
-	public static void startEffectLib(){
+	public static void startEffectLib() {
 		entityManager = new EntityManager(instance);
-        EffectManager.initialize();
+		EffectManager.initialize();
 
 		loadListeners();
 	}
@@ -147,7 +147,7 @@ public final class EffectLib extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		entityManager.dispose();
-        EffectManager.disposeAll();
+		EffectManager.disposeAll();
 		HandlerList.unregisterAll((Plugin) this);
 	}
 

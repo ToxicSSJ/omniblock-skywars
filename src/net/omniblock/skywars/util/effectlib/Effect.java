@@ -19,16 +19,17 @@ public abstract class Effect implements Runnable {
 	 */
 	public EffectType type = EffectType.INSTANT;
 
-    /**
-     * Can be used to colorize certain particles. As of 1.8, those
-     * include SPELL_MOB_AMBIENT, SPELL_MOB and REDSTONE.
-     */
-    public Color color = null;
+	/**
+	 * Can be used to colorize certain particles. As of 1.8, those include
+	 * SPELL_MOB_AMBIENT, SPELL_MOB and REDSTONE.
+	 */
+	public Color color = null;
 
-    /** This is only used when colorizing certain particles,
-     * since the speed can't be 0 for the particle to look colored.
-     */
-    public float speed = 1;
+	/**
+	 * This is only used when colorizing certain particles, since the speed
+	 * can't be 0 for the particle to look colored.
+	 */
+	public float speed = 1;
 
 	/**
 	 * Delay to wait for delayed effects.
@@ -45,8 +46,7 @@ public abstract class Effect implements Runnable {
 	public int period = 1;
 
 	/**
-	 * Amount of repititions to do.
-	 * Set this to -1 for an infinite effect
+	 * Amount of repititions to do. Set this to -1 for an infinite effect
 	 * 
 	 * @see {@link net.omniblock.skywars.util.effectlib.EffectType}
 	 */
@@ -65,53 +65,53 @@ public abstract class Effect implements Runnable {
 	 */
 	public float visibleRange = 32;
 
-    /**
-     * If true, and a "target" Location or Entity is set, the two Locations
-     * will orient to face one another.
-     */
-    public boolean autoOrient = true;
+	/**
+	 * If true, and a "target" Location or Entity is set, the two Locations will
+	 * orient to face one another.
+	 */
+	public boolean autoOrient = true;
 
-    /**
-     * If set, will offset all locations
-     */
-    public Vector offset = null;
+	/**
+	 * If set, will offset all locations
+	 */
+	public Vector offset = null;
 
-    /**
-     * If set, will offset the target location
-     */
-    public Vector targetOffset = null;
+	/**
+	 * If set, will offset the target location
+	 */
+	public Vector targetOffset = null;
 
-    /**
-     * If set, will run asynchronously.
-     * Some effects don't support this (TurnEffect, JumpEffect)
-     *
-     * Generally this shouldn't be changed, unless you want to
-     * make an async effect synchronous.
-     */
-    public boolean asynchronous = true;
+	/**
+	 * If set, will run asynchronously. Some effects don't support this
+	 * (TurnEffect, JumpEffect)
+	 *
+	 * Generally this shouldn't be changed, unless you want to make an async
+	 * effect synchronous.
+	 */
+	public boolean asynchronous = true;
 
-    private Location location = null;
-    private WeakReference<Entity> entity = new WeakReference<Entity>(null);
-    private Location target = null;
-    private WeakReference<Entity> targetEntity = new WeakReference<Entity>(null);
+	private Location location = null;
+	private WeakReference<Entity> entity = new WeakReference<Entity>(null);
+	private Location target = null;
+	private WeakReference<Entity> targetEntity = new WeakReference<Entity>(null);
 
-    private Vector locationEntityOffset = null;
-    private Vector targetEntityOffset = null;
+	private Vector locationEntityOffset = null;
+	private Vector targetEntityOffset = null;
 
 	private boolean done = false;
 	protected final EffectManager effectManager;
-    protected Runnable asyncRunnableTask;
+	protected Runnable asyncRunnableTask;
 
 	public Effect(EffectManager effectManager) {
-        if (effectManager == null) {
-            throw new IllegalArgumentException("EffectManager cannot be null!");
-        }
+		if (effectManager == null) {
+			throw new IllegalArgumentException("EffectManager cannot be null!");
+		}
 		this.effectManager = effectManager;
 	}
 
-    public final void cancel() {
-        cancel(true);
-    }
+	public final void cancel() {
+		cancel(true);
+	}
 
 	public final void cancel(boolean callback) {
 		if (callback)
@@ -123,7 +123,7 @@ public abstract class Effect implements Runnable {
 	private void done() {
 		done = true;
 		effectManager.done(this);
-        onDone();
+		onDone();
 	}
 
 	public final boolean isDone() {
@@ -132,54 +132,49 @@ public abstract class Effect implements Runnable {
 
 	public abstract void onRun();
 
-        /**
-         * Called when this effect is done playing (when {@link #done()} is called).
-         */
-        public void onDone() {}
+	/**
+	 * Called when this effect is done playing (when {@link #done()} is called).
+	 */
+	public void onDone() {
+	}
 
 	@Override
 	public final void run() {
-        if (!validate()) {
-            cancel();
-            return;
-        }
+		if (!validate()) {
+			cancel();
+			return;
+		}
 		if (done)
 			return;
-        if (asynchronous)
-        {
-            if (asyncRunnableTask == null)
-            {
-                final Effect effect = this;
-                asyncRunnableTask = new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        try {
-                            effect.onRun();
-                        } catch (Exception ex) {
-                            effectManager.onError(ex);
-                            Bukkit.getScheduler().runTask(effectManager.getOwningPlugin(), new Runnable() {
-                               @Override
-                               public void run()
-                               {
-                                   effect.done();
-                               }
-                            });
-                        }
-                    }
-                };
-            }
-            Bukkit.getScheduler().runTaskAsynchronously(effectManager.getOwningPlugin(), asyncRunnableTask);
-        }
-        else
-        {
-            try {
-                onRun();
-            } catch (Exception ex) {
-                done();
-                effectManager.onError(ex);
-            }
-        }
+		if (asynchronous) {
+			if (asyncRunnableTask == null) {
+				final Effect effect = this;
+				asyncRunnableTask = new Runnable() {
+					@Override
+					public void run() {
+						try {
+							effect.onRun();
+						} catch (Exception ex) {
+							effectManager.onError(ex);
+							Bukkit.getScheduler().runTask(effectManager.getOwningPlugin(), new Runnable() {
+								@Override
+								public void run() {
+									effect.done();
+								}
+							});
+						}
+					}
+				};
+			}
+			Bukkit.getScheduler().runTaskAsynchronously(effectManager.getOwningPlugin(), asyncRunnableTask);
+		} else {
+			try {
+				onRun();
+			} catch (Exception ex) {
+				done();
+				effectManager.onError(ex);
+			}
+		}
 		if (type == EffectType.REPEATING) {
 			if (iterations == -1)
 				return;
@@ -191,21 +186,22 @@ public abstract class Effect implements Runnable {
 		}
 	}
 
-    protected final boolean validate() {
-        // Check for a valid Location
-        updateLocation();
-        updateTarget();
-        if (location == null) return false;
-        if (autoOrient) {
-            if (target != null) {
-                Vector direction = target.toVector().subtract(location.toVector());
-                location.setDirection(direction);
-                target.setDirection(direction.multiply(-1));
-            }
-        }
+	protected final boolean validate() {
+		// Check for a valid Location
+		updateLocation();
+		updateTarget();
+		if (location == null)
+			return false;
+		if (autoOrient) {
+			if (target != null) {
+				Vector direction = target.toVector().subtract(location.toVector());
+				location.setDirection(direction);
+				target.setDirection(direction.multiply(-1));
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	public final void start() {
 		effectManager.start(this);
@@ -216,151 +212,140 @@ public abstract class Effect implements Runnable {
 		iterations = -1;
 	}
 
-    /**
-     * Extending Effect classes can use this to determine the Entity this
-     * Effect is centered upon.
-     *
-     * This may return null, even for an Effect that was set with an Entity,
-     * if the Entity gets GC'd.
-     */
-    public Entity getEntity()
-    {
-        return this.entity.get();
-    }
+	/**
+	 * Extending Effect classes can use this to determine the Entity this Effect
+	 * is centered upon.
+	 *
+	 * This may return null, even for an Effect that was set with an Entity, if
+	 * the Entity gets GC'd.
+	 */
+	public Entity getEntity() {
+		return this.entity.get();
+	}
 
-    /**
-     * Extending Effect classes can use this to determine the Entity this
-     * Effect is targeted upon. This is probably a very rare case, such as
-     * an Effect that "links" two Entities together somehow. (Idea!)
-     *
-     * This may return null, even for an Effect that was set with a target Entity,
-     * if the Entity gets GC'd.
-     */
-    public Entity getTargetEntity()
-    {
-        return this.targetEntity.get();
-    }
+	/**
+	 * Extending Effect classes can use this to determine the Entity this Effect
+	 * is targeted upon. This is probably a very rare case, such as an Effect
+	 * that "links" two Entities together somehow. (Idea!)
+	 *
+	 * This may return null, even for an Effect that was set with a target
+	 * Entity, if the Entity gets GC'd.
+	 */
+	public Entity getTargetEntity() {
+		return this.targetEntity.get();
+	}
 
-    protected void updateLocation()
-    {
-        Entity entityReference = entity.get();
-        if (entityReference != null) {
-            Location currentLocation = null;
-            if (entityReference instanceof LivingEntity) {
-                currentLocation = ((LivingEntity)entityReference).getEyeLocation();
-            } else {
-                currentLocation = entityReference.getLocation();
-            }
-            if (locationEntityOffset != null) {
-                currentLocation.add(locationEntityOffset);
-            } else if (location != null) {
-                locationEntityOffset = location.toVector().subtract(currentLocation.toVector());
-                currentLocation = location;
-            }
+	protected void updateLocation() {
+		Entity entityReference = entity.get();
+		if (entityReference != null) {
+			Location currentLocation = null;
+			if (entityReference instanceof LivingEntity) {
+				currentLocation = ((LivingEntity) entityReference).getEyeLocation();
+			} else {
+				currentLocation = entityReference.getLocation();
+			}
+			if (locationEntityOffset != null) {
+				currentLocation.add(locationEntityOffset);
+			} else if (location != null) {
+				locationEntityOffset = location.toVector().subtract(currentLocation.toVector());
+				currentLocation = location;
+			}
 
-            setLocation(currentLocation);
-        }
-    }
+			setLocation(currentLocation);
+		}
+	}
 
-    /**
-     * Extending Effect classes should use this method to obtain the
-     * current "root" Location of the effect.
-     *
-     * This method will not return null when called from onRun. Effects
-     * with invalid locations will be cancelled.
-     */
-    public final Location getLocation()
-    {
-        return location;
-    }
+	/**
+	 * Extending Effect classes should use this method to obtain the current
+	 * "root" Location of the effect.
+	 *
+	 * This method will not return null when called from onRun. Effects with
+	 * invalid locations will be cancelled.
+	 */
+	public final Location getLocation() {
+		return location;
+	}
 
-    protected void updateTarget()
-    {
-        Entity entityReference = targetEntity.get();
-        if (entityReference != null) {
-            Location currentLocation = null;
-            if (entityReference instanceof LivingEntity) {
-                currentLocation = ((LivingEntity)entityReference).getEyeLocation();
-            } else {
-                currentLocation = entityReference.getLocation();
-            }
-            if (targetEntityOffset != null) {
-                currentLocation.add(targetEntityOffset);
-            } else if (target != null) {
-                targetEntityOffset = target.toVector().subtract(currentLocation.toVector());
-                currentLocation = target;
-            }
+	protected void updateTarget() {
+		Entity entityReference = targetEntity.get();
+		if (entityReference != null) {
+			Location currentLocation = null;
+			if (entityReference instanceof LivingEntity) {
+				currentLocation = ((LivingEntity) entityReference).getEyeLocation();
+			} else {
+				currentLocation = entityReference.getLocation();
+			}
+			if (targetEntityOffset != null) {
+				currentLocation.add(targetEntityOffset);
+			} else if (target != null) {
+				targetEntityOffset = target.toVector().subtract(currentLocation.toVector());
+				currentLocation = target;
+			}
 
-            setTarget(currentLocation);
-        }
-    }
+			setTarget(currentLocation);
+		}
+	}
 
-    /**
-     * Extending Effect classes should use this method to obtain the
-     * current "target" Location of the effect.
-     *
-     * Unlike getLocation, this may return null.
-     */
-    public final Location getTarget()
-    {
-        return target;
-    }
+	/**
+	 * Extending Effect classes should use this method to obtain the current
+	 * "target" Location of the effect.
+	 *
+	 * Unlike getLocation, this may return null.
+	 */
+	public final Location getTarget() {
+		return target;
+	}
 
-    /**
-     * Set the Entity this Effect is centered on.
-     */
-    public void setEntity(Entity entity) {
-        this.entity = new WeakReference<Entity>(entity);
-    }
+	/**
+	 * Set the Entity this Effect is centered on.
+	 */
+	public void setEntity(Entity entity) {
+		this.entity = new WeakReference<Entity>(entity);
+	}
 
-    /**
-     * Set the Entity this Effect is targeting.
-     */
-    public void setTargetEntity(Entity entity) {
-        this.targetEntity = new WeakReference<Entity>(entity);
-    }
+	/**
+	 * Set the Entity this Effect is targeting.
+	 */
+	public void setTargetEntity(Entity entity) {
+		this.targetEntity = new WeakReference<Entity>(entity);
+	}
 
-    /**
-     * Set the Location this Effect is centered on.
-     */
-    public void setLocation(Location location) {
-        if (location == null) {
-            throw new IllegalArgumentException("Location cannot be null!");
-        }
-        this.location = location == null ? null : location.clone();
-        if (offset != null && this.location != null) {
-            this.location = this.location.add(offset);
-        }
-    }
+	/**
+	 * Set the Location this Effect is centered on.
+	 */
+	public void setLocation(Location location) {
+		if (location == null) {
+			throw new IllegalArgumentException("Location cannot be null!");
+		}
+		this.location = location == null ? null : location.clone();
+		if (offset != null && this.location != null) {
+			this.location = this.location.add(offset);
+		}
+	}
 
-    /**
-     * Set the Location this Effect is targeting.
-     */
-    public void setTarget(Location location) {
-        this.target = location == null ? null : location.clone();
-        if (targetOffset != null && this.target != null) {
-            this.target = this.target.add(targetOffset);
-        }
-    }
+	/**
+	 * Set the Location this Effect is targeting.
+	 */
+	public void setTarget(Location location) {
+		this.target = location == null ? null : location.clone();
+		if (targetOffset != null && this.target != null) {
+			this.target = this.target.add(targetOffset);
+		}
+	}
 
-    protected void display(ParticleEffect effect, Location location)
-    {
-        display(effect, location, this.color);
-    }
+	protected void display(ParticleEffect effect, Location location) {
+		display(effect, location, this.color);
+	}
 
-    protected void display(ParticleEffect particle, Location location, Color color)
-    {
-        display(particle, location, color, 0, 1);
-    }
+	protected void display(ParticleEffect particle, Location location, Color color) {
+		display(particle, location, color, 0, 1);
+	}
 
-    protected void display(ParticleEffect particle, Location location, float speed, int amount)
-    {
-        display(particle, location, this.color, speed, amount);
-    }
+	protected void display(ParticleEffect particle, Location location, float speed, int amount) {
+		display(particle, location, this.color, speed, amount);
+	}
 
-    protected void display(ParticleEffect particle, Location location, Color color, float speed, int amount)
-    {
-        particle.display(null, location, color, visibleRange, 0, 0, 0, speed, amount);
-    }
+	protected void display(ParticleEffect particle, Location location, Color color, float speed, int amount) {
+		particle.display(null, location, color, visibleRange, 0, 0, 0, speed, amount);
+	}
 }
-

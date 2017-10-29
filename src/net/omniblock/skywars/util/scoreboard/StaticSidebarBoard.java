@@ -15,47 +15,41 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class StaticSidebarBoard extends Board{
-	
+public class StaticSidebarBoard extends Board {
+
 	private SidebarBoardType type;
 	private Object data;
-	
-	public StaticSidebarBoard(String... elements)
-	{
+
+	public StaticSidebarBoard(String... elements) {
 		this.data = elements;
 		this.type = SidebarBoardType.UNRANKED;
 	}
-	
-	public StaticSidebarBoard(String title, HashMap<String, Integer> elements)
-	{
-		this.data = new Object[]{title, elements};
+
+	public StaticSidebarBoard(String title, HashMap<String, Integer> elements) {
+		this.data = new Object[] { title, elements };
 		this.type = SidebarBoardType.UNRANKED;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public void startDisplay(Player p)
-	{
-		switch(this.type)
-		{
+	public void startDisplay(Player p) {
+		switch (this.type) {
 		case RANKED:
-			ScoreboardUtil.rankedSidebarDisplay(p, (String)((Object[])data)[0], (HashMap<String, Integer>)((Object[])data)[1]);
+			ScoreboardUtil.rankedSidebarDisplay(p, (String) ((Object[]) data)[0],
+					(HashMap<String, Integer>) ((Object[]) data)[1]);
 			return;
 		case UNRANKED:
-			ScoreboardUtil.unrankedSidebarDisplay(p, (String[])data);
+			ScoreboardUtil.unrankedSidebarDisplay(p, (String[]) data);
 		}
-		
+
 	}
 
 	@Override
-	public void stopDisplay(Player p)
-	{
+	public void stopDisplay(Player p) {
 		p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 	}
-	
-	public enum SidebarBoardType
-	{
-		RANKED(),
-		UNRANKED()
+
+	public enum SidebarBoardType {
+		RANKED(), UNRANKED()
 	}
 }

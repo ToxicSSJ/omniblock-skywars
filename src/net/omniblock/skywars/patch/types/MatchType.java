@@ -7,15 +7,19 @@ public enum MatchType {
 	/** Modo Insano **/
 	INSANE("Mejorado"),
 	/** Modo Z (Especial) **/
-	Z("Z"), 
-	/** Ninguno, usado para saber que el plugin aún no está asignado a trabajar en una modalidad **/
+	Z("Z"),
+	/**
+	 * Ninguno, usado para saber que el plugin aún no está asignado a trabajar
+	 * en una modalidad
+	 **/
 	NONE("Ninguno");
-		
+
 	private String name = "Unknow";
-		
-	MatchType(){}
-		
-	MatchType(String name){
+
+	MatchType() {
+	}
+
+	MatchType(String name) {
 		this.name = name;
 	}
 

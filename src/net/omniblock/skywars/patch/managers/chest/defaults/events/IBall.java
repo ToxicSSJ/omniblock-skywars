@@ -29,91 +29,92 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 public class IBall implements ItemType, Listener {
 
 	public static List<Snowball> snowball = new ArrayList<Snowball>();
-	
+
 	@Override
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void IceBall(PlayerInteractEvent event){
-		
-		Player player = event.getPlayer();
-		
-		if(SoloPlayerManager.getPlayersInGameList().contains(player) || TeamPlayerManager.getPlayersInGameList().contains(player) && player.getGameMode() == GameMode.SURVIVAL){
-			if(player.getItemInHand().hasItemMeta()){
-				if(player.getItemInHand().getItemMeta().hasDisplayName()){
-					if(player.getItemInHand().getType() == Material.SNOW_BALL){
-						if(event.getAction() == Action.LEFT_CLICK_AIR 
-							|| event.getAction() == Action.RIGHT_CLICK_BLOCK
-				    		|| event.getAction() == Action.LEFT_CLICK_BLOCK 
-				    		|| event.getAction() == Action.RIGHT_CLICK_AIR){
-							
+	public void IceBall(PlayerInteractEvent event) {
 
-							if(event.getClickedBlock() != null) {
-								if(event.getClickedBlock().getType() == Material.CHEST ||
-										event.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
-										event.getClickedBlock().getType() == Material.JUKEBOX) {
-									
+		Player player = event.getPlayer();
+
+		if (SoloPlayerManager.getPlayersInGameList().contains(player)
+				|| TeamPlayerManager.getPlayersInGameList().contains(player)
+						&& player.getGameMode() == GameMode.SURVIVAL) {
+			if (player.getItemInHand().hasItemMeta()) {
+				if (player.getItemInHand().getItemMeta().hasDisplayName()) {
+					if (player.getItemInHand().getType() == Material.SNOW_BALL) {
+						if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK
+								|| event.getAction() == Action.LEFT_CLICK_BLOCK
+								|| event.getAction() == Action.RIGHT_CLICK_AIR) {
+
+							if (event.getClickedBlock() != null) {
+								if (event.getClickedBlock().getType() == Material.CHEST
+										|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
+										|| event.getClickedBlock().getType() == Material.JUKEBOX) {
+
 									event.setCancelled(true);
 									return;
-									
+
 								}
 							}
-							
-							player.getInventory().setItemInHand(null);	
+
+							player.getInventory().setItemInHand(null);
 							Vector dir = player.getLocation().getDirection().normalize().multiply(3);
 							final Snowball sb = player.launchProjectile(Snowball.class);
 							sb.setVelocity(dir);
-			    			
-							new BukkitRunnable(){
+
+							new BukkitRunnable() {
 								int LIFE_TIME = 0;
-							
+
 								@Override
-								public void run(){
-									if(sb.isDead() != true){
-										
+								public void run() {
+									if (sb.isDead() != true) {
+
 										Location block = sb.getLocation();
 										block.getWorld().playEffect(block, Effect.HAPPY_VILLAGER, 4);
 										block.getWorld().playSound(block, Sound.BLAZE_HIT, 3, 1);
-										new BukkitRunnable(){
+										new BukkitRunnable() {
 											@Override
 											public void run() {
 												SpawnBlock.blockGenerator(block.getBlock(), 1, 2, 1, -1, -1, -1, 4);
 											}
-											
+
 										}.runTaskLater(Skywars.getInstance(), 5L);
 										LIFE_TIME++;
-										if(LIFE_TIME == 60){
+										if (LIFE_TIME == 60) {
 											sb.remove();
 											cancel();
 										}
-			    					 
+
 									} else {
 										cancel();
 									}
 								}
 							}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
-						}	
+						}
 					}
 				}
 			}
 		}
 	}
-	
+
 	@EventHandler
-	public void iceBalleffect(ProjectileHitEvent event){
-		
-		if(event.getEntity() instanceof Snowball){
-			
+	public void iceBalleffect(ProjectileHitEvent event) {
+
+		if (event.getEntity() instanceof Snowball) {
+
 			Snowball sb = (Snowball) event.getEntity();
 			Location location = sb.getLocation();
-			
+
 			sb.remove();
 			location.getWorld().playSound(location, Sound.EXPLODE, 5, 10);
-			List<Block> circle = SpawnBlock.circle(location, 6,1,false, true, -1);
-			for(Block b : circle){
-				if(b.getType() == Material.AIR) continue;
+			List<Block> circle = SpawnBlock.circle(location, 6, 1, false, true, -1);
+			for (Block b : circle) {
+				if (b.getType() == Material.AIR)
+					continue;
 				b.setType(Material.PACKED_ICE);
 			}
-			
+
 		}
-		
+
 	}
 }

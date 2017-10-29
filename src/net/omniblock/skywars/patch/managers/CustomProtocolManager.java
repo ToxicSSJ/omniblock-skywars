@@ -11,5 +11,5 @@ public class CustomProtocolManager {
 
 	public static List<Player> PROTECTED_PLAYER_LIST = Lists.newArrayList();
 	public static List<Block> PROTECTED_BLOCK_LIST = Lists.newArrayList();
-	
+
 }
