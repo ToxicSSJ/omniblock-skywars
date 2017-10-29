@@ -13,5 +13,5 @@ package net.omniblock.skywars.patch.internal;
 public interface Patcher {
 
 	public String[] resume();
-	
+
 }

@@ -36,151 +36,153 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 public class NetworkPatcher implements Patcher {
 
 	public static NetworkRunnable networkrunnable;
-	
-	public void initialize(){
-		
+
+	public void initialize() {
+
 		GameReader.start();
-		
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new FullAttributeListener(), Skywars.getInstance());
-		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SkywarsLobbyFilterListener(), Skywars.getInstance());
-		
+
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new FullAttributeListener(),
+				Skywars.getInstance());
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SkywarsLobbyFilterListener(),
+				Skywars.getInstance());
+
 		networkrunnable = new NetworkRunnable();
 		networkrunnable.runTaskTimer(Skywars.getInstance(), 5L, 40L);
-		
+
 		NetworkData.date = Calendar.getInstance().getTime();
-		
-		NetworkData.broadcaster = new NetworkBroadcaster(){
+
+		NetworkData.broadcaster = new NetworkBroadcaster() {
 
 			@Override
 			public void execute(String data) {
-				
-				if(data.contains("$ TEAM ") && data.contains(",")){
-					
-					if(		Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS || 
-							Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS ||
-							Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS){
-						
+
+				if (data.contains("$ TEAM ") && data.contains(",")) {
+
+					if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+							|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+							|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
+
 						data = data.replaceFirst("$ TEAM ", "");
 						List<Player> party = new ArrayList<Player>();
-						
-						Arrays.asList(data.split(",")).stream().forEach(player ->
-						{
-							
-							if(Bukkit.getPlayer(player) != null){
+
+						Arrays.asList(data.split(",")).stream().forEach(player -> {
+
+							if (Bukkit.getPlayer(player) != null) {
 								party.add(Bukkit.getPlayer(player));
 							}
-							
+
 						});
-						
+
 						TeamPlayerManager.addPreTeam(party);
 						return;
-						
+
 					}
 					return;
-					
-				} else if(data.contains("#")){
-					
-					if(Skywars.currentMatchType == null) Skywars.currentMatchType = SkywarsType.NONE;
-					if(Skywars.currentMatchType != SkywarsType.NONE) return;
-					
+
+				} else if (data.contains("#")) {
+
+					if (Skywars.currentMatchType == null)
+						Skywars.currentMatchType = SkywarsType.NONE;
+					if (Skywars.currentMatchType != SkywarsType.NONE)
+						return;
+
 					SkywarsType swtype = SkywarsType.NONE;
-					
+
 					String[] matchanddata = data.split("#");
-					
+
 					swtype = getTypeByBestResolver(matchanddata);
-					
-					if(swtype != SkywarsType.NONE){
-						
+
+					if (swtype != SkywarsType.NONE) {
+
 						swtype.makeMatch();
-						
+
 					}
-					
+
 				} else {
 					Handlers.LOGGER.sendError("SKYWARS: No puedes ejecutar la partida sin alternación de cáracteres en "
-										+ "la data. [ERR-NetworkPatcher:35]");
+							+ "la data. [ERR-NetworkPatcher:35]");
 					return;
 				}
-				
+
 			}
 
 			@Override
 			public void read(String data) {
-				
-				if(data.contains("$ LOCK")) {
-					
+
+				if (data.contains("$ LOCK")) {
+
 					return;
-					
-				} else if(data.contains("$ UNLOCK")) {
-					
+
+				} else if (data.contains("$ UNLOCK")) {
+
 					return;
-					
+
 				}
-				
+
 			}
-			
+
 		};
-		
+
 	}
 
-	public SkywarsType getTypeByBestResolver(String[] args){
-		
+	public SkywarsType getTypeByBestResolver(String[] args) {
+
 		SkywarsType type = SkywarsType.SW_INSANE_SOLO;
 		int lastassert = 0;
-		
+
 		List<String> resolver = new ArrayList<String>() {
-			
+
 			private static final long serialVersionUID = 103020293947854356L;
 
 			{
-				for(String s : args) {
+				for (String s : args) {
 					add(s);
 				}
 			}
 		};
-		
+
 		Map<SkywarsType, Integer> asserts = new HashMap<SkywarsType, Integer>();
-		
-		for(SkywarsType cache : SkywarsType.values()) {
-			
-			if(cache == SkywarsType.NONE) continue;
-			
+
+		for (SkywarsType cache : SkywarsType.values()) {
+
+			if (cache == SkywarsType.NONE)
+				continue;
+
 			int cacheinteger = 0;
-			
+
 			List<String> cacheargs = cache.getResolver().getListArgs();
 			Iterator<String> iterate = resolver.iterator();
-			
-			while(iterate.hasNext()) {
-				
+
+			while (iterate.hasNext()) {
+
 				String str = iterate.next();
-				if(cacheargs.contains(str)) {
+				if (cacheargs.contains(str)) {
 					cacheinteger++;
 				}
-				
+
 			}
-			
+
 			asserts.put(cache, cacheinteger);
-			
+
 		}
-		
-		for(Map.Entry<SkywarsType, Integer> k : asserts.entrySet()) {
-			
-			if(k.getValue() >= lastassert) {
-				
+
+		for (Map.Entry<SkywarsType, Integer> k : asserts.entrySet()) {
+
+			if (k.getValue() >= lastassert) {
+
 				lastassert = k.getValue();
 				type = k.getKey();
-				
+
 			}
-			
+
 		}
-		
+
 		return type;
 	}
-	
+
 	@Override
 	public String[] resume() {
 		return new String[] { NetworkData.serial };
 	}
-	
-	
 
 }

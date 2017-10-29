@@ -19,28 +19,29 @@ import net.omniblock.skywars.util.ResourceExtractor;
 
 public class MapPatcher implements Patcher {
 
-	public void initialize(){
-		
+	public void initialize() {
+
 		extractSchematics();
-		
+
 	}
-	
+
 	public void extractSchematics() {
-		
-		ResourceExtractor extractschems = new ResourceExtractor(Skywars.getInstance(), new File(Skywars.getInstance().getDataFolder(), "data/schems/"), "data/schems/", "([^\\s]+(\\.(?i)(schematic))$)");
-		
+
+		ResourceExtractor extractschems = new ResourceExtractor(Skywars.getInstance(),
+				new File(Skywars.getInstance().getDataFolder(), "data/schems/"), "data/schems/",
+				"([^\\s]+(\\.(?i)(schematic))$)");
+
 		try {
 			extractschems.extract();
 		} catch (IOException e) {
-		      e.printStackTrace();
+			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
-	public String[] resume(){
+	public String[] resume() {
 		return new String[] { "sucess" };
 	}
 
-	
 }

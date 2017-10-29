@@ -17,67 +17,65 @@ import net.omniblock.skywars.util.MultiLineAPI.TagController;
 public class TeamPlayerLineManager implements TagController {
 
 	public static BukkitTask sbrunnable;
-	
-	public static void initialize(){
-		
+
+	public static void initialize() {
+
 		TeamPlayerLineManager spl = new TeamPlayerLineManager();
 		MultiLineAPI.register(spl);
-		
+
 		sbrunnable = new BukkitRunnable() {
-			
+
 			List<Player> tags_players = Lists.newArrayList();
-			
+
 			@Override
 			public void run() {
-				
-				if(Skywars.getGameState() == SkywarsGameState.IN_GAME || Skywars.getGameState() == SkywarsGameState.IN_PRE_GAME) {
-					
+
+				if (Skywars.getGameState() == SkywarsGameState.IN_GAME
+						|| Skywars.getGameState() == SkywarsGameState.IN_PRE_GAME) {
+
 					tags_players.clear();
-					
-					for(Player p : TeamPlayerManager.getPlayersInGameList()) {
+
+					for (Player p : TeamPlayerManager.getPlayersInGameList()) {
 						tags_players.add(p);
 					}
-					
-					for(Player p : Bukkit.getOnlinePlayers()) {
-						
-						if(!tags_players.contains(p)) {
-							
-							if(MultiLineAPI.hasLines(p)) {
-								
-								if(p.hasMetadata("PLAYER_HEALTH")) {
-							    	
-							        int i = (int) p.getMetadata("PLAYER_HEALTH").get(0).value();
-							        p.removeMetadata("PLAYER_HEALTH", Skywars.getInstance());
-							        Bukkit.getScheduler().cancelTask(i);
-							        
-							    }
-								
+
+					for (Player p : Bukkit.getOnlinePlayers()) {
+
+						if (!tags_players.contains(p)) {
+
+							if (MultiLineAPI.hasLines(p)) {
+
+								if (p.hasMetadata("PLAYER_HEALTH")) {
+
+									int i = (int) p.getMetadata("PLAYER_HEALTH").get(0).value();
+									p.removeMetadata("PLAYER_HEALTH", Skywars.getInstance());
+									Bukkit.getScheduler().cancelTask(i);
+
+								}
+
 							}
-							
+
 						} else {
-							
-							
-							
+
 						}
 					}
 				}
-				
+
 			}
 		}.runTaskTimer(Skywars.getInstance(), 2L, 2L);
-		
+
 	}
 
 	public static String getPlayerHealthHud(Player p) {
-		
+
 		double health = p.getHealth();
 		return "&f" + health + "&c❤";
-		
-		
+
 	}
-	
+
 	@Override
 	public int getPriority() {
 		return 0;
 	}
-	
+
 }

@@ -15,166 +15,172 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 
 public class Cinematix {
-	
-    public Plugin plugin = Skywars.getInstance();
-    public List<Location> points = new ArrayList<Location>();
-    public Map<Entity,Integer> runnables = new HashMap<Entity, Integer>();
-    public Map<Entity,Boolean> stopping = new HashMap<Entity, Boolean>();
-    
-    /**
-     * @return The list of points to travel between.
-     */
-    public List<Location> getPoints() {
-        return points;
-    }
 
-    /**
-     * Generates a list of locations (often in the hundreds, thousands) that forms
-     * a smooth path between all the points in this cinematix.
-     *
-     * @param seconds The time to travel between locations.
-     * @return A path of locations.
-     */
-    public List<Location> generatePath(double seconds) {
-        if (points.size() == 0)
-            return new ArrayList<Location>();
+	public Plugin plugin = Skywars.getInstance();
+	public List<Location> points = new ArrayList<Location>();
+	public Map<Entity, Integer> runnables = new HashMap<Entity, Integer>();
+	public Map<Entity, Boolean> stopping = new HashMap<Entity, Boolean>();
 
-        World world = points.get(0).getWorld();
+	/**
+	 * @return The list of points to travel between.
+	 */
+	public List<Location> getPoints() {
+		return points;
+	}
 
-        double totalTime = seconds * (20.0 / 1.0);
+	/**
+	 * Generates a list of locations (often in the hundreds, thousands) that
+	 * forms a smooth path between all the points in this cinematix.
+	 *
+	 * @param seconds
+	 *            The time to travel between locations.
+	 * @return A path of locations.
+	 */
+	public List<Location> generatePath(double seconds) {
+		if (points.size() == 0)
+			return new ArrayList<Location>();
 
-        List<Double> distances = new ArrayList<Double>();
-        List<Double> times = new ArrayList<Double>();
+		World world = points.get(0).getWorld();
 
-        double totalDistance = 0;
+		double totalTime = seconds * (20.0 / 1.0);
 
-        // Calculate distances
-        for (int i = 0; i < points.size() - 1; i++) {
-            Location from = points.get(i);
-            Location to = points.get(i + 1);
+		List<Double> distances = new ArrayList<Double>();
+		List<Double> times = new ArrayList<Double>();
 
-            double distance = from.distance(to);
+		double totalDistance = 0;
 
-            totalDistance += distance;
-            distances.add(distance);
-        }
+		// Calculate distances
+		for (int i = 0; i < points.size() - 1; i++) {
+			Location from = points.get(i);
+			Location to = points.get(i + 1);
 
-        // Calculate portion of time each point should take
-        for (Double distance : distances) {
-            double percent = distance / totalDistance;
-            times.add(percent * totalTime);
-        }
+			double distance = from.distance(to);
 
-        // path are the places to teleport to every tick (1/20th second)
-        List<Location> path = new ArrayList<Location>();
+			totalDistance += distance;
+			distances.add(distance);
+		}
 
-        for (int i = 0; i < points.size() - 1; i++) {
-            Location from = points.get(i);
-            Location to = points.get(i + 1);
-            double time = times.get(i);
+		// Calculate portion of time each point should take
+		for (Double distance : distances) {
+			double percent = distance / totalDistance;
+			times.add(percent * totalTime);
+		}
 
-            double dX = to.getX() - from.getX();
-            double dY = to.getY() - from.getY();
-            double dZ = to.getZ() - from.getZ();
-            float dYaw = Math.abs(to.getYaw() - from.getYaw());
-            float dPitch = to.getPitch() - from.getPitch();
+		// path are the places to teleport to every tick (1/20th second)
+		List<Location> path = new ArrayList<Location>();
 
-            if (dYaw <= 180.0) {
-                if (from.getYaw() >= to.getYaw())
-                    dYaw = -dYaw;
-            }
-            else if (from.getYaw() < to.getYaw()) {
-                dYaw = dYaw - 360.0F;
-            }
-            else {
-                dYaw = 360.0F - dYaw;
-            }
+		for (int i = 0; i < points.size() - 1; i++) {
+			Location from = points.get(i);
+			Location to = points.get(i + 1);
+			double time = times.get(i);
 
-            for (double t = 0; t < time; t++) {
-                double x = from.getX() + (dX / time) * t;
-                double y = from.getY() + (dY / time) * t;
-                double z = from.getZ() + (dZ / time) * t;
-                float yaw = (float) (from.getYaw() + (dYaw / time) * t);
-                float pitch = (float) (from.getPitch() + (dPitch / time) * t);
+			double dX = to.getX() - from.getX();
+			double dY = to.getY() - from.getY();
+			double dZ = to.getZ() - from.getZ();
+			float dYaw = Math.abs(to.getYaw() - from.getYaw());
+			float dPitch = to.getPitch() - from.getPitch();
 
-                Location loc = new Location(world, x, y, z, yaw, pitch);
-                path.add(loc);
-            }
-        }
+			if (dYaw <= 180.0) {
+				if (from.getYaw() >= to.getYaw())
+					dYaw = -dYaw;
+			} else if (from.getYaw() < to.getYaw()) {
+				dYaw = dYaw - 360.0F;
+			} else {
+				dYaw = 360.0F - dYaw;
+			}
 
-        return path;
-    }
+			for (double t = 0; t < time; t++) {
+				double x = from.getX() + (dX / time) * t;
+				double y = from.getY() + (dY / time) * t;
+				double z = from.getZ() + (dZ / time) * t;
+				float yaw = (float) (from.getYaw() + (dYaw / time) * t);
+				float pitch = (float) (from.getPitch() + (dPitch / time) * t);
 
-    /**
-     * Start a cinematix for the given duration of time.
-     * @param Entity The Entity to engage in a cinematix.
-     * @param time The time in seconds.
-     * @return True if successful, false if the Entity is already in a cinematix.
-     */
-    public boolean start(final Entity Entity, final double time) {
-        if (isRunning(Entity))
-            return false;
+				Location loc = new Location(world, x, y, z, yaw, pitch);
+				path.add(loc);
+			}
+		}
 
-        Runnable task = new Runnable() {
+		return path;
+	}
 
-            int i = 0;
-            List<Location> path = generatePath(time);
+	/**
+	 * Start a cinematix for the given duration of time.
+	 * 
+	 * @param Entity
+	 *            The Entity to engage in a cinematix.
+	 * @param time
+	 *            The time in seconds.
+	 * @return True if successful, false if the Entity is already in a
+	 *         cinematix.
+	 */
+	public boolean start(final Entity Entity, final double time) {
+		if (isRunning(Entity))
+			return false;
 
-            @Override
-            public void run() {
-                boolean stop = stopping.get(Entity);
+		Runnable task = new Runnable() {
 
-                if (i > path.size() - 1 || stop) {
-                    int taskId = runnables.get(Entity);
-                    Bukkit.getScheduler().cancelTask(taskId);
-                    runnables.remove(Entity);
-                    stopping.remove(Entity);
-                    return;
-                }
+			int i = 0;
+			List<Location> path = generatePath(time);
 
-                for (int x = 0; x < 5; x++)
-                	
-                	Entity.getLocation().getChunk().load();
-                    Entity.teleport(path.get(i));
+			@Override
+			public void run() {
+				boolean stop = stopping.get(Entity);
 
-                i++;
-            }
-        };
+				if (i > path.size() - 1 || stop) {
+					int taskId = runnables.get(Entity);
+					Bukkit.getScheduler().cancelTask(taskId);
+					runnables.remove(Entity);
+					stopping.remove(Entity);
+					return;
+				}
 
-        int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, task, 0, 1);
+				for (int x = 0; x < 5; x++)
 
-        stopping.put(Entity, false);
-        runnables.put(Entity, taskId);
-        return true;
-    }
+					Entity.getLocation().getChunk().load();
+				Entity.teleport(path.get(i));
 
-    /**
-     * Stop an ongoing cinematix.
-     * @param Entity The Entity who's cinematix should stop.
-     * @return True if a cinematix was in progress, false if otherwise.
-     */
-    public boolean stop(Entity Entity) {
-        if (!isRunning(Entity))
-            return false;
-        stopping.put(Entity, true);
-        return true;
-    }
+				i++;
+			}
+		};
 
-    /**
-     * @param Entity The Entity to check.
-     * @return True if a Entity's cinematix is in progress, false if otherwise.
-     */
-    public boolean isRunning(Entity Entity) {
-        return runnables.containsKey(Entity);
-    }
-    
-    public void moveToward(Entity entity, Location to, double speed){
-        Location loc = entity.getLocation();
-        double x = loc.getX() - to.getX();
-        double y = loc.getY() - to.getY();
-        double z = loc.getZ() - to.getZ();
-        Vector velocity = new Vector(x, y, z).normalize().multiply(-speed);
-        entity.setVelocity(velocity);   
-    }
-    
+		int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, task, 0, 1);
+
+		stopping.put(Entity, false);
+		runnables.put(Entity, taskId);
+		return true;
+	}
+
+	/**
+	 * Stop an ongoing cinematix.
+	 * 
+	 * @param Entity
+	 *            The Entity who's cinematix should stop.
+	 * @return True if a cinematix was in progress, false if otherwise.
+	 */
+	public boolean stop(Entity Entity) {
+		if (!isRunning(Entity))
+			return false;
+		stopping.put(Entity, true);
+		return true;
+	}
+
+	/**
+	 * @param Entity
+	 *            The Entity to check.
+	 * @return True if a Entity's cinematix is in progress, false if otherwise.
+	 */
+	public boolean isRunning(Entity Entity) {
+		return runnables.containsKey(Entity);
+	}
+
+	public void moveToward(Entity entity, Location to, double speed) {
+		Location loc = entity.getLocation();
+		double x = loc.getX() - to.getX();
+		double y = loc.getY() - to.getY();
+		double z = loc.getZ() - to.getZ();
+		Vector velocity = new Vector(x, y, z).normalize().multiply(-speed);
+		entity.setVelocity(velocity);
+	}
+
 }

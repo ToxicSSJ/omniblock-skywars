@@ -18,21 +18,21 @@ import net.omniblock.network.library.helpers.bossbar.BarAPI;
 import net.omniblock.network.library.utils.TextUtil;
 
 public class NetworkRunnable extends BukkitRunnable {
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
-		
-		if(NetworkData.generalbooster) {
-			for(Player p : Bukkit.getOnlinePlayers()) {
+
+		if (NetworkData.generalbooster) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
 				BarAPI.setMessage(p, TextUtil.format("&d&l¡NETWORK BOOSTER&r &7Activado por Unknow!"));
 			}
 		} else {
-			for(Player p : Bukkit.getOnlinePlayers()) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
 				BarAPI.setMessage(p, TextUtil.format("&9&lOMNIBLOCK NETWORK &8&l« &fSkyWars"));
 			}
 		}
-		
+
 	}
 
 }

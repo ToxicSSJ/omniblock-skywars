@@ -33,84 +33,84 @@ public class SoloPlayerManager {
 	private static List<Player> playersInLobby = new ArrayList<Player>();
 	private static List<Player> playersInGame = new ArrayList<Player>();
 	private static List<Player> playersInSpectator = new ArrayList<Player>();
-	
+
 	public static void deathPlayer(Player p) {
-		
-		if(getPlayersInGameList().contains(p)) {
+
+		if (getPlayersInGameList().contains(p)) {
 			playersInGame.remove(p);
 		}
-		
+
 		playersInSpectator.add(p);
-		
+
 		InGameTitles.DEATH.send(p);
 		spectatorPlayer(p);
-		
+
 	}
-	
+
 	public static void winnerPlayer(Player p) {
-		
+
 		emptyPlayer(p);
 		healPlayer(p);
 		forceFly(p);
-		
+
 		return;
-		
+
 	}
-	
+
 	public static void spectatorPlayer(Player p) {
-		
+
 		emptyPlayer(p);
 		healPlayer(p);
 		forceFly(p);
-		
-		if(SoloPlayerManager.getPlayersInGameAmount() >= 1) {
+
+		if (SoloPlayerManager.getPlayersInGameAmount() >= 1) {
 			p.teleport(SoloPlayerManager.getPlayersInGameList().get(0));
 		} else {
 			p.teleport(MapManager.lobbyschematic.getLocation());
 		}
-		
+
 		SpectatorManager.addPlayerToSpectator(p);
 		return;
-		
+
 	}
-	
+
 	public static void healPlayer(Player p) {
-		
+
 		p.setExp(0);
 		p.setTotalExperience(0);
-		
+
 		p.setFoodLevel(25);
-		
+
 		p.setHealth(20.0);
 		p.setMaxHealth(20.0);
-		
-		for(PotionEffect pe : p.getActivePotionEffects()) {
+
+		for (PotionEffect pe : p.getActivePotionEffects()) {
 			p.removePotionEffect(pe.getType());
 		}
-		
+
 	}
-	
+
 	public static void emptyPlayer(Player p) {
-		
+
 		p.getInventory().clear();
-		
+
 		p.getInventory().setHelmet(new ItemStack(Material.AIR));
 		p.getInventory().setChestplate(new ItemStack(Material.AIR));
 		p.getInventory().setLeggings(new ItemStack(Material.AIR));
 		p.getInventory().setBoots(new ItemStack(Material.AIR));
-		
+
 		p.setExp(0);
 		p.setLevel(0);
 		return;
-		
+
 	}
-	
+
 	public static void forceFly(Player p) {
-		
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(!p.isFlying()) {
+				if (!p.isFlying()) {
 					p.setAllowFlight(true);
 					p.setFlying(true);
 				} else {
@@ -118,15 +118,15 @@ public class SoloPlayerManager {
 				}
 			}
 		}.runTaskTimer(Skywars.getInstance(), 5L, 5L);
-		
+
 	}
-	
+
 	public static void forceRemoveFly(Player p) {
-		
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(p.isFlying()) {
+				if (p.isFlying()) {
 					p.setAllowFlight(false);
 					p.setFlying(false);
 				} else {
@@ -134,128 +134,132 @@ public class SoloPlayerManager {
 				}
 			}
 		}.runTaskTimer(Skywars.getInstance(), 5L, 5L);
-		
+
 	}
-	
+
 	public static boolean addPlayer(Player p) {
-		
-		if(Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
-			
-			Bukkit.broadcastMessage(TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p, 'a') + "&7 ha ingresado a la partida. (" + (SoloPlayerManager.getPlayersInLobbyAmount() + 1) + "/" + SoloSkywars.cagesLocations.size() + ")"));
-			
-			for(Player p2 : getPlayersInLobbyListAsCopy()) {
-				if(p.getUniqueId().equals(p2.getUniqueId())) {
+
+		if (Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
+
+			Bukkit.broadcastMessage(
+					TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p, 'a')
+							+ "&7 ha ingresado a la partida. (" + (SoloPlayerManager.getPlayersInLobbyAmount() + 1)
+							+ "/" + SoloSkywars.cagesLocations.size() + ")"));
+
+			for (Player p2 : getPlayersInLobbyListAsCopy()) {
+				if (p.getUniqueId().equals(p2.getUniqueId())) {
 					removePlayer(p);
 				}
 			}
-			
+
 			emptyPlayer(p);
 			healPlayer(p);
-			
+
 			p.spigot().setCollidesWithEntities(true);
 			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
 			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-			
+
 			p.setGameMode(GameMode.ADVENTURE);
-			
+
 			LobbyManager.giveItems(p);
 			SkywarsBase.saveAccount(p);
-			
+
 			playersInLobby.add(p);
-			
+
 		} else {
-			
+
 			spectatorPlayer(p);
-			
+
 		}
-		
+
 		return true;
 	}
-	
+
 	public static void removePlayer(Player p) {
-		
+
 		playersInLobby.remove(p);
-		
-		if(playersInGame.contains(p)) {
+
+		if (playersInGame.contains(p)) {
 			playersInGame.remove(p);
 		}
-		
+
 	}
-	
+
 	public static void transferAllPlayersToInGame() {
 		playersInGame.addAll(playersInLobby);
 		playersInLobby.clear();
 	}
-	
+
 	public static int getPlayersInLobbyAmount() {
 		return playersInLobby.size();
 	}
-	
+
 	public static int getPlayersInGameAmount() {
 		return playersInGame.size();
 	}
-	
-	public static List<Player> getPlayersInLobbyList(){
+
+	public static List<Player> getPlayersInLobbyList() {
 		return playersInLobby;
 	}
-	
-	public static List<Player> getPlayersInLobbyListAsCopy(){
+
+	public static List<Player> getPlayersInLobbyListAsCopy() {
 		return new ArrayList<Player>(playersInLobby);
 	}
-	
-	public static List<Player> getPlayersInGameList(){
+
+	public static List<Player> getPlayersInGameList() {
 		return playersInGame;
 	}
-	
-	public static List<Player> getPlayersInGameListAsCopy(){
+
+	public static List<Player> getPlayersInGameListAsCopy() {
 		return new ArrayList<Player>(playersInGame);
 	}
 
 	public static void sendAllPlayersToCages() {
-		
+
 		List<Location> cageLocations = SoloSkywars.getCageLocations();
 		Collections.shuffle(cageLocations);
-		
-		for(int i = 0; i < getPlayersInGameAmount(); i++) {
-			
+
+		for (int i = 0; i < getPlayersInGameAmount(); i++) {
+
 			Player player = playersInGame.get(i);
-			Object cage_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE, SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
-			
+			Object cage_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
+					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
+
 			emptyPlayer(player);
-			
-			if(cage_obj instanceof CageType) {
-				
+
+			if (cage_obj instanceof CageType) {
+
 				CageType ct = (CageType) cage_obj;
 				Location cageLocation = cageLocations.get(i);
-				
+
 				CageManager.registerCage(ct, cageLocation);
 				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
-				
+
 				CageManager.cagesdata.put(player, cageLocation);
-				
+
 				continue;
-				
+
 			} else {
 				Location cageLocation = cageLocations.get(i);
-				
+
 				CageManager.registerCage(CageType.DEFAULT, cageLocation);
 				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
-				
+
 				CageManager.cagesdata.put(player, cageLocation);
-				
+
 				continue;
-				
+
 			}
-			
+
 		}
 	}
-	
+
 	public static void playSound(Sound sound, float volume, float pitch) {
-		for(Player p : Bukkit.getOnlinePlayers()) {
+		for (Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), sound, volume, pitch);
 		}
 	}
-	
+
 	public static List<Player> getPlayersInSpectator() {
 		return playersInSpectator;
 	}
@@ -265,14 +269,12 @@ public class SoloPlayerManager {
 	}
 
 	public enum InGameTitles {
-		DEATH("&c&l¡HAS MUERTO!", "&7¡Eres un espectador!"),
-	    WIN("&a&l¡HAS GANADO!", "&7¡Recompensa adicional!"),
-		;
-		
+		DEATH("&c&l¡HAS MUERTO!", "&7¡Eres un espectador!"), WIN("&a&l¡HAS GANADO!", "&7¡Recompensa adicional!"),;
+
 		private String title;
 		private String subtitle;
-		
-		InGameTitles(String title, String subtitle){
+
+		InGameTitles(String title, String subtitle) {
 			this.title = title;
 			this.subtitle = subtitle;
 		}
@@ -292,14 +294,14 @@ public class SoloPlayerManager {
 		public void setSubtitle(String subtitle) {
 			this.subtitle = subtitle;
 		}
-		
+
 		public void send(Player p) {
-			
+
 			TitleUtil.sendTitleToPlayer(p, 5, 5, 5, TextUtil.format(title), TextUtil.format(subtitle));
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 }

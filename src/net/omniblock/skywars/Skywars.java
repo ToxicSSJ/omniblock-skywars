@@ -44,147 +44,160 @@ import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
 public class Skywars extends JavaPlugin implements Updatable {
 
 	private static Skywars instance;
-	
+
 	private static NetworkPatcher networkpatcher;
 	private static MapPatcher mappatcher;
-	
+
 	public static boolean inlobby = true;
 	public static boolean inpregame = false;
 	public static boolean ingame = false;
 	public static boolean inend = false;
-	
+
 	public static SkywarsType currentMatchType = null;
 	public static EffectManager effectmanager = null;
-	
+
 	@Override
-	public void onEnable(){
-		
+	public void onEnable() {
+
 		instance = this;
-		
-		if(update(PluginType.SKYWARS, this)) return;
-		
+
+		if (update(PluginType.SKYWARS, this))
+			return;
+
 		DebugUtil.setupLogger();
 		CageManager.extractCages();
-		
+
 		DebugUtil.info("Iniciando MapManager...");
 		MapManager.prepareWorlds();
-		
+
 		DebugUtil.info("Iniciando NetworkPatcher...");
 		networkpatcher = new NetworkPatcher();
 		networkpatcher.initialize();
-		
+
 		DebugUtil.info("Iniciando MapPatcher...");
 		mappatcher = new MapPatcher();
 		mappatcher.initialize();
-		
+
 		/**
 		 * [LIB] [ActionBarApi Hook]
 		 */
 		ActionBarApi.nmsver = Bukkit.getServer().getClass().getPackage().getName();
 		ActionBarApi.nmsver = ActionBarApi.nmsver.substring(ActionBarApi.nmsver.lastIndexOf(".") + 1);
-		
+
 		CitizensAPI.getNPCRegistry().deregisterAll();
-		
+
 		DebugUtil.info("Iniciando Librerias...");
 		EffectLib.startEffectLib();
 		VanishUtil.start();
 		LobbyManager.start();
 		MultiLineAPI.start();
-		
+
 		InventoryBuilderListener.startInventoryBuilder();
-		
+
 		effectmanager = new EffectManager(this);
-		
+
 	}
 
 	@Override
-	public void onDisable(){
-		
-		for(Handler h : DebugUtil.getLogger().getHandlers()) {
-		    h.close();
+	public void onDisable() {
+
+		for (Handler h : DebugUtil.getLogger().getHandlers()) {
+			h.close();
 		}
-		
+
 		CitizensAPI.getNPCRegistry().deregisterAll();
-		
+
 	}
-	
+
 	@Deprecated
 	public static void makeTestMatch() {
-		
+
 		DebugUtil.debugInfo("Inicializando Match de prueba...");
-		
-		if(!SkywarsType.SW_Z_SOLO.makeMatch()) {
+
+		if (!SkywarsType.SW_Z_SOLO.makeMatch()) {
 			throw new IllegalStateException("Falló al crear un Match con makeMatch()");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Obtiene la instancia del plugin.
+	 * 
 	 * @return Instancia del plugin.
 	 */
 	public static Skywars getInstance() {
 		return instance;
 	}
-	
+
 	/**
-	 * @deprecated Usa {@link ConfigurationType#DEFAULT_CONFIGURATION} en lugar de usar getConfig() para obtener la ConfiguraciÃ³n del plugin.
+	 * @deprecated Usa {@link ConfigurationType#DEFAULT_CONFIGURATION} en lugar
+	 *             de usar getConfig() para obtener la ConfiguraciÃ³n del
+	 *             plugin.
 	 */
-	@Override @Deprecated
+	@Override
+	@Deprecated
 	public FileConfiguration getConfig() {
 		return ConfigurationType.DEFAULT_CONFIGURATION.getConfig().getYaml();
 	}
-	
+
 	/**
-	 * Guardar la configuraciÃ³n default ({@link ConfigurationType#DEFAULT_CONFIGURATION})
+	 * Guardar la configuraciÃ³n default
+	 * ({@link ConfigurationType#DEFAULT_CONFIGURATION})
 	 */
 	@Override
 	public void saveConfig() {
 		ConfigurationType.DEFAULT_CONFIGURATION.getConfig().save();
 	}
-	
+
 	/**
-	 * @deprecated Usa {@link ConfigurationType#DEFAULT_CONFIGURATION} en lugar de usar saveDefaultConfig().
+	 * @deprecated Usa {@link ConfigurationType#DEFAULT_CONFIGURATION} en lugar
+	 *             de usar saveDefaultConfig().
 	 */
-	@Override @Deprecated
-	public void saveDefaultConfig() { };
-	
+	@Override
+	@Deprecated
+	public void saveDefaultConfig() {
+	};
+
 	/**
-	 * Recargar la configuraciÃ³n default ({@link ConfigurationType#DEFAULT_CONFIGURATION})
+	 * Recargar la configuraciÃ³n default
+	 * ({@link ConfigurationType#DEFAULT_CONFIGURATION})
 	 */
 	@Override
 	public void reloadConfig() {
 		ConfigurationType.DEFAULT_CONFIGURATION.getConfig().reload();
 	}
-	
+
 	/**
-	 * Usado en conveniencia para Wirlie, convierte los boleanos {@link #inlobby} {@link #inpregame} {@link #ingame} {@link #inend}
-	 * en un Enum {@link SkywarsGameState}.
+	 * Usado en conveniencia para Wirlie, convierte los boleanos
+	 * {@link #inlobby} {@link #inpregame} {@link #ingame} {@link #inend} en un
+	 * Enum {@link SkywarsGameState}.
 	 * 
 	 * @return {@link SkywarsGameState}
 	 */
 	public static SkywarsGameState getGameState() {
-		if(inend) {
+		if (inend) {
 			return SkywarsGameState.FINISHING;
-		}else if(ingame) {
+		} else if (ingame) {
 			return SkywarsGameState.IN_GAME;
-		}else if(inpregame) {
+		} else if (inpregame) {
 			return SkywarsGameState.IN_PRE_GAME;
-		}else if(inlobby) {
+		} else if (inlobby) {
 			return SkywarsGameState.IN_LOBBY;
 		}
-		
+
 		throw new IllegalStateException("Estado actual del juego desconocido.");
 	}
-	
+
 	/**
-	 * Creado en conveniencia para Wirlie, transforma {@link SkywarsGameState} para actualizar los booleanos {@link #inlobby} {@link #inpregame} {@link #ingame} {@link #inend}
-	 * de esta clase.
+	 * Creado en conveniencia para Wirlie, transforma {@link SkywarsGameState}
+	 * para actualizar los booleanos {@link #inlobby} {@link #inpregame}
+	 * {@link #ingame} {@link #inend} de esta clase.
 	 * 
-	 * @param newState Nuevo estado a actualizar.
+	 * @param newState
+	 *            Nuevo estado a actualizar.
 	 */
 	public static void updateGameState(SkywarsGameState newState) {
-		switch(newState) {
+		switch (newState) {
 		case FINISHING:
 			inlobby = false;
 			inpregame = false;
@@ -209,47 +222,52 @@ public class Skywars extends JavaPlugin implements Updatable {
 			ingame = false;
 			inend = false;
 			break;
-		
+
 		}
-		
-		if(Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO ||
-				Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO ||
-				Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
-				
+
+		if (Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
+
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName() : MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName()
+							: MapManager.NEW_MAP_NORMAL.getName())
 					.setMaximiumPlayers(SoloSkywars.MAX_PLAYERS)
-					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount())
-					.setOpened(Skywars.ingame == true ? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
-					
+					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
+							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		} else {
-			
+
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
-					
+
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName() : MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName()
+							: MapManager.NEW_MAP_NORMAL.getName())
 					.setMaximiumPlayers(TeamSkywars.MAX_PLAYERS)
-					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount())
-					.setOpened(Skywars.ingame == true ? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
-					
+					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
+							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
+
 					.build().setReceiver(PacketSenderType.OMNICORE));
 			return;
-			
+
 		}
-		
+
 	}
 
 	/**
-	 * Quizas puede ser movido, pero esto ayuda a saber que tipo de juego se esta usando actualmente en el plugin.
-	 * @param skywarsType {@link SkywarsType}
+	 * Quizas puede ser movido, pero esto ayuda a saber que tipo de juego se
+	 * esta usando actualmente en el plugin.
+	 * 
+	 * @param skywarsType
+	 *            {@link SkywarsType}
 	 */
 	public static void setSkywarsType(SkywarsType skywarsType) {
 		currentMatchType = skywarsType;
 	}
-	
+
 }

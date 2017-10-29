@@ -20,99 +20,103 @@ public class SoloPlayerToggleListener implements Listener {
 
 	public static boolean Lock = false;
 	public static boolean Verifier = false;
-	
+
 	@EventHandler
 	public void onPlayerPreJoin(AsyncPlayerPreLoginEvent e) {
-		
-		if(Verifier == false) {
+
+		if (Verifier == false) {
 			Verifier = true;
 		}
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
-		if(currentState != SkywarsGameState.IN_LOBBY) {
-			
+
+		if (currentState != SkywarsGameState.IN_LOBBY) {
+
 			e.disallow(Result.KICK_OTHER, "¡El juego está en progreso!");
 			return;
-			
+
 		} else {
-			
-			if(Bukkit.getOnlinePlayers().size() > SoloSkywars.MAX_PLAYERS) {
+
+			if (Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS) {
 				e.disallow(Result.KICK_OTHER, "La partida está llena!");
 			}
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		
+
 		e.setJoinMessage(null);
-		
-		if(Verifier == false) {
+
+		if (Verifier == false) {
 			Verifier = true;
 		}
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
-		if(Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS && !Lock && currentState == SkywarsGameState.IN_LOBBY) {
-		
+
+		if (Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS && !Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = true;
 			NetworkData.broadcaster.read("$ LOCK");
-			
-		} else if(Bukkit.getOnlinePlayers().size() <= SoloSkywars.MIN_PLAYERS && Lock && currentState == SkywarsGameState.IN_LOBBY){
-			
+
+		} else if (Bukkit.getOnlinePlayers().size() <= SoloSkywars.MIN_PLAYERS && Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = false;
 			NetworkData.broadcaster.read("$ UNLOCK");
-			
+
 		}
-			
+
 		SoloPlayerManager.addPlayer(e.getPlayer());
 		VanishUtil.updateInvisible();
-		
+
 	}
-	
+
 	@EventHandler
 	public void onLeft(PlayerQuitEvent e) {
-		
+
 		e.setQuitMessage(null);
-		
+
 		SoloPlayerManager.removePlayer(e.getPlayer());
-		
+
 		SkywarsGameState currentState = Skywars.getGameState();
-		
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				
-				if(SoloPlayerToggleListener.Verifier || currentState == SkywarsGameState.IN_LOBBY) {
-					if(SoloPlayerManager.getPlayersInLobbyAmount() <= 0 || Bukkit.getOnlinePlayers().size() <= 0) {
-						
+
+				if (SoloPlayerToggleListener.Verifier || currentState == SkywarsGameState.IN_LOBBY) {
+					if (SoloPlayerManager.getPlayersInLobbyAmount() <= 0 || Bukkit.getOnlinePlayers().size() <= 0) {
+
 						SoloSkywars.initializeReset();
 						return;
-						
+
 					}
 				}
-				
+
 			}
 		}.runTaskLater(Skywars.getInstance(), 1L);
-		
-		if(Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS && !Lock && currentState == SkywarsGameState.IN_LOBBY) {
-		
+
+		if (Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS && !Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = true;
 			NetworkData.broadcaster.read("$ LOCK");
 			return;
-			
-		} else if(Bukkit.getOnlinePlayers().size() <= SoloSkywars.MIN_PLAYERS && Lock && currentState == SkywarsGameState.IN_LOBBY){
-			
+
+		} else if (Bukkit.getOnlinePlayers().size() <= SoloSkywars.MIN_PLAYERS && Lock
+				&& currentState == SkywarsGameState.IN_LOBBY) {
+
 			Lock = false;
 			NetworkData.broadcaster.read("$ UNLOCK");
 			return;
-			
+
 		}
-		
+
 	}
-	
+
 }

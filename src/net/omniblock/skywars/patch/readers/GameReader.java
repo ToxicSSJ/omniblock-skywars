@@ -13,36 +13,37 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 public class GameReader {
 
 	public static void start() {
-		
-		Packets.READER.registerReader(new PacketReader<GameInitializerInfoPacket>(){
+
+		Packets.READER.registerReader(new PacketReader<GameInitializerInfoPacket>() {
 
 			@Override
 			public void readPacket(PacketSocketData<GameInitializerInfoPacket> packetsocketdata) {
-				
-				if(Skywars.currentMatchType != null){
-					if(Skywars.currentMatchType != SkywarsType.NONE){
+
+				if (Skywars.currentMatchType != null) {
+					if (Skywars.currentMatchType != SkywarsType.NONE) {
 						return;
 					}
 				}
-				
+
 				PacketStructure structure = packetsocketdata.getStructure();
-				
+
 				GamePreset preset = GamePreset.valueOf(structure.get(DataType.STRINGS, "gamepreset"));
 				SkywarsType type = SkywarsType.withPreset(preset);
-				
-				if(type != null) type.makeMatch();
-				
+
+				if (type != null)
+					type.makeMatch();
+
 				return;
-				
+
 			}
 
 			@Override
 			public Class<GameInitializerInfoPacket> getAttachedPacketClass() {
 				return GameInitializerInfoPacket.class;
 			}
-			
+
 		});
-		
+
 	}
-	
+
 }
