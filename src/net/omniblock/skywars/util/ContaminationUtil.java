@@ -275,6 +275,7 @@ public class ContaminationUtil {
 
 		}
 
+		@SuppressWarnings("unlikely-arg-type")
 		public boolean contamination(Block block) {
 
 			@SuppressWarnings("serial")

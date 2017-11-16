@@ -24,6 +24,8 @@ public class Scan {
 		List<Location> locationblock = new ArrayList<Location>();
 		List<Chunk> arrayOfChunk = Lists.newArrayList();
 
+		System.out.println("scanning...");
+		
 		if (WORLD_CHUNKS.containsKey(world.getName())) {
 
 			arrayOfChunk = WORLD_CHUNKS.get(world.getName());
@@ -37,6 +39,8 @@ public class Scan {
 
 		int chunk = arrayOfChunk.size();
 
+		System.out.println("size of chunks -> " + chunk);
+		
 		@SuppressWarnings("unused")
 		int numberofscannedblocks = 0;
 		for (int i = 0; i < chunk; i++) {

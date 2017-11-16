@@ -3,6 +3,7 @@ package net.omniblock.skywars.patch.managers;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -49,34 +50,40 @@ public class LobbySchematic {
 
 	public void scanAndPasteLobbySchematic(World world, MapType mt) {
 
-		Location matchedBlocks = Scan.singleBlock(world, Material.BEDROCK);
+		List<Location> matchedBlocks = Scan.oneMaterial(world, Material.BEDROCK);
+		
 		if (matchedBlocks != null) {
 
-			Block bl = matchedBlocks.getBlock();
+			for(Location loc : matchedBlocks) {
+				
+				Block bl = loc.getBlock();
 
-			if (bl.getRelative(0, 1, 0).getType() == Material.WOOD_PLATE) {
+				if (bl.getRelative(0, 1, 0).getType() == Material.WOOD_PLATE) {
 
-				if (mt == MapType.NORMAL) {
+					if (mt == MapType.NORMAL) {
 
-					bl.setType(Material.AIR);
+						bl.setType(Material.AIR);
+						bl.getRelative(0, 1, 0).setType(Material.AIR);
+
+						LOCATION_LOBBYSCHEMATIC_NORMAL = loc;
+						LOBBYSCHEMATIC_NORMAL = paste(LOCATION_LOBBYSCHEMATIC_NORMAL.toVector(), world, mt);
+						
+						
+					} else if (mt == MapType.Z) {
+
+						bl.setType(Material.AIR);
+						bl.getRelative(0, 1, 0).setType(Material.AIR);
+
+						LOCATION_LOBBYSCHEMATIC_Z = loc;
+						LOBBYSCHEMATIC_Z = paste(LOCATION_LOBBYSCHEMATIC_Z.toVector(), world, mt);
+
+					}
+
 					bl.getRelative(0, 1, 0).setType(Material.AIR);
-
-					LOCATION_LOBBYSCHEMATIC_NORMAL = matchedBlocks;
-					LOBBYSCHEMATIC_NORMAL = paste(LOCATION_LOBBYSCHEMATIC_NORMAL.toVector(), world, mt);
-
-				} else if (mt == MapType.Z) {
-
-					bl.setType(Material.AIR);
-					bl.getRelative(0, 1, 0).setType(Material.AIR);
-
-					LOCATION_LOBBYSCHEMATIC_Z = matchedBlocks;
-					LOBBYSCHEMATIC_Z = paste(LOCATION_LOBBYSCHEMATIC_Z.toVector(), world, mt);
+					return;
 
 				}
-
-				bl.getRelative(0, 1, 0).setType(Material.AIR);
-				return;
-
+				
 			}
 
 		} else {
