@@ -304,6 +304,7 @@ public final class MultiLineAPI {
 		tags.get(p.getUniqueId()).clear();
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public static boolean hasLines(Player p) {
 		return tags.containsKey(p);
 	}

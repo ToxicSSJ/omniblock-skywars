@@ -481,9 +481,11 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 	public static void stop(UUID PlayerUUID) {
 		stopping.add(PlayerUUID);
 		org.bukkit.Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Skywars.getInstance(), new Runnable() {
+			@SuppressWarnings("unlikely-arg-type")
 			public void run() {
 				CameraUtil.stopping.remove(this);
 			}
 		}, 2L);
 	}
+	
 }
