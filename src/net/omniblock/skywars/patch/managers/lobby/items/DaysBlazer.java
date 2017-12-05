@@ -36,6 +36,7 @@ import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
 
+import net.omniblock.network.library.helpers.effectlib.effect.FlameEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
@@ -53,8 +54,6 @@ import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
-import net.omniblock.skywars.util.effectlib.effect.FlameEffect;
-import net.omniblock.skywars.util.effectlib.util.ParticleEffect;
 
 public class DaysBlazer implements PowerItem, Listener {
 
@@ -80,11 +79,6 @@ public class DaysBlazer implements PowerItem, Listener {
 
 		SKY_CHEST("¡Del cofre Sorpresa!",
 				new String[] { "&8&m-&r&7 Del mundo de los cofres magicos, ", "&7Mira en el cielo!" }),
-		/*
-		 * WITCHER("Del Mago", new String[] {
-		 * "&8&m-&r&7 No uses armas ni nada extraño, Con el ",
-		 * "&7simple click, Serás el mejor mago de todos los", "&7tiempos!"} ),
-		 */
 
 		BOW_TO_MACHINE_GUNS("¡De arcos a ametralladoras!",
 				new String[] { "&8&m-&r&7 ¿Quien necesita arcos? ¡Cuando pueden ", "&7ser Ametralladoras!" }),
@@ -296,7 +290,7 @@ public class DaysBlazer implements PowerItem, Listener {
 
 						if (e.getItem().getType() == Material.BOW){
 							e.getPlayer().setItemInHand(null);
-							e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ITEM_BREAK, 10, 1);
+							e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 10, 1);
 						}
 							
 
@@ -329,12 +323,11 @@ public class DaysBlazer implements PowerItem, Listener {
 
 							e.setCancelled(true);
 
-							player.getWorld().playSound(player.getLocation(), Sound.CAT_MEOW, 10, 1);
+							player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CAT_PURREOW, 10, 1);
 
 							FlameEffect ef = new FlameEffect(Skywars.effectmanager);
 
 							ef.visibleRange = 300;
-							ef.particle = ParticleEffect.HEART;
 							ef.iterations = 1;
 							ef.delay = 0;
 							ef.speed = 1;
@@ -398,9 +391,9 @@ public class DaysBlazer implements PowerItem, Listener {
 
 						for (Player p : Bukkit.getOnlinePlayers()) {
 
-							p.playSound(p.getLocation(), Sound.BURP, 10, -10);
-							p.playSound(p.getLocation(), Sound.FALL_BIG, 10, -10);
-							p.playSound(p.getLocation(), Sound.EXPLODE, 10, -10);
+							p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 10, -10);
+							p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_BIG_FALL, 10, -10);
+							p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, -10);
 
 						}
 
@@ -412,7 +405,7 @@ public class DaysBlazer implements PowerItem, Listener {
 
 						for (Player p : Bukkit.getOnlinePlayers()) {
 
-							p.playSound(p.getLocation(), Sound.NOTE_PIANO, 10, -10);
+							p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 10, -10);
 
 						}
 
@@ -426,7 +419,7 @@ public class DaysBlazer implements PowerItem, Listener {
 
 						for (Player p : Bukkit.getOnlinePlayers()) {
 
-							p.playSound(p.getLocation(), Sound.NOTE_PIANO, 10, -10);
+							p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 10, -10);
 
 						}
 
@@ -458,7 +451,7 @@ public class DaysBlazer implements PowerItem, Listener {
 
 						if (fb.hasMetadata("SKYCHEST")) {
 
-							fb.getWorld().playSound(fb.getLocation(), Sound.ZOMBIE_WOODBREAK, 30, 10);
+							fb.getWorld().playSound(fb.getLocation(), Sound.BLOCK_WOOD_BREAK, 30, 10);
 							fb.remove();
 
 							Block b = e.getBlock();
@@ -738,7 +731,7 @@ public class DaysBlazer implements PowerItem, Listener {
 	public void stop() {
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			player.playSound(player.getLocation(), Sound.ENDERDRAGON_GROWL, 5, 2);
+			player.playSound(player.getLocation(), Sound.ENTITY_ENDERDRAGON_GROWL, 5, 2);
 		}
 
 		Bukkit.broadcastMessage("");

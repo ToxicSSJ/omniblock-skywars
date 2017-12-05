@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
 
+import net.omniblock.network.library.helpers.effectlib.effect.ExplodeEffect;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
@@ -39,7 +40,6 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.NumberUtil;
-import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 
 public class Meteoro implements ItemType, Listener {
 
@@ -81,7 +81,8 @@ public class Meteoro implements ItemType, Listener {
 							for (Player p : player.getWorld().getEntitiesByClass(Player.class)) {
 								if (SoloPlayerManager.getPlayersInGameList().contains(p)) {
 									if (CameraUtil.getLookingAt(player, p)) {
-										targetplayer = p;
+										if(player.hasLineOfSight(p))
+											targetplayer = p;
 									}
 								}
 							}
@@ -98,6 +99,7 @@ public class Meteoro implements ItemType, Listener {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void explode(EntityChangeBlockEvent e) {
 		if (e.getEntity() instanceof FallingBlock) {
@@ -110,7 +112,7 @@ public class Meteoro implements ItemType, Listener {
 
 				e.setCancelled(true);
 				fb.getWorld().playEffect(fb.getLocation(), Effect.EXPLOSION, 4);
-				fb.getWorld().playSound(fb.getLocation(), Sound.EXPLODE, 2, 10);
+				fb.getWorld().playSound(fb.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2, 10);
 
 				if (METEORO_OWNER.containsKey(fb)) {
 					damager = METEORO_OWNER.get(fb);
@@ -256,8 +258,8 @@ public class Meteoro implements ItemType, Listener {
 
 							soundend = true;
 
-							loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.EXPLODE, 15, -5);
-							loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.PISTON_RETRACT, 15, -15);
+							loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 15, -5);
+							loc.getWorld().playSound(loc.getBlock().getLocation(), Sound.BLOCK_PISTON_CONTRACT, 15, -15);
 
 							ExplodeEffect ef = new ExplodeEffect(Skywars.effectmanager);
 							ef.visibleRange = 300;
@@ -286,12 +288,12 @@ public class Meteoro implements ItemType, Listener {
 									Effect.FIREWORKS_SPARK, 4);
 
 							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(),
-									Sound.PISTON_EXTEND, 10, -15);
-							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.BLAZE_HIT,
+									Sound.BLOCK_PISTON_EXTEND, 10, -15);
+							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.ENTITY_BLAZE_HURT,
 									10, -15);
-							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.LAVA_POP,
+							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.BLOCK_LAVA_POP,
 									10, -15);
-							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.EXPLODE,
+							exterminator.getLocation().getWorld().playSound(exterminator.getLocation(), Sound.ENTITY_GENERIC_EXPLODE,
 									10, 10);
 
 						}
@@ -307,9 +309,9 @@ public class Meteoro implements ItemType, Listener {
 									destructor.add(b);
 
 									exterminator.getLocation().getWorld().playSound(exterminator.getLocation(),
-											Sound.COW_WALK, 15, -15);
+											Sound.ENTITY_COW_STEP, 15, -15);
 									exterminator.getLocation().getWorld().playSound(exterminator.getLocation(),
-											Sound.EXPLODE, 15, -25);
+											Sound.ENTITY_GENERIC_EXPLODE, 15, -25);
 
 									b.setType(Material.AIR);
 
@@ -320,9 +322,9 @@ public class Meteoro implements ItemType, Listener {
 									exterminator.remove();
 
 									exterminator.getLocation().getWorld().playSound(exterminator.getLocation(),
-											Sound.FIZZ, 15, -5);
+											Sound.ENTITY_CREEPER_PRIMED, 15, -5);
 									exterminator.getLocation().getWorld().playSound(exterminator.getLocation(),
-											Sound.EXPLODE, 15, 15);
+											Sound.ENTITY_GENERIC_EXPLODE, 15, 15);
 
 									continue;
 

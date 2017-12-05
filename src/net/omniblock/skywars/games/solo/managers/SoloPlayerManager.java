@@ -74,6 +74,7 @@ public class SoloPlayerManager {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void healPlayer(Player p) {
 
 		p.setExp(0);
@@ -137,6 +138,7 @@ public class SoloPlayerManager {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean addPlayer(Player p) {
 
 		if (Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
@@ -157,7 +159,7 @@ public class SoloPlayerManager {
 
 			p.spigot().setCollidesWithEntities(true);
 			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
-			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
+			p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
 
 			p.setGameMode(GameMode.ADVENTURE);
 
@@ -227,7 +229,6 @@ public class SoloPlayerManager {
 
 			emptyPlayer(player);
 			
-			System.out.println("ct -> "+ cagetype.name());
 			Location cageLocation = cageLocations.get(i);
 
 			CageManager.registerCage(cagetype, cageLocation);

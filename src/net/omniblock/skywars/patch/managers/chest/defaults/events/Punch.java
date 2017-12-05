@@ -69,11 +69,11 @@ public class Punch implements ItemType, Listener {
 									if (DELAY == 5) {
 										cancel();
 									} else {
-										playerdamage.playSound(playerdamage.getLocation(), Sound.FIREWORK_LARGE_BLAST,
+										playerdamage.playSound(playerdamage.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST,
 												5, 1);
-										playerdamage.playSound(playerdamage.getLocation(), Sound.FIREWORK_LARGE_BLAST2,
+										playerdamage.playSound(playerdamage.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR,
 												5, 1);
-										playerdamage.playSound(playerdamage.getLocation(), Sound.FIREWORK_TWINKLE2, 5,
+										playerdamage.playSound(playerdamage.getLocation(), Sound.ENTITY_FIREWORK_TWINKLE, 5,
 												1);
 										DELAY++;
 									}

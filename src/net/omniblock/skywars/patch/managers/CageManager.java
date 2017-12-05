@@ -37,10 +37,10 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 
+import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
-import net.omniblock.skywars.util.ParticleEffect;
 import net.omniblock.skywars.util.ResourceExtractor;
 import net.omniblock.skywars.util.Schematic;
 
@@ -442,7 +442,7 @@ public class CageManager {
 		}
 
 		for (Player p: Bukkit.getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.EXPLODE, 1F, 1F);
+			p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1F, 1F);
 			ParticleEffect.LAVA.display(0.5F, 0.5F, 0.5F, 1F, 20, p.getLocation(), 20D);
 		}
 

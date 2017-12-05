@@ -3,21 +3,33 @@ package net.omniblock.skywars.patch.managers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
+import net.omniblock.network.systems.rank.RankManager;
+import net.omniblock.network.systems.rank.type.RankType;
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
+import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.SkywarsGameState;
+import net.omniblock.skywars.games.solo.SoloSkywarsRunnable;
+import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
+import net.omniblock.skywars.games.teams.TeamSkywarsRunnable;
 
 public class CommandManager implements CommandExecutor {
 
 	protected List<Player> voted_players = new ArrayList<Player>();
+	
+	protected boolean testmode = false;
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -59,6 +71,55 @@ public class CommandManager implements CommandExecutor {
 				}
 					
 				sender.sendMessage(TextUtil.format("&cHa ocurrido un error mientras se procesaba el voto. &4&l#305"));
+				return false;
+				
+			}
+			
+			if(cmd.getName().equalsIgnoreCase("gen_command_test")){
+				
+				Player player = (Player) sender;
+				RankType rank = RankBase.getRank(player);
+				
+				if(rank == RankType.CEO || rank == RankType.ADMIN) {
+					
+					if(testmode == true) {
+						
+						player.sendMessage(TextUtil.format("&cERROR &8&m-- &6El modo testeo ya está activado."));
+						return true;
+						
+					}
+					
+					if(Skywars.getGameState() != SkywarsGameState.IN_GAME) {
+						
+						player.sendMessage(TextUtil.format("&cERROR &8&m-- &6Debes esperar a que el juego se encuentre en modo &8IN_GAME&6."));
+						return true;
+						
+					}
+					
+					Bukkit.broadcastMessage(TextUtil.format("&6&lMODO PRUEBAS ACTIVADO:"));
+					Bukkit.broadcastMessage(TextUtil.format("   &7Jugadores Implicados:"));
+					
+					for(Player p : Bukkit.getOnlinePlayers()) {
+						
+						Bukkit.broadcastMessage(TextUtil.format("    &8 - &a" + p.getName()));
+						
+						RankManager.attachments.get(p).setPermission("bukkit.command.gamemode", true);
+						p.setGameMode(GameMode.SURVIVAL);
+						
+						SoloPlayerManager.forceFly(p);
+						
+					}
+					
+					SoloSkywarsRunnable.EVENTS.clear();
+					SoloSkywarsRunnable.EVENTS.put(TextUtil.format("&b&lPRUEBAS:"), 90000);
+					
+					TeamSkywarsRunnable.EVENTS.clear();
+					TeamSkywarsRunnable.EVENTS.put(TextUtil.format("&b&lPRUEBAS:"), 90000);
+					
+					return true;
+					
+				}
+				
 				return false;
 				
 			}

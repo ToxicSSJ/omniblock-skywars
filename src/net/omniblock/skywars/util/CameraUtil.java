@@ -102,7 +102,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 			player.teleport((Location) tps.get(0));
 			player.setFlying(true);
 
-			player.playSound(player.getLocation(), Sound.GHAST_CHARGE, 5, -15);
+			player.playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 5, -15);
 			travelling.add(player.getUniqueId());
 
 			org.bukkit.Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Skywars.getInstance(), new Runnable() {
@@ -218,7 +218,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 				player.teleport((Location) tps.get(0));
 				player.setFlying(true);
 
-				player.playSound(player.getLocation(), Sound.GHAST_CHARGE, 5, -15);
+				player.playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 5, -15);
 				travelling.add(player.getUniqueId());
 
 				org.bukkit.Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Skywars.getInstance(),
@@ -247,7 +247,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 								} else {
 									CameraUtil.travelling.remove(player.getUniqueId());
 
-									player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 5, -5);
+									player.playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 5, -5);
 									SoloPlayerManager.forceRemoveFly(player);
 
 									platform.setType(m);
@@ -337,7 +337,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 			player.teleport((Location) tps.get(0));
 			player.setFlying(true);
 
-			player.playSound(player.getLocation(), Sound.GHAST_CHARGE, 5, -15);
+			player.playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 5, -15);
 			travelling.add(player.getUniqueId());
 
 			org.bukkit.Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Skywars.getInstance(), new Runnable() {
@@ -365,7 +365,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 					} else {
 						CameraUtil.travelling.remove(player.getUniqueId());
 
-						player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 5, -5);
+						player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 5, -5);
 						SoloPlayerManager.forceRemoveFly(player);
 
 						platform.setType(m);

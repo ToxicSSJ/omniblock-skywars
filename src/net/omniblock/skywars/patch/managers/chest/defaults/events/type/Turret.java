@@ -172,29 +172,29 @@ public interface Turret {
 						switch (turret.getEntity().getType()) {
 						case GUARDIAN:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.IRONGOLEM_HIT, 5, -10);
+									Sound.ENTITY_IRONGOLEM_HURT, 5, -10);
 							Guardian g = (Guardian) turret.getEntity();
 							g.damage(0.01);
 							break;
 						case VILLAGER:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.VILLAGER_HIT, 5, -5);
+									Sound.ENTITY_VILLAGER_HURT, 5, -5);
 							Villager v = (Villager) turret.getEntity();
 							v.damage(0.01);
 							break;
 						case PIG_ZOMBIE:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.ZOMBIE_PIG_HURT, 5, -5);
+									Sound.ENTITY_ZOMBIE_PIG_HURT, 5, -5);
 							PigZombie pz = (PigZombie) turret.getEntity();
 							pz.damage(0.01);
 							break;
 						case SNOWMAN:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.WOLF_SHAKE, 5, -20);
+									Sound.ENTITY_WOLF_SHAKE, 5, -20);
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.SKELETON_HURT, 5, -20);
+									Sound.ENTITY_SKELETON_HURT, 5, -20);
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.COW_HURT, 5, -20);
+									Sound.ENTITY_COW_HURT, 5, -20);
 							Snowman sm = (Snowman) turret.getEntity();
 							sm.damage(0.01);
 							break;
@@ -224,29 +224,29 @@ public interface Turret {
 						switch (turret.getEntity().getType()) {
 						case GUARDIAN:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.IRONGOLEM_HIT, 5, -10);
+									Sound.ENTITY_IRONGOLEM_HURT, 5, -10);
 							Guardian g = (Guardian) turret.getEntity();
 							g.damage(0.01);
 							break;
 						case VILLAGER:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.VILLAGER_HIT, 5, -5);
+									Sound.ENTITY_VILLAGER_HURT, 5, -5);
 							Villager v = (Villager) turret.getEntity();
 							v.damage(0.01);
 							break;
 						case PIG_ZOMBIE:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.ZOMBIE_PIG_HURT, 5, -5);
+									Sound.ENTITY_ZOMBIE_PIG_HURT, 5, -5);
 							PigZombie pz = (PigZombie) turret.getEntity();
 							pz.damage(0.01);
 							break;
 						case SNOWMAN:
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.WOLF_SHAKE, 5, -20);
+									Sound.ENTITY_WOLF_SHAKE, 5, -20);
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.SKELETON_HURT, 5, -20);
+									Sound.ENTITY_SKELETON_HURT, 5, -20);
 							turret.getEntity().getLocation().getWorld().playSound(turret.getEntity().getLocation(),
-									Sound.COW_HURT, 5, -20);
+									Sound.ENTITY_COW_HURT, 5, -20);
 							Snowman sm = (Snowman) turret.getEntity();
 							sm.damage(0.01);
 							break;
@@ -312,6 +312,7 @@ public interface Turret {
 			ArmorStand s1 = null;
 			ArmorStand s2 = null;
 
+			@SuppressWarnings("deprecation")
 			public void setDefaults(TurretType turrettype, Block block) {
 
 				b = block;
@@ -345,6 +346,7 @@ public interface Turret {
 
 			}
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 
@@ -358,7 +360,7 @@ public interface Turret {
 
 						b.setType(Material.AIR);
 
-						b.getWorld().playSound(l, Sound.BAT_TAKEOFF, 5, 1);
+						b.getWorld().playSound(l, Sound.ENTITY_BAT_TAKEOFF, 5, 1);
 						b.getWorld().playSound(l, tt.getBuildsound(), 5, 1);
 
 						b.getWorld().playEffect(l, Effect.LAVA_POP, 2);
@@ -373,7 +375,7 @@ public interface Turret {
 						s2.setCustomName(TextUtil.format("§e" + new DecimalFormat("#.###").format(percent) + "%"));
 						if (round == 5) {
 							round = 1;
-							l.getWorld().playSound(l, Sound.CLICK, 5, pitch);
+							l.getWorld().playSound(l, Sound.UI_BUTTON_CLICK, 5, pitch);
 							pitch++;
 						} else {
 							round++;
@@ -463,6 +465,7 @@ public interface Turret {
 			return 1;
 		}
 
+		@SuppressWarnings("deprecation")
 		public static void explodeTower(TurretType tt, Location l) {
 
 			Sound explosion_sound = null;
@@ -470,12 +473,12 @@ public interface Turret {
 			short explosion_data = 0;
 
 			l.getWorld().playEffect(l, Effect.EXPLOSION_HUGE, 4);
-			l.getWorld().playSound(l, Sound.EXPLODE, 10, 4);
+			l.getWorld().playSound(l, Sound.ENTITY_GENERIC_EXPLODE, 10, 4);
 
 			switch (tt) {
 			case LASER_TURRET:
 
-				explosion_sound = Sound.HORSE_SADDLE;
+				explosion_sound = Sound.ENTITY_HORSE_SADDLE;
 				explosion_mat = Material.INK_SACK;
 				explosion_data = 1;
 				break;

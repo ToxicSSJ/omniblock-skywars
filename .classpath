@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Gitlab/SPIGOT_1_8.jar"/>
 	<classpathentry kind="lib" path="C:/Gitlab/WorldEdit_1_8.jar"/>
 	<classpathentry kind="lib" path="C:/Gitlab/Citizens.jar"/>
 	<classpathentry kind="lib" path="C:/Gitlab/ProtocolLib.jar"/>
@@ -9,5 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/OmniNetwork Burn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OmniPackets"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Omniblock-Lobbies"/>
+	<classpathentry kind="lib" path="C:/Gitlab/SPIGOT_1_12_2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

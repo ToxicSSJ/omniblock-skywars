@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import net.omniblock.network.library.helpers.effectlib.effect.ExplodeEffect;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
@@ -27,10 +28,10 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
-import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 
 public class ThorA implements ItemType, Listener {
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	@Override
 	public void ThorAxe(PlayerInteractEvent event) {
@@ -67,7 +68,8 @@ public class ThorA implements ItemType, Listener {
 								if ((SoloPlayerManager.getPlayersInGameList().contains(p)
 										|| TeamPlayerManager.getPlayersInGameList().contains(p))) {
 									if (CameraUtil.getLookingAt(player, p)) {
-										targetplayer = p;
+										if(player.hasLineOfSight(p))
+											targetplayer = p;
 									}
 								}
 							}

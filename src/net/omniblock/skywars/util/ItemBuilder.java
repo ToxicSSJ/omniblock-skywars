@@ -25,6 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -211,6 +213,27 @@ public class ItemBuilder {
 		return this;
 	}
 
+	@SuppressWarnings("deprecation")
+	public ItemBuilder setMapRenderer(MapRenderer renderer) {
+		
+		if(material == Material.MAP || material == Material.EMPTY_MAP) {
+			
+			MapView view = Bukkit.getMap(this.getDurability());
+			
+			Iterator<MapRenderer> iter = view.getRenderers().iterator();
+			
+			while(iter.hasNext()){
+                view.removeRenderer(iter.next());
+            }
+			
+			view.addRenderer(renderer);
+			
+		}
+		
+		return this;
+		
+	}
+	
 	public ItemBuilder hideAtributes() {
 		final ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -410,6 +433,7 @@ public class ItemBuilder {
 	 * @param unbreakable
 	 *            If it should be unbreakable
 	 */
+	@SuppressWarnings("deprecation")
 	public ItemBuilder unbreakable(boolean unbreakable) {
 		meta.spigot().setUnbreakable(unbreakable);
 		return this;

@@ -117,6 +117,7 @@ public class TeamPlayerManager {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void healPlayer(Player p) {
 
 		p.setExp(0);
@@ -201,10 +202,11 @@ public class TeamPlayerManager {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean addPlayer(Player p) {
 
 		if (Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
-
+			
 			Bukkit.broadcastMessage(
 					TextUtil.format("&8&lS&8istema &9&l» &7El jugador &a" + RankBase.getRank(p).getCustomName(p, 'a')
 							+ "&7 ha ingresado a la partida. (" + (TeamPlayerManager.getPlayersInLobbyAmount() + 1)
@@ -221,7 +223,7 @@ public class TeamPlayerManager {
 
 			p.spigot().setCollidesWithEntities(true);
 			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
-			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
+			p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
 
 			p.setGameMode(GameMode.ADVENTURE);
 

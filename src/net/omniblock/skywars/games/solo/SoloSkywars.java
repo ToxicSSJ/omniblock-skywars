@@ -37,7 +37,6 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerLineManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
@@ -110,7 +109,6 @@ public class SoloSkywars implements SkywarsStarter {
 		 */
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		SoloPlayerScoreboardManager.initialize();
-		SoloPlayerLineManager.initialize();
 
 		/*
 		 * Online Player Add-Adder
@@ -210,8 +208,8 @@ public class SoloSkywars implements SkywarsStarter {
 		}
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);
-			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);
+			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
+			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
 		}
 
 		new BukkitRunnable() {
@@ -247,8 +245,8 @@ public class SoloSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, -10);
 				}
 
 				if (win) {
@@ -355,8 +353,8 @@ public class SoloSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, -10);
 				}
 
 				for (Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
@@ -414,7 +412,7 @@ public class SoloSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.HORSE_SADDLE, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_HORSE_SADDLE, 10, -10);
 				}
 
 				for (Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
@@ -567,9 +565,7 @@ public class SoloSkywars implements SkywarsStarter {
 	public static void initializeReset() {
 
 		SoloSkywarsRunnable.EVENTS.clear();
-
 		SoloPlayerScoreboardManager.sbrunnable.cancel();
-		SoloPlayerLineManager.sbrunnable.cancel();
 
 		SoloPlayerToggleListener.Verifier = false;
 

@@ -6,11 +6,12 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 
-import net.omniblock.network.library.helpers.Scan;
+import net.omniblock.skywars.patch.managers.MapManager;
+import net.omniblock.skywars.patch.managers.MapManager.ScanType;
+import net.omniblock.skywars.patch.types.MatchType;
 
 public class ChestGetterHandler {
 
@@ -62,14 +63,48 @@ public class ChestGetterHandler {
 
 	@SuppressWarnings("deprecation")
 	public Map < Chest,
-	ChestType > getChests(World world) {
+	ChestType > getChests(MatchType match) {
 
 		Map < Chest,
 		ChestType > chests = new HashMap < Chest,
 		ChestType > ();
 
-		List < Location > locs = Scan.oneMaterial(world, Material.CHEST);
+		if(match == MatchType.NORMAL || match == MatchType.INSANE) {
+			
+			List<Location> locs = MapManager.NORMAL_MULTIPLE_LOCS_SCAN.get(ScanType.NORMAL_CHESTS);
+			
+			for (Location loc: locs) {
 
+				Chest chest = (Chest) loc.getBlock().getState();
+				ChestType type = ChestType.getByChest(chest);
+
+				chest.getInventory().clear();
+
+				chests.put(chest, type);
+
+			}
+			
+			 MapManager.NORMAL_MULTIPLE_LOCS_SCAN.get(ScanType.IMPROVED_CHESTS).stream().forEach(k -> {
+
+				Block block = k.getBlock();
+				byte data = block.getData();
+
+				block.setType(Material.CHEST);
+				block.setData(data);
+
+				block.getLocation().getChunk().load(true);
+
+				Chest chest = (Chest) block.getState();
+				chest.getInventory().clear();
+
+				chests.put(chest, ChestType.MEGA_CHEST);
+
+			});
+			
+		}
+		
+		List<Location> locs = MapManager.Z_MULTIPLE_LOCS_SCAN.get(ScanType.NORMAL_CHESTS);
+		
 		for (Location loc: locs) {
 
 			Chest chest = (Chest) loc.getBlock().getState();
@@ -80,8 +115,8 @@ public class ChestGetterHandler {
 			chests.put(chest, type);
 
 		}
-
-		Scan.oneMaterial(world, Material.TRAPPED_CHEST).stream().forEach(k -> {
+		
+		 MapManager.Z_MULTIPLE_LOCS_SCAN.get(ScanType.IMPROVED_CHESTS).stream().forEach(k -> {
 
 			Block block = k.getBlock();
 			byte data = block.getData();

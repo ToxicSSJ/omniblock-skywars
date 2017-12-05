@@ -96,7 +96,7 @@ public class LobbyManager implements Listener {
 		}
 
 	}
-
+	
 	public static void start() {
 
 		CommandManager executor = new CommandManager();
@@ -105,7 +105,8 @@ public class LobbyManager implements Listener {
 				"salir",
 				"leave",
 				"hub",
-				"gen_command_vote"
+				"gen_command_vote",
+				"gen_command_test"
 		};
 		
 		for(String command : commands){
@@ -259,7 +260,7 @@ public class LobbyManager implements Listener {
 								@Override
 								public void click(ClickType click, Player player) {
 
-									player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+									player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 									time(player);
 
 									return;
@@ -295,7 +296,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -307,7 +308,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.MORE_INSANE_ITEMS);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -350,7 +351,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -362,7 +363,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.CONTAMINATION);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -403,7 +404,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -415,7 +416,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.NONE);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -543,7 +544,7 @@ public class LobbyManager implements Listener {
 										@Override
 										public void click(ClickType click, Player player) {
 
-											player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+											player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 											itemclick.click(player);
 											return;
 
@@ -570,7 +571,7 @@ public class LobbyManager implements Listener {
 
 										player.closeInventory();
 
-										player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 										player.sendMessage(TextUtil.format("&cYa has votado por este tipo de tiempo!"));
 
 										return;
@@ -581,7 +582,7 @@ public class LobbyManager implements Listener {
 									PowerItem.player_votes.get(player).add(pt);
 
 									for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-										p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+										p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 									}
 
 									Skywars.getInstance().getServer()
@@ -629,7 +630,7 @@ public class LobbyManager implements Listener {
 								@Override
 								public void click(ClickType click, Player player) {
 
-									player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+									player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 									time(player);
 
 									return;
@@ -665,7 +666,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -678,7 +679,7 @@ public class LobbyManager implements Listener {
 														.add(PowerItemType.MORE_LEGENDARY_ITEMS);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -720,7 +721,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -732,7 +733,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.DAYS_BLAZER);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -773,7 +774,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -785,7 +786,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.NONE);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -913,7 +914,7 @@ public class LobbyManager implements Listener {
 										@Override
 										public void click(ClickType click, Player player) {
 
-											player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+											player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 											itemclick.click(player);
 											return;
 
@@ -940,7 +941,7 @@ public class LobbyManager implements Listener {
 
 										player.closeInventory();
 
-										player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 										player.sendMessage(TextUtil.format("&cYa has votado por este tipo de tiempo!"));
 
 										return;
@@ -951,7 +952,7 @@ public class LobbyManager implements Listener {
 									PowerItem.player_votes.get(player).add(pt);
 
 									for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-										p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+										p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 									}
 
 									Skywars.getInstance().getServer()

@@ -68,7 +68,8 @@ public class ThorI implements ItemType, Listener {
 								if ((SoloPlayerManager.getPlayersInGameList().contains(p)
 										|| TeamPlayerManager.getPlayersInGameList().contains(p))) {
 									if (CameraUtil.getLookingAt(player, p)) {
-										targetplayer = p;
+										if(player.hasLineOfSight(p))
+											targetplayer = p;
 									}
 								}
 							}

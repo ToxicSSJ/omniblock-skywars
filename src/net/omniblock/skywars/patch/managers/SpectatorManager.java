@@ -46,6 +46,7 @@ public class SpectatorManager {
 		return playersSpectators;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void addPlayerToSpectator(Player p) {
 
 		playersSpectators.add(p);
@@ -84,6 +85,7 @@ public class SpectatorManager {
 
 				new ItemExecutor() {
 
+					@SuppressWarnings("deprecation")
 					@Override
 					public void execute(Player player) {
 
@@ -156,7 +158,7 @@ public class SpectatorManager {
 
 										}
 
-										player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 2, -5);
 										player.sendMessage(TextUtil.format("&cEl jugador ya murió."));
 										return;
 
@@ -166,7 +168,7 @@ public class SpectatorManager {
 
 								pos_x = pos_arr.get(round);
 
-								player.playSound(player.getLocation(), Sound.CLICK, 2, -5);
+								player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, -5);
 								ib.open(player);
 
 							}
@@ -224,7 +226,7 @@ public class SpectatorManager {
 					@Override
 					public void execute(Player player) {
 
-						player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 2, -5);
 						player.sendMessage(TextUtil.format("&6Proximamente..."));
 						return;
 
@@ -299,7 +301,7 @@ public class SpectatorManager {
 							@Override
 							public void click(ClickType click, Player player) {
 
-								player.playSound(player.getLocation(), Sound.CLICK, 2, 15);
+								player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 15);
 								player.removePotionEffect(PotionEffectType.SPEED);
 
 								SpectatorItem.SETTINGS.executor.execute(player);
@@ -313,7 +315,7 @@ public class SpectatorManager {
 							@Override
 							public void click(ClickType click, Player player) {
 
-								player.playSound(player.getLocation(), Sound.CLICK, 2, 15);
+								player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 15);
 
 								player.removePotionEffect(PotionEffectType.SPEED);
 								player.addPotionEffect(
@@ -330,7 +332,7 @@ public class SpectatorManager {
 							@Override
 							public void click(ClickType click, Player player) {
 
-								player.playSound(player.getLocation(), Sound.CLICK, 2, 15);
+								player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 15);
 
 								player.removePotionEffect(PotionEffectType.SPEED);
 								player.addPotionEffect(
@@ -347,7 +349,7 @@ public class SpectatorManager {
 							@Override
 							public void click(ClickType click, Player player) {
 
-								player.playSound(player.getLocation(), Sound.CLICK, 2, 15);
+								player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 15);
 
 								player.removePotionEffect(PotionEffectType.SPEED);
 								player.addPotionEffect(
@@ -364,7 +366,7 @@ public class SpectatorManager {
 							@Override
 							public void click(ClickType click, Player player) {
 
-								player.playSound(player.getLocation(), Sound.DRINK, 2, -5);
+								player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_DRINK, 2, -5);
 
 								for (PotionEffect pe : player.getActivePotionEffects()) {
 									player.removePotionEffect(pe.getType());
@@ -383,7 +385,7 @@ public class SpectatorManager {
 								@Override
 								public void click(ClickType click, Player player) {
 
-									player.playSound(player.getLocation(), Sound.CLICK, 2, -5);
+									player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, -5);
 									player.removePotionEffect(PotionEffectType.NIGHT_VISION);
 
 									SpectatorItem.SETTINGS.executor.execute(player);
@@ -399,7 +401,7 @@ public class SpectatorManager {
 								@Override
 								public void click(ClickType click, Player player) {
 
-									player.playSound(player.getLocation(), Sound.CLICK, 2, -5);
+									player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, -5);
 
 									player.removePotionEffect(PotionEffectType.NIGHT_VISION);
 									player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
@@ -429,7 +431,7 @@ public class SpectatorManager {
 					@Override
 					public void execute(Player player) {
 
-						player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 2, -5);
 						player.sendMessage(TextUtil.format("&bEnviandote a otra partida..."));
 
 						Packets.STREAMER.streamPacket(new PlayerSendToGamePacket()
@@ -453,7 +455,7 @@ public class SpectatorManager {
 					@Override
 					public void execute(Player player) {
 
-						player.playSound(player.getLocation(), Sound.NOTE_BASS, 2, -5);
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 2, -5);
 						player.sendMessage(TextUtil.format("&9Volviendo al lobby."));
 
 						Packets.STREAMER.streamPacket(new PlayerSendToServerPacket()
