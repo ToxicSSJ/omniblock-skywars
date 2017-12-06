@@ -1,6 +1,5 @@
 package net.omniblock.skywars.patch.managers.chest.defaults.events;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -31,6 +29,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import net.omniblock.network.library.helpers.effectlib.effect.ExplodeEffect;
+import net.omniblock.network.library.helpers.effectlib.effect.SkyRocketEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -52,21 +52,18 @@ import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
-import net.omniblock.skywars.util.base64.PlayerInventory64;
 import net.omniblock.skywars.util.block.SpawnBlock;
-import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
-import net.omniblock.skywars.util.effectlib.effect.SkyRocketEffect;
 
 public class Bombardier implements ItemType, Listener {
 
 	public static Map<Entity, Player> BOMBARDIER_OWNER = new HashMap<Entity, Player>();
-
-	Map<Player, String[]> SAVED_INVENTORY = new HashMap<Player, String[]>();
+	
 	Map<Player, PlayerSavedData> SAVED_STATUS = new HashMap<Player, PlayerSavedData>();
 
 	Map<Player, ClonData> BOMBARDIER_USE = new HashMap<Player, ClonData>();
 	Map<Player, Boolean> LAUNCHER_SYSTEM = new HashMap<Player, Boolean>();
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void launchBombardier(PlayerInteractEvent event) {
 
@@ -160,7 +157,7 @@ public class Bombardier implements ItemType, Listener {
 						TextUtil.format("&c&l¡No puedes moverte Verticalmente!"));
 				SoloPlayerManager.forceFly(e.getPlayer());
 
-				e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+				e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 2, -2);
 				e.getPlayer().teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5));
 				return;
 
@@ -260,11 +257,11 @@ public class Bombardier implements ItemType, Listener {
 
 				loc.setY(based_loc.getY());
 
-				loc.getWorld().playSound(loc, Sound.FIREWORK_LARGE_BLAST2, 20, 5);
-				loc.getWorld().playSound(loc, Sound.FIREWORK_LARGE_BLAST, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_LARGE_BLAST, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 20, 5);
 
-				loc.getWorld().playSound(loc, Sound.FIREWORK_TWINKLE, 20, 5);
-				loc.getWorld().playSound(loc, Sound.FIREWORK_TWINKLE2, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_TWINKLE, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_TWINKLE_FAR, 20, 5);
 
 				FallingBlock fb = loc.getWorld().spawnFallingBlock(loc.clone().add(0, -1, 0), Material.TNT, (byte) 0);
 
@@ -332,7 +329,7 @@ public class Bombardier implements ItemType, Listener {
 
 										launcher = true;
 
-										plane_loc.getWorld().playSound(plane_loc, Sound.BAT_TAKEOFF, 20, 5);
+										plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_BAT_TAKEOFF, 20, 5);
 
 										new BukkitRunnable() {
 
@@ -341,15 +338,11 @@ public class Bombardier implements ItemType, Listener {
 											@Override
 											public void run() {
 
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_LARGE_BLAST2,
-														20, 5);
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_LARGE_BLAST,
-														20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST, 20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 20, 5);
 
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE, 20,
-														5);
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE2, 20,
-														5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE, 20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE_FAR, 20, 5);
 
 												if (!plane.isDead()) {
 
@@ -413,7 +406,7 @@ public class Bombardier implements ItemType, Listener {
 	public void launchBomb(Player player, Location loc) {
 
 		if (BOMBARDIER_USE.containsKey(player) && LAUNCHER_SYSTEM.containsKey(player)
-				&& SAVED_INVENTORY.containsKey(player) && SAVED_STATUS.containsKey(player)) {
+				&& SAVED_STATUS.containsKey(player)) {
 
 			ClonData data = BOMBARDIER_USE.get(player);
 
@@ -422,16 +415,6 @@ public class Bombardier implements ItemType, Listener {
 				SoloPlayerManager.emptyPlayer(player);
 
 				PlayerSavedData psd = SAVED_STATUS.get(player);
-
-				Inventory psi = player.getInventory();
-				ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-				try {
-					psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-					equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 
 				Location tracker = data.getClon().getEntity().getLocation();
 				player.teleport(tracker);
@@ -448,9 +431,7 @@ public class Bombardier implements ItemType, Listener {
 				player.setExp(psd.exp);
 				player.setLevel(psd.level);
 
-				player.getInventory().setArmorContents(equipment);
-				player.getInventory().setContents(psi.getContents());
-
+				psd.apply();
 				player.updateInventory();
 
 				player.setGameMode(GameMode.SURVIVAL);
@@ -464,6 +445,9 @@ public class Bombardier implements ItemType, Listener {
 
 			} else {
 
+				PlayerSavedData psd = SAVED_STATUS.get(player);
+				
+				psd.apply();
 				player.teleport(data.getSaved());
 
 			}
@@ -523,7 +507,7 @@ public class Bombardier implements ItemType, Listener {
 
 											launcher = true;
 
-											plane_loc.getWorld().playSound(plane_loc, Sound.BAT_TAKEOFF, 20, 5);
+											plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_BAT_TAKEOFF, 20, 5);
 
 											new BukkitRunnable() {
 
@@ -532,15 +516,11 @@ public class Bombardier implements ItemType, Listener {
 												@Override
 												public void run() {
 
-													plane_loc.getWorld().playSound(plane_loc,
-															Sound.FIREWORK_LARGE_BLAST2, 20, 5);
-													plane_loc.getWorld().playSound(plane_loc,
-															Sound.FIREWORK_LARGE_BLAST, 20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST, 20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 20, 5);
 
-													plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE,
-															20, 5);
-													plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE2,
-															20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE, 20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE_FAR, 20, 5);
 
 													if (!plane.isDead()) {
 
@@ -607,7 +587,7 @@ public class Bombardier implements ItemType, Listener {
 
 	}
 
-	@SuppressWarnings("serial")
+	@SuppressWarnings({ "serial", "deprecation" })
 	public void useBombardier(Player player) {
 
 		Location tp_loc = MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
@@ -618,9 +598,7 @@ public class Bombardier implements ItemType, Listener {
 
 		ClonData data = new ClonData(player, active_loc);
 		data.makeClon();
-
-		SAVED_INVENTORY.put(player, PlayerInventory64.playerInventoryToBase64(player.getInventory(),
-				player.getInventory().getArmorContents()));
+		
 		SAVED_STATUS.put(player, new PlayerSavedData(player));
 
 		SoloPlayerManager.forceFly(player);
@@ -665,7 +643,7 @@ public class Bombardier implements ItemType, Listener {
 
 					cancel();
 
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 2, -5);
+					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2, -5);
 
 					ItemStack launcher = new ItemBuilder(Material.BLAZE_POWDER).amount(1)
 							.name(TextUtil.format("&8&lLANZAR BOMBA DE &c&lTNT")).build();
@@ -700,7 +678,6 @@ public class Bombardier implements ItemType, Listener {
 												TextUtil.format("&c&l - &7Se te ha acabado el tiempo!"));
 
 										if (BOMBARDIER_USE.containsKey(player) && LAUNCHER_SYSTEM.containsKey(player)
-												&& SAVED_INVENTORY.containsKey(player)
 												&& SAVED_STATUS.containsKey(player)) {
 
 											ClonData data = BOMBARDIER_USE.get(player);
@@ -710,17 +687,7 @@ public class Bombardier implements ItemType, Listener {
 												SoloPlayerManager.emptyPlayer(player);
 
 												PlayerSavedData psd = SAVED_STATUS.get(player);
-												Inventory psi = player.getInventory();
-												ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-												try {
-													psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-													equipment = PlayerInventory64
-															.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-												} catch (IOException e) {
-													e.printStackTrace();
-												}
-
+												
 												Location tracker = data.getClon().getEntity().getLocation();
 												player.teleport(tracker);
 
@@ -736,8 +703,7 @@ public class Bombardier implements ItemType, Listener {
 												player.setExp(psd.exp);
 												player.setLevel(psd.level);
 
-												player.getInventory().setArmorContents(equipment);
-												player.getInventory().setContents(psi.getContents());
+												psd.apply();
 												player.updateInventory();
 
 												player.setGameMode(GameMode.SURVIVAL);
@@ -745,7 +711,7 @@ public class Bombardier implements ItemType, Listener {
 												SoloPlayerManager.forceRemoveFly(player);
 
 												SoundPlayer.stopSound(player);
-												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+												player.playSound(player.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 2, -2);
 
 												data.destroyClon(0);
 
@@ -759,17 +725,7 @@ public class Bombardier implements ItemType, Listener {
 												SoloPlayerManager.emptyPlayer(player);
 
 												PlayerSavedData psd = SAVED_STATUS.get(player);
-												Inventory psi = player.getInventory();
-												ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-												try {
-													psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-													equipment = PlayerInventory64
-															.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-												} catch (IOException e) {
-													e.printStackTrace();
-												}
-
+												
 												Location tracker = data.getClon().getEntity().getLocation();
 												player.teleport(tracker);
 
@@ -785,8 +741,7 @@ public class Bombardier implements ItemType, Listener {
 												player.setExp(psd.exp);
 												player.setLevel(psd.level);
 
-												player.getInventory().setArmorContents(equipment);
-												player.getInventory().setContents(psi.getContents());
+												psd.apply();
 												player.updateInventory();
 
 												player.setGameMode(GameMode.SURVIVAL);
@@ -794,7 +749,7 @@ public class Bombardier implements ItemType, Listener {
 												SoloPlayerManager.forceRemoveFly(player);
 
 												SoundPlayer.stopSound(player);
-												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+												player.playSound(player.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 2, -2);
 
 												BOMBARDIER_USE.remove(player);
 												LAUNCHER_SYSTEM.remove(player);
@@ -853,16 +808,7 @@ public class Bombardier implements ItemType, Listener {
 						SoloPlayerManager.emptyPlayer(player);
 
 						PlayerSavedData psd = SAVED_STATUS.get(player);
-						Inventory psi = player.getInventory();
-						ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-						try {
-							psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-							equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
+						
 						Location tracker = data.getClon().getEntity().getLocation();
 						player.teleport(tracker);
 
@@ -878,8 +824,7 @@ public class Bombardier implements ItemType, Listener {
 						player.setExp(psd.exp);
 						player.setLevel(psd.level);
 
-						player.getInventory().setArmorContents(equipment);
-						player.getInventory().setContents(psi.getContents());
+						psd.apply();
 						player.updateInventory();
 
 						player.setGameMode(GameMode.SURVIVAL);
@@ -887,7 +832,7 @@ public class Bombardier implements ItemType, Listener {
 						SoloPlayerManager.forceRemoveFly(player);
 
 						SoundPlayer.stopSound(player);
-						player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+						player.playSound(player.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 2, -2);
 
 						data.destroyClon(0);
 
@@ -901,16 +846,7 @@ public class Bombardier implements ItemType, Listener {
 						SoloPlayerManager.emptyPlayer(player);
 
 						PlayerSavedData psd = SAVED_STATUS.get(player);
-						Inventory psi = player.getInventory();
-						ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-						try {
-							psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-							equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
+						
 						player.removePotionEffect(PotionEffectType.INVISIBILITY);
 
 						player.setFoodLevel(psd.food);
@@ -923,8 +859,7 @@ public class Bombardier implements ItemType, Listener {
 						player.setExp(psd.exp);
 						player.setLevel(psd.level);
 
-						player.getInventory().setArmorContents(equipment);
-						player.getInventory().setContents(psi.getContents());
+						psd.apply();
 						player.updateInventory();
 
 						player.setGameMode(GameMode.SURVIVAL);
@@ -932,7 +867,7 @@ public class Bombardier implements ItemType, Listener {
 						SoloPlayerManager.forceRemoveFly(player);
 
 						SoundPlayer.stopSound(player);
-						player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
+						player.playSound(player.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 2, -2);
 
 						BOMBARDIER_USE.remove(player);
 						LAUNCHER_SYSTEM.remove(player);

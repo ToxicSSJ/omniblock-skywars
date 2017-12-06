@@ -23,8 +23,8 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.managers.MapManager.MapType;
+import net.omniblock.skywars.patch.managers.MapManager.ScanType;
 import net.omniblock.skywars.util.DebugUtil;
-import net.omniblock.skywars.util.Scan;
 
 @SuppressWarnings("deprecation")
 public class LobbySchematic {
@@ -47,45 +47,34 @@ public class LobbySchematic {
 		return;
 	}
 
-	public void scanAndPasteLobbySchematic(World world, MapType mt) {
+	public void pasteLobbySchematic(MapType mt) {
+		
+		if (mt == MapType.NORMAL) {
 
-		Location matchedBlocks = Scan.singleBlock(world, Material.BEDROCK);
-		if (matchedBlocks != null) {
+			Block block = MapManager.NORMAL_SINGLE_LOCS_SCAN.get(ScanType.SPAWN_SCHEMATIC).getBlock();
+			
+			block.setType(Material.AIR);
+			block.getRelative(0, 1, 0).setType(Material.AIR);
 
-			Block bl = matchedBlocks.getBlock();
-
-			if (bl.getRelative(0, 1, 0).getType() == Material.WOOD_PLATE) {
-
-				if (mt == MapType.NORMAL) {
-
-					bl.setType(Material.AIR);
-					bl.getRelative(0, 1, 0).setType(Material.AIR);
-
-					LOCATION_LOBBYSCHEMATIC_NORMAL = matchedBlocks;
-					LOBBYSCHEMATIC_NORMAL = paste(LOCATION_LOBBYSCHEMATIC_NORMAL.toVector(), world, mt);
-
-				} else if (mt == MapType.Z) {
-
-					bl.setType(Material.AIR);
-					bl.getRelative(0, 1, 0).setType(Material.AIR);
-
-					LOCATION_LOBBYSCHEMATIC_Z = matchedBlocks;
-					LOBBYSCHEMATIC_Z = paste(LOCATION_LOBBYSCHEMATIC_Z.toVector(), world, mt);
-
-				}
-
-				bl.getRelative(0, 1, 0).setType(Material.AIR);
-				return;
-
-			}
-
-		} else {
-
-			DebugUtil.debugSevere("ERROR - El mapa: " + world.getName()
-					+ " no tiene la (bedrock + placa de madera) para definir el lobby!");
+			LOCATION_LOBBYSCHEMATIC_NORMAL = block.getLocation();
+			LOBBYSCHEMATIC_NORMAL = paste(LOCATION_LOBBYSCHEMATIC_NORMAL.toVector(), block.getWorld(), mt);
 			return;
+			
+		} else if (mt == MapType.Z) {
 
+			Block block = MapManager.Z_SINGLE_LOCS_SCAN.get(ScanType.SPAWN_SCHEMATIC).getBlock();
+			
+			block.setType(Material.AIR);
+			block.getRelative(0, 1, 0).setType(Material.AIR);
+
+			LOCATION_LOBBYSCHEMATIC_Z = block.getLocation();
+			LOBBYSCHEMATIC_Z = paste(LOCATION_LOBBYSCHEMATIC_Z.toVector(), block.getWorld(), mt);
+			return;
+			
 		}
+		
+		DebugUtil.debugSevere("ERROR - Un mapa cargado no tiene la (bedrock + placa de madera) para definir el lobby!");
+		return;
 
 	}
 

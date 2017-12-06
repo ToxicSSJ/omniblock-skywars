@@ -20,6 +20,7 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 
 public class Potion implements ItemType, Listener {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	@EventHandler
 	public void HealPot(PlayerInteractEvent event) {
@@ -55,9 +56,9 @@ public class Potion implements ItemType, Listener {
 							}
 
 							player.getInventory().setItemInHand(null);
-							player.playSound(player.getLocation(), Sound.DRINK, 3, -30);
-							player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 3, -30);
-							player.playSound(player.getLocation(), Sound.VILLAGER_YES, 2, -30);
+							player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_DRINK, 3, -30);
+							player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 3, -30);
+							player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 2, -30);
 							player.setHealth(player.getMaxHealth());
 							player.setHealth((int) 4);
 							player.setFoodLevel((int) 5);
@@ -77,6 +78,7 @@ public class Potion implements ItemType, Listener {
 		new BukkitRunnable() {
 			int TIME = 0;
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				if (TIME != 40) {
@@ -84,10 +86,10 @@ public class Potion implements ItemType, Listener {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 5));
-					player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 5, 5);
+					player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 5, 5);
 
 				} else {
-					player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 2, 2);
+					player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2, 2);
 					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 2));

@@ -19,8 +19,9 @@ public enum LegendaryItemType {
 	TORRETA_CONGELADORA(new ItemBuilder(Material.NOTE_BLOCK).amount(1).name("&4&k||&r &e&lTorreta Congeladora &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Disparara bolas de").lore("&7enemigos de una manera").lore("&7rapida!").lore("").lore("&7&lCongela: &7+1 x Disparo").lore("&7&lTiempo: &7 1 seg").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.DURABILITY, 1).build()),
 	PUENTE_FUTURISTICO(
 	new ItemBuilder(Material.MELON_BLOCK).amount(1).name("&4&k||&r &e&lPuente Futuristico &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Colocalo mirando").lore("&7hacia una dirección X").lore("&7crearas un puente donde").lore("&7solo tu podrás pasar!").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.DURABILITY, 1).build()),
+	@SuppressWarnings("deprecation")
 	BOLA_CONGELACEREBROS(
-	new ItemBuilder(Material.SNOW_BALL).amount(1).name("&4&k||&r &e&lBola Congelacerebros &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7A congelar cerebros!").lore("").lore("&7&lDaño: &75❤ x Disparo").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(
+	new ItemBuilder(Material.getMaterial(2264)).amount(1).name("&4&k||&r &e&lBola Congelacerebros &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7A congelar cerebros!").lore("").lore("&7&lDaño: &75❤ x Disparo").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(
 	Enchantment.DURABILITY, 1).build()),
 	RAYO(
 	new ItemBuilder(

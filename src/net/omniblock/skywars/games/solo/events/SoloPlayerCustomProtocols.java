@@ -29,6 +29,7 @@ import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 
+@SuppressWarnings("deprecation")
 public class SoloPlayerCustomProtocols implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -168,7 +169,6 @@ public class SoloPlayerCustomProtocols implements Listener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void explode(EntityChangeBlockEvent e) {
 		if (e.getEntity() instanceof FallingBlock) {

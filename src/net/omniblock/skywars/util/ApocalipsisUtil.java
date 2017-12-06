@@ -89,13 +89,14 @@ public class ApocalipsisUtil {
 
 						int round = 0;
 
+						@SuppressWarnings("deprecation")
 						@Override
 						public void run() {
 
 							loc.setY(based_loc.getY());
 
-							loc.getWorld().playSound(loc, Sound.BAT_LOOP, 20, -15);
-							loc.getWorld().playSound(loc, Sound.WOLF_GROWL, 20, -20);
+							loc.getWorld().playSound(loc, Sound.ENTITY_BAT_LOOP, 20, -15);
+							loc.getWorld().playSound(loc, Sound.ENTITY_WOLF_GROWL, 20, -20);
 
 							Zombie z = loc.getWorld().spawn(loc, Zombie.class);
 

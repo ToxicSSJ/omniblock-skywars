@@ -24,6 +24,7 @@ public class ClonData {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void makeClon() {
 
 		if (player != null) {
@@ -120,7 +121,6 @@ public class ClonData {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public void targetEntiTy(Player player) {
 
 		if (clon.getNavigator().getEntityTarget() == player) {

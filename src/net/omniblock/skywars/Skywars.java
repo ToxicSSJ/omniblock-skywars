@@ -17,11 +17,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.omniblock.network.handlers.Handlers;
+import net.omniblock.network.handlers.network.NetworkManager;
 import net.omniblock.network.handlers.updater.object.Updatable;
 import net.omniblock.network.handlers.updater.type.PluginType;
+import net.omniblock.network.library.helpers.effectlib.EffectLib;
+import net.omniblock.network.library.helpers.effectlib.EffectManager;
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.GameOnlineInfoPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
+import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.skywars.games.solo.SoloSkywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.TeamSkywars;
@@ -37,8 +42,6 @@ import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.MultiLineAPI;
 import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
-import net.omniblock.skywars.util.effectlib.EffectLib;
-import net.omniblock.skywars.util.effectlib.EffectManager;
 import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
 
 public class Skywars extends JavaPlugin implements Updatable {
@@ -64,6 +67,14 @@ public class Skywars extends JavaPlugin implements Updatable {
 		if (update(PluginType.SKYWARS, this))
 			return;
 
+		if(NetworkManager.getServertype() != ServerType.SKYWARS_GAME_SERVER) {
+			
+			Handlers.LOGGER.sendModuleMessage("SkyWars", "Este servidor no es de tipo Skywars Game Server, se activará SkyWars en modo API.");
+			Handlers.LOGGER.sendModuleInfo("&7Se ha activado SkyWars en modo API!");
+			return;
+			
+		}
+		
 		DebugUtil.setupLogger();
 		CageManager.extractCages();
 
@@ -95,7 +106,7 @@ public class Skywars extends JavaPlugin implements Updatable {
 		InventoryBuilderListener.startInventoryBuilder();
 
 		effectmanager = new EffectManager(this);
-
+		
 	}
 
 	@Override

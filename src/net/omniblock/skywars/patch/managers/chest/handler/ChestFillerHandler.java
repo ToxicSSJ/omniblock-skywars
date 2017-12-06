@@ -41,7 +41,7 @@ public class ChestFillerHandler {
 		matchtype = type;
 		world = w;
 
-		chests = Chests.GETTER.getChests(w);
+		chests = Chests.GETTER.getChests(type);
 
 	}
 

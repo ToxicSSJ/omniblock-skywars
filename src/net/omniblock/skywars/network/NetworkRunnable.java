@@ -11,26 +11,48 @@
 package net.omniblock.skywars.network;
 
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.omniblock.network.library.helpers.bossbar.BarAPI;
 import net.omniblock.network.library.utils.TextUtil;
 
 public class NetworkRunnable extends BukkitRunnable {
 
-	@SuppressWarnings("deprecation")
+	BossBar bar = Bukkit.createBossBar(TextUtil.format("&9&lO&9mniblock&9&lN&9etwork &8&l« &fSkyWars"), BarColor.BLUE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
+	
 	@Override
 	public void run() {
 
-		if (NetworkData.generalbooster) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				BarAPI.setMessage(p, TextUtil.format("&d&l¡NETWORK BOOSTER&r &7Activado por Unknow!"));
+		if(NetworkData.generalbooster) {
+			
+			bar.setTitle(TextUtil.format("&a¡Existe un &b&lNetwork Booster &aactivado en SkyWars!"));
+			bar.setColor(BarColor.GREEN);
+			
+			for(Player p : Bukkit.getOnlinePlayers()) {
+				
+			    if(!bar.getPlayers().contains(p)) {
+			    	
+			    	bar.addPlayer(p);
+			    	
+			    }
+			    
 			}
+			
 		} else {
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				BarAPI.setMessage(p, TextUtil.format("&9&lOMNIBLOCK NETWORK &8&l« &fSkyWars"));
+			
+			bar.setTitle(TextUtil.format("&8¡No hay ningún Network Booster activado!"));
+			bar.setColor(BarColor.RED);
+			
+			for(Player p : Bukkit.getOnlinePlayers()) {
+			    if(!bar.getPlayers().contains(p)) {
+			    	bar.addPlayer(p);
+			    }
 			}
+			
 		}
 
 	}

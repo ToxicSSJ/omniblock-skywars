@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import net.omniblock.network.library.helpers.scoreboard.ScoreboardUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.teams.TeamSkywars;
@@ -28,7 +29,6 @@ import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.patch.managers.chest.Chests;
 import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.util.TimeUtil;
-import net.omniblock.skywars.util.scoreboard.ScoreboardUtil;
 
 public class TeamPlayerScoreboardManager {
 
@@ -99,7 +99,7 @@ public class TeamPlayerScoreboardManager {
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
 									TextUtil.format("&b&lExperiencia: &9&l+&9"
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
-									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 
 						for (Player spectator_p : SpectatorManager.playersSpectators) {
@@ -121,7 +121,7 @@ public class TeamPlayerScoreboardManager {
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalMoney()),
 									TextUtil.format("&b&lExperiencia: &9&l+&9"
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalExp()),
-									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 						break;
 					case IN_GAME:
@@ -144,7 +144,7 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("    "), TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 									TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 									TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") }, true);
 						}
 
 						for (Player ingame_p : SpectatorManager.playersSpectators) {
@@ -161,7 +161,7 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("    "), TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 									TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 									TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 						break;
 					case IN_LOBBY:
@@ -178,12 +178,12 @@ public class TeamPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + TeamPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						break;
 					case IN_PRE_GAME:
 
 						for (Player p : TeamPlayerManager.getPlayersInGameList()) {
-							p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+							p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 						}
 
 						break;
@@ -240,7 +240,7 @@ public class TeamPlayerScoreboardManager {
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
 									TextUtil.format("&b&lExperiencia: &9&l+&9"
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
-									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 
 						for (Player spectator_p : SpectatorManager.playersSpectators) {
@@ -262,7 +262,7 @@ public class TeamPlayerScoreboardManager {
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalMoney()),
 									TextUtil.format("&b&lExperiencia: &9&l+&9"
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalExp()),
-									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 						break;
 					case IN_GAME:
@@ -285,7 +285,7 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("    "), TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 									TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 									TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") }, true);
 						}
 
 						for (Player ingame_p : SpectatorManager.playersSpectators) {
@@ -302,7 +302,7 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("    "), TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 									TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 									TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 						break;
 					case IN_LOBBY:
@@ -319,11 +319,12 @@ public class TeamPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + TeamPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						break;
 					case IN_PRE_GAME:
+						
 						for (Player p : TeamPlayerManager.getPlayersInGameList()) {
-							p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+							p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 						}
 						break;
 					default:
@@ -379,7 +380,7 @@ public class TeamPlayerScoreboardManager {
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
 									TextUtil.format("&b&lExperiencia: &9&l+&9"
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalExp()),
-									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 
 						for (Player spectator_p : SpectatorManager.playersSpectators) {
@@ -401,7 +402,7 @@ public class TeamPlayerScoreboardManager {
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalMoney()),
 									TextUtil.format("&b&lExperiencia: &9&l+&9"
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalExp()),
-									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 						break;
 					case IN_GAME:
@@ -424,7 +425,7 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("    "), TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 									TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 									TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") }, true);
 						}
 
 						for (Player ingame_p : SpectatorManager.playersSpectators) {
@@ -441,7 +442,7 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("    "), TextUtil.format("&b&lMapa: &7" + INGAME_MAP_NAME),
 									TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 									TextUtil.format("&b&lJugadores: &7" + TeamPlayerManager.getPlayersInGameAmount()),
-									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") });
+									TextUtil.format("     "), TextUtil.format("&ewww.omniblock.net") }, false);
 						}
 						break;
 					case IN_LOBBY:
@@ -458,11 +459,12 @@ public class TeamPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + TeamPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") });
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
 						break;
 					case IN_PRE_GAME:
+						
 						for (Player p : TeamPlayerManager.getPlayersInGameList()) {
-							p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+							p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 						}
 						break;
 					default:

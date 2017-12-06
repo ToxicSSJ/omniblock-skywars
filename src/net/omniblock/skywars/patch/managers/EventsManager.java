@@ -266,7 +266,7 @@ public class EventsManager {
 							
 						} else {
 							
-							e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.LEVEL_UP, 10, 1);
+							e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, 1);
 							e.getPlayer().sendMessage(TextUtil.format("&3&l+&310 &7EXP!"));
 							e.getPlayer().chat(TextUtil.format("&8GG!"));
 							BankBase.addExp(e.getPlayer(), 10);

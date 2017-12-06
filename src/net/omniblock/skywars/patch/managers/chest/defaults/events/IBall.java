@@ -24,12 +24,14 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
+import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class IBall implements ItemType, Listener {
 
 	public static List<Snowball> snowball = new ArrayList<Snowball>();
 
+	@SuppressWarnings("deprecation")
 	@Override
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void IceBall(PlayerInteractEvent event) {
@@ -41,7 +43,8 @@ public class IBall implements ItemType, Listener {
 						&& player.getGameMode() == GameMode.SURVIVAL) {
 			if (player.getItemInHand().hasItemMeta()) {
 				if (player.getItemInHand().getItemMeta().hasDisplayName()) {
-					if (player.getItemInHand().getType() == Material.SNOW_BALL) {
+					if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName()
+							.equalsIgnoreCase(LegendaryItemType.BOLA_CONGELACEREBROS.getItem().getItemMeta().getDisplayName())) {
 						if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK
 								|| event.getAction() == Action.LEFT_CLICK_BLOCK
 								|| event.getAction() == Action.RIGHT_CLICK_AIR) {
@@ -71,7 +74,7 @@ public class IBall implements ItemType, Listener {
 
 										Location block = sb.getLocation();
 										block.getWorld().playEffect(block, Effect.HAPPY_VILLAGER, 4);
-										block.getWorld().playSound(block, Sound.BLAZE_HIT, 3, 1);
+										block.getWorld().playSound(block, Sound.ENTITY_BLAZE_HURT, 3, 1);
 										new BukkitRunnable() {
 											@Override
 											public void run() {
@@ -106,7 +109,7 @@ public class IBall implements ItemType, Listener {
 			Location location = sb.getLocation();
 
 			sb.remove();
-			location.getWorld().playSound(location, Sound.EXPLODE, 5, 10);
+			location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 5, 10);
 			List<Block> circle = SpawnBlock.circle(location, 6, 1, false, true, -1);
 			for (Block b : circle) {
 				if (b.getType() == Material.AIR)

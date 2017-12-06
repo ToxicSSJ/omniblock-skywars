@@ -74,6 +74,7 @@ public class SoloPlayerManager {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void healPlayer(Player p) {
 
 		p.setExp(0);
@@ -137,6 +138,7 @@ public class SoloPlayerManager {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean addPlayer(Player p) {
 
 		if (Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
@@ -157,7 +159,7 @@ public class SoloPlayerManager {
 
 			p.spigot().setCollidesWithEntities(true);
 			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
-			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
+			p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
 
 			p.setGameMode(GameMode.ADVENTURE);
 
@@ -222,34 +224,19 @@ public class SoloPlayerManager {
 		for (int i = 0; i < getPlayersInGameAmount(); i++) {
 
 			Player player = playersInGame.get(i);
-			Object cage_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
+			CageType cagetype = (CageType) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
 
 			emptyPlayer(player);
+			
+			Location cageLocation = cageLocations.get(i);
 
-			if (cage_obj instanceof CageType) {
+			CageManager.registerCage(cagetype, cageLocation);
+			player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
 
-				CageType ct = (CageType) cage_obj;
-				Location cageLocation = cageLocations.get(i);
+			CageManager.cagesdata.put(player, cageLocation);
 
-				CageManager.registerCage(ct, cageLocation);
-				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
-
-				CageManager.cagesdata.put(player, cageLocation);
-
-				continue;
-
-			} else {
-				Location cageLocation = cageLocations.get(i);
-
-				CageManager.registerCage(CageType.DEFAULT, cageLocation);
-				player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
-
-				CageManager.cagesdata.put(player, cageLocation);
-
-				continue;
-
-			}
+			continue;
 
 		}
 	}

@@ -2,13 +2,13 @@ package net.omniblock.skywars.util.reflection;
 
 import org.bukkit.entity.Player;
 
-import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 
 import java.lang.reflect.Field;
 
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
-import net.minecraft.server.v1_8_R3.WorldBorder;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutWorldBorder;
+import net.minecraft.server.v1_12_R1.WorldBorder;
 
 public class NMSUtils {
 
