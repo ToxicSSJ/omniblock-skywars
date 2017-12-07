@@ -9,6 +9,6 @@ Subcategorias: NORMAL | MEJORADO | Z
 
 **INFORMACIÓN DE DESARROLLO:**
 
-Licensia: Omniblock Network (c) : A-Plugin License
+Licencia: Omniblock Network (c) : A-Plugin License
 Desarrolladores Actuales: [zlToxicNetherlz, Boogst]
 Total de contribuidores: 3
