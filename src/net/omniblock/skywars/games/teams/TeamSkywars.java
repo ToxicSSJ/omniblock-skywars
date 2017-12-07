@@ -125,6 +125,7 @@ public class TeamSkywars implements SkywarsStarter {
 	private void startTeamsNormalGame() {
 
 		Chests.currentMatchType = MatchType.NORMAL;
+		TeamPlayerManager.currentMatchType = MatchType.NORMAL;
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -148,6 +149,8 @@ public class TeamSkywars implements SkywarsStarter {
 	private void startTeamsInsaneGame() {
 
 		Chests.currentMatchType = MatchType.INSANE;
+		TeamPlayerManager.currentMatchType = MatchType.INSANE;
+
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -171,6 +174,7 @@ public class TeamSkywars implements SkywarsStarter {
 	private void startTeamsZGame() {
 
 		Chests.currentMatchType = MatchType.Z;
+		TeamPlayerManager.currentMatchType = MatchType.Z;
 
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;

@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
 import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.data.controller.stuff.box.kits.SWKits.SWKitsType;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -25,6 +26,7 @@ import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TitleUtil;
 
@@ -33,6 +35,8 @@ public class SoloPlayerManager {
 	private static List<Player> playersInLobby = new ArrayList<Player>();
 	private static List<Player> playersInGame = new ArrayList<Player>();
 	private static List<Player> playersInSpectator = new ArrayList<Player>();
+	
+	public static MatchType currentMatchType = MatchType.NONE;
 
 	public static void deathPlayer(Player p) {
 
@@ -226,6 +230,7 @@ public class SoloPlayerManager {
 			Player player = playersInGame.get(i);
 			CageType cagetype = (CageType) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
+			
 
 			emptyPlayer(player);
 			
@@ -236,8 +241,27 @@ public class SoloPlayerManager {
 
 			CageManager.cagesdata.put(player, cageLocation);
 
+			
+			
 			continue;
 
+		}
+	}
+	
+	public static void transferKitsToPlayers(MatchType currentMatchType) {
+		
+		for (int i = 0; i < getPlayersInGameAmount(); i++) {
+		
+			if(currentMatchType == MatchType.NORMAL) break;
+			
+			Player player = playersInGame.get(i);
+			
+			SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
+		
+			kitstype.getKitContents().equipKit(player);
+			
+			continue;
+			
 		}
 	}
 

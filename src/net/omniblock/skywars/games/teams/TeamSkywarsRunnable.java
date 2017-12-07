@@ -273,7 +273,8 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 
 						}
 					}
-
+					
+					TeamPlayerManager.transferKitsToPlayers(TeamPlayerManager.currentMatchType);
 					Skywars.updateGameState(SkywarsGameState.IN_GAME);
 
 				}

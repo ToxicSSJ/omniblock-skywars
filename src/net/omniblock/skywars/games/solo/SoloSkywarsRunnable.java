@@ -239,9 +239,10 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							}
 						}
 					}
-
+					
+					SoloPlayerManager.transferKitsToPlayers(SoloPlayerManager.currentMatchType);
 					Skywars.updateGameState(SkywarsGameState.IN_GAME);
-
+					
 				}
 
 			}
@@ -249,6 +250,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		} else if (Skywars.getGameState() == SkywarsGameState.IN_GAME) {
 
 			Map<String, Integer> events = MapUtils.clone(EVENTS);
+			
 			for (Map.Entry<String, Integer> k : events.entrySet()) {
 				try {
 					reduceEvent(k.getKey(), 1);

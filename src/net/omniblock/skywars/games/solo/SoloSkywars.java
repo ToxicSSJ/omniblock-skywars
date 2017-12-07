@@ -124,6 +124,7 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloNormalGame() {
 
 		Chests.currentMatchType = MatchType.NORMAL;
+		SoloPlayerManager.currentMatchType = MatchType.NORMAL;
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -147,6 +148,7 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloInsaneGame() {
 
 		Chests.currentMatchType = MatchType.INSANE;
+		SoloPlayerManager.currentMatchType = MatchType.INSANE;
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -170,7 +172,8 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloZGame() {
 
 		Chests.currentMatchType = MatchType.Z;
-
+		SoloPlayerManager.currentMatchType = MatchType.Z;
+		
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
 

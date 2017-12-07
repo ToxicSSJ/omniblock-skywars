@@ -74,6 +74,7 @@ public class Kraken implements Listener, ItemType {
 
 							Squid squid = (Squid) event.getPlayer().getWorld()
 									.spawnEntity(event.getPlayer().getLocation().add(0, 2, 0), EntityType.SQUID);
+							squid.isInvulnerable();
 
 							final Arrow arrow = event.getPlayer().launchProjectile(Arrow.class);
 							Vector dir = event.getPlayer().getLocation().getDirection().normalize().multiply(5);
@@ -81,7 +82,8 @@ public class Kraken implements Listener, ItemType {
 							getArrow.add(arrow);
 							getSquid.put(arrow, squid);
 							squidLauncher.put(event.getPlayer(), coalBlock);
-
+							
+							squid.isInvulnerable();
 							squid.setMaxHealth(1000);
 							squid.setHealth(1000);
 							arrow.setPassenger(squid);

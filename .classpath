@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Gitlab/WorldEdit_1_8.jar"/>
-	<classpathentry kind="lib" path="C:/Gitlab/Citizens.jar"/>
-	<classpathentry kind="lib" path="C:/Gitlab/ProtocolLib.jar"/>
+	<classpathentry kind="lib" path="C:/GitLab/WorldEdit_1_8.jar"/>
+	<classpathentry kind="lib" path="C:/GitLab/Citizens.jar"/>
+	<classpathentry kind="lib" path="C:/GitLab/ProtocolLib.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OmniNetwork Burn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OmniPackets"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Omniblock-Lobbies"/>
-	<classpathentry kind="lib" path="C:/Gitlab/SPIGOT_1_12_2.jar"/>
+	<classpathentry kind="lib" path="C:/GitLab/SPIGOT_1_12_2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OmniLobbies"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
