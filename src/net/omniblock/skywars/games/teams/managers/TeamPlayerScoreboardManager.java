@@ -86,14 +86,12 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("&b&lServidor:"),
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanadores:"),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(0) != null
-													? TeamPlayerManager.getPlayersInGameList().get(0).getCustomName()
-													: "Vacio")),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(1) != null
-													? TeamPlayerManager.getPlayersInGameList().get(1).getCustomName()
-													: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 1
+											? TeamPlayerManager.getPlayersWinners().get(0).getName()
+											: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 2
+											? TeamPlayerManager.getPlayersWinners().get(1).getName()
+											: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -108,14 +106,12 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("&b&lServidor:"),
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanadores:"),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(0) != null
-													? TeamPlayerManager.getPlayersInGameList().get(0).getCustomName()
-													: "Vacio")),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(1) != null
-													? TeamPlayerManager.getPlayersInGameList().get(1).getCustomName()
-													: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 1
+											? TeamPlayerManager.getPlayersWinners().get(0).getName()
+											: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 2
+											? TeamPlayerManager.getPlayersWinners().get(1).getName()
+											: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalMoney()),
@@ -178,7 +174,8 @@ public class TeamPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + TeamPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+								false);
 						break;
 					case IN_PRE_GAME:
 
@@ -227,14 +224,12 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("&b&lServidor:"),
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanadores:"),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(0) != null
-													? TeamPlayerManager.getPlayersInGameList().get(0).getCustomName()
-													: "Vacio")),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(1) != null
-													? TeamPlayerManager.getPlayersInGameList().get(1).getCustomName()
-													: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 1
+											? TeamPlayerManager.getPlayersWinners().get(0).getName()
+											: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 2
+											? TeamPlayerManager.getPlayersWinners().get(1).getName()
+											: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -249,14 +244,12 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("&b&lServidor:"),
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanadores:"),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(0) != null
-													? TeamPlayerManager.getPlayersInGameList().get(0).getCustomName()
-													: "Vacio")),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(1) != null
-													? TeamPlayerManager.getPlayersInGameList().get(1).getCustomName()
-													: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 1
+											? TeamPlayerManager.getPlayersWinners().get(0).getName()
+											: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 2
+											? TeamPlayerManager.getPlayersWinners().get(1).getName()
+											: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalMoney()),
@@ -319,10 +312,11 @@ public class TeamPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + TeamPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+								false);
 						break;
 					case IN_PRE_GAME:
-						
+
 						for (Player p : TeamPlayerManager.getPlayersInGameList()) {
 							p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 						}
@@ -367,14 +361,12 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("&b&lServidor:"),
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanadores:"),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(0) != null
-													? TeamPlayerManager.getPlayersInGameList().get(0).getCustomName()
-													: "Vacio")),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(1) != null
-													? TeamPlayerManager.getPlayersInGameList().get(1).getCustomName()
-													: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 1
+											? TeamPlayerManager.getPlayersWinners().get(0).getName()
+											: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 2
+											? TeamPlayerManager.getPlayersWinners().get(1).getName()
+											: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ TeamPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -389,14 +381,12 @@ public class TeamPlayerScoreboardManager {
 									TextUtil.format("&b&lServidor:"),
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanadores:"),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(0) != null
-													? TeamPlayerManager.getPlayersInGameList().get(0).getCustomName()
-													: "Vacio")),
-									TextUtil.format(
-											" &a&l» &7" + (TeamPlayerManager.getPlayersInGameList().get(1) != null
-													? TeamPlayerManager.getPlayersInGameList().get(1).getCustomName()
-													: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 1
+											? TeamPlayerManager.getPlayersWinners().get(0).getName()
+											: "Vacio")),
+									TextUtil.format(" &a&l» &7" + (TeamPlayerManager.getPlayersWinners().size() >= 2
+											? TeamPlayerManager.getPlayersWinners().get(1).getName()
+											: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ TeamPlayerBattleListener.battle_info.get(spectator_p).getTotalMoney()),
@@ -459,10 +449,11 @@ public class TeamPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + TeamPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+								false);
 						break;
 					case IN_PRE_GAME:
-						
+
 						for (Player p : TeamPlayerManager.getPlayersInGameList()) {
 							p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 						}

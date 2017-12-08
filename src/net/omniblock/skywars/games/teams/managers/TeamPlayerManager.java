@@ -48,6 +48,8 @@ public class TeamPlayerManager {
 	private static List<Player> playersInGame = new ArrayList<Player>();
 	private static List<Player> playersInSpectator = new ArrayList<Player>();
 	
+	private static List<Player> playersWinners = new ArrayList<Player>();
+	
 	public static MatchType currentMatchType = MatchType.NONE;
 
 	public static void removeFromPreTeam(Player player) {
@@ -62,6 +64,21 @@ public class TeamPlayerManager {
 
 	}
 
+	public static void setTeamWinner(Player player) {
+		
+		playersWinners.add(player);
+		
+		if(TeamPlayerManager.getPlayerTeam(player) != null) {
+			
+			System.out.println("putting!");
+			
+			playersWinners.add(TeamPlayerManager.getPlayerTeam(player));
+			return;
+			
+		}
+		
+	}
+	
 	public static void addPreTeam(List<Player> team) {
 
 		playersPreTeams.add(team);
@@ -84,22 +101,21 @@ public class TeamPlayerManager {
 
 	public static void winnerTeam(Player p) {
 
-		if (playersTeams.containsKey(p)) {
+		System.out.println("xddd");
+		
+		Player team = getPlayerTeam(p);
 
-			Player team = getPlayerTeam(p);
-
-			if (team != null) {
-				emptyPlayer(team);
-				healPlayer(team);
-				forceFly(team);
-			}
-
+		if (team != null) {
+			emptyPlayer(team);
+			healPlayer(team);
+			forceFly(team);
 		}
 
 		emptyPlayer(p);
 		healPlayer(p);
 		forceFly(p);
 
+		setTeamWinner(p);
 		return;
 
 	}
@@ -561,6 +577,14 @@ public class TeamPlayerManager {
 
 	public static void setPlayersTeams(Map<Player, Player> playersTeams) {
 		TeamPlayerManager.playersTeams = playersTeams;
+	}
+
+	public static List<Player> getPlayersWinners() {
+		return playersWinners;
+	}
+
+	public static void setPlayersWinners(List<Player> playersWinners) {
+		TeamPlayerManager.playersWinners = playersWinners;
 	}
 
 	public enum InGameTitles {

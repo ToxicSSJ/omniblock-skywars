@@ -93,8 +93,15 @@ public class TeamPlayerToggleListener implements Listener {
 			@Override
 			public void run() {
 
-				if (TeamPlayerToggleListener.Verifier || currentState == SkywarsGameState.IN_LOBBY) {
-					if (TeamPlayerManager.getPlayersInLobbyAmount() <= 0 || Bukkit.getOnlinePlayers().size() <= 0) {
+				if (currentState == SkywarsGameState.IN_LOBBY) {
+					if (TeamPlayerManager.getPlayersInLobbyAmount() < 1) {
+
+						TeamSkywars.initializeReset();
+						return;
+
+					}
+				} else if(currentState == SkywarsGameState.IN_GAME) {
+					if (TeamPlayerManager.getPlayersInGameAmount() < 1) {
 
 						TeamSkywars.initializeReset();
 						return;

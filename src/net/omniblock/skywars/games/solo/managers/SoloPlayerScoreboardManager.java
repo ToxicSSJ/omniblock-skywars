@@ -135,7 +135,8 @@ public class SoloPlayerScoreboardManager {
 											TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 											TextUtil.format(
 													"&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
-											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, true);
+											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+									true);
 						}
 
 						for (Player spectator_p : SpectatorManager.playersSpectators) {
@@ -166,7 +167,8 @@ public class SoloPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+								false);
 						break;
 					case IN_PRE_GAME:
 
@@ -264,7 +266,8 @@ public class SoloPlayerScoreboardManager {
 											TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 											TextUtil.format(
 													"&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
-											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, true);
+											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+									true);
 						}
 
 						for (Player spectator_p : SpectatorManager.playersSpectators) {
@@ -275,7 +278,8 @@ public class SoloPlayerScoreboardManager {
 											TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 											TextUtil.format(
 													"&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
-											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+									false);
 						}
 						break;
 					case IN_LOBBY:
@@ -292,7 +296,8 @@ public class SoloPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+								false);
 						break;
 					case IN_PRE_GAME:
 						for (Player p : SoloPlayerManager.getPlayersInGameList()) {
@@ -388,7 +393,8 @@ public class SoloPlayerScoreboardManager {
 											TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 											TextUtil.format(
 													"&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
-											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, true);
+											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+									true);
 						}
 
 						for (Player spectator_p : SpectatorManager.playersSpectators) {
@@ -399,7 +405,8 @@ public class SoloPlayerScoreboardManager {
 											TextUtil.format("&b&lServidor: &7" + Bukkit.getServerName()),
 											TextUtil.format(
 													"&b&lJugadores: &7" + SoloPlayerManager.getPlayersInGameAmount()),
-											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+											TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+									false);
 						}
 						break;
 					case IN_LOBBY:
@@ -416,7 +423,8 @@ public class SoloPlayerScoreboardManager {
 										TextUtil.format(" &a&l» &7" + SoloPlayerManager.getPlayersInLobbyAmount()),
 										TextUtil.format("   "), TextUtil.format("&b&lMapa: &7" + IN_LOBBY_MAP_NAME),
 										TextUtil.format("&b&lNetwork Booster: &r" + IN_LOBBY_FORK_TEXT),
-										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") }, false);
+										TextUtil.format("    "), TextUtil.format("&ewww.omniblock.net") },
+								false);
 						break;
 					case IN_PRE_GAME:
 						for (Player p : SoloPlayerManager.getPlayersInGameList()) {

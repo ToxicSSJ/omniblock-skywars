@@ -39,7 +39,6 @@ import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.DebugUtil;
-import net.omniblock.skywars.util.MultiLineAPI;
 import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
@@ -101,7 +100,6 @@ public class Skywars extends JavaPlugin implements Updatable {
 		EffectLib.startEffectLib();
 		VanishUtil.start();
 		LobbyManager.start();
-		MultiLineAPI.start();
 
 		InventoryBuilderListener.startInventoryBuilder();
 
@@ -243,8 +241,7 @@ public class Skywars extends JavaPlugin implements Updatable {
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
 
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName()
-							: MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname("OmniWorld")
 					.setMaximiumPlayers(SoloSkywars.MAX_PLAYERS)
 					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
 							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
@@ -253,12 +250,11 @@ public class Skywars extends JavaPlugin implements Updatable {
 			return;
 
 		} else {
-
+			
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
 
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName()
-							: MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname("OmniWorld")
 					.setMaximiumPlayers(TeamSkywars.MAX_PLAYERS)
 					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
 							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)

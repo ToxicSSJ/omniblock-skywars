@@ -198,6 +198,8 @@ public class TeamSkywars implements SkywarsStarter {
 
 	public void finalize(Player winner) {
 
+		
+		
 		final Map<TeamPlayerBattleInfo, Integer> cache_top = PlayerBattleInfoUtils
 				.getTop(TeamPlayerBattleListener.battle_info);
 		final Map<Integer, TeamPlayerBattleInfo> top = PlayerBattleInfoUtils.reverse(cache_top);
@@ -206,16 +208,22 @@ public class TeamSkywars implements SkywarsStarter {
 		final TeamPlayerBattleInfo TOP_2 = top.get(2);
 		final TeamPlayerBattleInfo TOP_3 = top.get(3);
 
-		Player team = null;
+		Player team = TeamPlayerManager.getPlayerTeam(winner);
 		boolean win = winner != null;
 
+		System.out.println("win -> " + win);
+		
 		if (win) {
 
-			if (TeamPlayerManager.hasTeam(winner)) {
-				TeamPlayerManager.getPlayerTeam(team);
+			System.out.println("hasTeam -> " + TeamPlayerManager.hasTeam(winner));
+			
+			if(TeamPlayerManager.hasTeam(winner)) {
+				
+				System.out.println("winner -> " + winner.getName());
+				TeamPlayerManager.winnerTeam(winner);
+				
 			}
-
-			TeamPlayerManager.winnerTeam(winner);
+			
 		}
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -267,8 +275,8 @@ public class TeamSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TextUtil.format("&7&l» &7Tabla de Posiciones/Scores&8&l:"));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage(team != null
-							? "&r         &a&lGANADORES&r &a&l&m-&r &7" + RankBase.getRank(winner).getCustomName(winner)
-									+ "&7," + RankBase.getRank(team).getCustomName(team)
+							? "&r      &a&lGANADORES&r &a&l&m-&r &7" + RankBase.getRank(winner).getCustomName(winner)
+									+ "&7, " + RankBase.getRank(team).getCustomName(team)
 							: "&r         &a&lGANADOR&r &a&l&m-&r &7"
 									+ RankBase.getRank(winner).getCustomName(winner)));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));

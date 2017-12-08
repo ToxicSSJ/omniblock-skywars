@@ -22,8 +22,6 @@ import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
 import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
 import net.omniblock.lobbies.data.controller.stuff.box.kits.SWKits.SWKitsType;
-import net.omniblock.network.handlers.base.bases.type.BankBase;
-import net.omniblock.network.library.utils.InstantFireworkUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
@@ -245,6 +243,7 @@ public class LobbyManager implements Listener {
 
 		),
 		
+		@SuppressWarnings("deprecation")
 		KITS(new ItemBuilder(Material.getMaterial(439)).amount(1)
 				.name(TextUtil.format("&6Kits"))
 				.lore("")
@@ -316,9 +315,6 @@ public class LobbyManager implements Listener {
 															player.sendMessage(TextUtil.getCenteredMessage("&8&l&nKIT EQUIPADO", true));
 															player.sendMessage(TextUtil.format(" "));
 															player.sendMessage(TextUtil.getCenteredMessage(" &6&l" + kt.getName(), true));
-															player.sendMessage(TextUtil.format(" "));
-															player.sendMessage(TextUtil.getCenteredMessage("&6&lPRECIO: " + " &e&l" + kt.getPrice(), true));
-															player.sendMessage(TextUtil.getCenteredMessage("&6&lRAREZA: " + " &e&l" + kt.getRarity(), true));
 															player.sendMessage(TextUtil.format(" "));
 															player.sendMessage(TextUtil.getCenteredMessage("&a&l ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", true));
 															

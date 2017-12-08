@@ -154,7 +154,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, remainingTimeCages);
 						p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, remainingTimeCages);
 
-						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7¡Preparate para Pelear!"),
+						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7¡Prepárate para Pelear!"),
 								(remainingTimeCages > 3) ? TextUtil.format("&e&l" + String.valueOf(remainingTimeCages))
 										: TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 						continue;

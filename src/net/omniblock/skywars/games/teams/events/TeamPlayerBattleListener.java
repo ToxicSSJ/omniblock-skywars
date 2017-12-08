@@ -758,10 +758,13 @@ public class TeamPlayerBattleListener implements Listener {
 				return;
 			}
 
-			if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) { // TODO ERROR
-				e.setCancelled(true);
-				return;
+			if (TeamPlayerManager.hasTeam(damager)) {
+				if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) {
+					e.setCancelled(true);
+					return;
+				}
 			}
+			
 
 			if (!affected.hasMetadata("ZDAMAGE")) {
 
