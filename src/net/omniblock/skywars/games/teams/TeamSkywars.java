@@ -19,6 +19,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import com.google.common.collect.Lists;
 
 import net.citizensnpcs.api.CitizensAPI;
@@ -117,6 +118,7 @@ public class TeamSkywars implements SkywarsStarter {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			if (!TeamPlayerManager.getPlayersInLobbyList().contains(p)) {
 				TeamPlayerManager.addPlayer(p);
+				ProtocolLibrary.getProtocolManager().getProtocolVersion(p);
 			}
 		}
 
