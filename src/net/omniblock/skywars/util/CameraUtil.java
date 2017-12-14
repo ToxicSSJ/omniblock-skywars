@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,14 +19,11 @@ import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
 
+import net.omniblock.lobbies.utils.PlayerUtils;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 
 public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener {
-
-	static String prefix = ChatColor.AQUA + "[" + ChatColor.DARK_AQUA + "CP" + ChatColor.AQUA + "CameraUtil] "
-			+ ChatColor.GREEN;
 
 	static Set<UUID> travelling = new HashSet<UUID>();
 	static Set<UUID> stopping = new HashSet<UUID>();
@@ -248,7 +244,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 									CameraUtil.travelling.remove(player.getUniqueId());
 
 									player.playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 5, -5);
-									SoloPlayerManager.forceRemoveFly(player);
+									PlayerUtils.forceRemoveFly(player);
 
 									platform.setType(m);
 									platform.setData(b);
@@ -366,7 +362,7 @@ public class CameraUtil extends org.bukkit.plugin.java.JavaPlugin implements org
 						CameraUtil.travelling.remove(player.getUniqueId());
 
 						player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 5, -5);
-						SoloPlayerManager.forceRemoveFly(player);
+						PlayerUtils.forceRemoveFly(player);
 
 						platform.setType(m);
 						platform.setData(b);

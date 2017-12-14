@@ -1,7 +1,8 @@
 package net.omniblock.skywars.patch.managers.chest.defaults.events;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -20,6 +21,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import net.omniblock.network.library.utils.TextUtil;
+import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
@@ -28,7 +31,7 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 
 public class AngryChest implements ItemType, Listener {
 
-	private List<Block> chestblock = new ArrayList<Block>();
+	private Map<Block, Player> chestblock = new HashMap<Block, Player>();
 	private int CHEST_TYPE = 0;
 
 
@@ -45,17 +48,23 @@ public class AngryChest implements ItemType, Listener {
 		if (SoloPlayerManager.getPlayersInGameList().contains(player)
 				|| TeamPlayerManager.getPlayersInGameList().contains(player)
 						&& player.getGameMode() == GameMode.SURVIVAL) {
+			
+			if(!Skywars.ingame)
+				return;
+			
 			if (player.getItemInHand().hasItemMeta()) {
 				if (player.getItemInHand().getItemMeta().hasDisplayName()) {
 					if (player.getItemInHand().getType() == Material.TRAPPED_CHEST) {
 
-						player.playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 5, -10);
+						player.sendMessage(TextUtil.format("&6Has creado un cofre trampa!"));
+						
 						player.getWorld().playEffect(event.getBlockPlaced().getLocation(), Effect.SMOKE, 10);
-						chestblock.add(event.getBlockPlaced().getLocation().getBlock());
+						chestblock.put(event.getBlockPlaced().getLocation().getBlock(), event.getPlayer());
 
 					}
 				}
 			}
+			
 		}
 	}
 
@@ -66,7 +75,7 @@ public class AngryChest implements ItemType, Listener {
      * dejara de estar registrado.
      *
      */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "deprecation" })
 	@Override
 	@EventHandler
 	public void AngryChests(PlayerInteractEvent event) {
@@ -77,8 +86,16 @@ public class AngryChest implements ItemType, Listener {
 				|| TeamPlayerManager.getPlayersInGameList().contains(player)
 						&& player.getGameMode() == GameMode.SURVIVAL) {
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-				if (event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
-					if (chestblock.contains(event.getClickedBlock())) {
+				
+				if(!Skywars.ingame)
+					return;
+				
+				if (event.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
+						event.getClickedBlock().getType() == Material.CHEST) {
+					
+					if (chestblock.containsKey(event.getClickedBlock())) {
+						
+						Player owner = chestblock.get(event.getClickedBlock());
 						chestblock.remove(event.getClickedBlock());
 
 						Block block = event.getClickedBlock();
@@ -90,6 +107,9 @@ public class AngryChest implements ItemType, Listener {
 						
 						case 1:
 							
+							if(owner != null) 
+								player.damage(0.0, owner);
+							
 							jail(location, block);
 							Block b = location.getBlock().getRelative(0, -2, 0);
 							location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 2, 2);
@@ -99,6 +119,9 @@ public class AngryChest implements ItemType, Listener {
 							
 							circle(location, block, Material.PACKED_ICE, 8);
 
+							if(owner != null) 
+								player.damage(0.0, owner);
+							
 							player.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 5, 10);
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 3, 2));
 							player.setVelocity(location.getDirection().add(new Vector(0, 2, 0)));
@@ -106,6 +129,9 @@ public class AngryChest implements ItemType, Listener {
 							break;
 							
 						case 3:
+							
+							if(owner != null) 
+								player.damage(0.0, owner);
 							
 							location.getWorld().playSound(location, Sound.ENTITY_WOLF_HOWL, 5, 30);
 							location.getWorld().playSound(location, Sound.ENTITY_GHAST_SCREAM, 5, 30);
@@ -117,8 +143,21 @@ public class AngryChest implements ItemType, Listener {
 							
 						default:
 							break;
+							
 						}
+						
 					}
+				} else if (player.getItemInHand().hasItemMeta()) {
+					if (player.getItemInHand().getItemMeta().hasDisplayName()) {
+						if (player.getItemInHand().getType() == Material.TRAPPED_CHEST) {
+							
+							player.sendMessage(TextUtil.format("&6Has remplazado un cofre por uno trampa!"));
+							
+							player.getWorld().playEffect(event.getClickedBlock().getLocation(), Effect.SMOKE, 10);
+							chestblock.put(event.getClickedBlock().getLocation().getBlock(), player);
+					
+						}
+					}	
 				}
 			}
 		}

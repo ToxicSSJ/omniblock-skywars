@@ -14,7 +14,7 @@ public class ClonData {
 	private Player player;
 	private NPC clon;
 
-	private boolean protect;
+	private boolean protect = true;
 	private Location saved;
 
 	public ClonData(Player player, Location saved) {
@@ -31,6 +31,9 @@ public class ClonData {
 			if (player.isOnline()) {
 
 				clon = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, player.getName());
+				
+				clon.data().set(NPC.PLAYER_SKIN_UUID_METADATA, player.getName());
+				clon.setProtected(protect);
 				clon.spawn(player.getLocation());
 
 				Player cp = (Player) clon.getEntity();
@@ -109,15 +112,18 @@ public class ClonData {
 	}
 
 	public void setProtect(boolean protect) {
+		
 		this.protect = protect;
 
 		if (protect) {
 			if (clon != null) {
 				clon.setProtected(false);
+				return;
 			}
-		} else {
-			clon.setProtected(true);
 		}
+		
+		clon.setProtected(true);
+		return;
 
 	}
 
@@ -128,6 +134,7 @@ public class ClonData {
 			clon.getNavigator().setTarget(player, true);
 
 		} else {
+			
 			return;
 
 		}

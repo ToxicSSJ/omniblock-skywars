@@ -20,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import com.google.common.collect.Lists;
+
 import net.citizensnpcs.api.npc.NPC;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -31,7 +33,8 @@ import net.omniblock.skywars.util.block.SpawnBlock;
 public class Clone implements Listener, ItemType {
 
 	private Map<Player, ClonData> oneClon = new HashMap<Player, ClonData>();
-
+	private List<Player> passedFix = Lists.newArrayList();
+	
 	/**
      *
      * Con este evento, crearas un NPC(clon).
@@ -62,13 +65,15 @@ public class Clone implements Listener, ItemType {
 										|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
 										|| event.getClickedBlock().getType() == Material.JUKEBOX) {
 									
-									event.setCancelled(true);
 									return;
 									
 								}
 								
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
 							if (!oneClon.containsKey(player)) {
 								
 								ClonData clon = new ClonData(player, player.getLocation());
@@ -82,8 +87,21 @@ public class Clone implements Listener, ItemType {
 								
 								Clon(player, clon.getClon());
 
-							} else {
+								new BukkitRunnable() {
+									
+									@Override
+									public void run() {
+										
+										if(!passedFix.contains(player))
+											passedFix.add(player);
+										
+									}
+									
+								}.runTaskLater(Skywars.getInstance(), 20L);
 								
+							} else if(passedFix.contains(player)) {
+								
+								passedFix.remove(player);
 								explodeSimulation(oneClon.get(player).getSaved());
 								
 								while(oneClon.containsKey(player)) {

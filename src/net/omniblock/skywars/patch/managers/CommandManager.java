@@ -10,7 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.lobbies.utils.PlayerUtils;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.network.systems.rank.RankManager;
@@ -22,7 +23,6 @@ import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.SoloSkywarsRunnable;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.TeamSkywarsRunnable;
 
 public class CommandManager implements CommandExecutor {
@@ -106,7 +106,7 @@ public class CommandManager implements CommandExecutor {
 						RankManager.attachments.get(p).setPermission("bukkit.command.gamemode", true);
 						p.setGameMode(GameMode.SURVIVAL);
 						
-						SoloPlayerManager.forceFly(p);
+						PlayerUtils.forceFly(p);
 						
 					}
 					

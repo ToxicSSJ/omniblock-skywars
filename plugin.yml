@@ -1,6 +1,6 @@
 name: Skywars
 main: net.omniblock.skywars.Skywars
-softdepend: [OmniNetwork, WorldEdit, Citizens]
+softdepend: [OmniNetwork, WorldEdit, Citizens, MapManager]
 version: 12.0.2
 commands:
    lobby:

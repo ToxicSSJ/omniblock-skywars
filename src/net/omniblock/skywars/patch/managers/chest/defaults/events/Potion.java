@@ -1,7 +1,6 @@
 package net.omniblock.skywars.patch.managers.chest.defaults.events;
 
 import org.bukkit.EntityEffect;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -46,12 +45,13 @@ public class Potion implements ItemType, Listener {
 
 							event.setCancelled(true);
 							return;
-							
-							
 
 						}
 					}
 				
+					if(!Skywars.ingame)
+						return;
+					
 					for (PotionEffect potion : event.getPlayer().getActivePotionEffects()) {
 						event.getPlayer().removePotionEffect(potion.getType());
 					}
@@ -64,6 +64,7 @@ public class Potion implements ItemType, Listener {
 
 					event.getPlayer().playEffect(EntityEffect.VILLAGER_HAPPY);
 					potionEffect(event.getPlayer());
+					
 				}
 			}
 		}			

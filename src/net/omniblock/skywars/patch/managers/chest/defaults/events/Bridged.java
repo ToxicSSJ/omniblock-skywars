@@ -48,6 +48,9 @@ public class Bridged implements ItemType, Listener {
 			if (player.getInventory().getItemInHand().hasItemMeta()) {
 				if (player.getInventory().getItemInHand().getItemMeta().hasDisplayName()) {
 
+					if(!Skywars.ingame)
+						return;
+					
 					if (event.getBlockPlaced().getType() == Material.MELON_BLOCK) {
 						
 						Block block = event.getBlock();

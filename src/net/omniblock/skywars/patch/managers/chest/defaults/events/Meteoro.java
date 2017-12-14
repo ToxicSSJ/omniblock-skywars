@@ -67,12 +67,14 @@ public class Meteoro implements ItemType, Listener {
 										|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
 										|| event.getClickedBlock().getType() == Material.JUKEBOX) {
 
-									event.setCancelled(true);
 									return;
 
 								}
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
 							player.getInventory().setItemInHand(null);
 
 							Block targetblock = event.getPlayer().getTargetBlock((Set<Material>) null, 200);

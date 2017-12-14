@@ -2,10 +2,13 @@ package net.omniblock.skywars.patch.managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +19,7 @@ import org.bukkit.World.Environment;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.inventivetalent.mapmanager.MapManagerPlugin;
 
 import com.google.common.collect.Lists;
 
@@ -23,11 +27,13 @@ import net.omniblock.network.library.helpers.Scan;
 import net.omniblock.network.library.utils.MCAUtils;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.util.DebugUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.Configuration;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
 import net.omniblock.skywars.util.FileUtil;
 import net.omniblock.skywars.util.NumberUtil;
+import net.omniblock.skywars.util.WebUtils;
 import net.omniblock.skywars.util.chunk.CleanroomChunkGenerator;
 
 public class MapManager {
@@ -295,6 +301,23 @@ public class MapManager {
 					MAP_Z_CAGE_LOCATIONS.add(k);
 					
 				});
+				
+				Bukkit.getConsoleSender().sendMessage(TextUtil.format("&8 > Aplicando vista previa."));
+				
+				LobbyManager.mapManagerZ = ((MapManagerPlugin) Bukkit.getPluginManager().getPlugin("MapManager")).getMapManager();
+				LobbyManager.mapManagerN = ((MapManagerPlugin) Bukkit.getPluginManager().getPlugin("MapManager")).getMapManager();
+				
+				try {
+					
+					if(WebUtils.doesURLExist(new URL("http://www.omniblock.net/gameserver/skwgs/generic/" + net.omniblock.skywars.patch.managers.MapManager.CURRENT_MAP_NORMAL + ".png")))
+						LobbyManager.mapControllerN = LobbyManager.mapManagerN.wrapImage(ImageIO.read(new URL("http://www.omniblock.net/gameserver/skwgs/generic/" + net.omniblock.skywars.patch.managers.MapManager.CURRENT_MAP_NORMAL + ".png"))).getController();
+					
+					if(WebUtils.doesURLExist(new URL("http://www.omniblock.net/gameserver/skwgs/generic/" + net.omniblock.skywars.patch.managers.MapManager.CURRENT_MAP_Z + ".png")))
+						LobbyManager.mapControllerZ = LobbyManager.mapManagerZ.wrapImage(ImageIO.read(new URL("http://www.omniblock.net/gameserver/skwgs/generic/" + net.omniblock.skywars.patch.managers.MapManager.CURRENT_MAP_Z + ".png"))).getController();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				
 				Bukkit.getConsoleSender().sendMessage(TextUtil.format("&8----------&b-------------------&8----------"));
 				

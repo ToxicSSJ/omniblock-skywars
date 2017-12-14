@@ -46,6 +46,9 @@ public class AutomaticTNT implements ItemType, Listener {
 
 			if (e.getBlockPlaced().getType() == Material.TNT) {
 
+				if(!Skywars.ingame)
+					return;
+				
 				e.setCancelled(true);
 
 				ItemStack itemInHand = e.getPlayer().getItemInHand();

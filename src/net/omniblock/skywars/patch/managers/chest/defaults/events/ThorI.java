@@ -59,6 +59,9 @@ public class ThorI implements ItemType, Listener {
 								}
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
 							player.getInventory().setItemInHand(null);
 
 							Block targetblock = event.getPlayer().getTargetBlock((Set<Material>) null, 200);

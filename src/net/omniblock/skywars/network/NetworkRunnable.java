@@ -18,19 +18,23 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import net.omniblock.lobbies.api.LobbyUtility;
+import net.omniblock.lobbies.api.LobbyUtility.BoosterInfo;
 import net.omniblock.network.library.utils.TextUtil;
 
 public class NetworkRunnable extends BukkitRunnable {
 
-	BossBar bar = Bukkit.createBossBar(TextUtil.format("&9&lO&9mniblock&9&lN&9etwork &8&l« &fSkyWars"), BarColor.BLUE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
+	BossBar bar = Bukkit.createBossBar(TextUtil.format("&6&lOmniblock Network &8« &9SkyWars &8»"), BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
 	
 	@Override
 	public void run() {
 
-		if(NetworkData.generalbooster) {
+		if(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster")) {
 			
-			bar.setTitle(TextUtil.format("&a¡Existe un &b&lNetwork Booster &aactivado en SkyWars!"));
-			bar.setColor(BarColor.GREEN);
+			BoosterInfo booster = LobbyUtility.getBoosterInfo("skywarsnetworkbooster");
+			
+			bar.setTitle(TextUtil.format("&8&l(&d&lX2 &a⛃ OmniCoins&8&l) &8» &6&l¡" + booster.playername + " activó un booster global!"));
+			bar.setColor(BarColor.BLUE);
 			
 			for(Player p : Bukkit.getOnlinePlayers()) {
 				
@@ -44,8 +48,8 @@ public class NetworkRunnable extends BukkitRunnable {
 			
 		} else {
 			
-			bar.setTitle(TextUtil.format("&8¡No hay ningún Network Booster activado!"));
-			bar.setColor(BarColor.RED);
+			bar.setTitle(TextUtil.format("&6&lOmniblock Network &8« &9SkyWars &8»"));
+			bar.setColor(BarColor.PURPLE);
 			
 			for(Player p : Bukkit.getOnlinePlayers()) {
 			    if(!bar.getPlayers().contains(p)) {

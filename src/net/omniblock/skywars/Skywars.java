@@ -10,8 +10,6 @@
 
 package net.omniblock.skywars;
 
-import java.util.logging.Handler;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +21,9 @@ import net.omniblock.network.handlers.updater.object.Updatable;
 import net.omniblock.network.handlers.updater.type.PluginType;
 import net.omniblock.network.library.helpers.effectlib.EffectLib;
 import net.omniblock.network.library.helpers.effectlib.EffectManager;
+import net.omniblock.network.systems.InformationCenterPatcher;
+import net.omniblock.network.systems.InformationCenterPatcher.Information;
+import net.omniblock.network.systems.InformationCenterPatcher.InformationType;
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.GameOnlineInfoPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
@@ -103,16 +104,18 @@ public class Skywars extends JavaPlugin implements Updatable {
 
 		InventoryBuilderListener.startInventoryBuilder();
 
+		InformationCenterPatcher.registerAutoInformation(
+				new Information(InformationType.NETWORK_BOOSTER, "skywarsnetworkbooster"),
+				new String[] { "Skywars" },
+				0,
+				20 * 5);
+		
 		effectmanager = new EffectManager(this);
 		
 	}
 
 	@Override
 	public void onDisable() {
-
-		for (Handler h : DebugUtil.getLogger().getHandlers()) {
-			h.close();
-		}
 
 		CitizensAPI.getNPCRegistry().deregisterAll();
 

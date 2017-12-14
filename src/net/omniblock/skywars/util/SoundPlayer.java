@@ -18,6 +18,19 @@ public class SoundPlayer {
 		
 	}
 
+	public static void stopSound(Player...player) {
+
+		for(Player p : player) {
+			
+			p.playSound(p.getLocation(), "MC|StopSound", 1, 1);
+			continue;
+			
+		}
+		
+		return;
+		
+	}
+	
 	/**
 	 * 
 	 * PlaySound protocol with Packets

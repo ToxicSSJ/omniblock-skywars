@@ -60,8 +60,13 @@ public class Punch implements ItemType, Listener {
 
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
+							SoundPlayer.stopSound(playerdamage, player);
+							
 							playerdamage.getInventory().setItemInHand(null);
-							SoundPlayer.sendSound(playerdamage.getLocation(), "skywars.jhonc", 30);
+							SoundPlayer.sendSound(playerdamage.getLocation(), "skywars.jhonc", 20);
 
 							new BukkitRunnable() {
 								@Override
@@ -102,4 +107,5 @@ public class Punch implements ItemType, Listener {
 			}
 		}
 	}
+	
 }

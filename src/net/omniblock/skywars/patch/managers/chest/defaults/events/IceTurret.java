@@ -49,12 +49,19 @@ public class IceTurret implements Turret, ItemType, Listener {
 
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
+		
 		if (SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+			
+			if(!Skywars.ingame)
+				return;
+			
 			if (e.getBlockPlaced().getType() == type.getMaterial()) {
 				build(e.getPlayer(), e.getBlockPlaced());
 			}
+			
 		}
+		
 	}
 
 	@Override

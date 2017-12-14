@@ -39,6 +39,7 @@ public class SkywarsLobbyFilterListener implements Listener {
 
 	@EventHandler
 	public void onPhysics(PlayerInteractEvent e) {
+		
 		if (Skywars.inlobby || Skywars.inpregame) {
 			if (e.getAction() == Action.PHYSICAL)
 				e.setCancelled(true);

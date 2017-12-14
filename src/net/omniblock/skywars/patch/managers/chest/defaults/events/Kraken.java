@@ -35,6 +35,7 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCa
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
@@ -47,6 +48,7 @@ public class Kraken implements Listener {
 	private Map<Fireball, Squid> getSquid = new HashMap<Fireball, Squid>();
 	private Map<Fireball, Player> getPlayer = new HashMap<Fireball, Player>();
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void kraken(PlayerInteractEvent event) {
 
@@ -62,12 +64,14 @@ public class Kraken implements Listener {
 						|| event.getAction() == Action.LEFT_CLICK_AIR
 						|| event.getAction() == Action.LEFT_CLICK_BLOCK) {
 
+					if(!Skywars.ingame)
+						return;
+					
 					if (event.getClickedBlock() != null) {
 						if (event.getClickedBlock().getType() == Material.CHEST
 								|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
 								|| event.getClickedBlock().getType() == Material.JUKEBOX) {
 
-							event.setCancelled(true);
 							return;
 
 						}
@@ -89,6 +93,7 @@ public class Kraken implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void makeIA(Squid squid, Fireball fireball, Player player, Vector dir) {
 
 		getFireball.add(fireball);
@@ -140,6 +145,9 @@ public class Kraken implements Listener {
 
 				for (Block b : circle) {
 
+					if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b))
+						continue;
+					
 					if (b.getType() == Material.AIR)
 						continue;
 
@@ -217,7 +225,6 @@ public class Kraken implements Listener {
 						@Override
 						public void run() {
 							
-							block.setType(Material.AIR);
 							player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_LAUNCH, 6, 10);
 						
 						}

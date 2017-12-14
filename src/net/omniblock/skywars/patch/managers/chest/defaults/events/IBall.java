@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
 import net.omniblock.skywars.util.block.SpawnBlock;
@@ -54,12 +55,14 @@ public class IBall implements ItemType, Listener {
 										|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
 										|| event.getClickedBlock().getType() == Material.JUKEBOX) {
 
-									event.setCancelled(true);
 									return;
 
 								}
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
 							player.getInventory().setItemInHand(null);
 							Vector dir = player.getLocation().getDirection().normalize().multiply(3);
 							final Snowball sb = player.launchProjectile(Snowball.class);
@@ -110,11 +113,18 @@ public class IBall implements ItemType, Listener {
 
 			sb.remove();
 			location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 5, 10);
+			
 			List<Block> circle = SpawnBlock.circle(location, 6, 1, false, true, -1);
 			for (Block b : circle) {
+				
+				if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b))
+					continue;
+				
 				if (b.getType() == Material.AIR)
 					continue;
+				
 				b.setType(Material.PACKED_ICE);
+				
 			}
 
 		}

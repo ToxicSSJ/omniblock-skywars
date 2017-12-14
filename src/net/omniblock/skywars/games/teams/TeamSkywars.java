@@ -27,7 +27,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.RestarterUtil;
 import net.omniblock.network.library.utils.TextUtil;

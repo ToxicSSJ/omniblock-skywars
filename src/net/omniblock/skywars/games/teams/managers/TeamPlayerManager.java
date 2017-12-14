@@ -21,9 +21,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
 
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
-import net.omniblock.lobbies.data.controller.stuff.box.kits.SWKits.SWKitsType;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;

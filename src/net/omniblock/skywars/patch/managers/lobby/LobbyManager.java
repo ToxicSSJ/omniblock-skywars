@@ -14,14 +14,16 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.inventivetalent.mapmanager.manager.MapManager;
+import org.inventivetalent.mapmanager.wrapper.MapWrapper;
 
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
-import net.omniblock.lobbies.data.controller.stuff.box.kits.SWKits.SWKitsType;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
@@ -34,9 +36,14 @@ import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemType
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
+import org.inventivetalent.mapmanager.controller.MapController;
 
 public class LobbyManager implements Listener {
 
+	public static MapManager mapManagerZ, mapManagerN;
+	public static MapWrapper mapWrapperZ, mapWrapperN;
+	public static MapController mapControllerZ, mapControllerN;
+	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
 
@@ -102,7 +109,7 @@ public class LobbyManager implements Listener {
 	}
 	
 	public static void start() {
-
+		
 		CommandManager executor = new CommandManager();
 		String[] commands = new String[] {
 				"lobby",
@@ -131,7 +138,9 @@ public class LobbyManager implements Listener {
 	}
 
 	public static void giveItems(Player player) {
-
+		
+		MapController cacheController = null;
+		
 		player.getInventory().clear();
 		player.getEquipment().clear();
 
@@ -139,7 +148,9 @@ public class LobbyManager implements Listener {
 
 		case SW_INSANE_SOLO:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_INSANE_MODE.getItem());
 			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
@@ -148,7 +159,9 @@ public class LobbyManager implements Listener {
 
 		case SW_INSANE_TEAMS:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_INSANE_MODE.getItem());
 			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
@@ -157,21 +170,27 @@ public class LobbyManager implements Listener {
 
 		case SW_NORMAL_SOLO:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_NORMAL_TEAMS:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_Z_SOLO:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerZ != null)
+				cacheController = mapControllerZ;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_Z_MODE.getItem());
 			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
@@ -180,7 +199,9 @@ public class LobbyManager implements Listener {
 
 		case SW_Z_TEAMS:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerZ != null)
+				cacheController = mapControllerZ;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_Z_MODE.getItem());
 			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
@@ -193,6 +214,16 @@ public class LobbyManager implements Listener {
 
 			break;
 
+		}
+		
+		if(cacheController != null) {
+			
+			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			
+			cacheController.addViewer(player);
+			cacheController.sendContent(player);
+			cacheController.showInHand(player);
+			
 		}
 
 	}
