@@ -11,4 +11,4 @@ Subcategorias: NORMAL | MEJORADO | Z
 
 Licencia: Omniblock Network (c) : A-Plugin License
 Desarrolladores Actuales: [zlToxicNetherlz, Boogst]
-Total de contribuidores: 3
+Total de contribuidores: 2
