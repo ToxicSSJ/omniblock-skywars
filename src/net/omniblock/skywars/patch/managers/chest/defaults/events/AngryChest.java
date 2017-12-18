@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -151,11 +152,28 @@ public class AngryChest implements ItemType, Listener {
 					if (player.getItemInHand().getItemMeta().hasDisplayName()) {
 						if (player.getItemInHand().getType() == Material.TRAPPED_CHEST) {
 							
-							player.sendMessage(TextUtil.format("&6Has remplazado un cofre por uno trampa!"));
-							
-							player.getWorld().playEffect(event.getClickedBlock().getLocation(), Effect.SMOKE, 10);
-							chestblock.put(event.getClickedBlock().getLocation().getBlock(), player);
-					
+							if (event.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
+									event.getClickedBlock().getType() == Material.CHEST) {
+								
+								event.setCancelled(true);
+								
+								player.sendMessage(TextUtil.format("&6Has remplazado un cofre por uno trampa!"));
+								player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 1, 5);
+								
+								ItemStack itemInHand = event.getPlayer().getItemInHand();
+								if (itemInHand == null)
+									return;
+								if (itemInHand.getAmount() <= 1) {
+									event.getPlayer().setItemInHand(null);
+								} else {
+									itemInHand.setAmount(itemInHand.getAmount() - 1);
+								}
+								
+								player.getWorld().playEffect(event.getClickedBlock().getLocation(), Effect.SMOKE, 10);
+								chestblock.put(event.getClickedBlock().getLocation().getBlock(), player);
+								return;
+								
+							}
 						}
 					}	
 				}

@@ -93,7 +93,7 @@ public class Bombardier implements ItemType, Listener {
 							
 							if(BombardierData.launching) {
 								
-								player.sendMessage(TextUtil.format("&cYa hay alguien está utilizando el bombardero!"));
+								player.sendMessage(TextUtil.format("&c¡Ya alguien está utilizando el bombardero!"));
 								return;
 								
 							}
