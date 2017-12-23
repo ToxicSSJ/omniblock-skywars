@@ -21,6 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.omniblock.network.library.helpers.effectlib.effect.LineEffect;
+import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -33,8 +35,6 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.TurretBuilder;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.TurretType;
-import net.omniblock.skywars.util.effectlib.effect.LineEffect;
-import net.omniblock.skywars.util.effectlib.util.ParticleEffect;
 
 public class LaserTurret implements Turret, ItemType, Listener {
 
@@ -42,12 +42,19 @@ public class LaserTurret implements Turret, ItemType, Listener {
 
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
+		
 		if (SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+			
+			if(!Skywars.ingame)
+				return;
+			
 			if (e.getBlockPlaced().getType() == type.getMaterial()) {
 				build(e.getPlayer(), e.getBlockPlaced());
 			}
+			
 		}
+		
 	}
 
 	@Override
@@ -69,7 +76,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 				} else if (tb.isCompleted()) {
 
 					cancel();
-					place.getLocation().getWorld().playSound(place.getLocation(), Sound.ZOMBIE_WOODBREAK, 4, 15);
+					place.getLocation().getWorld().playSound(place.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 4, 15);
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TextUtil
@@ -107,14 +114,14 @@ public class LaserTurret implements Turret, ItemType, Listener {
 		CustomProtocolManager.PROTECTED_BLOCK_LIST.add(l2.getBlock());
 		awaketurret.components.add(l2.getBlock());
 
-		@SuppressWarnings("deprecation")
-		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnCreature(l3, EntityType.ARMOR_STAND);
+		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnEntity(l3, EntityType.ARMOR_STAND);
 		_a.setCustomName(TextUtil
 				.format("&8&l> &e&lTorreta " + type.getName_type() + " de " + constructor.getName() + " &8&l<"));
 		_a.setVisible(false);
 		_a.setCustomNameVisible(true);
 		_a.setGravity(false);
-
+		_a.setBasePlate(false);
+		
 		awaketurret.info_hud = _a;
 
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -213,7 +220,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 											ef.visibleRange = 300;
 											ef.particles = 5;
 											ef.setLocation(turret_entity.getLocation());
-											ef.setTarget(p.getEyeLocation());
+											ef.setTargetLocation(p.getEyeLocation());
 											ef.start();
 											return;
 
@@ -262,7 +269,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 											ef.visibleRange = 300;
 											ef.particles = 5;
 											ef.setLocation(turret_entity.getLocation());
-											ef.setTarget(e.getLocation().clone().add(0, .5, 0));
+											ef.setTargetLocation(e.getLocation().clone().add(0, .5, 0));
 											ef.start();
 											return;
 
@@ -296,7 +303,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 
 		if (toshoot.getType() == EntityType.PLAYER) {
 
-			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.ENDERDRAGON_WINGS, 5, -2);
+			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.ENTITY_ENDERDRAGON_FLAP, 5, -2);
 
 			Player affected = (Player) toshoot;
 			Guardian turret_entity = (Guardian) awaketurret.turret.getEntity();
@@ -309,7 +316,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 			ef.color = Color.RED;
 			ef.visibleRange = 300;
 			ef.setLocation(turret_entity.getLocation());
-			ef.setTarget(affected.getEyeLocation());
+			ef.setTargetLocation(affected.getEyeLocation());
 			ef.start();
 
 			affected.setVelocity(awaketurret.turret.getEntity().getLocation().getDirection().multiply(0.4));
@@ -327,7 +334,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 
 		if (turret_entity.hasLineOfSight(e)) {
 
-			e.getWorld().playSound(e.getLocation(), Sound.ENDERDRAGON_WINGS, 5, -2);
+			e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ENDERDRAGON_FLAP, 5, -2);
 
 			awaketurret.turret.faceLocation(e.getLocation());
 			awaketurret.damage_hud.faceLocation(e.getLocation());
@@ -337,7 +344,7 @@ public class LaserTurret implements Turret, ItemType, Listener {
 			ef.color = Color.RED;
 			ef.visibleRange = 300;
 			ef.setLocation(turret_entity.getLocation());
-			ef.setTarget(e.getLocation().clone().add(0, .5, 0));
+			ef.setTargetLocation(e.getLocation().clone().add(0, .5, 0));
 			ef.start();
 
 			otherturret.damage(awaketurret);

@@ -89,8 +89,15 @@ public class SoloPlayerToggleListener implements Listener {
 			@Override
 			public void run() {
 
-				if (SoloPlayerToggleListener.Verifier || currentState == SkywarsGameState.IN_LOBBY) {
-					if (SoloPlayerManager.getPlayersInLobbyAmount() <= 0 || Bukkit.getOnlinePlayers().size() <= 0) {
+				if (currentState == SkywarsGameState.IN_LOBBY) {
+					if (SoloPlayerManager.getPlayersInLobbyAmount() < 1) {
+
+						SoloSkywars.initializeReset();
+						return;
+
+					}
+				} else if(currentState == SkywarsGameState.IN_GAME) {
+					if (SoloPlayerManager.getPlayersInGameAmount() < 1) {
 
 						SoloSkywars.initializeReset();
 						return;

@@ -26,10 +26,14 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.lobbies.api.LobbyUtility;
+import net.omniblock.lobbies.api.LobbyUtility.BoosterInfo;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.network.handlers.base.bases.type.BankBase;
 import net.omniblock.network.library.utils.RestarterUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.packets.network.Packets;
+import net.omniblock.packets.network.structure.packet.PlayerSendMessagePacket;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
@@ -37,12 +41,10 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
 import net.omniblock.skywars.games.solo.events.SoloPlayerToggleListener;
-import net.omniblock.skywars.games.solo.managers.SoloPlayerLineManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerScoreboardManager;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo;
 import net.omniblock.skywars.games.solo.object.SoloPlayerBattleInfo.PlayerBattleInfoUtils;
-import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
 import net.omniblock.skywars.patch.managers.EventsManager;
@@ -110,7 +112,6 @@ public class SoloSkywars implements SkywarsStarter {
 		 */
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		SoloPlayerScoreboardManager.initialize();
-		SoloPlayerLineManager.initialize();
 
 		/*
 		 * Online Player Add-Adder
@@ -126,6 +127,7 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloNormalGame() {
 
 		Chests.currentMatchType = MatchType.NORMAL;
+		SoloPlayerManager.currentMatchType = MatchType.NORMAL;
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -149,6 +151,7 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloInsaneGame() {
 
 		Chests.currentMatchType = MatchType.INSANE;
+		SoloPlayerManager.currentMatchType = MatchType.INSANE;
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -172,7 +175,8 @@ public class SoloSkywars implements SkywarsStarter {
 	private void startSoloZGame() {
 
 		Chests.currentMatchType = MatchType.Z;
-
+		SoloPlayerManager.currentMatchType = MatchType.Z;
+		
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
 
@@ -210,8 +214,8 @@ public class SoloSkywars implements SkywarsStarter {
 		}
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);
-			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);
+			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
+			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
 		}
 
 		new BukkitRunnable() {
@@ -247,8 +251,8 @@ public class SoloSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, -10);
 				}
 
 				if (win) {
@@ -350,15 +354,18 @@ public class SoloSkywars implements SkywarsStarter {
 			}
 		}.runTaskLater(Skywars.getInstance(), 60L);
 
+		BoosterInfo booster = LobbyUtility.getBoosterInfo("skywarsnetworkbooster");
+		boolean boosterStatus = LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster");
+		
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, -10);
 				}
-
+				
 				for (Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
 
 					if (!k.getKey().unknow) {
@@ -376,22 +383,28 @@ public class SoloSkywars implements SkywarsStarter {
 										+ k.getKey().getExp() + " &3&lExp&8&l)"));
 								p.sendMessage(TextUtil.getCenteredMessage(" Has ganado un total de &8&l(&a&l+&a"
 										+ k.getKey().getMoney() + " &a&lCoins&8&l)"));
+								
 								if (k.getKey().isFirstBlood()) {
 									p.sendMessage(TextUtil.getCenteredMessage(
 											" Premio por primera muerte &8&l(&a&l+&a20 &a&lCoins&8&l) &8&l(&3&l+&316 &3&lExp&8&l)"));
 								}
+								
 								if (k.getKey().survival) {
 									p.sendMessage(TextUtil
 											.getCenteredMessage(" Premio por supervivencia &8&l(&a&l+&a15 &a&lCoins)"));
 								}
+								
 								p.sendMessage(TextUtil.format("&r"));
-								if (NetworkData.generalbooster) {
+								
+								if (boosterStatus) {
+									
 									p.sendMessage(TextUtil.getCenteredMessage(" &9&lTOTAL: &8&l+&a"
 											+ k.getKey().getTotalMoney() + " Coins &6&lX2    &8&l+&3"
 											+ k.getKey().getTotalExp() + " Exp &6&lX2"));
 									p.sendMessage(TextUtil.format("&r"));
 									p.sendMessage(TextUtil
-											.getCenteredMessage("&e¡Network Booster de Unknow activado! &6&lX2!"));
+											.getCenteredMessage("&e¡Network Booster activado por " + booster.playername + "! &6&lX2!"));
+									
 								} else {
 									p.sendMessage(TextUtil
 											.getCenteredMessage(" &9&lTOTAL: &8&l+&a" + k.getKey().getTotalMoney()
@@ -414,7 +427,7 @@ public class SoloSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.HORSE_SADDLE, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_HORSE_SADDLE, 10, -10);
 				}
 
 				for (Map.Entry<SoloPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
@@ -488,6 +501,18 @@ public class SoloSkywars implements SkywarsStarter {
 			@Override
 			public void run() {
 
+				if(boosterStatus) {
+					
+					BankBase.addMoney(booster.playername, 20);
+					Packets.STREAMER.streamPacket(
+							new PlayerSendMessagePacket()
+							.setPlayername(booster.playername)
+							.setMessage(TextUtil.format("&6¡Has ganado &a+20 ⛃ &6OmniCoins por tu NetworkBooster!"))
+							.build());
+					
+				}
+					
+				
 				reset();
 
 			}
@@ -567,9 +592,7 @@ public class SoloSkywars implements SkywarsStarter {
 	public static void initializeReset() {
 
 		SoloSkywarsRunnable.EVENTS.clear();
-
 		SoloPlayerScoreboardManager.sbrunnable.cancel();
-		SoloPlayerLineManager.sbrunnable.cancel();
 
 		SoloPlayerToggleListener.Verifier = false;
 

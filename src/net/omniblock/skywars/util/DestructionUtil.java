@@ -15,8 +15,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;

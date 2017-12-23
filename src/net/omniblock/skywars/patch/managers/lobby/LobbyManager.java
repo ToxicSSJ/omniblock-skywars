@@ -3,6 +3,7 @@ package net.omniblock.skywars.patch.managers.lobby;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -13,11 +14,16 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.inventivetalent.mapmanager.manager.MapManager;
+import org.inventivetalent.mapmanager.wrapper.MapWrapper;
 
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
@@ -30,9 +36,14 @@ import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemType
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
+import org.inventivetalent.mapmanager.controller.MapController;
 
 public class LobbyManager implements Listener {
 
+	public static MapManager mapManagerZ, mapManagerN;
+	public static MapWrapper mapWrapperZ, mapWrapperN;
+	public static MapController mapControllerZ, mapControllerN;
+	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
 
@@ -96,16 +107,17 @@ public class LobbyManager implements Listener {
 		}
 
 	}
-
+	
 	public static void start() {
-
+		
 		CommandManager executor = new CommandManager();
 		String[] commands = new String[] {
 				"lobby",
 				"salir",
 				"leave",
 				"hub",
-				"gen_command_vote"
+				"gen_command_vote",
+				"gen_command_test"
 		};
 		
 		for(String command : commands){
@@ -126,7 +138,9 @@ public class LobbyManager implements Listener {
 	}
 
 	public static void giveItems(Player player) {
-
+		
+		MapController cacheController = null;
+		
 		player.getInventory().clear();
 		player.getEquipment().clear();
 
@@ -134,46 +148,62 @@ public class LobbyManager implements Listener {
 
 		case SW_INSANE_SOLO:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_INSANE_MODE.getItem());
+			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_INSANE_TEAMS:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_INSANE_MODE.getItem());
+			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_NORMAL_SOLO:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_NORMAL_TEAMS:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerN != null)
+				cacheController = mapControllerN;
+			
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_Z_SOLO:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerZ != null)
+				cacheController = mapControllerZ;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_Z_MODE.getItem());
+			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
 
 		case SW_Z_TEAMS:
 
-			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			if(mapControllerZ != null)
+				cacheController = mapControllerZ;
+			
 			player.getInventory().setItem(4, LobbyItem.POWER_Z_MODE.getItem());
+			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
@@ -184,6 +214,16 @@ public class LobbyManager implements Listener {
 
 			break;
 
+		}
+		
+		if(cacheController != null) {
+			
+			player.getInventory().setItem(0, LobbyItem.MAP_INFO.getItem());
+			
+			cacheController.addViewer(player);
+			cacheController.sendContent(player);
+			cacheController.showInHand(player);
+			
 		}
 
 	}
@@ -233,6 +273,191 @@ public class LobbyManager implements Listener {
 				}
 
 		),
+		
+		@SuppressWarnings("deprecation")
+		KITS(new ItemBuilder(Material.getMaterial(439)).amount(1)
+				.name(TextUtil.format("&6Kits"))
+				.lore("")
+				.lore(TextUtil.format("&9&m-&r &7Puedes equiparte algún Kit"))
+				.lore(TextUtil.format("&7que ya tengas disponible,"))
+				.lore(TextUtil.format("&7recuerda que puedes conseguir"))
+				.lore(TextUtil.format("&7mas en nuestra tienda!")).build(),
+				
+				new ItemClick() {
+
+					@Override
+					public void click(Player player) {
+						
+						InventoryBuilder ib = new InventoryBuilder(TextUtil.format("&2&lKits Disponibles"), 6 * 9, true);
+						
+						int CURRENT_SLOT = 0;
+						int MAX_SLOT = (6 * 9) - 1;
+						
+						for(SWKitsType kt : SWKitsType.values()) {
+								
+							if(CURRENT_SLOT == MAX_SLOT) break;
+							if(kt == SWKitsType.NONE) continue;
+							
+							ib.addItem(
+									ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), kt.getCode()) ?
+											
+											new ItemBuilder(kt.getMaterial())
+											.amount(1)
+											.durability((short) kt.getData())
+											.hideAtributes()
+											.name(TextUtil.format(kt.getName()))
+											.lore("")
+											.lore(kt.getLore())
+											.lore("")
+											.lore(TextUtil.format("&a¡Kit Adquirido!"))
+											.lore(TextUtil.format(( (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(kt.getCode()) ?
+													"     &a¡Usando!" :
+													" &7(Click para usar)")).build() :
+										
+											new ItemBuilder(Material.STAINED_GLASS)
+											.amount(1)
+											.durability((short) 7)
+											.hideAtributes()
+											.name(TextUtil.format(" &c&l&oKit no Adquirido!"))
+											.lore("")
+											.lore(kt.getLore())
+											.lore("")
+										.lore(TextUtil.format(" &6Rareza: &7" + kt.getRarity())).build(),
+											
+								CURRENT_SLOT, new Action(){
+
+													boolean inuse = (((SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(kt.getCode())) ? true : false;
+													
+													boolean haskits = ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), kt.getCode());
+												
+													@Override
+													public void click(ClickType click, Player player) {
+														
+														if(inuse) return;
+														
+														if(haskits){
+															
+															SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), kt.getCode()));
+							
+															player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+													
+															player.sendMessage(TextUtil.getCenteredMessage("&a&l ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", true));
+															player.sendMessage(TextUtil.format(" "));
+															player.sendMessage(TextUtil.getCenteredMessage("&8&l&nKIT EQUIPADO", true));
+															player.sendMessage(TextUtil.format(" "));
+															player.sendMessage(TextUtil.getCenteredMessage(" &6&l" + kt.getName(), true));
+															player.sendMessage(TextUtil.format(" "));
+															player.sendMessage(TextUtil.getCenteredMessage("&a&l ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", true));
+															
+															player.closeInventory();
+				
+															return;
+															
+														}
+														
+														player.closeInventory();
+														
+														player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, -1);
+														player.sendMessage(TextUtil.format("&6&l→ &cPara adquirir este Kit, debes comprarlo en la tienda!"));
+														return;
+														
+													}
+												
+											});
+							
+							CURRENT_SLOT++;
+											
+						}
+	
+						ib.addItem(new ItemBuilder(Material.ARROW).amount(1)
+								.name(TextUtil.format("&7Volver")).build(), 48, new Action(){
+
+									@Override
+									public void click(ClickType click, Player player) {
+										
+										player.closeInventory();
+										return;
+										
+									}
+							
+						});
+						
+						ib.addItem(
+								
+								ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), SWKitsType.NONE.getCode()) ? 
+										
+									new ItemBuilder(SWKitsType.NONE.getMaterial())
+										.amount(1)
+										.durability((short) SWKitsType.NONE.getData())
+										.hideAtributes()
+										.name(TextUtil.format(SWKitsType.NONE.getName()))
+										.lore("")
+										.lore(SWKitsType.NONE.getLore())
+										.lore("")
+										.lore(TextUtil.format("&a¡Kit Adquirido!"))
+										.lore(TextUtil.format(( (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(SWKitsType.NONE.getCode()) ?
+												"     &a¡Usando!" :
+												" &7(Click para usar)")).build() :
+									
+										new ItemBuilder(Material.COAL_BLOCK)
+										.amount(1)
+										.hideAtributes()
+										.name(TextUtil.format(" &c&l&oKit no Adquirido!"))
+										.lore("")
+										.lore(SWKitsType.NONE.getLore())
+										.lore("")
+										.lore(TextUtil.format(" &6Rareza: &7" + SWKitsType.NONE.getRarity())).build(), 49, new Action(){
+										
+										boolean inuse = (((SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(SWKitsType.NONE.getCode())) ? true : false;
+													
+										boolean haskits = ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), SWKitsType.NONE.getCode());
+									
+									@Override
+									public void click(ClickType click, Player player) {
+										
+										if(inuse) return;
+										
+										if(haskits) {
+											
+											SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), SWKitsType.NONE.getCode()));
+											
+											player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, -1);
+											player.sendMessage(TextUtil.format("&6&l→ &cNo te equipaste ningún Kit!"));
+											player.closeInventory();
+											
+											
+											return;
+										}
+										
+										player.closeInventory();
+										
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, -1);
+										player.sendMessage(TextUtil.format("&6&l→ &cPara adquirir este Kit, debes comprarlo en la tienda!"));
+										return;
+										
+									}
+							
+						});
+						
+						ib.addItem(new ItemBuilder(Material.ARROW).amount(1)
+								.name(TextUtil.format("&7Volver")).build(), 50, new Action(){
+
+									@Override
+									public void click(ClickType click, Player player) {
+										
+										player.closeInventory();
+										return;
+										
+									}
+							
+						});
+						
+						ib.open(player);
+						return;
+						
+					}
+			
+		}),
 
 		POWER_INSANE_MODE(new ItemBuilder(Material.SLIME_BALL).enchant(Enchantment.FIRE_ASPECT, 1).amount(1)
 				.name(TextUtil.format("&b&lPODERES")).lore(TextUtil.format(""))
@@ -259,7 +484,7 @@ public class LobbyManager implements Listener {
 								@Override
 								public void click(ClickType click, Player player) {
 
-									player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+									player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 									time(player);
 
 									return;
@@ -295,7 +520,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -307,7 +532,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.MORE_INSANE_ITEMS);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -350,7 +575,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -362,7 +587,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.CONTAMINATION);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -403,7 +628,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -415,7 +640,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.NONE);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -543,7 +768,7 @@ public class LobbyManager implements Listener {
 										@Override
 										public void click(ClickType click, Player player) {
 
-											player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+											player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 											itemclick.click(player);
 											return;
 
@@ -570,7 +795,7 @@ public class LobbyManager implements Listener {
 
 										player.closeInventory();
 
-										player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 										player.sendMessage(TextUtil.format("&cYa has votado por este tipo de tiempo!"));
 
 										return;
@@ -581,7 +806,7 @@ public class LobbyManager implements Listener {
 									PowerItem.player_votes.get(player).add(pt);
 
 									for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-										p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+										p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 									}
 
 									Skywars.getInstance().getServer()
@@ -629,7 +854,7 @@ public class LobbyManager implements Listener {
 								@Override
 								public void click(ClickType click, Player player) {
 
-									player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+									player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 									time(player);
 
 									return;
@@ -665,7 +890,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -678,7 +903,7 @@ public class LobbyManager implements Listener {
 														.add(PowerItemType.MORE_LEGENDARY_ITEMS);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -720,7 +945,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -732,7 +957,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.DAYS_BLAZER);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -773,7 +998,7 @@ public class LobbyManager implements Listener {
 
 													player.closeInventory();
 
-													player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+													player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 													player.sendMessage(
 															TextUtil.format("&cYa has votado por este poder!"));
 
@@ -785,7 +1010,7 @@ public class LobbyManager implements Listener {
 												PowerItem.player_votes.get(player).add(PowerItemType.NONE);
 
 												for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-													p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+													p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 												}
 
 												Skywars.getInstance().getServer()
@@ -913,7 +1138,7 @@ public class LobbyManager implements Listener {
 										@Override
 										public void click(ClickType click, Player player) {
 
-											player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+											player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 											itemclick.click(player);
 											return;
 
@@ -940,7 +1165,7 @@ public class LobbyManager implements Listener {
 
 										player.closeInventory();
 
-										player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
 										player.sendMessage(TextUtil.format("&cYa has votado por este tipo de tiempo!"));
 
 										return;
@@ -951,7 +1176,7 @@ public class LobbyManager implements Listener {
 									PowerItem.player_votes.get(player).add(pt);
 
 									for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-										p.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 1);
+										p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 									}
 
 									Skywars.getInstance().getServer()

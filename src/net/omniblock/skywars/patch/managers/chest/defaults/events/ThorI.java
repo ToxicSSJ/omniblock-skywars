@@ -59,6 +59,9 @@ public class ThorI implements ItemType, Listener {
 								}
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
 							player.getInventory().setItemInHand(null);
 
 							Block targetblock = event.getPlayer().getTargetBlock((Set<Material>) null, 200);
@@ -68,7 +71,8 @@ public class ThorI implements ItemType, Listener {
 								if ((SoloPlayerManager.getPlayersInGameList().contains(p)
 										|| TeamPlayerManager.getPlayersInGameList().contains(p))) {
 									if (CameraUtil.getLookingAt(player, p)) {
-										targetplayer = p;
+										if(player.hasLineOfSight(p))
+											targetplayer = p;
 									}
 								}
 							}

@@ -8,10 +8,10 @@ import net.omniblock.network.library.utils.TextUtil;
 
 public enum TurretType {
 
-	LASER_TURRET(TextUtil.format("&c&lTorreta Laser"), "Laser", 0.5, Material.SPONGE, EntityType.GUARDIAN, Sound.ENDERDRAGON_WINGS),
-	PORK_TURRET(TextUtil.format("&6&lTorreta Porcina"), "Porcina", 7.0, Material.HARD_CLAY, EntityType.PIG_ZOMBIE, Sound.PIG_DEATH),
-	ICE_TURRET(TextUtil.format("&b&lTorreta Congeladora"), "Congeladora", 0.0, Material.NOTE_BLOCK, EntityType.SNOWMAN, Sound.FUSE),
-	HEALTH_TURRET(TextUtil.format("&a&lTorreta Sanadora"), "Sanadora", 0.0, Material.JUKEBOX, EntityType.VILLAGER, Sound.VILLAGER_YES),
+	LASER_TURRET(TextUtil.format("&c&lTorreta Laser"), "Laser", 0.5, Material.SPONGE, EntityType.GUARDIAN, Sound.ENTITY_ENDERDRAGON_GROWL),
+	PORK_TURRET(TextUtil.format("&6&lTorreta Porcina"), "Porcina", 7.0, Material.HARD_CLAY, EntityType.PIG_ZOMBIE, Sound.ENTITY_PIG_DEATH),
+	ICE_TURRET(TextUtil.format("&b&lTorreta Congeladora"), "Congeladora", 0.0, Material.NOTE_BLOCK, EntityType.SNOWMAN, Sound.BLOCK_REDSTONE_TORCH_BURNOUT),
+	HEALTH_TURRET(TextUtil.format("&a&lTorreta Sanadora"), "Sanadora", 0.0, Material.JUKEBOX, EntityType.VILLAGER, Sound.ENTITY_VILLAGER_YES),
 
 	;
 
@@ -24,7 +24,7 @@ public enum TurretType {
 	private Sound buildsound;
 
 	TurretType(String name, String name_type, double damage, Material material, EntityType entitytype, Sound buildsound) {
-
+		
 		this.name = name;
 		this.name_type = name_type;
 

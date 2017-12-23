@@ -10,8 +10,6 @@
 
 package net.omniblock.skywars;
 
-import java.util.logging.Handler;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +19,11 @@ import net.omniblock.network.handlers.Handlers;
 import net.omniblock.network.handlers.network.NetworkManager;
 import net.omniblock.network.handlers.updater.object.Updatable;
 import net.omniblock.network.handlers.updater.type.PluginType;
+import net.omniblock.network.library.helpers.effectlib.EffectLib;
+import net.omniblock.network.library.helpers.effectlib.EffectManager;
+import net.omniblock.network.systems.InformationCenterPatcher;
+import net.omniblock.network.systems.InformationCenterPatcher.Information;
+import net.omniblock.network.systems.InformationCenterPatcher.InformationType;
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.GameOnlineInfoPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
@@ -37,11 +40,8 @@ import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.DebugUtil;
-import net.omniblock.skywars.util.MultiLineAPI;
 import net.omniblock.skywars.util.VanishUtil;
 import net.omniblock.skywars.util.FileConfigurationUtil.ConfigurationType;
-import net.omniblock.skywars.util.effectlib.EffectLib;
-import net.omniblock.skywars.util.effectlib.EffectManager;
 import net.omniblock.skywars.util.inventory.InventoryBuilderListener;
 
 public class Skywars extends JavaPlugin implements Updatable {
@@ -101,20 +101,21 @@ public class Skywars extends JavaPlugin implements Updatable {
 		EffectLib.startEffectLib();
 		VanishUtil.start();
 		LobbyManager.start();
-		MultiLineAPI.start();
 
 		InventoryBuilderListener.startInventoryBuilder();
 
+		InformationCenterPatcher.registerAutoInformation(
+				new Information(InformationType.NETWORK_BOOSTER, "skywarsnetworkbooster"),
+				new String[] { "Skywars" },
+				0,
+				20 * 5);
+		
 		effectmanager = new EffectManager(this);
-
+		
 	}
 
 	@Override
 	public void onDisable() {
-
-		for (Handler h : DebugUtil.getLogger().getHandlers()) {
-			h.close();
-		}
 
 		CitizensAPI.getNPCRegistry().deregisterAll();
 
@@ -243,8 +244,7 @@ public class Skywars extends JavaPlugin implements Updatable {
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
 
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_SOLO ? MapManager.NEW_MAP_Z.getName()
-							: MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname("OmniWorld")
 					.setMaximiumPlayers(SoloSkywars.MAX_PLAYERS)
 					.setOnlinePlayers(SoloPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
 							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)
@@ -253,12 +253,11 @@ public class Skywars extends JavaPlugin implements Updatable {
 			return;
 
 		} else {
-
+			
 			Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
 
 					.setServername(Bukkit.getServerName())
-					.setMapname(Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS ? MapManager.NEW_MAP_Z.getName()
-							: MapManager.NEW_MAP_NORMAL.getName())
+					.setMapname("OmniWorld")
 					.setMaximiumPlayers(TeamSkywars.MAX_PLAYERS)
 					.setOnlinePlayers(TeamPlayerManager.getPlayersInLobbyAmount()).setOpened(Skywars.ingame == true
 							? false : Skywars.inpregame == true ? false : Skywars.inend == true ? false : true)

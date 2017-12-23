@@ -33,19 +33,32 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.Tu
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.NumberUtil;
 
+@SuppressWarnings("deprecation")
 public class TeamPlayerBattleListener implements Listener {
 
-	public Map<Player, BukkitTask> contamination_infected = new HashMap<Player, BukkitTask>();
+	public Map < Player,
+	BukkitTask > contamination_infected = new HashMap < Player,
+	BukkitTask > ();
 
-	public static Map<Player, TeamPlayerBattleInfo> battle_info = new HashMap<Player, TeamPlayerBattleInfo>();
-	public static Map<Player, Map<Player, BukkitTask>> assistence = new HashMap<Player, Map<Player, BukkitTask>>();
+	public static Map < Player,
+	TeamPlayerBattleInfo > battle_info = new HashMap < Player,
+	TeamPlayerBattleInfo > ();
+	public static Map < Player,
+	Map < Player,
+	BukkitTask >> assistence = new HashMap < Player,
+	Map < Player,
+	BukkitTask >> ();
 
-	public static Map<Player, Player> lasthit = new HashMap<Player, Player>();
-	public static Map<Player, BukkitTask> lasthit_timer = new HashMap<Player, BukkitTask>();
+	public static Map < Player,
+	Player > lasthit = new HashMap < Player,
+	Player > ();
+	public static Map < Player,
+	BukkitTask > lasthit_timer = new HashMap < Player,
+	BukkitTask > ();
 
 	public static void setBattleInfo() {
 
-		for (Player k : TeamPlayerManager.getPlayersInGameList()) {
+		for (Player k: TeamPlayerManager.getPlayersInGameList()) {
 
 			TeamPlayerBattleInfo pbi = new TeamPlayerBattleInfo(k);
 
@@ -65,18 +78,18 @@ public class TeamPlayerBattleListener implements Listener {
 
 	public static void reset() {
 
-		if (!(battle_info.size() == 0)) {
+		if (! (battle_info.size() == 0)) {
 			battle_info.clear();
 		}
 
-		if (!(lasthit.size() == 0)) {
+		if (! (lasthit.size() == 0)) {
 			lasthit.clear();
 		}
 
-		if (!(assistence.size() == 0)) {
+		if (! (assistence.size() == 0)) {
 
-			for (Map.Entry<Player, Map<Player, BukkitTask>> k : assistence.entrySet()) {
-				for (Map.Entry<Player, BukkitTask> j : k.getValue().entrySet()) {
+			for (Map.Entry < Player, Map < Player, BukkitTask >> k: assistence.entrySet()) {
+				for (Map.Entry < Player, BukkitTask > j: k.getValue().entrySet()) {
 					j.getValue().cancel();
 				}
 			}
@@ -85,9 +98,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 		}
 
-		if (!(lasthit_timer.size() == 0)) {
+		if (! (lasthit_timer.size() == 0)) {
 
-			for (Map.Entry<Player, BukkitTask> k : lasthit_timer.entrySet()) {
+			for (Map.Entry < Player, BukkitTask > k: lasthit_timer.entrySet()) {
 				k.getValue().cancel();
 			}
 
@@ -104,8 +117,7 @@ public class TeamPlayerBattleListener implements Listener {
 		}
 
 		if (TeamPlayerManager.hasTeam(damager)) {
-			if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName())
-				return;
+			if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) return;
 		}
 
 		damage = damage * 2;
@@ -616,8 +628,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 						}
 
-						if (e.getCause() == DamageCause.BLOCK_EXPLOSION
-								|| e.getCause() == DamageCause.ENTITY_EXPLOSION) {
+						if (e.getCause() == DamageCause.BLOCK_EXPLOSION || e.getCause() == DamageCause.ENTITY_EXPLOSION) {
 
 							if (lasthit.containsKey(affected)) {
 								e.setCancelled(true);
@@ -747,15 +758,17 @@ public class TeamPlayerBattleListener implements Listener {
 				return;
 			}
 
-			if(TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()){
-				e.setCancelled(true);
-				return;
+			if (TeamPlayerManager.hasTeam(damager)) {
+				if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) {
+					e.setCancelled(true);
+					return;
+				}
 			}
 			
+
 			if (!affected.hasMetadata("ZDAMAGE")) {
 
-				if (TeamPlayerManager.getPlayersInGameList().contains(damager)
-						&& TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+				if (TeamPlayerManager.getPlayersInGameList().contains(damager) && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 
 					if (TeamPlayerManager.hasTeam(damager)) {
 						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
@@ -781,8 +794,7 @@ public class TeamPlayerBattleListener implements Listener {
 				Player damager = (Player) arrow.getShooter();
 				Player affected = (Player) e.getEntity();
 
-				if (TeamPlayerManager.getPlayersInGameList().contains(damager)
-						&& TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+				if (TeamPlayerManager.getPlayersInGameList().contains(damager) && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 
 					if (TeamPlayerManager.hasTeam(damager)) {
 						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
@@ -808,8 +820,7 @@ public class TeamPlayerBattleListener implements Listener {
 				Player damager = (Player) snowball.getShooter();
 				Player affected = (Player) e.getEntity();
 
-				if (TeamPlayerManager.getPlayersInGameList().contains(damager)
-						&& TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+				if (TeamPlayerManager.getPlayersInGameList().contains(damager) && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 
 					if (TeamPlayerManager.hasTeam(damager)) {
 						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
@@ -857,8 +868,8 @@ public class TeamPlayerBattleListener implements Listener {
 					affected.getWorld().playEffect(affected.getLocation(), Effect.SNOWBALL_BREAK, 30);
 					affected.getWorld().playEffect(affected.getLocation(), Effect.CRIT, 30);
 
-					affected.getWorld().playSound(affected.getLocation(), Sound.IRONGOLEM_HIT, 5, -2);
-					affected.getWorld().playSound(affected.getLocation(), Sound.ITEM_BREAK, 5, -2);
+					affected.getWorld().playSound(affected.getLocation(), Sound.ENTITY_IRONGOLEM_HURT, 5, -2);
+					affected.getWorld().playSound(affected.getLocation(), Sound.ENTITY_ITEM_BREAK, 5, -2);
 
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 120, 1, true));
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 120, 1, true));
@@ -868,11 +879,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 					if (!contamination_infected.containsKey(affected)) {
 						affected.setMetadata("CONTAMINATED", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
-						contamination_infected.put(affected, new BukkitRunnable() {
-							@Override
+						contamination_infected.put(affected, new BukkitRunnable() {@Override
 							public void run() {
-								if (affected.isOnline()
-										&& TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+								if (affected.isOnline() && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 									if (contamination_infected.containsKey(affected)) {
 										contamination_infected.remove(affected);
 									}
@@ -883,11 +892,9 @@ public class TeamPlayerBattleListener implements Listener {
 					} else {
 						affected.setMetadata("CONTAMINATED", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
 						contamination_infected.get(affected).cancel();
-						contamination_infected.put(affected, new BukkitRunnable() {
-							@Override
+						contamination_infected.put(affected, new BukkitRunnable() {@Override
 							public void run() {
-								if (affected.isOnline()
-										&& TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+								if (affected.isOnline() && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 									if (contamination_infected.containsKey(affected)) {
 										contamination_infected.remove(affected);
 									}
@@ -918,7 +925,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 			if (TeamPlayerManager.getPlayersInGameList().contains(damager)) {
 
-				for (AwakeTurret at : TurretUtil.awake_turrets) {
+				for (AwakeTurret at: TurretUtil.awake_turrets) {
 					if (at.turret.getEntity() == e.getEntity()) {
 						e.setCancelled(true);
 						if (at.owner != damager && !at.extra_exclude.contains(damager)) {
@@ -938,7 +945,7 @@ public class TeamPlayerBattleListener implements Listener {
 				Player damager = (Player) pj.getShooter();
 
 				if (TeamPlayerManager.getPlayersInGameList().contains(damager)) {
-					for (AwakeTurret at : TurretUtil.awake_turrets) {
+					for (AwakeTurret at: TurretUtil.awake_turrets) {
 						if (at.turret.getEntity() == e.getEntity()) {
 							e.setCancelled(true);
 							pj.remove();
@@ -991,18 +998,19 @@ public class TeamPlayerBattleListener implements Listener {
 
 		if (assistence.containsKey(affected)) {
 
-			Map<Player, BukkitTask> players = assistence.get(affected);
+			Map < Player,
+			BukkitTask > players = assistence.get(affected);
 			if (players.containsKey(damager)) {
 
 				players.get(damager).cancel();
 				players.remove(damager);
 
-				players.put(damager, new BukkitRunnable() {
-					@Override
+				players.put(damager, new BukkitRunnable() {@Override
 					public void run() {
 
 						if (assistence.containsKey(affected)) {
-							Map<Player, BukkitTask> cache = assistence.get(affected);
+							Map < Player,
+							BukkitTask > cache = assistence.get(affected);
 							if (cache.containsKey(damager)) {
 
 								cache.remove(damager);
@@ -1020,11 +1028,11 @@ public class TeamPlayerBattleListener implements Listener {
 
 			} else {
 
-				players.put(damager, new BukkitRunnable() {
-					@Override
+				players.put(damager, new BukkitRunnable() {@Override
 					public void run() {
 						if (assistence.containsKey(affected)) {
-							Map<Player, BukkitTask> cache = assistence.get(affected);
+							Map < Player,
+							BukkitTask > cache = assistence.get(affected);
 							if (cache.containsKey(damager)) {
 
 								cache.remove(damager);
@@ -1044,13 +1052,15 @@ public class TeamPlayerBattleListener implements Listener {
 
 		} else {
 
-			Map<Player, BukkitTask> players = new HashMap<Player, BukkitTask>();
+			Map < Player,
+			BukkitTask > players = new HashMap < Player,
+			BukkitTask > ();
 
-			players.put(damager, new BukkitRunnable() {
-				@Override
+			players.put(damager, new BukkitRunnable() {@Override
 				public void run() {
 					if (assistence.containsKey(affected)) {
-						Map<Player, BukkitTask> cache = assistence.get(affected);
+						Map < Player,
+						BukkitTask > cache = assistence.get(affected);
 						if (cache.containsKey(damager)) {
 
 							cache.remove(damager);
@@ -1087,8 +1097,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 		lasthit.put(affected, damager);
 
-		BukkitTask bt = new BukkitRunnable() {
-			@Override
+		BukkitTask bt = new BukkitRunnable() {@Override
 			public void run() {
 				cancel();
 
@@ -1140,8 +1149,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 			if (damager != null) {
 
-				Map<Player, BukkitTask> players = assistence.get(affected);
-				for (Map.Entry<Player, BukkitTask> k : players.entrySet()) {
+				Map < Player,
+				BukkitTask > players = assistence.get(affected);
+				for (Map.Entry < Player, BukkitTask > k: players.entrySet()) {
 
 					Player cache_p = k.getKey();
 					BukkitTask cache_bt = k.getValue();
@@ -1160,8 +1170,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 			} else {
 
-				Map<Player, BukkitTask> players = assistence.get(affected);
-				for (Map.Entry<Player, BukkitTask> k : players.entrySet()) {
+				Map < Player,
+				BukkitTask > players = assistence.get(affected);
+				for (Map.Entry < Player, BukkitTask > k: players.entrySet()) {
 
 					Player cache_p = k.getKey();
 					BukkitTask cache_bt = k.getValue();
@@ -1198,8 +1209,9 @@ public class TeamPlayerBattleListener implements Listener {
 		 */
 		if (assistence.containsKey(affected)) {
 
-			Map<Player, BukkitTask> players = assistence.get(affected);
-			for (Map.Entry<Player, BukkitTask> k : players.entrySet()) {
+			Map < Player,
+			BukkitTask > players = assistence.get(affected);
+			for (Map.Entry < Player, BukkitTask > k: players.entrySet()) {
 
 				Player cache_p = k.getKey();
 				BukkitTask cache_bt = k.getValue();
@@ -1250,7 +1262,7 @@ public class TeamPlayerBattleListener implements Listener {
 			battle_info.put(helper, pbi);
 
 			InGameActionBar.ASSISTENCE.send(helper, 1);
-			helper.playSound(helper.getLocation(), Sound.ORB_PICKUP, 5, -5);
+			helper.playSound(helper.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 5, -5);
 			return;
 
 		} else {
@@ -1279,7 +1291,7 @@ public class TeamPlayerBattleListener implements Listener {
 				battle_info.put(killer, pbi);
 
 				InGameActionBar.KILL_ENEMY.send(killer, 1);
-				killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 5, -5);
+				killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 5, -5);
 
 			} else {
 
@@ -1303,7 +1315,7 @@ public class TeamPlayerBattleListener implements Listener {
 			battle_info.put(death, pbi);
 
 			InGameActionBar.DEAD.send(death);
-			death.playSound(death.getLocation(), Sound.HORSE_SKELETON_HIT, 5, -10);
+			death.playSound(death.getLocation(), Sound.ENTITY_WITHER_SKELETON_HURT, 5, -10);
 
 		} else {
 
@@ -1321,9 +1333,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 	}
 
-	@SuppressWarnings("deprecation")
-	public static EntityDamageEvent callEntityDamageEvent(Entity damager, Entity damaged, DamageCause cause,
-			double damage) {
+	public static EntityDamageEvent callEntityDamageEvent(Entity damager, Entity damaged, DamageCause cause, double damage) {
 
 		EntityDamageEvent event;
 
@@ -1346,9 +1356,12 @@ public class TeamPlayerBattleListener implements Listener {
 	}
 
 	public enum InGameActionBar {
-		ALLIED_DEAD("&f¡Tu aliado a muerto!"), KILL_ENEMY("&f¡Has matado un enemigo &a&l+%a&f!"), ASSISTENCE(
-				"&f¡Has ganado una asistencia &a&l+%a&f!"), WINNER(
-						"&f¡Has ganado la partida &a&l+%a&f!"), DEAD("&c¡Has muerto!"),;
+		ALLIED_DEAD("&f¡Tu aliado a muerto!"),
+		KILL_ENEMY("&f¡Has matado un enemigo &a&l+%a&f!"),
+		ASSISTENCE("&f¡Has ganado una asistencia &a&l+%a&f!"),
+		WINNER("&f¡Has ganado la partida &a&l+%a&f!"),
+		DEAD("&c¡Has muerto!"),
+		;
 
 		private String barmessage;
 
@@ -1371,73 +1384,68 @@ public class TeamPlayerBattleListener implements Listener {
 		}
 
 		public void send(Player player, int quantity) {
-			ActionBarApi.sendActionBar(player,
-					TextUtil.format(getBarmessage()).replaceAll("%a", String.valueOf(quantity)));
+			ActionBarApi.sendActionBar(player, TextUtil.format(getBarmessage()).replaceAll("%a", String.valueOf(quantity)));
 		}
 
 	}
 
 	public enum DeathMessages {
 
-		P2P_WEAPON("&cPLAYER_1 &7Ha muerto a manos de &aPLAYER_2!",
-				"&cPLAYER_1 &7Ha sido asesinado brutalmente por &aPLAYER_2!"), P2P_ARROWS(
-						"&aPLAYER_2 &7Mató a &cPLAYER_1&7, Con su arco!", "&cPLAYER_1 &7Ha destruido a &aPLAYER_2!"),
+		P2P_WEAPON("&cPLAYER_1 &7Ha muerto a manos de &aPLAYER_2!", "&cPLAYER_1 &7Ha sido asesinado brutalmente por &aPLAYER_2!"),
+		P2P_ARROWS("&aPLAYER_2 &7Mató a &cPLAYER_1&7, Con su arco!", "&cPLAYER_1 &7Ha destruido a &aPLAYER_2!"),
 
-		P2P_Z_JHON_CENA("&aPLAYER_2 &7Disparó a &cPLAYER_1&7, Con su puño de &2&lJHON CENAAAA!"), P2P_Z_THOR(
-				"&cPLAYER_1 &7Fue destrozado con el &e&lRAYO &7de &7PLAYER_1!"), P2P_Z_ICE_THOR(
-						"&cPLAYER_1 &7Se congeló con el &b&lRAYO CONGELADOR &7de &7PLAYER_1!"), P2P_Z_CLON(
-								"&aPLAYER_2 &7Mató a &cPLAYER_1 &7con su poderoso &9&lCLON!"), P2P_Z_KRAKEN(
-										"&aPLAYER_2 &7Explotó a &cPLAYER_1 &7con su maravilloso &8&lKRAKEN!"), P2P_Z_TRAP_CHEST(
-												"&cPLAYER_1 &7Se encontró una sorpresita en el &6&lCOFRE TRAMPA&7 puesto por &aPLAYER_2!"), P2P_Z_ICE_BALL(
-														"&aPLAYER_2 &7Disparó a &cPLAYER_1&7, Con su &b&lBOLA CONGELACEREBROSSS!"), P2P_Z_METEOR(
-																"&7El &c&lMETEORITO&7 de &aPLAYER_2 &7aplastó a &cPLAYER_1!"), P2P_Z_BOMBARDIER(
-																		"&cPLAYER_1 &7fue &2&lBOMBARDEADO &7por &aPLAYER_2!"),
+		P2P_Z_JHON_CENA("&aPLAYER_2 &7Disparó a &cPLAYER_1&7, Con su puño de &2&lJHON CENAAAA!"),
+		P2P_Z_THOR("&cPLAYER_1 &7Fue destrozado con el &e&lRAYO &7de &7PLAYER_2!"),
+		P2P_Z_ICE_THOR("&cPLAYER_1 &7Se congeló con el &b&lRAYO CONGELADOR &7de &7PLAYER_2!"),
+		P2P_Z_CLON("&aPLAYER_2 &7Mató a &cPLAYER_1 &7con su poderoso &9&lCLON!"),
+		P2P_Z_KRAKEN("&aPLAYER_2 &7Explotó a &cPLAYER_1 &7con su maravilloso &8&lKRAKEN!"),
+		P2P_Z_TRAP_CHEST("&cPLAYER_1 &7Se encontró una sorpresita en el &6&lCOFRE TRAMPA&7 puesto por &aPLAYER_2!"),
+		P2P_Z_ICE_BALL("&aPLAYER_2 &7Disparó a &cPLAYER_1&7, Con su &b&lBOLA CONGELACEREBROSSS!"),
+		P2P_Z_METEOR("&7El &c&lMETEORITO&7 de &aPLAYER_2 &7aplastó a &cPLAYER_1!"),
+		P2P_Z_BOMBARDIER("&cPLAYER_1 &7fue &2&lBOMBARDEADO &7por &aPLAYER_2!"),
 
-		P2A_Z_RUSHER("&7Un zombie a acabado con la vida de &cPLAYER_1!"), P2A_Z_CONTAMINATION(
-				"&7La contaminación a acabado con la vida de &cPLAYER_1!"), P2A_Z_BOMBARDIER(
-						"&cPLAYER_1 &7explotó con las bombas del &4&lAPOCALIPSIS!"), P2A_Z_THOR(
-								"&cPLAYER_1 &7sació el hambre de &b&lZEUS APOCALIPTICO!"), P2A_Z_METEOR(
-										"&cPLAYER_1 &7explotó con un meteorito del &4&lAPOCALIPSIS!"),
+		P2A_Z_RUSHER("&7Un zombie a acabado con la vida de &cPLAYER_1!"),
+		P2A_Z_CONTAMINATION("&7La contaminación a acabado con la vida de &cPLAYER_1!"),
+		P2A_Z_BOMBARDIER("&cPLAYER_1 &7explotó con las bombas del &4&lAPOCALIPSIS!"),
+		P2A_Z_THOR("&cPLAYER_1 &7sació el hambre de &b&lZEUS APOCALIPTICO!"),
+		P2A_Z_METEOR("&cPLAYER_1 &7explotó con un meteorito del &4&lAPOCALIPSIS!"),
 
-		P2P_AMBIENT_Z_RUSHER("&aPLAYER_2 &7a empujado a &cPLAYER_1 &7a la horda de Zombies!"), P2P_AMBIENT_Z_BOMBARDIER(
-				"&cPLAYER_1 &7fue empujado por &aPLAYER_1 &7a las bombas del &4&lAPOCALIPSIS!"), P2P_AMBIENT_Z_THOR(
-						"&b&lZEUS APOCALIPTICO &7no perdonó a &cPLAYER_1 &7en su huida de &aPLAYER_2!"), P2P_AMBIENT_Z_METEOR(
-								"&cPLAYER_1 &7fue arrojado por &aPLAYER_1 &7a un meteorito del &4&lAPOCALIPSIS!"),
+		P2P_AMBIENT_Z_RUSHER("&aPLAYER_2 &7a empujado a &cPLAYER_1 &7a la horda de Zombies!"),
+		P2P_AMBIENT_Z_BOMBARDIER("&cPLAYER_1 &7fue empujado por &aPLAYER_1 &7a las bombas del &4&lAPOCALIPSIS!"),
+		P2P_AMBIENT_Z_THOR("&b&lZEUS APOCALIPTICO &7no perdonó a &cPLAYER_1 &7en su huida de &aPLAYER_2!"),
+		P2P_AMBIENT_Z_METEOR("&cPLAYER_1 &7fue arrojado por &aPLAYER_1 &7a un meteorito del &4&lAPOCALIPSIS!"),
 
-		P2A_COMMON("&cPLAYER_1 &7Ha muerto!"), P2A_VOID("&cPLAYER_1 &7fue absorbido por el vacio!",
-				"&cPLAYER_1 &7fue exterminado por el espacio-tiempo!",
-				"&cPLAYER_1 &7se preguntaba que habia en el vacio!"), P2A_SUICIDE(
-						"&cPLAYER_1 &7se ha suicidado!"), P2A_TNT_SUICIDE(
-								"&cPLAYER_1 &7se ha explotado a si mismo!"), P2A_WATER("&cPLAYER_1 &7se ahogó!",
-										"&cPLAYER_1 &7no pudo salir del agua!"), P2A_FIRE("&cPLAYER_1 &7murió quemado!",
-												"&cPLAYER_1 &7no pudo extinguir las llamas!"), P2A_LAVA(
-														"&cPLAYER_1 &7practicó natación en lava!"), P2A_JUMP(
-																"&cPLAYER_1 &7cayó desde muy alto!",
-																"&7Los restos de &cPLAYER_1 &7quedaron esparcidos por el suelo."),
+		P2A_COMMON("&cPLAYER_1 &7Ha muerto!"),
+		P2A_VOID("&cPLAYER_1 &7fue absorbido por el vacio!", "&cPLAYER_1 &7fue exterminado por el espacio-tiempo!", "&cPLAYER_1 &7se preguntaba que habia en el vacio!"),
+		P2A_SUICIDE("&cPLAYER_1 &7se ha suicidado!"),
+		P2A_TNT_SUICIDE("&cPLAYER_1 &7se ha explotado a si mismo!"),
+		P2A_WATER("&cPLAYER_1 &7se ahogó!", "&cPLAYER_1 &7no pudo salir del agua!"),
+		P2A_FIRE("&cPLAYER_1 &7murió quemado!", "&cPLAYER_1 &7no pudo extinguir las llamas!"),
+		P2A_LAVA("&cPLAYER_1 &7practicó natación en lava!"),
+		P2A_JUMP("&cPLAYER_1 &7cayó desde muy alto!", "&7Los restos de &cPLAYER_1 &7quedaron esparcidos por el suelo."),
 
-		P2P_Z_CONTAMINATION(
-				"&aPLAYER_2 &7ha empujado sin piedad a &cPLAYER_1 &7hacia la &d&lcontaminacion!"), P2P_Z_LASER_TURRET(
-						"&7La torreta &4&lLASER &7de &aPLAYER_2 &7destruyó a &cPLAYER_1 &7con su poderoso rayo!"), P2P_Z_ICE_TURRET(
-								"&cPLAYER_1 &7No pudo huir de la poderosa torreta &b&lCONGELADORA &7de &aPLAYER_2!"), P2P_Z_PORK_TURRET(
-										"&7La torreta &6&lPORCINA &7de &aPLAYER_2 &7explotó a &cPLAYER_1 &7en mil pedazos!"),
+		P2P_Z_CONTAMINATION("&aPLAYER_2 &7ha empujado sin piedad a &cPLAYER_1 &7hacia la &d&lcontaminacion!"),
+		P2P_Z_LASER_TURRET("&7La torreta &4&lLASER &7de &aPLAYER_2 &7destruyó a &cPLAYER_1 &7con su poderoso rayo!"),
+		P2P_Z_ICE_TURRET("&cPLAYER_1 &7No pudo huir de la poderosa torreta &b&lCONGELADORA &7de &aPLAYER_2!"),
+		P2P_Z_PORK_TURRET("&7La torreta &6&lPORCINA &7de &aPLAYER_2 &7explotó a &cPLAYER_1 &7en mil pedazos!"),
 
-		P2P_COMMON("&aPLAYER_2 &7ha matado a &cPLAYER_1!"), P2P_VOID(
-				"&aPLAYER_2 &7empujó a &cPLAYER_1 &7hacia el vacio!"), P2P_SUICIDE(
-						"&aPLAYER_2 &7ha provocado que &cPLAYER_1 &7se suicide!"), P2P_TNT(
-								"&aPLAYER_1 &7ha sido explotado en pedazos por &cPLAYER_2!"), P2P_WATER(
-										"&aPLAYER_2 &7ha ahogado despediadamente a &cPLAYER_1 &7en el agua!"), P2P_FIRE(
-												"&aPLAYER_2 &7empujó a &cPLAYER_1 &7hacia las llamas infernales!"), P2P_LAVA(
-														"&aPLAYER_2 &7entrenó a &cPLAYER_1 &7en su curso de natación en lava!"), P2P_JUMP(
-																"&cPLAYER_1 &7fue empujado por &aPLAYER_2 &7desde muy alto!"),
+		P2P_COMMON("&aPLAYER_2 &7ha matado a &cPLAYER_1!"),
+		P2P_VOID("&aPLAYER_2 &7empujó a &cPLAYER_1 &7hacia el vacio!"),
+		P2P_SUICIDE("&aPLAYER_2 &7ha provocado que &cPLAYER_1 &7se suicide!"),
+		P2P_TNT("&aPLAYER_1 &7ha sido explotado en pedazos por &cPLAYER_2!"),
+		P2P_WATER("&aPLAYER_2 &7ha ahogado despediadamente a &cPLAYER_1 &7en el agua!"),
+		P2P_FIRE("&aPLAYER_2 &7empujó a &cPLAYER_1 &7hacia las llamas infernales!"),
+		P2P_LAVA("&aPLAYER_2 &7entrenó a &cPLAYER_1 &7en su curso de natación en lava!"),
+		P2P_JUMP("&cPLAYER_1 &7fue empujado por &aPLAYER_2 &7desde muy alto!"),
 
-		P2E_LEAVE("&cPLAYER_1 &7se ha desconectado!", "&cPLAYER_1 &7ha huido del campo de batalla!"), P2E_EXPULSE(
-				"&cPLAYER_1 &7fue expulsado de la partida!"),
+		P2E_LEAVE("&cPLAYER_1 &7se ha desconectado!", "&cPLAYER_1 &7ha huido del campo de batalla!"),
+		P2E_EXPULSE("&cPLAYER_1 &7fue expulsado de la partida!"),
 
 		;
 
 		private String[] message;
 
-		DeathMessages(String... message) {
+		DeathMessages(String...message) {
 			this.message = message;
 		}
 
@@ -1471,7 +1479,7 @@ public class TeamPlayerBattleListener implements Listener {
 			String prefix = " &8&l»&r ";
 			String tosend = prefix + message;
 
-			for (Player p : Bukkit.getOnlinePlayers()) {
+			for (Player p: Bukkit.getOnlinePlayers()) {
 				p.sendMessage(TextUtil.format(tosend));
 			}
 
@@ -1489,7 +1497,18 @@ public class TeamPlayerBattleListener implements Listener {
 
 	public enum DamageCauseZ {
 
-		JHON_CENA, BOMBARDIER, EXP_CHEST, KRAKEN, TURRET_C, TURRET_P, TURRET_L, TURRET_S, METEORO, THORA, THORI, IBALL,
+		JHON_CENA,
+		BOMBARDIER,
+		EXP_CHEST,
+		KRAKEN,
+		TURRET_C,
+		TURRET_P,
+		TURRET_L,
+		TURRET_S,
+		METEORO,
+		THORA,
+		THORI,
+		IBALL,
 
 		;
 

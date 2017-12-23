@@ -28,6 +28,8 @@ import org.bukkit.scheduler.BukkitTask;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.omniblock.network.library.helpers.effectlib.effect.LineEffect;
+import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -38,8 +40,6 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.TurretBuilder;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.TurretType;
-import net.omniblock.skywars.util.effectlib.effect.LineEffect;
-import net.omniblock.skywars.util.effectlib.util.ParticleEffect;
 
 public class IceTurret implements Turret, ItemType, Listener {
 
@@ -49,12 +49,19 @@ public class IceTurret implements Turret, ItemType, Listener {
 
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
+		
 		if (SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+			
+			if(!Skywars.ingame)
+				return;
+			
 			if (e.getBlockPlaced().getType() == type.getMaterial()) {
 				build(e.getPlayer(), e.getBlockPlaced());
 			}
+			
 		}
+		
 	}
 
 	@Override
@@ -76,7 +83,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 				} else if (tb.isCompleted()) {
 
 					cancel();
-					place.getLocation().getWorld().playSound(place.getLocation(), Sound.ZOMBIE_WOODBREAK, 4, 15);
+					place.getLocation().getWorld().playSound(place.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 4, 15);
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TextUtil
@@ -114,14 +121,15 @@ public class IceTurret implements Turret, ItemType, Listener {
 		CustomProtocolManager.PROTECTED_BLOCK_LIST.add(l2.getBlock());
 		awaketurret.components.add(l2.getBlock());
 
-		@SuppressWarnings("deprecation")
-		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnCreature(l3, EntityType.ARMOR_STAND);
+		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnEntity(l3, EntityType.ARMOR_STAND);
 		_a.setCustomName(TextUtil
 				.format("&8&l> &e&lTorreta " + type.getName_type() + " de " + constructor.getName() + " &8&l<"));
 		_a.setVisible(false);
 		_a.setCustomNameVisible(true);
 		_a.setGravity(false);
-
+		_a.setBasePlate(false);
+		_a.setArms(false);
+		
 		awaketurret.info_hud = _a;
 
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -137,6 +145,8 @@ public class IceTurret implements Turret, ItemType, Listener {
 
 		final ArmorStand _a1 = (ArmorStand) a1.getEntity();
 		_a1.setGravity(true);
+		_a1.setBasePlate(false);
+		_a.setArms(false);
 
 		new BukkitRunnable() {
 			public void run() {
@@ -217,7 +227,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 											ef.visibleRange = 300;
 											ef.particles = 5;
 											ef.setLocation(turret_entity.getEyeLocation());
-											ef.setTarget(p.getEyeLocation());
+											ef.setTargetLocation(p.getEyeLocation());
 											ef.start();
 											return;
 
@@ -250,8 +260,8 @@ public class IceTurret implements Turret, ItemType, Listener {
 
 		if (toshoot.getType() == EntityType.PLAYER) {
 
-			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.ENDERDRAGON_WINGS, 5, -2);
-			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.DIG_SNOW, 5, -2);
+			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.ENTITY_ENDERDRAGON_FLAP, 5, -2);
+			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.BLOCK_SNOW_BREAK, 5, -2);
 
 			Player affected = (Player) toshoot;
 			Snowman turret_entity = (Snowman) awaketurret.turret.getEntity();
@@ -264,7 +274,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 			ef.color = Color.BLUE;
 			ef.visibleRange = 300;
 			ef.setLocation(turret_entity.getEyeLocation());
-			ef.setTarget(affected.getEyeLocation());
+			ef.setTargetLocation(affected.getEyeLocation());
 			ef.start();
 
 			if (!slowness_levels.containsKey(affected)) {
@@ -272,7 +282,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 				if (affected.hasPotionEffect(PotionEffectType.SLOW)) {
 
 					affected.removePotionEffect(PotionEffectType.SLOW);
-					affected.playSound(affected.getLocation(), Sound.CLICK, 10, -3);
+					affected.playSound(affected.getLocation(), Sound.UI_BUTTON_CLICK, 10, -3);
 
 				}
 
@@ -285,7 +295,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 							for (PotionEffect pe : affected.getActivePotionEffects()) {
 								if (pe.getType() == PotionEffectType.SLOW) {
 									affected.removePotionEffect(pe.getType());
-									affected.playSound(affected.getLocation(), Sound.CLICK, 10, -3);
+									affected.playSound(affected.getLocation(), Sound.UI_BUTTON_CLICK, 10, -3);
 								}
 							}
 						}
@@ -306,44 +316,44 @@ public class IceTurret implements Turret, ItemType, Listener {
 				if (affected.hasPotionEffect(PotionEffectType.SLOW)) {
 
 					affected.removePotionEffect(PotionEffectType.SLOW);
-					affected.playSound(affected.getLocation(), Sound.CLICK, 10, -3);
+					affected.playSound(affected.getLocation(), Sound.UI_BUTTON_CLICK, 10, -3);
 
 				}
 
 				switch (level) {
 				case 0:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -3);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -3);
 					break;
 				case 1:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 2));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -6);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -6);
 					break;
 				case 2:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 4));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -9);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -9);
 					break;
 				case 3:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 8));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -12);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -12);
 					break;
 				case 4:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 16));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -15);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -15);
 					break;
 				case 5:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 10000));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -20);
-					affected.playSound(affected.getLocation(), Sound.GLASS, 10, -20);
-					affected.playSound(affected.getLocation(), Sound.IRONGOLEM_DEATH, 10, -20);
-					affected.playSound(affected.getLocation(), Sound.SKELETON_HURT, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.BLOCK_GLASS_BREAK, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_IRONGOLEM_DEATH, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_SKELETON_HURT, 10, -20);
 					break;
 				default:
 					affected.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 10000));
-					affected.playSound(affected.getLocation(), Sound.COW_IDLE, 10, -20);
-					affected.playSound(affected.getLocation(), Sound.GLASS, 10, -20);
-					affected.playSound(affected.getLocation(), Sound.IRONGOLEM_DEATH, 10, -20);
-					affected.playSound(affected.getLocation(), Sound.SKELETON_HURT, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_COW_AMBIENT, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.BLOCK_GLASS_BREAK, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_IRONGOLEM_DEATH, 10, -20);
+					affected.playSound(affected.getLocation(), Sound.ENTITY_SKELETON_HURT, 10, -20);
 					break;
 				}
 
@@ -356,7 +366,7 @@ public class IceTurret implements Turret, ItemType, Listener {
 									if (affected.hasPotionEffect(PotionEffectType.SLOW)) {
 
 										affected.removePotionEffect(PotionEffectType.SLOW);
-										affected.playSound(affected.getLocation(), Sound.CLICK, 10, -3);
+										affected.playSound(affected.getLocation(), Sound.UI_BUTTON_CLICK, 10, -3);
 
 									}
 

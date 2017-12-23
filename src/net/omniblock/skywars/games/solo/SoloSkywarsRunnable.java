@@ -98,7 +98,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 						|| remainingTimeLobby <= 5 && remainingTimeLobby > 0) {
 					Bukkit.broadcastMessage(
 							TextUtil.format(" &8&l» &7La partida inicia en &a" + remainingTimeLobby + "&7 segundos."));
-					SoloPlayerManager.playSound(Sound.CLICK, 1, 15);
+					SoloPlayerManager.playSound(Sound.UI_BUTTON_CLICK, 1, 15);
 				}
 
 				for (Player p : SoloPlayerManager.getPlayersInLobbyList()) {
@@ -113,7 +113,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 
 					} else {
 
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 2, -1);
+						p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2, -1);
 						p.sendMessage(TextUtil.format(" &8&l» &7La partida ha iniciado!"));
 
 						ActionBarApi.sendActionBar(p,
@@ -151,16 +151,16 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 
 					if (remainingTimeCages <= 5) {
 
-						p.playSound(p.getLocation(), Sound.ORB_PICKUP, 1, remainingTimeCages);
-						p.playSound(p.getLocation(), Sound.CLICK, 1, remainingTimeCages);
+						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, remainingTimeCages);
+						p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, remainingTimeCages);
 
-						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7¡Preparate para Pelear!"),
+						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, TextUtil.format("&7¡Prepárate para Pelear!"),
 								(remainingTimeCages > 3) ? TextUtil.format("&e&l" + String.valueOf(remainingTimeCages))
 										: TextUtil.format("&c&l" + String.valueOf(remainingTimeCages)));
 						continue;
 					}
 
-					p.playSound(p.getLocation(), Sound.CLICK, 1, 10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, 10);
 
 				}
 
@@ -175,7 +175,6 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 
 							public int seconds = 5;
 
-							@SuppressWarnings("deprecation")
 							@Override
 							public void run() {
 
@@ -221,7 +220,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 
 						}.runTaskTimer(Skywars.getInstance(), 20l, 10l);
 
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1F, 1F);
+						p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
 						TitleUtil.sendTitleToPlayer(p, 0, 22, 0, "", TextUtil.format("&c&l¡A PELEAR!"));
 
 					}
@@ -240,9 +239,10 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 							}
 						}
 					}
-
+					
+					SoloPlayerManager.transferKitsToPlayers(SoloPlayerManager.currentMatchType);
 					Skywars.updateGameState(SkywarsGameState.IN_GAME);
-
+					
 				}
 
 			}
@@ -250,6 +250,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 		} else if (Skywars.getGameState() == SkywarsGameState.IN_GAME) {
 
 			Map<String, Integer> events = MapUtils.clone(EVENTS);
+			
 			for (Map.Entry<String, Integer> k : events.entrySet()) {
 				try {
 					reduceEvent(k.getKey(), 1);
@@ -487,30 +488,23 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	}
 
 	public enum InGameTitles {
-		REFILL_TITLE(65, Sound.CHEST_OPEN, new TitleFormat[] { new TitleFormat(5, 45, 5, TextUtil.format("&6&lCofres"),
-				TextUtil.format("&7¡Rellenado Completado!")) }), DUEL_TITLE(65,
-						Sound.BAT_TAKEOFF,
-						new TitleFormat[] { new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lDuelo&r&4&k ||"),
-								TextUtil.format("&7¡El duelo ha iniciado!")) }), CONTAMINATION_TITLE(65,
-										Sound.ZOMBIE_REMEDY,
-										new TitleFormat[] { new TitleFormat(5, 45, 5,
-												TextUtil.format("&d&lContaminación"),
-												TextUtil.format(
-														"&7¡Se está esparciendo el virus!")) }), DESTRUCTION_TITLE(65,
-																Sound.WITHER_SPAWN,
-																new TitleFormat[] { new TitleFormat(5, 45, 5,
-																		TextUtil.format(
-																				"&4&k|| &r&c&lDestrucción&r&4&k ||"),
-																		TextUtil.format(
-																				"&7¡Ha iniciado la destrucción!")) }), APOCALYPSE_TITLE(
-																						65, Sound.ENDERDRAGON_GROWL,
-																						new TitleFormat[] {
-																								new TitleFormat(5, 45,
-																										5,
-																										TextUtil.format(
-																												"&4&k|| &r&c&lApocalipsis&r&4&k ||"),
-																										TextUtil.format(
-																												"&7¡El apocalipsis ha empezado!")) }),
+			REFILL_TITLE(65, Sound.BLOCK_CHEST_OPEN, new TitleFormat[] {
+				new TitleFormat(5, 45, 5, TextUtil.format("&6&lCofres"), TextUtil.format("&7¡Rellenado Completado!"))
+			}),
+			DUEL_TITLE(65, Sound.ENTITY_BAT_TAKEOFF, new TitleFormat[] {
+				new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lDuelo&r&4&k ||"), TextUtil.format("&7¡El duelo ha iniciado!"))
+			}),
+			CONTAMINATION_TITLE(65, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, new TitleFormat[] {
+				new TitleFormat(5, 45, 5, TextUtil.format("&d&lContaminación"), TextUtil.format("&7¡Se está esparciendo el virus!"))
+			}),
+			DESTRUCTION_TITLE(65, Sound.ENTITY_WITHER_SPAWN, new TitleFormat[] {
+				new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lDestrucción&r&4&k ||"), TextUtil.format("&7¡Ha iniciado la destrucción!"))
+			}),
+			APOCALYPSE_TITLE(
+			65, Sound.ENTITY_ENDERDRAGON_GROWL, new TitleFormat[] {
+				new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lApocalipsis&r&4&k ||"), TextUtil.format("&7¡El apocalipsis ha empezado!"))
+			}),
+
 
 		;
 

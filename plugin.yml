@@ -1,6 +1,6 @@
 name: Skywars
 main: net.omniblock.skywars.Skywars
-softdepend: [OmniNetwork, WorldEdit, Citizens]
+softdepend: [OmniNetwork, WorldEdit, Citizens, MapManager]
 version: 12.0.2
 commands:
    lobby:
@@ -17,4 +17,7 @@ commands:
       usage: /<command>
    gen_command_vote:
       description: Comando generado para la inicialización de votos.
+      usage: /<command>
+   gen_command_test:
+      description: Comando generado para iniciar testeos.
       usage: /<command>

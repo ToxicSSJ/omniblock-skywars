@@ -31,6 +31,7 @@ import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager.SpectatorItem;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
+@SuppressWarnings("deprecation")
 public class TeamPlayerCustomProtocols implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -38,7 +39,7 @@ public class TeamPlayerCustomProtocols implements Listener {
 		TeleportFix.makeFix(e.getPlayer());
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player) {
 			if (CustomProtocolManager.PROTECTED_PLAYER_LIST.contains((Player) e.getEntity())) {
@@ -170,7 +171,6 @@ public class TeamPlayerCustomProtocols implements Listener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void explode(EntityChangeBlockEvent e) {
 		if (e.getEntity() instanceof FallingBlock) {

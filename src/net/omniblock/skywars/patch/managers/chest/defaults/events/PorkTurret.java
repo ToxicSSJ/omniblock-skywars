@@ -24,6 +24,9 @@ import org.bukkit.util.Vector;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.omniblock.network.library.helpers.effectlib.effect.ExplodeEffect;
+import net.omniblock.network.library.helpers.effectlib.effect.LineEffect;
+import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -36,9 +39,6 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.TurretBuilder;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.TurretType;
-import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
-import net.omniblock.skywars.util.effectlib.effect.LineEffect;
-import net.omniblock.skywars.util.effectlib.util.ParticleEffect;
 
 public class PorkTurret implements Turret, ItemType, Listener {
 
@@ -46,12 +46,19 @@ public class PorkTurret implements Turret, ItemType, Listener {
 
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
+		
 		if (SoloPlayerManager.getPlayersInGameList().contains(e.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(e.getPlayer())) {
+			
+			if(!Skywars.ingame)
+				return;
+			
 			if (e.getBlockPlaced().getType() == type.getMaterial()) {
 				build(e.getPlayer(), e.getBlockPlaced());
 			}
+			
 		}
+		
 	}
 
 	@Override
@@ -73,7 +80,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 				} else if (tb.isCompleted()) {
 
 					cancel();
-					place.getLocation().getWorld().playSound(place.getLocation(), Sound.ZOMBIE_WOODBREAK, 4, 15);
+					place.getLocation().getWorld().playSound(place.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 4, 15);
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
 					Bukkit.broadcastMessage(TextUtil
@@ -111,14 +118,14 @@ public class PorkTurret implements Turret, ItemType, Listener {
 		CustomProtocolManager.PROTECTED_BLOCK_LIST.add(l2.getBlock());
 		awaketurret.components.add(l2.getBlock());
 
-		@SuppressWarnings("deprecation")
-		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnCreature(l3, EntityType.ARMOR_STAND);
+		final ArmorStand _a = (ArmorStand) l3.getWorld().spawnEntity(l3, EntityType.ARMOR_STAND);
 		_a.setCustomName(TextUtil
 				.format("&8&l> &e&lTorreta " + type.getName_type() + " de " + constructor.getName() + " &8&l<"));
 		_a.setVisible(false);
 		_a.setCustomNameVisible(true);
 		_a.setGravity(false);
-
+		_a.setBasePlate(false);
+		
 		awaketurret.info_hud = _a;
 
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
@@ -207,7 +214,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 
 												awaketurret.turret.getEntity().getWorld().playSound(
 														awaketurret.turret.getEntity().getLocation(),
-														Sound.FIREWORK_LARGE_BLAST2, 2, -2);
+														Sound.ENTITY_FIREWORK_LARGE_BLAST, 2, -2);
 
 												LineEffect ef = new LineEffect(Skywars.effectmanager);
 
@@ -216,7 +223,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 												ef.particles = 10;
 
 												ef.setLocation(turret_entity.getEyeLocation());
-												ef.setTarget(p.getEyeLocation());
+												ef.setTargetLocation(p.getEyeLocation());
 												ef.start();
 											}
 
@@ -257,7 +264,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 
 												awaketurret.turret.getEntity().getWorld().playSound(
 														awaketurret.turret.getEntity().getLocation(),
-														Sound.FIREWORK_LARGE_BLAST2, 2, -2);
+														Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 2, -2);
 
 												LineEffect ef = new LineEffect(Skywars.effectmanager);
 
@@ -266,7 +273,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 												ef.particles = 10;
 
 												ef.setLocation(turret_entity.getEyeLocation());
-												ef.setTarget(e.getLocation().clone().add(0, .5, 0));
+												ef.setTargetLocation(e.getLocation().clone().add(0, .5, 0));
 												ef.start();
 											}
 
@@ -299,6 +306,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void shoot(AwakeTurret awaketurret, Entity toshoot) {
 
@@ -307,7 +315,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 			Player affected = (Player) toshoot;
 			PigZombie turret_entity = (PigZombie) awaketurret.turret.getEntity();
 
-			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.ENDERDRAGON_HIT, 2, -2);
+			toshoot.getWorld().playSound(toshoot.getLocation(), Sound.ENTITY_ENDERDRAGON_HURT, 2, -2);
 
 			awaketurret.turret.faceLocation(affected.getLocation());
 			awaketurret.damage_hud.faceLocation(affected.getLocation());
@@ -317,12 +325,11 @@ public class PorkTurret implements Turret, ItemType, Listener {
 			ef.visibleRange = 300;
 			ef.particles = 20;
 			ef.setLocation(turret_entity.getEyeLocation());
-			ef.setTarget(affected.getEyeLocation());
+			ef.setTargetLocation(affected.getEyeLocation());
 			ef.start();
 
-			@SuppressWarnings("deprecation")
 			final Pig bullet = (Pig) turret_entity.getEyeLocation().getWorld()
-					.spawnCreature(turret_entity.getEyeLocation(), EntityType.PIG);
+					.spawnEntity(turret_entity.getEyeLocation(), EntityType.PIG);
 
 			bullet.setBaby();
 			bullet.setMaxHealth(900);
@@ -463,12 +470,12 @@ public class PorkTurret implements Turret, ItemType, Listener {
 						ef_2.visibleRange = 50;
 						ef_2.amount = 1;
 						ef_2.setLocation(bullet.getLocation());
-						ef_2.setTarget(bullet.getLocation());
+						ef_2.setTargetLocation(bullet.getLocation());
 						ef_2.start();
 
 						bullet.getWorld().createExplosion(bullet.getLocation(), 1, true);
-						bullet.getWorld().playSound(bullet.getLocation(), Sound.PIG_DEATH, 2, 1);
-						bullet.getWorld().playSound(bullet.getLocation(), Sound.EXPLODE, 2, 1);
+						bullet.getWorld().playSound(bullet.getLocation(), Sound.ENTITY_PIG_DEATH, 2, 1);
+						bullet.getWorld().playSound(bullet.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
 						bullet.setCustomNameVisible(false);
 
 						bullet.remove();
@@ -482,6 +489,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void shoot(AwakeTurret awaketurret, AwakeTurret otherturret) {
 
@@ -492,7 +500,7 @@ public class PorkTurret implements Turret, ItemType, Listener {
 		Entity e = otherturret.turret.getEntity();
 		PigZombie turret_entity = (PigZombie) awaketurret.turret.getEntity();
 
-		e.getWorld().playSound(e.getLocation(), Sound.ENDERDRAGON_HIT, 2, -2);
+		e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ENDERDRAGON_HURT, 2, -2);
 
 		awaketurret.turret.faceLocation(e.getLocation());
 		awaketurret.damage_hud.faceLocation(e.getLocation());
@@ -502,11 +510,10 @@ public class PorkTurret implements Turret, ItemType, Listener {
 		ef.visibleRange = 300;
 		ef.particles = 20;
 		ef.setLocation(turret_entity.getEyeLocation());
-		ef.setTarget(e.getLocation());
+		ef.setTargetLocation(e.getLocation());
 		ef.start();
 
-		@SuppressWarnings("deprecation")
-		final Pig bullet = (Pig) turret_entity.getEyeLocation().getWorld().spawnCreature(turret_entity.getEyeLocation(),
+		final Pig bullet = (Pig) turret_entity.getEyeLocation().getWorld().spawnEntity(turret_entity.getEyeLocation(),
 				EntityType.PIG);
 
 		bullet.setBaby();
@@ -637,12 +644,12 @@ public class PorkTurret implements Turret, ItemType, Listener {
 					ef_2.visibleRange = 50;
 					ef_2.amount = 1;
 					ef_2.setLocation(bullet.getLocation());
-					ef_2.setTarget(bullet.getLocation());
+					ef_2.setTargetLocation(bullet.getLocation());
 					ef_2.start();
 
 					bullet.getWorld().createExplosion(bullet.getLocation(), 1, true);
-					bullet.getWorld().playSound(bullet.getLocation(), Sound.PIG_DEATH, 2, 1);
-					bullet.getWorld().playSound(bullet.getLocation(), Sound.EXPLODE, 2, 1);
+					bullet.getWorld().playSound(bullet.getLocation(), Sound.ENTITY_PIG_DEATH, 2, 1);
+					bullet.getWorld().playSound(bullet.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
 					bullet.setCustomNameVisible(false);
 
 					bullet.remove();

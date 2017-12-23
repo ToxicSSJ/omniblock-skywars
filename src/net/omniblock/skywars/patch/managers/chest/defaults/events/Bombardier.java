@@ -1,7 +1,5 @@
 package net.omniblock.skywars.patch.managers.chest.defaults.events;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,19 +16,23 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.omniblock.lobbies.utils.PlayerUtils;
+import net.omniblock.network.library.helpers.effectlib.effect.ExplodeEffect;
+import net.omniblock.network.library.helpers.effectlib.effect.SkyRocketEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -40,33 +42,23 @@ import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.ClonData;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.PlayerSavedData;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.BombardierData;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.BombardierData.BombardierLauncherStatus;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.BombardierData.BombardierStatus;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.Cinematix;
-import net.omniblock.skywars.util.ItemBuilder;
-import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
-import net.omniblock.skywars.util.base64.PlayerInventory64;
 import net.omniblock.skywars.util.block.SpawnBlock;
-import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
-import net.omniblock.skywars.util.effectlib.effect.SkyRocketEffect;
 
 public class Bombardier implements ItemType, Listener {
 
-	public static Map<Entity, Player> BOMBARDIER_OWNER = new HashMap<Entity, Player>();
+	public static Map<Player, BombardierData> BOMBARDIER_DATA = new HashMap<Player, BombardierData>();
 
-	Map<Player, String[]> SAVED_INVENTORY = new HashMap<Player, String[]>();
-	Map<Player, PlayerSavedData> SAVED_STATUS = new HashMap<Player, PlayerSavedData>();
-
-	Map<Player, ClonData> BOMBARDIER_USE = new HashMap<Player, ClonData>();
-	Map<Player, Boolean> LAUNCHER_SYSTEM = new HashMap<Player, Boolean>();
-
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void launchBombardier(PlayerInteractEvent event) {
 
@@ -91,12 +83,21 @@ public class Bombardier implements ItemType, Listener {
 										|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
 										|| event.getClickedBlock().getType() == Material.JUKEBOX) {
 
-									event.setCancelled(true);
 									return;
 
 								}
 							}
 
+							if(!Skywars.ingame)
+								return;
+							
+							if(BombardierData.launching) {
+								
+								player.sendMessage(TextUtil.format("&c¡Ya alguien está utilizando el bombardero!"));
+								return;
+								
+							}
+							
 							ItemStack itemInHand = event.getPlayer().getItemInHand();
 							if (itemInHand == null)
 								return;
@@ -106,13 +107,18 @@ public class Bombardier implements ItemType, Listener {
 								itemInHand.setAmount(itemInHand.getAmount() - 1);
 							}
 
-							useBombardier(event.getPlayer());
+							BombardierData data = new BombardierData(player);
+							data.useBombardier();
+							
+							BOMBARDIER_DATA.put(player, data);
 							return;
 
 						}
 					} else if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName()
-							.contains(TextUtil.format("&8&lLANZAR BOMBA DE &c&lTNT"))) {
+							.contains(TextUtil.format("&8&lLANZAR BOMBA DE &c&lTNT")) && BOMBARDIER_DATA.containsKey(player) && BombardierData.launching) {
 
+						BombardierData.launchingtask.cancel();
+						
 						ItemStack itemInHand = event.getPlayer().getItemInHand();
 						if (itemInHand == null)
 							return;
@@ -127,15 +133,21 @@ public class Bombardier implements ItemType, Listener {
 
 						for (Player p : player.getWorld().getEntitiesByClass(Player.class)) {
 							if (SoloPlayerManager.getPlayersInGameList().contains(p)) {
-								if (CameraUtil.getLookingAt(player, p)) {
-									targetplayer = p;
+								if(player.hasLineOfSight(p)) {
+									if(CameraUtil.getLookingAt(player, p)) {
+										targetplayer = p;
+									}
 								}
 							}
 						}
 
 						Location location = targetplayer != null ? targetplayer.getLocation()
 								: targetblock.getLocation();
+						
 						launchBomb(event.getPlayer(), location);
+						
+						BOMBARDIER_DATA.get(event.getPlayer()).back(BombardierLauncherStatus.LAUNCHED);
+						BOMBARDIER_DATA.remove(event.getPlayer());
 						return;
 
 					}
@@ -149,19 +161,27 @@ public class Bombardier implements ItemType, Listener {
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
 
-		if (BOMBARDIER_USE.containsKey(e.getPlayer())) {
+		if (BOMBARDIER_DATA.containsKey(e.getPlayer())) {
 
+			if(BOMBARDIER_DATA.get(e.getPlayer()).getStatus() != BombardierStatus.LAUNCHING)
+				return;
+			
 			Location from = e.getFrom();
 			Location to = e.getTo();
 
 			if (from.getY() != to.getY()) {
 
+				Location location = MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
+				
+				location.setYaw(e.getPlayer().getLocation().getYaw());
+				location.setPitch(e.getPlayer().getLocation().getPitch());
+				
 				TitleUtil.sendTitleToPlayer(e.getPlayer(), 0, 40, 0, "",
 						TextUtil.format("&c&l¡No puedes moverte Verticalmente!"));
-				SoloPlayerManager.forceFly(e.getPlayer());
+				PlayerUtils.forceFly(e.getPlayer());
 
-				e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
-				e.getPlayer().teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5));
+				e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 2, -2);
+				e.getPlayer().teleport(location);
 				return;
 
 			}
@@ -170,8 +190,42 @@ public class Bombardier implements ItemType, Listener {
 
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDamage(EntityDamageEvent e) {
+		
+		if(CitizensAPI.getNPCRegistry().isNPC(e.getEntity())) {
+			
+			NPC npc = CitizensAPI.getNPCRegistry().getNPC(e.getEntity());
+			
+			for(BombardierData data : BOMBARDIER_DATA.values()) {
+				
+				if(data.getStatus() == BombardierStatus.LAUNCHED)
+					continue;
+				
+				if(data.getClon().getClon().getUniqueId() == npc.getUniqueId()) {
+					
+					if(data.getElevationTask() != null)
+						if(!data.getElevationTask().isCancelled())
+							data.getElevationTask().cancel();
+					
+					if(data.getLaunchingtask() != null)
+						if(!data.getLaunchingtask().isCancelled())
+							data.getLaunchingtask().cancel();
+					
+					data.back(BombardierLauncherStatus.DAMAGE);
+					return;
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
 	@EventHandler
 	public void explode(EntityChangeBlockEvent e) {
+		
 		if (e.getEntity() instanceof FallingBlock) {
 
 			FallingBlock fb = (FallingBlock) e.getEntity();
@@ -194,36 +248,46 @@ public class Bombardier implements ItemType, Listener {
 				ef_2.setLocation(fb.getLocation());
 				ef_2.start();
 
-				if (BOMBARDIER_OWNER.containsKey(fb)) {
-					damager = BOMBARDIER_OWNER.get(fb);
-					BOMBARDIER_OWNER.remove(fb);
+				for(BombardierData data : BOMBARDIER_DATA.values()) {
+					
+					if(data.getTnt().contains(fb)) {
+						
+						damager = data.getPlayer();
+						break;
+						
+					}
+					
 				}
 
-				List<Entity> entities = fb.getNearbyEntities(3, 3, 3);
-				for (Entity entity : entities) {
+				if(damager != null) {
+					
+					List<Entity> entities = fb.getNearbyEntities(3, 3, 3);
+					for (Entity entity : entities) {
 
-					if (entity.getType() == EntityType.PLAYER) {
-						Player p = (Player) entity;
+						if (entity.getType() == EntityType.PLAYER) {
+							Player p = (Player) entity;
 
-						if ((SoloPlayerManager.getPlayersInGameList().contains(p)
-								|| TeamPlayerManager.getPlayersInGameList().contains(p))) {
+							if ((SoloPlayerManager.getPlayersInGameList().contains(p)
+									|| TeamPlayerManager.getPlayersInGameList().contains(p))) {
 
-							if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
-									|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
-									|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
+								if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+										|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+										|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
 
-								TeamPlayerBattleListener.makeZDamage(p, damager, 6,
-										net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.BOMBARDIER);
+									TeamPlayerBattleListener.makeZDamage(p, damager, 6,
+											net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.BOMBARDIER);
+									continue;
+
+								}
+
+								SoloPlayerBattleListener.makeZDamage(p, damager, 6, DamageCauseZ.BOMBARDIER);
 								continue;
 
 							}
-
-							SoloPlayerBattleListener.makeZDamage(p, damager, 6, DamageCauseZ.BOMBARDIER);
-							continue;
-
 						}
-					}
 
+					}
+					
 				}
 
 				List<Block> cube = SpawnBlock.circle(fb.getLocation(), 5, 1, false, true, -1);
@@ -231,11 +295,7 @@ public class Bombardier implements ItemType, Listener {
 				for (Block b : cube) {
 					if (b != null) {
 						if (!CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b)) {
-							if (NumberUtil.getRandomInt(1, 8) == 2) {
-								bounceBlock(b, (float) (0.5), true);
-							} else {
-								b.setType(Material.AIR);
-							}
+							b.setType(Material.AIR);
 						}
 					}
 				}
@@ -260,16 +320,15 @@ public class Bombardier implements ItemType, Listener {
 
 				loc.setY(based_loc.getY());
 
-				loc.getWorld().playSound(loc, Sound.FIREWORK_LARGE_BLAST2, 20, 5);
-				loc.getWorld().playSound(loc, Sound.FIREWORK_LARGE_BLAST, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_LARGE_BLAST, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 20, 5);
 
-				loc.getWorld().playSound(loc, Sound.FIREWORK_TWINKLE, 20, 5);
-				loc.getWorld().playSound(loc, Sound.FIREWORK_TWINKLE2, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_TWINKLE, 20, 5);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_TWINKLE_FAR, 20, 5);
 
 				FallingBlock fb = loc.getWorld().spawnFallingBlock(loc.clone().add(0, -1, 0), Material.TNT, (byte) 0);
 
 				fb.setDropItem(false);
-				fb.setTicksLived(20 * 8);
 				fb.setMetadata("BOMBARDIER", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
 				fb.setVelocity(new Vector(0, -2, 0).multiply(0.6));
 
@@ -289,9 +348,9 @@ public class Bombardier implements ItemType, Listener {
 
 		Location based_loc = MapManager.lobbyschematic.getLocation();
 
-		Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
-		Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ());
-		Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() + 300);
+		Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY() - 20, loc.getZ() - 300);
+		Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY() - 20, loc.getZ());
+		Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY() - 20, loc.getZ() + 300);
 
 		final Cinematix cm = new Cinematix();
 		cm.getPoints().add(av1);
@@ -332,7 +391,7 @@ public class Bombardier implements ItemType, Listener {
 
 										launcher = true;
 
-										plane_loc.getWorld().playSound(plane_loc, Sound.BAT_TAKEOFF, 20, 5);
+										plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_BAT_TAKEOFF, 20, 5);
 
 										new BukkitRunnable() {
 
@@ -341,15 +400,11 @@ public class Bombardier implements ItemType, Listener {
 											@Override
 											public void run() {
 
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_LARGE_BLAST2,
-														20, 5);
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_LARGE_BLAST,
-														20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST, 20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 20, 5);
 
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE, 20,
-														5);
-												plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE2, 20,
-														5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE, 20, 5);
+												plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE_FAR, 20, 5);
 
 												if (!plane.isDead()) {
 
@@ -412,67 +467,13 @@ public class Bombardier implements ItemType, Listener {
 
 	public void launchBomb(Player player, Location loc) {
 
-		if (BOMBARDIER_USE.containsKey(player) && LAUNCHER_SYSTEM.containsKey(player)
-				&& SAVED_INVENTORY.containsKey(player) && SAVED_STATUS.containsKey(player)) {
-
-			ClonData data = BOMBARDIER_USE.get(player);
-
-			if (data.getClon().isSpawned()) {
-
-				SoloPlayerManager.emptyPlayer(player);
-
-				PlayerSavedData psd = SAVED_STATUS.get(player);
-
-				Inventory psi = player.getInventory();
-				ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-				try {
-					psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-					equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				Location tracker = data.getClon().getEntity().getLocation();
-				player.teleport(tracker);
-
-				player.removePotionEffect(PotionEffectType.INVISIBILITY);
-
-				player.setFoodLevel(psd.food);
-
-				player.setHealth(psd.health);
-				player.setFireTicks(0);
-
-				player.setCanPickupItems(true);
-
-				player.setExp(psd.exp);
-				player.setLevel(psd.level);
-
-				player.getInventory().setArmorContents(equipment);
-				player.getInventory().setContents(psi.getContents());
-
-				player.updateInventory();
-
-				player.setGameMode(GameMode.SURVIVAL);
-
-				SoloPlayerManager.forceRemoveFly(player);
-
-				SoundPlayer.stopSound(player);
-				SoundPlayer.sendSound(player, "skywars.radioc", true, 3);
-
-				data.destroyClon(0);
-
-			} else {
-
-				player.teleport(data.getSaved());
-
-			}
+		if (BOMBARDIER_DATA.containsKey(player)) {
 
 			Location based_loc = MapManager.lobbyschematic.getLocation();
 
-			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() - 300);
-			Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ());
-			Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY(), loc.getZ() + 300);
+			Location av1 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY() - 20, loc.getZ() - 300);
+			Location av2 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY() - 20, loc.getZ());
+			Location av3 = new Location(based_loc.getWorld(), loc.getX(), based_loc.getY() - 20, loc.getZ() + 300);
 
 			final Cinematix cm = new Cinematix();
 			cm.getPoints().add(av1);
@@ -494,7 +495,7 @@ public class Bombardier implements ItemType, Listener {
 					plane.setGravity(false);
 					plane.setVisible(false);
 
-					plane.setItemInHand(new ItemStack(Material.IRON_BARDING, 1));
+					plane.getEquipment().setHelmet(new ItemStack(Material.IRON_BARDING, 1));
 					cm.start(plane, 10);
 
 					SoundPlayer.sendSound(plane.getLocation(), "skywars.planelow", 1000);
@@ -512,6 +513,8 @@ public class Bombardier implements ItemType, Listener {
 
 									if (plane_loc.distance(av3) <= 10) {
 
+										BombardierData.launching = false;
+										
 										plane.remove();
 										cancel();
 										return;
@@ -523,7 +526,7 @@ public class Bombardier implements ItemType, Listener {
 
 											launcher = true;
 
-											plane_loc.getWorld().playSound(plane_loc, Sound.BAT_TAKEOFF, 20, 5);
+											plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_BAT_TAKEOFF, 20, 5);
 
 											new BukkitRunnable() {
 
@@ -532,15 +535,11 @@ public class Bombardier implements ItemType, Listener {
 												@Override
 												public void run() {
 
-													plane_loc.getWorld().playSound(plane_loc,
-															Sound.FIREWORK_LARGE_BLAST2, 20, 5);
-													plane_loc.getWorld().playSound(plane_loc,
-															Sound.FIREWORK_LARGE_BLAST, 20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST, 20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 20, 5);
 
-													plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE,
-															20, 5);
-													plane_loc.getWorld().playSound(plane_loc, Sound.FIREWORK_TWINKLE2,
-															20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE, 20, 5);
+													plane_loc.getWorld().playSound(plane_loc, Sound.ENTITY_FIREWORK_TWINKLE_FAR, 20, 5);
 
 													if (!plane.isDead()) {
 
@@ -600,354 +599,7 @@ public class Bombardier implements ItemType, Listener {
 				}
 			}.runTaskLater(Skywars.getInstance(), 35L);
 
-			BOMBARDIER_USE.remove(player);
-			LAUNCHER_SYSTEM.remove(player);
-
 		}
-
-	}
-
-	@SuppressWarnings("serial")
-	public void useBombardier(Player player) {
-
-		Location tp_loc = MapManager.lobbyschematic.getLocation().clone().add(0.5, 0, 0.5);
-		tp_loc.setYaw(90L);
-		tp_loc.setPitch(90L);
-
-		Location active_loc = player.getLocation().clone();
-
-		ClonData data = new ClonData(player, active_loc);
-		data.makeClon();
-
-		SAVED_INVENTORY.put(player, PlayerInventory64.playerInventoryToBase64(player.getInventory(),
-				player.getInventory().getArmorContents()));
-		SAVED_STATUS.put(player, new PlayerSavedData(player));
-
-		SoloPlayerManager.forceFly(player);
-		SoloPlayerManager.emptyPlayer(player);
-
-		player.setFoodLevel(20);
-
-		player.setHealth(player.getMaxHealth());
-		player.setFireTicks(0);
-
-		player.setCanPickupItems(false);
-		player.setLevel(0);
-
-		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false), false);
-
-		SoundPlayer.sendSound(player, "skywars.bombardier_elevation", 1000);
-
-		CameraUtil.travel(player, new ArrayList<Location>() {
-			{
-				add(active_loc);
-				add(tp_loc);
-			}
-		}, 20 * 2, false);
-
-		SoloPlayerManager.forceFly(player);
-
-		new BukkitRunnable() {
-
-			int round = 0;
-
-			@Override
-			public void run() {
-
-				round++;
-
-				if (!player.isOnline()) {
-					cancel();
-					return;
-				}
-
-				if (player.getLocation().distance(tp_loc) <= 5) {
-
-					cancel();
-
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 2, -5);
-
-					ItemStack launcher = new ItemBuilder(Material.BLAZE_POWDER).amount(1)
-							.name(TextUtil.format("&8&lLANZAR BOMBA DE &c&lTNT")).build();
-					player.getInventory().setItemInHand(launcher);
-
-					new BukkitRunnable() {
-
-						int seconds = 6;
-						int click = 0;
-
-						@Override
-						public void run() {
-
-							if (player.isOnline()) {
-
-								click++;
-
-								if (click == 10) {
-
-									click = 0;
-									seconds--;
-
-								}
-
-								if (BOMBARDIER_USE.containsKey(player)) {
-
-									if (seconds <= 0) {
-
-										cancel();
-
-										ActionBarApi.sendActionBar(player,
-												TextUtil.format("&c&l - &7Se te ha acabado el tiempo!"));
-
-										if (BOMBARDIER_USE.containsKey(player) && LAUNCHER_SYSTEM.containsKey(player)
-												&& SAVED_INVENTORY.containsKey(player)
-												&& SAVED_STATUS.containsKey(player)) {
-
-											ClonData data = BOMBARDIER_USE.get(player);
-
-											if (data.getClon().isSpawned()) {
-
-												SoloPlayerManager.emptyPlayer(player);
-
-												PlayerSavedData psd = SAVED_STATUS.get(player);
-												Inventory psi = player.getInventory();
-												ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-												try {
-													psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-													equipment = PlayerInventory64
-															.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-												} catch (IOException e) {
-													e.printStackTrace();
-												}
-
-												Location tracker = data.getClon().getEntity().getLocation();
-												player.teleport(tracker);
-
-												player.removePotionEffect(PotionEffectType.INVISIBILITY);
-
-												player.setFoodLevel(psd.food);
-
-												player.setHealth(psd.health);
-												player.setFireTicks(0);
-
-												player.setCanPickupItems(true);
-
-												player.setExp(psd.exp);
-												player.setLevel(psd.level);
-
-												player.getInventory().setArmorContents(equipment);
-												player.getInventory().setContents(psi.getContents());
-												player.updateInventory();
-
-												player.setGameMode(GameMode.SURVIVAL);
-
-												SoloPlayerManager.forceRemoveFly(player);
-
-												SoundPlayer.stopSound(player);
-												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
-
-												data.destroyClon(0);
-
-												BOMBARDIER_USE.remove(player);
-												LAUNCHER_SYSTEM.remove(player);
-
-											} else {
-
-												player.teleport(data.getSaved());
-
-												SoloPlayerManager.emptyPlayer(player);
-
-												PlayerSavedData psd = SAVED_STATUS.get(player);
-												Inventory psi = player.getInventory();
-												ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-												try {
-													psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-													equipment = PlayerInventory64
-															.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-												} catch (IOException e) {
-													e.printStackTrace();
-												}
-
-												Location tracker = data.getClon().getEntity().getLocation();
-												player.teleport(tracker);
-
-												player.removePotionEffect(PotionEffectType.INVISIBILITY);
-
-												player.setFoodLevel(psd.food);
-
-												player.setHealth(psd.health);
-												player.setFireTicks(0);
-
-												player.setCanPickupItems(true);
-
-												player.setExp(psd.exp);
-												player.setLevel(psd.level);
-
-												player.getInventory().setArmorContents(equipment);
-												player.getInventory().setContents(psi.getContents());
-												player.updateInventory();
-
-												player.setGameMode(GameMode.SURVIVAL);
-
-												SoloPlayerManager.forceRemoveFly(player);
-
-												SoundPlayer.stopSound(player);
-												player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
-
-												BOMBARDIER_USE.remove(player);
-												LAUNCHER_SYSTEM.remove(player);
-
-											}
-
-										}
-
-										return;
-
-									} else {
-
-										ActionBarApi.sendActionBar(player,
-												TextUtil.format("&c&l¡Apunta y Dispara! &8&l: &7Te quedan &a" + seconds
-														+ " &7segundos."));
-										return;
-
-									}
-								}
-
-							} else {
-
-								cancel();
-								BOMBARDIER_USE.remove(player);
-								LAUNCHER_SYSTEM.remove(player);
-
-							}
-
-							if (seconds <= 0) {
-
-								cancel();
-								if (BOMBARDIER_USE.containsKey(player)) {
-									BOMBARDIER_USE.remove(player);
-								}
-								if (LAUNCHER_SYSTEM.containsKey(player)) {
-									LAUNCHER_SYSTEM.remove(player);
-								}
-
-							}
-
-						}
-					}.runTaskTimer(Skywars.getInstance(), 2L, 2L);
-
-					return;
-
-				}
-
-				if (round >= 20 * 5) {
-
-					cancel();
-
-					ClonData data = BOMBARDIER_USE.get(player);
-
-					if (data.getClon().isSpawned()) {
-
-						SoloPlayerManager.emptyPlayer(player);
-
-						PlayerSavedData psd = SAVED_STATUS.get(player);
-						Inventory psi = player.getInventory();
-						ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-						try {
-							psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-							equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
-						Location tracker = data.getClon().getEntity().getLocation();
-						player.teleport(tracker);
-
-						player.removePotionEffect(PotionEffectType.INVISIBILITY);
-
-						player.setFoodLevel(psd.food);
-
-						player.setHealth(psd.health);
-						player.setFireTicks(0);
-
-						player.setCanPickupItems(true);
-
-						player.setExp(psd.exp);
-						player.setLevel(psd.level);
-
-						player.getInventory().setArmorContents(equipment);
-						player.getInventory().setContents(psi.getContents());
-						player.updateInventory();
-
-						player.setGameMode(GameMode.SURVIVAL);
-
-						SoloPlayerManager.forceRemoveFly(player);
-
-						SoundPlayer.stopSound(player);
-						player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
-
-						data.destroyClon(0);
-
-						BOMBARDIER_USE.remove(player);
-						LAUNCHER_SYSTEM.remove(player);
-
-					} else {
-
-						player.teleport(data.getSaved());
-
-						SoloPlayerManager.emptyPlayer(player);
-
-						PlayerSavedData psd = SAVED_STATUS.get(player);
-						Inventory psi = player.getInventory();
-						ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-						try {
-							psi = PlayerInventory64.fromBase64(SAVED_INVENTORY.get(player)[0]);
-							equipment = PlayerInventory64.itemStackArrayFromBase64(SAVED_INVENTORY.get(player)[1]);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
-						player.removePotionEffect(PotionEffectType.INVISIBILITY);
-
-						player.setFoodLevel(psd.food);
-
-						player.setHealth(psd.health);
-						player.setFireTicks(0);
-
-						player.setCanPickupItems(true);
-
-						player.setExp(psd.exp);
-						player.setLevel(psd.level);
-
-						player.getInventory().setArmorContents(equipment);
-						player.getInventory().setContents(psi.getContents());
-						player.updateInventory();
-
-						player.setGameMode(GameMode.SURVIVAL);
-
-						SoloPlayerManager.forceRemoveFly(player);
-
-						SoundPlayer.stopSound(player);
-						player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 2, -2);
-
-						BOMBARDIER_USE.remove(player);
-						LAUNCHER_SYSTEM.remove(player);
-
-					}
-
-					return;
-
-				}
-
-			}
-		}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
-
-		BOMBARDIER_USE.put(player, data);
-		LAUNCHER_SYSTEM.put(player, false);
 
 	}
 

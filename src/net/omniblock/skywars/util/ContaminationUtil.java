@@ -130,9 +130,9 @@ public class ContaminationUtil {
 
 													for (int i = 0; i < NumberUtil.getRandomInt(1, 3); i++) {
 
-														l.getWorld().playSound(l, Sound.NOTE_BASS_DRUM, 5,
+														l.getWorld().playSound(l, Sound.BLOCK_NOTE_BASEDRUM, 5,
 																NumberUtil.getRandomInt(-10, 10));
-														l.getWorld().playSound(l, Sound.BLAZE_HIT, 5,
+														l.getWorld().playSound(l, Sound.ENTITY_BLAZE_HURT, 5,
 																NumberUtil.getRandomInt(-10, 10));
 
 														Snowball bullet = (Snowball) l

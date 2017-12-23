@@ -19,6 +19,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
+import net.omniblock.network.library.helpers.effectlib.effect.ExplodeEffect;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
@@ -29,12 +30,12 @@ import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.block.SpawnBlock;
-import net.omniblock.skywars.util.effectlib.effect.ExplodeEffect;
 
 public class AutomaticTNT implements ItemType, Listener {
 
 	protected Map<Player, List<TNTPrimed>> actived_tnts = new HashMap<Player, List<TNTPrimed>>();
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
 
@@ -45,6 +46,9 @@ public class AutomaticTNT implements ItemType, Listener {
 
 			if (e.getBlockPlaced().getType() == Material.TNT) {
 
+				if(!Skywars.ingame)
+					return;
+				
 				e.setCancelled(true);
 
 				ItemStack itemInHand = e.getPlayer().getItemInHand();

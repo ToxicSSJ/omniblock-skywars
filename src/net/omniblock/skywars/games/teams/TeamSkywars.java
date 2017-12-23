@@ -19,6 +19,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import com.google.common.collect.Lists;
 
 import net.citizensnpcs.api.CitizensAPI;
@@ -26,11 +27,15 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
+import net.omniblock.lobbies.api.LobbyUtility;
+import net.omniblock.lobbies.api.LobbyUtility.BoosterInfo;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.network.handlers.base.bases.type.BankBase;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.RestarterUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.packets.network.Packets;
+import net.omniblock.packets.network.structure.packet.PlayerSendMessagePacket;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
@@ -38,12 +43,10 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.events.TeamPlayerToggleListener;
-import net.omniblock.skywars.games.teams.managers.TeamPlayerLineManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerScoreboardManager;
 import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo;
 import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo.PlayerBattleInfoUtils;
-import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.patch.internal.SkywarsResolver;
 import net.omniblock.skywars.patch.internal.SkywarsStarter;
 import net.omniblock.skywars.patch.managers.EventsManager;
@@ -111,7 +114,6 @@ public class TeamSkywars implements SkywarsStarter {
 		 */
 		Skywars.updateGameState(SkywarsGameState.IN_LOBBY);
 		TeamPlayerScoreboardManager.initialize();
-		TeamPlayerLineManager.initialize();
 
 		/*
 		 * Online Player Add-Adder
@@ -119,6 +121,7 @@ public class TeamSkywars implements SkywarsStarter {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			if (!TeamPlayerManager.getPlayersInLobbyList().contains(p)) {
 				TeamPlayerManager.addPlayer(p);
+				ProtocolLibrary.getProtocolManager().getProtocolVersion(p);
 			}
 		}
 
@@ -127,6 +130,7 @@ public class TeamSkywars implements SkywarsStarter {
 	private void startTeamsNormalGame() {
 
 		Chests.currentMatchType = MatchType.NORMAL;
+		TeamPlayerManager.currentMatchType = MatchType.NORMAL;
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -150,6 +154,8 @@ public class TeamSkywars implements SkywarsStarter {
 	private void startTeamsInsaneGame() {
 
 		Chests.currentMatchType = MatchType.INSANE;
+		TeamPlayerManager.currentMatchType = MatchType.INSANE;
+
 
 		MAX_PLAYERS = DEFAULT_NORMAL_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_NORMAL_SKYWARS_MIN_PLAYERS;
@@ -173,6 +179,7 @@ public class TeamSkywars implements SkywarsStarter {
 	private void startTeamsZGame() {
 
 		Chests.currentMatchType = MatchType.Z;
+		TeamPlayerManager.currentMatchType = MatchType.Z;
 
 		MAX_PLAYERS = DEFAULT_Z_SKYWARS_MAX_PLAYERS;
 		MIN_PLAYERS = DEFAULT_Z_SKYWARS_MIN_PLAYERS;
@@ -196,6 +203,8 @@ public class TeamSkywars implements SkywarsStarter {
 
 	public void finalize(Player winner) {
 
+		
+		
 		final Map<TeamPlayerBattleInfo, Integer> cache_top = PlayerBattleInfoUtils
 				.getTop(TeamPlayerBattleListener.battle_info);
 		final Map<Integer, TeamPlayerBattleInfo> top = PlayerBattleInfoUtils.reverse(cache_top);
@@ -204,21 +213,27 @@ public class TeamSkywars implements SkywarsStarter {
 		final TeamPlayerBattleInfo TOP_2 = top.get(2);
 		final TeamPlayerBattleInfo TOP_3 = top.get(3);
 
-		Player team = null;
+		Player team = TeamPlayerManager.getPlayerTeam(winner);
 		boolean win = winner != null;
 
+		System.out.println("win -> " + win);
+		
 		if (win) {
 
-			if (TeamPlayerManager.hasTeam(winner)) {
-				TeamPlayerManager.getPlayerTeam(team);
+			System.out.println("hasTeam -> " + TeamPlayerManager.hasTeam(winner));
+			
+			if(TeamPlayerManager.hasTeam(winner)) {
+				
+				System.out.println("winner -> " + winner.getName());
+				TeamPlayerManager.winnerTeam(winner);
+				
 			}
-
-			TeamPlayerManager.winnerTeam(winner);
+			
 		}
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);
-			p.playSound(p.getLocation(), Sound.LEVEL_UP, 10, -10);
+			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
+			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
 		}
 
 		new BukkitRunnable() {
@@ -254,8 +269,8 @@ public class TeamSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, -10);
 				}
 
 				if (win) {
@@ -265,8 +280,8 @@ public class TeamSkywars implements SkywarsStarter {
 					Bukkit.broadcastMessage(TextUtil.format("&7&l» &7Tabla de Posiciones/Scores&8&l:"));
 					Bukkit.broadcastMessage(TextUtil.format("&r"));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage(team != null
-							? "&r         &a&lGANADORES&r &a&l&m-&r &7" + RankBase.getRank(winner).getCustomName(winner)
-									+ "&7," + RankBase.getRank(team).getCustomName(team)
+							? "&r      &a&lGANADORES&r &a&l&m-&r &7" + RankBase.getRank(winner).getCustomName(winner)
+									+ "&7, " + RankBase.getRank(team).getCustomName(team)
 							: "&r         &a&lGANADOR&r &a&l&m-&r &7"
 									+ RankBase.getRank(winner).getCustomName(winner)));
 					Bukkit.broadcastMessage(TextUtil.getCenteredMessage("&r"));
@@ -360,13 +375,16 @@ public class TeamSkywars implements SkywarsStarter {
 			}
 		}.runTaskLater(Skywars.getInstance(), 60L);
 
+		BoosterInfo booster = LobbyUtility.getBoosterInfo("skywarsnetworkbooster");
+		boolean boosterStatus = LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster");
+		
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
-					p.playSound(p.getLocation(), Sound.BAT_TAKEOFF, 10, -10);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, -10);
 				}
 
 				for (Map.Entry<TeamPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
@@ -395,13 +413,13 @@ public class TeamSkywars implements SkywarsStarter {
 											.getCenteredMessage(" Premio por supervivencia &8&l(&a&l+&a15 &a&lCoins)"));
 								}
 								p.sendMessage(TextUtil.format("&r"));
-								if (NetworkData.generalbooster) {
+								if (boosterStatus) {
 									p.sendMessage(TextUtil.getCenteredMessage(" &9&lTOTAL: &8&l+&a"
 											+ k.getKey().getTotalMoney() + " Coins &6&lX2    &8&l+&3"
 											+ k.getKey().getTotalExp() + " Exp &6&lX2"));
 									p.sendMessage(TextUtil.format("&r"));
 									p.sendMessage(TextUtil
-											.getCenteredMessage("&e¡Network Booster de Unknow activado! &6&lX2!"));
+											.getCenteredMessage("&e¡Network Booster activado por " + booster.playername + "! &6&lX2!"));
 								} else {
 									p.sendMessage(TextUtil
 											.getCenteredMessage(" &9&lTOTAL: &8&l+&a" + k.getKey().getTotalMoney()
@@ -426,7 +444,7 @@ public class TeamSkywars implements SkywarsStarter {
 			public void run() {
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.playSound(p.getLocation(), Sound.HORSE_SADDLE, 10, -10);
+					p.playSound(p.getLocation(), Sound.ENTITY_HORSE_SADDLE, 10, -10);
 				}
 
 				for (Map.Entry<TeamPlayerBattleInfo, Integer> k : cache_top.entrySet()) {
@@ -498,6 +516,17 @@ public class TeamSkywars implements SkywarsStarter {
 			@Override
 			public void run() {
 
+				if(boosterStatus) {
+					
+					BankBase.addMoney(booster.playername, 20);
+					Packets.STREAMER.streamPacket(
+							new PlayerSendMessagePacket()
+							.setPlayername(booster.playername)
+							.setMessage(TextUtil.format("&6¡Has ganado &a+20 ⛃ &6OmniCoins por tu NetworkBooster!"))
+							.build());
+					
+				}
+				
 				reset();
 
 			}
@@ -579,9 +608,7 @@ public class TeamSkywars implements SkywarsStarter {
 	public static void initializeReset() {
 
 		TeamSkywarsRunnable.EVENTS.clear();
-
 		TeamPlayerScoreboardManager.sbrunnable.cancel();
-		TeamPlayerLineManager.sbrunnable.cancel();
 
 		TeamPlayerToggleListener.Verifier = false;
 

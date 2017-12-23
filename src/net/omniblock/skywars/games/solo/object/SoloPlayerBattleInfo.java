@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
+import net.omniblock.lobbies.api.LobbyUtility;
 import net.omniblock.network.handlers.base.bases.type.BankBase;
 import net.omniblock.network.library.utils.TextUtil;
-import net.omniblock.skywars.network.NetworkData;
 
 public class SoloPlayerBattleInfo {
 
@@ -138,7 +138,7 @@ public class SoloPlayerBattleInfo {
 
 	public void redeemPrizes() {
 
-		boolean X2_BUFF = NetworkData.generalbooster;
+		boolean X2_BUFF = LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster");
 
 		int total_money = getTotalMoney();
 		int total_exp = getTotalExp();
@@ -154,8 +154,6 @@ public class SoloPlayerBattleInfo {
 	}
 
 	public String getTopTierMessage(int top) {
-
-		System.out.println("top -> " + top);
 
 		if (top >= 1 && top <= 3) {
 			if (top == 1) {
@@ -185,7 +183,7 @@ public class SoloPlayerBattleInfo {
 			}
 		}
 		return TextUtil.getCenteredMessage(
-				"&r           &c&l? Lugar&r &8&l&m-&r &7zlToxicNetherlz &8&l(&c8 K &8&l&m-&r &34 A&8&l)");
+				"&r           &c&l? Lugar&r &8&l&m-&r &7Desconocido &8&l(&c0 K &8&l&m-&r &30 A&8&l)");
 	}
 
 	public static class PlayerBattleInfoUtils {

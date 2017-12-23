@@ -7,15 +7,13 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase;
-import net.omniblock.lobbies.data.controller.bases.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
+import net.omniblock.lobbies.utils.PlayerUtils;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -25,6 +23,7 @@ import net.omniblock.skywars.patch.managers.CageManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.CageManager.CageType;
 import net.omniblock.skywars.patch.managers.lobby.LobbyManager;
+import net.omniblock.skywars.patch.types.MatchType;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.TitleUtil;
 
@@ -33,6 +32,8 @@ public class SoloPlayerManager {
 	private static List<Player> playersInLobby = new ArrayList<Player>();
 	private static List<Player> playersInGame = new ArrayList<Player>();
 	private static List<Player> playersInSpectator = new ArrayList<Player>();
+	
+	public static MatchType currentMatchType = MatchType.NONE;
 
 	public static void deathPlayer(Player p) {
 
@@ -49,9 +50,9 @@ public class SoloPlayerManager {
 
 	public static void winnerPlayer(Player p) {
 
-		emptyPlayer(p);
-		healPlayer(p);
-		forceFly(p);
+		PlayerUtils.emptyPlayer(p);
+		PlayerUtils.healPlayer(p);
+		PlayerUtils.forceFly(p);
 
 		return;
 
@@ -59,9 +60,9 @@ public class SoloPlayerManager {
 
 	public static void spectatorPlayer(Player p) {
 
-		emptyPlayer(p);
-		healPlayer(p);
-		forceFly(p);
+		PlayerUtils.emptyPlayer(p);
+		PlayerUtils.healPlayer(p);
+		PlayerUtils.forceFly(p);
 
 		if (SoloPlayerManager.getPlayersInGameAmount() >= 1) {
 			p.teleport(SoloPlayerManager.getPlayersInGameList().get(0));
@@ -74,69 +75,7 @@ public class SoloPlayerManager {
 
 	}
 
-	public static void healPlayer(Player p) {
-
-		p.setExp(0);
-		p.setTotalExperience(0);
-
-		p.setFoodLevel(25);
-
-		p.setHealth(20.0);
-		p.setMaxHealth(20.0);
-
-		for (PotionEffect pe : p.getActivePotionEffects()) {
-			p.removePotionEffect(pe.getType());
-		}
-
-	}
-
-	public static void emptyPlayer(Player p) {
-
-		p.getInventory().clear();
-
-		p.getInventory().setHelmet(new ItemStack(Material.AIR));
-		p.getInventory().setChestplate(new ItemStack(Material.AIR));
-		p.getInventory().setLeggings(new ItemStack(Material.AIR));
-		p.getInventory().setBoots(new ItemStack(Material.AIR));
-
-		p.setExp(0);
-		p.setLevel(0);
-		return;
-
-	}
-
-	public static void forceFly(Player p) {
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if (!p.isFlying()) {
-					p.setAllowFlight(true);
-					p.setFlying(true);
-				} else {
-					cancel();
-				}
-			}
-		}.runTaskTimer(Skywars.getInstance(), 5L, 5L);
-
-	}
-
-	public static void forceRemoveFly(Player p) {
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if (p.isFlying()) {
-					p.setAllowFlight(false);
-					p.setFlying(false);
-				} else {
-					cancel();
-				}
-			}
-		}.runTaskTimer(Skywars.getInstance(), 5L, 5L);
-
-	}
-
+	@SuppressWarnings("deprecation")
 	public static boolean addPlayer(Player p) {
 
 		if (Skywars.getGameState() == SkywarsGameState.IN_LOBBY) {
@@ -152,12 +91,12 @@ public class SoloPlayerManager {
 				}
 			}
 
-			emptyPlayer(p);
-			healPlayer(p);
+			PlayerUtils.emptyPlayer(p);
+			PlayerUtils.healPlayer(p);
 
 			p.spigot().setCollidesWithEntities(true);
 			p.teleport(MapManager.lobbyschematic.getLocation().clone().add(0.5, 5, 0.5));
-			p.playSound(p.getLocation(), Sound.CLICK, 10, -10);
+			p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 10, -10);
 
 			p.setGameMode(GameMode.ADVENTURE);
 
@@ -224,10 +163,10 @@ public class SoloPlayerManager {
 			Player player = playersInGame.get(i);
 			CageType cagetype = (CageType) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
-
-			emptyPlayer(player);
 			
-			System.out.println("ct -> "+ cagetype.name());
+
+			PlayerUtils.emptyPlayer(player);
+			
 			Location cageLocation = cageLocations.get(i);
 
 			CageManager.registerCage(cagetype, cageLocation);
@@ -235,8 +174,27 @@ public class SoloPlayerManager {
 
 			CageManager.cagesdata.put(player, cageLocation);
 
+			
+			
 			continue;
 
+		}
+	}
+	
+	public static void transferKitsToPlayers(MatchType currentMatchType) {
+		
+		for (int i = 0; i < getPlayersInGameAmount(); i++) {
+		
+			if(currentMatchType == MatchType.NORMAL) break;
+			
+			Player player = playersInGame.get(i);
+			
+			SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
+		
+			kitstype.getKitContents().equipKit(player);
+			
+			continue;
+			
 		}
 	}
 
