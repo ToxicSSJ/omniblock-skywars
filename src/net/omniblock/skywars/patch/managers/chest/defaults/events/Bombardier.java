@@ -212,7 +212,10 @@ public class Bombardier implements ItemType, Listener {
 						if(!data.getLaunchingtask().isCancelled())
 							data.getLaunchingtask().cancel();
 					
-					data.back(BombardierLauncherStatus.DAMAGE);
+					BombardierData.launchingtask.cancel();
+					
+					BOMBARDIER_DATA.get(data.getPlayer()).back(BombardierLauncherStatus.DAMAGE);
+					BOMBARDIER_DATA.remove(data.getPlayer());
 					return;
 					
 				}

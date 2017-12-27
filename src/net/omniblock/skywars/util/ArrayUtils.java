@@ -10,6 +10,7 @@
 
 package net.omniblock.skywars.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,4 +52,22 @@ public class ArrayUtils {
 		return asserts;
 	}
 
+	public static double getAverage(Double[] averages) {
+		
+		double sum = 0;
+		
+		for(Double row : averages)
+			sum = sum + row;
+		
+		return sum / averages.length;
+		
+	}
+	
+	public static <T> T[] append(T[] arr, T element) {
+	    final int N = arr.length;
+	    arr = Arrays.copyOf(arr, N + 1);
+	    arr[N] = element;
+	    return arr;
+	}
+	
 }
