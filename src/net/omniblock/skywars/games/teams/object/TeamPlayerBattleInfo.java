@@ -7,12 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
 import net.omniblock.lobbies.api.LobbyUtility;
+import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.network.handlers.base.bases.type.BankBase;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
+import net.omniblock.skywars.util.ArrayUtils;
+import net.omniblock.skywars.util.NumberUtil;
 
 public class TeamPlayerBattleInfo {
 
@@ -144,17 +148,39 @@ public class TeamPlayerBattleInfo {
 
 		boolean X2_BUFF = LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster");
 
-		int total_money = getTotalMoney();
-		int total_exp = getTotalExp();
-
-		if (X2_BUFF) {
-			total_money = total_money * 2;
-			total_exp = total_exp * 2;
-		}
+		int total_money = X2_BUFF ? getTotalMoney() * 2 : getTotalMoney();
+		int total_exp = X2_BUFF ? getTotalExp() * 2 : getTotalExp();
 
 		BankBase.setMoney(player, BankBase.getMoney(player) + total_money);
 		BankBase.setExp(player, BankBase.getExp(player) + total_exp);
-
+		
+		String stats = SkywarsBase.getStats(player);
+		
+		int kills = SkywarsBase.getKills(stats);
+		int assistences = SkywarsBase.getAssistences(stats);
+		int games = SkywarsBase.getPlayedGames(stats);
+		int wins = SkywarsBase.getWinnedGames(stats);
+		String average = SkywarsBase.getAverage(stats);
+		
+		Double[] averages = Arrays.stream(SkywarsBase.getAverages(player)).boxed().toArray(Double[]::new);
+		
+		if(alive) wins = wins + 1;
+		kills = kills + this.kills;
+		assistences = assistences + this.assistences;
+		games = games + 1;
+		
+		if(averages.length >= 50)
+			averages[NumberUtil.getRandomInt(0, 49)] = getAverage();
+		else
+			averages = ArrayUtils.append(averages, getAverage());
+		
+		average = averages.length >= 50 ? String.valueOf(ArrayUtils.getAverage(averages)) : "NEW";
+		stats = kills + ";" + assistences + ";" + games + ";" + wins + ";" + average;
+		
+		SkywarsBase.setStats(player, stats);
+		SkywarsBase.setAverage(player, StringUtils.join(averages, ";"));
+		SkywarsBase.addWeekPrizePoints(player, kills);
+		
 	}
 
 	public String getAlliedStatus() {

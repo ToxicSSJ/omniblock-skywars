@@ -39,6 +39,15 @@ public class TeamPlayerCustomProtocols implements Listener {
 		TeleportFix.makeFix(e.getPlayer());
 	}
 	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onInteract(PlayerInteractEvent e) {
+		
+		if(Skywars.inend)
+			e.setCancelled(true);
+		
+		return;
+	}
+	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player) {
