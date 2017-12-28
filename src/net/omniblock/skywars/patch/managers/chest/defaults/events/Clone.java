@@ -27,10 +27,9 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.ClonData;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
-public class Clone implements Listener, ItemType {
+public class Clone implements Listener {
 
 	private Map<Player, ClonData> oneClon = new HashMap<Player, ClonData>();
 	private List<Player> passedFix = Lists.newArrayList();
@@ -41,7 +40,6 @@ public class Clone implements Listener, ItemType {
      *
      */
 	@SuppressWarnings("deprecation")
-	@Override
 	@EventHandler
 	public void CloneSpell(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -121,7 +119,6 @@ public class Clone implements Listener, ItemType {
 								player.setVelocity(player.getLocation().getDirection().add(new Vector(0, 1, 0)));
 
 							}
-							
 						}
 					}
 				}
@@ -197,7 +194,6 @@ public class Clone implements Listener, ItemType {
 			}
 
 		}.runTaskTimer(Skywars.getInstance(), 0, 20L);
-
 	}
 
 	/**

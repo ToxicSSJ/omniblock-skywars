@@ -16,16 +16,14 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCa
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.SoundPlayer;
 
-public class Punch implements ItemType, Listener {
+public class Punch implements Listener {
 
 	private int DELAY = 0;
 
 	@SuppressWarnings("deprecation")
-	@Override
 	@EventHandler
 	public void JhonPunch(EntityDamageByEntityEvent event) {
 
@@ -66,7 +64,7 @@ public class Punch implements ItemType, Listener {
 							SoundPlayer.stopSound(playerdamage, player);
 							
 							playerdamage.getInventory().setItemInHand(null);
-							SoundPlayer.sendSound(playerdamage.getLocation(), "skywars.jhonc", 20);
+							SoundPlayer.sendSound(playerdamage.getLocation(), "skywars.jhonc", 5);
 
 							new BukkitRunnable() {
 								@Override
@@ -86,7 +84,7 @@ public class Punch implements ItemType, Listener {
 							}.runTaskTimer(Skywars.getInstance(), 1L, 1L);
 
 							player.setVelocity(playerdamage.getLocation().getDirection().add(new Vector(0, 1.2, 0))
-									.multiply(12.0));
+									.multiply(14.0));
 
 							if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
 									|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS

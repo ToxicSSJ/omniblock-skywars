@@ -15,7 +15,8 @@ public class ArmorPresets {
 			new ChestPack().addContent(new ItemBuilder(Material.DIAMOND_SWORD).amount(1).build())
 					.addContent(new ItemBuilder(Material.EXP_BOTTLE).amount(4).build())
 					.addContent(new ItemBuilder(Material.GOLD_AXE).amount(1).build())
-					.addContent(new ItemBuilder(Material.LEATHER_LEGGINGS).amount(1).build()),
+					.addContent(new ItemBuilder(Material.LEATHER_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build()),
 
 			new ChestPack().addContent(new ItemBuilder(Material.IRON_SWORD).amount(1).build())
 					.addContent(new ItemBuilder(Material.EXP_BOTTLE).amount(6).build())
@@ -24,6 +25,7 @@ public class ArmorPresets {
 
 			new ChestPack().addContent(new ItemBuilder(Material.IRON_SWORD).amount(1).build())
 					.addContent(new ItemBuilder(Material.LAVA_BUCKET).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.STONE_SWORD).amount(1).build())
 					.addContent(new ItemBuilder(Material.LEATHER_LEGGINGS)
 							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).amount(1).build()),
@@ -31,6 +33,7 @@ public class ArmorPresets {
 			new ChestPack().addContent(new ItemBuilder(Material.BOW).amount(1).build())
 					.addContent(new ItemBuilder(Material.ARROW).amount(12).build())
 					.addContent(new ItemBuilder(Material.LAVA_BUCKET).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(
 							new ItemBuilder(Material.WOOD_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).amount(1).build())
 					.addContent(new ItemBuilder(Material.LEATHER_LEGGINGS).amount(1).build()),
@@ -39,6 +42,7 @@ public class ArmorPresets {
 					.addContent(new ItemBuilder(Material.ARROW).amount(8).build())
 					.addContent(ImprovedItemType.TNT.getItem())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.LEATHER_BOOTS).amount(1).build()),
 
 			new ChestPack().addContent(new ItemBuilder(Material.STONE_SWORD).amount(1).build())
@@ -62,6 +66,7 @@ public class ArmorPresets {
 					.addContent(
 							new ItemBuilder(Material.STONE_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).amount(16).build())
 					.addContent(new ItemBuilder(Material.GOLD_AXE).enchant(Enchantment.DAMAGE_ALL, 1).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).amount(1).build()),
 
 	};
@@ -98,6 +103,7 @@ public class ArmorPresets {
 					.addContent(new ItemBuilder(Material.ARROW).amount(16).build())
 					.addContent(new ItemBuilder(Material.GOLD_SWORD).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLD_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).amount(1).build()),
 
 			new ChestPack()
@@ -106,6 +112,7 @@ public class ArmorPresets {
 					.addContent(
 							new ItemBuilder(Material.IRON_SWORD).enchant(Enchantment.DURABILITY, 1).amount(1).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS).amount(1).build()),
 
 			new ChestPack().addContent(new ItemBuilder(Material.BOW).amount(1).build())
@@ -117,8 +124,10 @@ public class ArmorPresets {
 
 			new ChestPack()
 					.addContent(new ItemBuilder(Material.IRON_AXE).enchant(Enchantment.DAMAGE_ALL, 2).amount(1).build())
-					.addContent(ImprovedItemType.TNT.getItem()).addContent(ImprovedItemType.TNT.getItem())
+					.addContent(ImprovedItemType.TNT.getItem())
+					.addContent(ImprovedItemType.TNT.getItem())
 					.addContent(new ItemBuilder(Material.DIAMOND_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS).amount(1).build()),
 
 			new ChestPack()
@@ -126,6 +135,7 @@ public class ArmorPresets {
 							new ItemBuilder(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, 2).amount(1).build())
 					.addContent(new ItemBuilder(Material.LAVA_BUCKET).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.IRON_BOOTS).amount(1).build()),
 
 			new ChestPack()
@@ -141,11 +151,13 @@ public class ArmorPresets {
 					.addContent(new ItemBuilder(Material.DIAMOND_LEGGINGS).amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS)
 							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).amount(1).build()),
 
 			new ChestPack().addContent(ImprovedItemType.ARCO_PODEROSO.getItem())
 					.addContent(new ItemBuilder(Material.ARROW).amount(4).build())
 					.addContent(new ItemBuilder(Material.ARROW).amount(4).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLD_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
 							.amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS)
@@ -161,6 +173,7 @@ public class ArmorPresets {
 					.addContent(new ItemBuilder(Material.GOLD_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
 							.amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(4).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS)
 							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).amount(1).build()),
 
@@ -179,6 +192,7 @@ public class ArmorPresets {
 			new ChestPack().addContent(ImprovedItemType.ESPADA_X.getItem())
 					.addContent(LegendaryItemType.RAYO_CONGELADO.getItem())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
 							.amount(1).build())
@@ -190,6 +204,7 @@ public class ArmorPresets {
 			new ChestPack()
 					.addContent(new ItemBuilder(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, 2)
 							.enchant(Enchantment.DURABILITY, 2).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
 							.amount(1).build())
@@ -205,6 +220,7 @@ public class ArmorPresets {
 							.enchant(Enchantment.DAMAGE_ALL, 1).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLD_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5)
 							.amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_EXPLOSIONS, 5)
 							.amount(1).build()),
 
@@ -224,6 +240,7 @@ public class ArmorPresets {
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(4).build())
 					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5)
 							.amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_FALL, 4)
 							.amount(1).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(12).build()),
@@ -239,6 +256,7 @@ public class ArmorPresets {
 							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).amount(1).build())
 					.addContent(new ItemBuilder(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
 							.amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(6).build()),
 
 			new ChestPack().addContent(ImprovedItemType.HACHA_DEL_DRAGON.getItem())
@@ -258,6 +276,7 @@ public class ArmorPresets {
 			new ChestPack().addContent(ImprovedItemType.ARCO_PODEROSO.getItem())
 					.addContent(new ItemBuilder(Material.ARROW).amount(4).build())
 					.addContent(new ItemBuilder(Material.ARROW).amount(6).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_LEGGINGS)
 							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
@@ -275,6 +294,7 @@ public class ArmorPresets {
 					.addContent(new ItemBuilder(Material.STONE).amount(12).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS)
 							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(ImprovedItemType.BOTAS_MECANICOS.getItem()),
 
 	};

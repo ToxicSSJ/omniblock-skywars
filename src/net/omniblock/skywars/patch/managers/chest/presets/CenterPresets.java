@@ -17,6 +17,7 @@ public class CenterPresets {
 							new ItemBuilder(Material.IRON_SWORD).enchant(Enchantment.FIRE_ASPECT, 2).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLD_AXE).enchant(Enchantment.DAMAGE_ALL, 1).amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_LEGGINGS).enchant(Enchantment.DURABILITY, 2)
 							.enchant(Enchantment.PROTECTION_PROJECTILE, 1).amount(1).build()),
@@ -57,6 +58,7 @@ public class CenterPresets {
 					.addContent(
 							new ItemBuilder(Material.WOOD_SWORD).enchant(Enchantment.KNOCKBACK, 1).amount(1).build())
 					.addContent(new ItemBuilder(Material.CHAINMAIL_LEGGINGS).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_HELMET).amount(1).build()),
 
 			new ChestPack()
@@ -92,6 +94,7 @@ public class CenterPresets {
 							new ItemBuilder(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, 4).amount(1).build())
 					.addContent(new ItemBuilder(Material.EXP_BOTTLE).amount(18).build())
 					.addContent(ImprovedItemType.PALA_DEL_PODER.getItem())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(ImprovedItemType.BOTAS_FENIX.getItem()),
 
 			new ChestPack()
@@ -119,6 +122,7 @@ public class CenterPresets {
 							.amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(4).build())
 					.addContent(new ItemBuilder(Material.COOKIE).amount(4).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
 							.amount(1).build())
 					.addContent(ImprovedItemType.BOTAS_FENIX.getItem()),
@@ -196,6 +200,7 @@ public class CenterPresets {
 			new ChestPack().addContent(ImprovedItemType.ESPADA_EXTRAÑA.getItem())
 					.addContent(LegendaryItemType.COFRE_EXPLOSIVO.getItem())
 					.addContent(new ItemBuilder(Material.STONE).amount(4).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.WATER_BUCKET).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build()),
 
@@ -203,9 +208,9 @@ public class CenterPresets {
 					.addContent(LegendaryItemType.BOMBARDERO.getItem())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
-					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8)
+					.addContent(new ItemBuilder(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
 							.amount(1).build())
-					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_FIRE, 8)
+					.addContent(new ItemBuilder(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_FIRE, 3)
 							.enchant(Enchantment.PROTECTION_FALL, 8).amount(1).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(4).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(6).build()),
@@ -213,7 +218,7 @@ public class CenterPresets {
 			new ChestPack().addContent(ImprovedItemType.ESPADA_DE_RAIZ.getItem())
 					.addContent(LegendaryItemType.TORRETA_CONGELADORA.getItem())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
-					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_FIRE, 8)
+					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_FIRE, 1)
 							.enchant(Enchantment.PROTECTION_FALL, 8).amount(1).build()),
 
 			new ChestPack().addContent(ImprovedItemType.MATRIX.getItem())
@@ -230,7 +235,7 @@ public class CenterPresets {
 			new ChestPack().addContent(ImprovedItemType.TNT.getItem())
 					.addContent(LegendaryItemType.TORRETA_SANADORA.getItem())
 					.addContent(new ItemBuilder(Material.DIAMOND_CHESTPLATE)
-							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8).amount(1).build())
+							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).amount(1).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
 					.addContent(LegendaryItemType.PANTALON_TITAN.getItem()),
 
@@ -264,13 +269,13 @@ public class CenterPresets {
 
 			new ChestPack().addContent(new ItemBuilder(Material.COOKED_MUTTON).amount(10).build())
 					.addContent(new ItemBuilder(Material.DIAMOND_LEGGINGS)
-							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8).amount(12).build())
+							.enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).amount(12).build())
 					.addContent(ImprovedItemType.PECHERA_ESTELAR.getItem())
 					.addContent(LegendaryItemType.BOLA_CONGELACEREBROS.getItem()),
 
 			new ChestPack().addContent(new ItemBuilder(Material.ARROW).amount(10).build())
 					.addContent(new ItemBuilder(Material.ARROW).amount(10).build())
-					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8)
+					.addContent(new ItemBuilder(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
 							.amount(12).build())
 					.addContent(ImprovedItemType.ARCO_PODEROSO.getItem())
 					.addContent(LegendaryItemType.BOLA_CONGELACEREBROS.getItem()),
@@ -278,6 +283,7 @@ public class CenterPresets {
 			new ChestPack().addContent(new ItemBuilder(Material.ARROW).amount(10).build())
 					.addContent(new ItemBuilder(Material.ARROW).amount(8).build())
 					.addContent(new ItemBuilder(Material.WATER_BUCKET).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(ImprovedItemType.ARCO_PODEROSO.getItem())
 					.addContent(LegendaryItemType.VARITA_MAGICA.getItem()),
 

@@ -27,11 +27,10 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
-public class AutomaticTNT implements ItemType, Listener {
+public class AutomaticTNT implements Listener {
 
 	protected Map<Player, List<TNTPrimed>> actived_tnts = new HashMap<Player, List<TNTPrimed>>();
 

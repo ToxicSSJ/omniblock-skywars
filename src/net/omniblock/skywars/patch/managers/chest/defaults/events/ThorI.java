@@ -23,16 +23,14 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCa
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
-public class ThorI implements ItemType, Listener {
+public class ThorI implements Listener {
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	@Override
 	public void ThorIce(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 

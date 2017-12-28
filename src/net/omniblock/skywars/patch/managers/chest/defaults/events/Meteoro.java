@@ -36,12 +36,11 @@ import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.NumberUtil;
 
-public class Meteoro implements ItemType, Listener {
+public class Meteoro implements Listener {
 
 	public static Map<Entity, Player> METEORO_OWNER = new HashMap<Entity, Player>();
 

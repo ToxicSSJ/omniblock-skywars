@@ -35,13 +35,12 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.TurretBuilder;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.TurretType;
 
-public class IceTurret implements Turret, ItemType, Listener {
+public class IceTurret implements Turret, Listener {
 
 	public Map<Player, Entry<Integer, BukkitTask>> slowness_levels = new HashMap<Player, Entry<Integer, BukkitTask>>();
 

@@ -16,22 +16,22 @@ public enum ImprovedItemType {
             .name("&8&k||&r &c&lOz Infernal &lore8&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .lore("&7Proviene de la").lore("&7más temida Muerte, a").lore("&7cobrar Venganza!")
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.FIRE_ASPECT, 3)
-            .enchant(Enchantment.DAMAGE_ALL, 3).build()), MATRIX(new ItemBuilder(Material.ENDER_PEARL).amount(1)
+            .enchant(Enchantment.DAMAGE_ALL, 8).build()), MATRIX(new ItemBuilder(Material.ENDER_PEARL).amount(1)
             .name("&8&k||&r &c&lMatrix &8&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .lore("&7Una reliquia").lore("&7de los endermans,").lore("&7tiene un misterioso poder")
-            .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.KNOCKBACK, 1)
+            .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.KNOCKBACK, 3)
             .build()), CASCO_BRILLANTE(new ItemBuilder(Material.IRON_HELMET).amount(1)
             .name("&8&k||&r &c&lCasco Brillante &8&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .lore("&7Forjado por los guerreros").lore("&7del cielo, para resistir")
             .lore("las arduas batallas").lore("&7con sus enemigos")
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
-            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).enchant(Enchantment.DURABILITY, 1)
+            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).enchant(Enchantment.DURABILITY, 1)
             .build()), PETO_BRILLANTE(new ItemBuilder(Material.IRON_HELMET).amount(1)
             .name("&8&k||&r &c&lPeto Brillante &8&k||")
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Forjado por los guerreros")
             .lore("&7del cielo, para resistir").lore("las arduas batallas")
             .lore("&7con sus enemigos").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
-            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
             .enchant(Enchantment.DURABILITY, 1)
             .build()), PANTALONES_BRILLANTES(new ItemBuilder(Material.IRON_LEGGINGS)
             .amount(1).name("&8&k||&r &c&lPantalones Brillantes &8&k||")
@@ -39,7 +39,7 @@ public enum ImprovedItemType {
             .lore("&7Forjado por los guerreros")
             .lore("&7del cielo, para resistir").lore("las arduas batallas")
             .lore("&7con sus enemigos").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
-            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
             .enchant(Enchantment.DURABILITY, 1)
             .build()), BOTAS_BRILLANTES(new ItemBuilder(Material.IRON_BOOTS)
             .amount(1).name("&8&k||&r &c&lBotas Brillantes &8&k||")
@@ -48,7 +48,7 @@ public enum ImprovedItemType {
             .lore("&7del cielo, para resistir")
             .lore("las arduas batallas").lore("&7con sus enemigos")
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
-            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+            .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
             .enchant(Enchantment.DURABILITY, 1)
             .build()), ARCO_PODEROSO(new ItemBuilder(Material.BOW)
             .amount(1).name("&8&k||&r &c&lArco Poderoso &8&k||")
@@ -57,7 +57,7 @@ public enum ImprovedItemType {
             .lore("&7hace arder a sus enemigos")
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(Enchantment.ARROW_FIRE, 3)
-            .enchant(Enchantment.ARROW_DAMAGE, 1)
+            .enchant(Enchantment.ARROW_DAMAGE, 2)
             .build()), TNT(new ItemBuilder(Material.TNT)
             .amount(1).name("&8&k||&r &c&lTNT &8&k||")
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -78,7 +78,7 @@ public enum ImprovedItemType {
             .lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_FALL,
-                2)
+                4)
             .enchant(
                 Enchantment.DURABILITY,
                 2)
@@ -126,7 +126,7 @@ public enum ImprovedItemType {
             .lore("&7━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_FALL,
-                2)
+                4)
             .enchant(
                 Enchantment.DURABILITY,
                 2)
@@ -157,7 +157,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.DAMAGE_ALL,
-                2)
+                1)
             .enchant(
                 Enchantment.FIRE_ASPECT,
                 2)
@@ -214,11 +214,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.DAMAGE_ALL,
-                6)
-            .enchant(
-                Enchantment.KNOCKBACK,
-                2)
-            .build()), HACHA_DE_RAIZ(
+                6).build()), HACHA_DE_RAIZ(
             new ItemBuilder(
                 Material.WOOD_AXE)
             .amount(1)
@@ -234,7 +230,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.KNOCKBACK,
-                4)
+                1)
             .build()), PICO_DE_RAIZ(
             new ItemBuilder(
                 Material.WOOD_PICKAXE)
@@ -251,7 +247,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.KNOCKBACK,
-                4)
+                1)
             .enchant(
                 Enchantment.DURABILITY,
                 10)
@@ -271,7 +267,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.KNOCKBACK,
-                4)
+                1)
             .enchant(
                 Enchantment.DAMAGE_ALL,
                 4)
@@ -295,7 +291,7 @@ public enum ImprovedItemType {
                 5)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                4)
+                2)
             .build()), PECHERA_MECANICA(
             new ItemBuilder(
                 Material.IRON_CHESTPLATE)
@@ -316,7 +312,7 @@ public enum ImprovedItemType {
                 5)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                4)
+                2)
             .build()), PANTALONES_MECANICOS(
             new ItemBuilder(
                 Material.IRON_LEGGINGS)
@@ -337,7 +333,7 @@ public enum ImprovedItemType {
                 5)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                4)
+                2)
             .build()), BOTAS_MECANICOS(
             new ItemBuilder(
                 Material.IRON_BOOTS)
@@ -358,7 +354,7 @@ public enum ImprovedItemType {
                 5)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                4)
+                2)
             .build()), CASCO_FUGAZ(
             new ItemBuilder(
                 Material.DIAMOND_HELMET)
@@ -376,16 +372,16 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                5)
+                1)
             .enchant(
                 Enchantment.PROTECTION_EXPLOSIONS,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_FIRE,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_PROJECTILE,
-                2)
+                3)
             .build()), PECHERA_FUGAZ(
             new ItemBuilder(
                 Material.DIAMOND_CHESTPLATE)
@@ -403,16 +399,16 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                5)
+                1)
             .enchant(
                 Enchantment.PROTECTION_EXPLOSIONS,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_FIRE,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_PROJECTILE,
-                2)
+                3)
             .build()), PANTALON_FUGAZ(
             new ItemBuilder(
                 Material.DIAMOND_LEGGINGS)
@@ -430,16 +426,16 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                5)
+                1)
             .enchant(
                 Enchantment.PROTECTION_EXPLOSIONS,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_FIRE,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_PROJECTILE,
-                2)
+                3)
             .build()), BOTAS_FUGAZ(
             new ItemBuilder(
                 Material.DIAMOND_BOOTS)
@@ -457,16 +453,16 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                5)
+                1)
             .enchant(
                 Enchantment.PROTECTION_EXPLOSIONS,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_FIRE,
-                2)
+                3)
             .enchant(
                 Enchantment.PROTECTION_PROJECTILE,
-                2)
+                3)
             .build()), CASCO_FENIX(
             new ItemBuilder(
                 Material.GOLD_HELMET)
@@ -483,7 +479,7 @@ public enum ImprovedItemType {
                 10)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                3)
+                5)
             .build()), PECHERA_FENIX(
             new ItemBuilder(
                 Material.GOLD_CHESTPLATE)
@@ -500,7 +496,7 @@ public enum ImprovedItemType {
                 10)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                3)
+                4)
             .build()), PANTALON_FENIX(
             new ItemBuilder(
                 Material.GOLD_LEGGINGS)
@@ -517,7 +513,7 @@ public enum ImprovedItemType {
                 10)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                3)
+                4)
             .build()), BOTAS_FENIX(
             new ItemBuilder(
                 Material.GOLD_BOOTS)
@@ -534,7 +530,7 @@ public enum ImprovedItemType {
                 10)
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                3)
+                5)
             .build()), ESPADA_X(
             new ItemBuilder(
                 Material.IRON_SWORD)
@@ -574,7 +570,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.KNOCKBACK,
-                3)
+                1)
             .enchant(
                 Enchantment.FIRE_ASPECT,
                 3)
@@ -601,7 +597,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                6)
+                2)
             .build()), PANTALON_ESTELAR(
             new ItemBuilder(
                 Material.DIAMOND_LEGGINGS)
@@ -613,7 +609,7 @@ public enum ImprovedItemType {
             .lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━")
             .enchant(
                 Enchantment.PROTECTION_ENVIRONMENTAL,
-                6)
+                2)
             .build()),
 
     ;

@@ -27,6 +27,7 @@ public class FoodPresets {
 
 			new ChestPack().addContent(new ItemBuilder(Material.COOKED_MUTTON).amount(6).build())
 					.addContent(new ItemBuilder(Material.SNOW_BALL).amount(18).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.LEATHER_HELMET).amount(1).build())
 					.addContent(new ItemBuilder(Material.EXP_BOTTLE).amount(10).build()),
 
@@ -74,6 +75,7 @@ public class FoodPresets {
 			new ChestPack().addContent(new ItemBuilder(Material.COOKED_BEEF).amount(6).build())
 					.addContent(new ItemBuilder(Material.ARROW).amount(6).build())
 					.addContent(new ItemBuilder(Material.ANVIL).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.ENDER_CHEST).amount(2).build())
 					.addContent(new ItemBuilder(Material.EXP_BOTTLE).amount(16).build()),
 
@@ -121,6 +123,7 @@ public class FoodPresets {
 
 			new ChestPack().addContent(new ItemBuilder(Material.BAKED_POTATO).amount(6).build())
 					.addContent(new ItemBuilder(Material.LAVA_BUCKET).amount(1).build())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.EGG).amount(12).build())
 					.addContent(new ItemBuilder(Material.IRON_HELMET).enchant(Enchantment.PROTECTION_PROJECTILE, 2)
 							.amount(1).build())
@@ -162,6 +165,7 @@ public class FoodPresets {
 			new ChestPack().addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(6).build())
 					.addContent(ImprovedItemType.HACHA_DEL_DRAGON.getItem())
 					.addContent(LegendaryItemType.PUENTE_FUTURISTICO.getItem())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.WATER_BUCKET).amount(1).build()),
 
 			new ChestPack().addContent(new ItemBuilder(Material.APPLE).amount(1).build())
@@ -175,6 +179,7 @@ public class FoodPresets {
 					.addContent(new ItemBuilder(Material.COAL).amount(4).build())
 					.addContent(new ItemBuilder(Material.FURNACE).amount(1).build())
 					.addContent(ImprovedItemType.HACHA_DEL_DRAGON.getItem())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(LegendaryItemType.PUÑO_DE_JHONCENA.getItem())
 					.addContent(new ItemBuilder(Material.WOOD).amount(16).build()),
 
@@ -206,6 +211,7 @@ public class FoodPresets {
 
 			new ChestPack().addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(12).build())
 					.addContent(ImprovedItemType.PICO_DE_RAIZ.getItem())
+					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.WOOD).amount(16).build())
 					.addContent(new ItemBuilder(Material.LAVA_BUCKET).amount(1).build()),
 

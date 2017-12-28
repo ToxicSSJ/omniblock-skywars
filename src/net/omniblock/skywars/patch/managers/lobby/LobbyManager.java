@@ -23,6 +23,7 @@ import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
+import net.omniblock.lobbies.skywars.handler.systems.SWKits.KitKind;
 import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -290,8 +291,11 @@ public class LobbyManager implements Listener {
 						
 						InventoryBuilder ib = new InventoryBuilder(TextUtil.format("&2&lKits Disponibles"), 6 * 9, true);
 						
+						final String color = "&6";
+						final int MAX_SLOT = (6 * 9) - 1;
+						
 						int CURRENT_SLOT = 0;
-						int MAX_SLOT = (6 * 9) - 1;
+						
 						
 						for(SWKitsType kt : SWKitsType.values()) {
 								
@@ -305,7 +309,7 @@ public class LobbyManager implements Listener {
 											.amount(1)
 											.durability((short) kt.getData())
 											.hideAtributes()
-											.name(TextUtil.format(kt.getName()))
+											.name(TextUtil.format(color + kt.getName()))
 											.lore("")
 											.lore(kt.getLore())
 											.lore("")

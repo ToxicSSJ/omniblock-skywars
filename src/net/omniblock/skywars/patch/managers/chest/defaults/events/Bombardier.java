@@ -45,7 +45,6 @@ import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.BombardierData;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.BombardierData.BombardierLauncherStatus;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.BombardierData.BombardierStatus;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
 import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
 import net.omniblock.skywars.patch.types.SkywarsType;
 import net.omniblock.skywars.util.CameraUtil;
@@ -54,7 +53,7 @@ import net.omniblock.skywars.util.SoundPlayer;
 import net.omniblock.skywars.util.TitleUtil;
 import net.omniblock.skywars.util.block.SpawnBlock;
 
-public class Bombardier implements ItemType, Listener {
+public class Bombardier implements Listener {
 
 	public static Map<Player, BombardierData> BOMBARDIER_DATA = new HashMap<Player, BombardierData>();
 

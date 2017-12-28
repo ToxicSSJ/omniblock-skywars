@@ -584,33 +584,27 @@ public class CageManager {
 
 					@Override
 					public void run() {
-						if (start != MAX) {
+					
+						if (start == MAX) { 
+							
+							cancel(); 
+							return;
+							
+						}
+							
 							start++;
+							
 							if (Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO || Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO || Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
 
-								String dir = "/data/cages/animation/ + animationType";
-								String code = codeAnimation[start];
-								String path = "cap." + HashCode + code + ".schematic";
+							String dir = "/data/cages/animation/" + animationType;
+							String code = codeAnimation[start];
+							String path = "cap." + HashCode + "." + code + ".schematic";
 
-								Schematic schem = new Schematic();
-								schem.pasteSchematic(dir, path, registerPlayer.get(player));
-								schem.removeSchematic();
+							Schematic schem = new Schematic();
+							schem.pasteSchematic(dir, path, registerPlayer.get(player));
+							schem.removeSchematic();
 
-							} else {
-
-								String dir = "/data/cages/animation/ + animationType";
-								String code = codeAnimation[start];
-								String path = "cap." + HashCode + code + ".schematic";
-
-								Schematic schem = new Schematic();
-								schem.pasteSchematic(dir, path, registerPlayer.get(player));
-								schem.removeSchematic();
-
-							}
-
-						} else {
-							cancel();
-						}
+						} 
 					}
 
 				}.runTaskTimer(Skywars.getInstance(), 0, delay);

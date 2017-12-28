@@ -47,26 +47,25 @@ public class Kraken implements Listener {
 
 	private Map<Fireball, Squid> getSquid = new HashMap<Fireball, Squid>();
 	private Map<Fireball, Player> getPlayer = new HashMap<Fireball, Player>();
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void kraken(PlayerInteractEvent event) {
 
-		if (Skywars.getGameState() != SkywarsGameState.IN_GAME) return;
+		if (Skywars.getGameState() != SkywarsGameState.IN_GAME)
+			return;
 
 		if (SoloPlayerManager.getPlayersInGameList().contains(event.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(event.getPlayer())) {
-			
-			if(event.getPlayer().getItemInHand().getType() == Material.RECORD_6) {
-				
-				if (event.getAction() == Action.RIGHT_CLICK_AIR 
-						|| event.getAction() == Action.RIGHT_CLICK_BLOCK
-						|| event.getAction() == Action.LEFT_CLICK_AIR
-						|| event.getAction() == Action.LEFT_CLICK_BLOCK) {
 
-					if(!Skywars.ingame)
+			if (event.getPlayer().getItemInHand().getType() == Material.RECORD_6) {
+
+				if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK
+						|| event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+
+					if (!Skywars.ingame)
 						return;
-					
+
 					if (event.getClickedBlock() != null) {
 						if (event.getClickedBlock().getType() == Material.CHEST
 								|| event.getClickedBlock().getType() == Material.TRAPPED_CHEST
@@ -76,55 +75,48 @@ public class Kraken implements Listener {
 
 						}
 					}
-					
+
 					event.getPlayer().getInventory().setItemInHand(null);
 
 					final Fireball fireball = event.getPlayer().launchProjectile(Fireball.class);
 					Vector dir = event.getPlayer().getLocation().getDirection().normalize().multiply(5);
-					
-					Squid squid = (Squid) event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(), EntityType.SQUID);
-					
-					makeIA(squid, fireball, event.getPlayer(), dir);
-					
-					
-					
+
+					Squid squid = (Squid) event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(),
+							EntityType.SQUID);
+
+					getFireball.add(fireball);
+					getSquid.put(fireball, squid);
+					getPlayer.put(fireball, event.getPlayer());
+
+					squid.isInvulnerable();
+					squid.setMaxHealth(1000);
+					squid.setHealth(1000);
+					squid.setGravity(false);
+
+					fireball.setGravity(false);
+					;
+					fireball.setIsIncendiary(false);
+					fireball.setPassenger(squid);
+					fireball.setVelocity(dir);
+
 				}
 			}
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	public void makeIA(Squid squid, Fireball fireball, Player player, Vector dir) {
-
-		getFireball.add(fireball);
-		getSquid.put(fireball, squid);
-		getPlayer.put(fireball, player);
-		
-		squid.isInvulnerable();
-		squid.setMaxHealth(1000);
-		squid.setHealth(1000);
-		squid.setGravity(false);
-
-		fireball.setGravity(false);;
-		fireball.setIsIncendiary(false);
-		fireball.setPassenger(squid);
-		fireball.setVelocity(dir);
-
-	}
-
 	@EventHandler
 	public void hitEvent(ProjectileHitEvent event) {
-		
+
 		if (event.getEntity() instanceof Fireball) {
 
 			Fireball fb = (Fireball) event.getEntity();
 
-			if (fb == event.getHitEntity())
-				return;
-			if (fb == null)
-				return;
-
 			if (getFireball.contains(fb)) {
+
+				if (fb == event.getHitEntity())
+					return;
+				if (fb == null)
+					return;
 
 				getFireball.remove(fb);
 				Location location = fb.getLocation();
@@ -145,9 +137,9 @@ public class Kraken implements Listener {
 
 				for (Block b : circle) {
 
-					if(CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b))
+					if (CustomProtocolManager.PROTECTED_BLOCK_LIST.contains(b))
 						continue;
-					
+
 					if (b.getType() == Material.AIR)
 						continue;
 
@@ -156,7 +148,7 @@ public class Kraken implements Listener {
 					clayBlock.add(b);
 
 				}
-				
+
 				Collection<Entity> entities = location.getWorld().getNearbyEntities(location, 3, 3, 3);
 				for (Entity entity : entities) {
 
@@ -171,24 +163,20 @@ public class Kraken implements Listener {
 									|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
 
 								TeamPlayerBattleListener.makeZDamage(getPlayer.get(fb), getPlayer.get(fb), 5,
-										net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.THORA);
+										net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.KRAKEN);
 								continue;
 
 							}
 
-							SoloPlayerBattleListener.makeZDamage(p, getPlayer.get(fb), 5, DamageCauseZ.THORA);
-					
+							SoloPlayerBattleListener.makeZDamage(p, getPlayer.get(fb), 5, DamageCauseZ.KRAKEN);
+
 							continue;
 
 						}
 					}
-
 				}
-
 			}
-
 		}
-
 	}
 
 	@EventHandler
@@ -201,12 +189,11 @@ public class Kraken implements Listener {
 					|| player.getLocation().add(0, -1, 0).getBlock().getType() == Material.CLAY) {
 
 				Block block = event.getPlayer().getLocation().add(0, -1, 0).getBlock();
-				
 
 				if (coalBlock.contains(block)) {
 
 					block.setType(Material.CLAY);
-					
+
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 6, 2));
 
 					coalBlock.remove(block);
@@ -219,18 +206,18 @@ public class Kraken implements Listener {
 
 					clayBlock.remove(block);
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 6, 2));
-					
+
 					new BukkitRunnable() {
 
 						@Override
 						public void run() {
-							
+
 							player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_LAUNCH, 6, 10);
-						
+
 						}
-						
+
 					}.runTaskLater(Skywars.getInstance(), 20L);
-					
+
 					return;
 
 				}
@@ -256,7 +243,6 @@ public class Kraken implements Listener {
 			} else {
 				continue;
 			}
-
 		}
 	}
 }

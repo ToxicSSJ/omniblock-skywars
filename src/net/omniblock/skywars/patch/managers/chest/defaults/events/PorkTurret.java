@@ -34,13 +34,13 @@ import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCa
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
+
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.TurretBuilder;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.TurretType;
 
-public class PorkTurret implements Turret, ItemType, Listener {
+public class PorkTurret implements Turret, Listener {
 
 	TurretType type = TurretType.PORK_TURRET;
 

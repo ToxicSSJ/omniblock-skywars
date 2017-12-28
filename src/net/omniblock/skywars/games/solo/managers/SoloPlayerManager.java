@@ -185,9 +185,17 @@ public class SoloPlayerManager {
 		
 		for (int i = 0; i < getPlayersInGameAmount(); i++) {
 		
-			if(currentMatchType == MatchType.NORMAL) break;
-			
 			Player player = playersInGame.get(i);
+			
+			if(currentMatchType == MatchType.NORMAL
+					|| currentMatchType == MatchType.Z) {
+				
+				SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), SWKitsType.NONE.getCode()));
+				break;
+				
+			}
+			
+			
 			
 			SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
 		

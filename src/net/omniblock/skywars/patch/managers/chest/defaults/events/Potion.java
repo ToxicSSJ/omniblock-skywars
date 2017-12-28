@@ -16,12 +16,11 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.type.ItemType;
+import net.omniblock.skywars.util.SoundPlayer;
 
-public class Potion implements ItemType, Listener {
+public class Potion implements Listener {
 
 	@SuppressWarnings("deprecation")
-	@Override
 	@EventHandler
 	public void HealPot(PlayerInteractEvent event) {
 
@@ -72,32 +71,35 @@ public class Potion implements ItemType, Listener {
 
 	public void potionEffect(Player player) {
 
+		SoundPlayer.sendSound(player.getLocation(), "skywars.power_up", 30);
+		
 		new BukkitRunnable() {
+		
 			int TIME = 0;
 
 			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
-				if (TIME != 40) {
+				if (TIME != 60) {
 					TIME += 20;
 					player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 5));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 80, 10));
-					player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 5, 5);
-
+					player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 100, 10));
+				
 				} else {
+					
 					player.removePotionEffect(PotionEffectType.LEVITATION);
 					player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ARROW_SHOOT, 7, 10);
-					player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 10));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 160, 15));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 160, 10));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 260, 10));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 160, 4));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 160, 1));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 160, 10));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 160, 10));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 3));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 160, 10));
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 160, 2));
-					player.setHealth(player.getMaxHealth());
+					
 					player.setFoodLevel((int) 20);
 					cancel();
 				}
