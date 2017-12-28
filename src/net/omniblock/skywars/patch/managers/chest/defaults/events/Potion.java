@@ -77,7 +77,6 @@ public class Potion implements Listener {
 		
 			int TIME = 0;
 
-			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				if (TIME != 60) {

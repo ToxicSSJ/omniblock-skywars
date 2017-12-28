@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
 import net.omniblock.lobbies.api.LobbyUtility;
@@ -158,7 +157,7 @@ public class SoloPlayerBattleInfo {
 		int wins = SkywarsBase.getWinnedGames(stats);
 		String average = SkywarsBase.getAverage(stats);
 		
-		Double[] averages = Arrays.stream(SkywarsBase.getAverages(player)).boxed().toArray(Double[]::new);
+		double[] averages = SkywarsBase.getAverages(player);
 		
 		if(alive) wins = wins + 1;
 		kills = kills + this.kills;
@@ -168,13 +167,18 @@ public class SoloPlayerBattleInfo {
 		if(averages.length >= 50)
 			averages[NumberUtil.getRandomInt(0, 49)] = getAverage();
 		else
-			averages = ArrayUtils.append(averages, getAverage());
+			averages[averages.length - 1] = getAverage();
 		
 		average = averages.length >= 50 ? String.valueOf(ArrayUtils.getAverage(averages)) : "NEW";
 		stats = kills + ";" + assistences + ";" + games + ";" + wins + ";" + average;
 		
+		StringBuffer buffer = new StringBuffer();
+		
+		for(int i = 0; i < averages.length; i++)
+			buffer.append(averages[i] + (i == averages.length - 1 ? "" : ";"));
+		
 		SkywarsBase.setStats(player, stats);
-		SkywarsBase.setAverage(player, StringUtils.join(averages, ";"));
+		SkywarsBase.setAverage(player, buffer.toString());
 		SkywarsBase.addWeekPrizePoints(player, kills);
 		
 	}
@@ -224,6 +228,7 @@ public class SoloPlayerBattleInfo {
 			Map<SoloPlayerBattleInfo, Double> average = new HashMap<SoloPlayerBattleInfo, Double>();
 
 			int amount = pbi.size();
+			
 			if (amount >= 1) {
 
 				for (Map.Entry<Player, SoloPlayerBattleInfo> k : pbi.entrySet()) {
@@ -234,7 +239,7 @@ public class SoloPlayerBattleInfo {
 
 						SoloPlayerBattleInfo cache_pbi = k.getValue();
 						average.put(cache_pbi, cache_pbi.getAverage());
-
+						
 					}
 
 				}
@@ -255,9 +260,9 @@ public class SoloPlayerBattleInfo {
 
 			}
 
-			if (top.size() < 3) {
+			if (top.size() < 4) {
 
-				for (int i = top.size(); i <= 3; i++) {
+				for (int i = 1; i <= 3; i++) {
 					top.put(new SoloPlayerBattleInfo(true), i);
 				}
 

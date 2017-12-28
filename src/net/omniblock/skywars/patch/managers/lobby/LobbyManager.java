@@ -21,9 +21,9 @@ import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
+import net.omniblock.packets.util.Lists;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
-import net.omniblock.lobbies.skywars.handler.systems.SWKits.KitKind;
 import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -806,23 +806,27 @@ public class LobbyManager implements Listener {
 
 									}
 
-									PowerItemManager.addVote(pt);
-									PowerItem.player_votes.get(player).add(pt);
+								} else {
+									
+									PowerItem.player_votes.put(player, Lists.newArrayList());
+									
+								}
+								
+								PowerItemManager.addVote(pt);
+								PowerItem.player_votes.get(player).add(pt);
 
-									for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-										p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-									}
-
-									Skywars.getInstance().getServer()
-											.broadcastMessage(TextUtil.format(" &d&lPODERES &8&l: &a" + player.getName()
-													+ " &7ha votado por " + pt.getVotedName() + "&8("
-													+ PowerItem.votes.get(pt) + "/" + PowerItem.MIN_VOTES + ")"));
-									time(player);
-
-									return;
-
+								for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
+									p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 								}
 
+								Skywars.getInstance().getServer()
+										.broadcastMessage(TextUtil.format(" &d&lPODERES &8&l: &a" + player.getName()
+												+ " &7ha votado por " + pt.getVotedName() + "&8("
+												+ PowerItem.votes.get(pt) + "/" + PowerItem.MIN_VOTES + ")"));
+								time(player);
+
+								return;
+								
 							}
 
 						};
@@ -1176,22 +1180,26 @@ public class LobbyManager implements Listener {
 
 									}
 
-									PowerItemManager.addVote(pt);
-									PowerItem.player_votes.get(player).add(pt);
-
-									for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
-										p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-									}
-
-									Skywars.getInstance().getServer()
-											.broadcastMessage(TextUtil.format(" &d&lPODERES &8&l: &a" + player.getName()
-													+ " &7ha votado por " + pt.getVotedName() + "&8("
-													+ PowerItem.votes.get(pt) + "/" + PowerItem.MIN_VOTES + ")"));
-									time(player);
-
-									return;
-
+								} else {
+									
+									PowerItem.player_votes.put(player, Lists.newArrayList());
+									
 								}
+								
+								PowerItemManager.addVote(pt);
+								PowerItem.player_votes.get(player).add(pt);
+
+								for (Player p : Skywars.getInstance().getServer().getOnlinePlayers()) {
+									p.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+								}
+
+								Skywars.getInstance().getServer()
+										.broadcastMessage(TextUtil.format(" &d&lPODERES &8&l: &a" + player.getName()
+												+ " &7ha votado por " + pt.getVotedName() + "&8("
+												+ PowerItem.votes.get(pt) + "/" + PowerItem.MIN_VOTES + ")"));
+								time(player);
+
+								return;
 
 							}
 

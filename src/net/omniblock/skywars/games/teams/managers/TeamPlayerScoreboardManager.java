@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import net.omniblock.lobbies.api.LobbyUtility;
 import net.omniblock.network.library.helpers.scoreboard.ScoreboardUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -163,7 +164,7 @@ public class TeamPlayerScoreboardManager {
 					case IN_LOBBY:
 
 						String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
-						String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+						String IN_LOBBY_FORK_TEXT = forkText(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster"));
 						String IN_LOBBY_MATCH_PLUS_FORMAT = Chests.currentMatchType.getName() + " " + getTimeFormat();
 
 						ScoreboardUtil.unrankedSidebarDisplay(TeamPlayerManager.getPlayersInLobbyList(),
@@ -301,7 +302,7 @@ public class TeamPlayerScoreboardManager {
 					case IN_LOBBY:
 
 						String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
-						String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+						String IN_LOBBY_FORK_TEXT = forkText(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster"));
 						String IN_LOBBY_MATCH_PLUS_FORMAT = Chests.currentMatchType.getName() + " " + getTimeFormat();
 
 						ScoreboardUtil.unrankedSidebarDisplay(TeamPlayerManager.getPlayersInLobbyList(),
@@ -438,7 +439,7 @@ public class TeamPlayerScoreboardManager {
 					case IN_LOBBY:
 
 						String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
-						String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+						String IN_LOBBY_FORK_TEXT = forkText(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster"));
 						String IN_LOBBY_MATCH_PLUS_FORMAT = Chests.currentMatchType.getName() + " " + getTimeFormat();
 
 						ScoreboardUtil.unrankedSidebarDisplay(TeamPlayerManager.getPlayersInLobbyList(),

@@ -337,7 +337,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 
 			for (Player p : apocalipsis.getInGamePlayers()) {
 
-				p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 7, 2, true), true);
+				p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10, 2, true), true);
 				p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 10, 2, true), true);
 				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 10, 2, true), true);
 
@@ -388,6 +388,28 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 			}
 
 			sendInGameTitle(InGameTitles.DESTRUCTION_TITLE);
+			return;
+
+		} else if (str.contains("MUERTE")) {
+
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					
+					if(Skywars.getGameState() == SkywarsGameState.IN_GAME) {
+						
+						SoloPlayerManager.getPlayersInGameList().forEach(player -> {
+							player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20 * 12, 1, true), true);
+						});
+						
+					}
+					
+				}
+				
+			}.runTaskTimer(Skywars.getInstance(), 0L, 20 * 3);
+			
+			sendInGameTitle(InGameTitles.WITHER_TITLE);
 			return;
 
 		}
@@ -492,17 +514,20 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 				new TitleFormat(5, 45, 5, TextUtil.format("&6&lCofres"), TextUtil.format("&7¡Rellenado Completado!"))
 			}),
 			DUEL_TITLE(65, Sound.ENTITY_BAT_TAKEOFF, new TitleFormat[] {
-				new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lDuelo&r&4&k ||"), TextUtil.format("&7¡El duelo ha iniciado!"))
+				new TitleFormat(5, 45, 5, TextUtil.format("&4&k||&r &c&lDuelo&r&4 &k||"), TextUtil.format("&7¡El duelo ha iniciado!"))
 			}),
 			CONTAMINATION_TITLE(65, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, new TitleFormat[] {
 				new TitleFormat(5, 45, 5, TextUtil.format("&d&lContaminación"), TextUtil.format("&7¡Se está esparciendo el virus!"))
 			}),
 			DESTRUCTION_TITLE(65, Sound.ENTITY_WITHER_SPAWN, new TitleFormat[] {
-				new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lDestrucción&r&4&k ||"), TextUtil.format("&7¡Ha iniciado la destrucción!"))
+				new TitleFormat(5, 45, 5, TextUtil.format("&4&k||&r &c&lDestrucción&r&4 &k||"), TextUtil.format("&7¡Ha iniciado la destrucción!"))
+			}),
+			WITHER_TITLE(65, Sound.ENTITY_SHULKER_HURT, new TitleFormat[] {
+					new TitleFormat(5, 45, 5, TextUtil.format("&4&k||&r &8&lMuerte&r&4 &k||"), TextUtil.format("&7¡Ahora tienes efecto de Wither!"))
 			}),
 			APOCALYPSE_TITLE(
 			65, Sound.ENTITY_ENDERDRAGON_GROWL, new TitleFormat[] {
-				new TitleFormat(5, 45, 5, TextUtil.format("&4&k|| &r&c&lApocalipsis&r&4&k ||"), TextUtil.format("&7¡El apocalipsis ha empezado!"))
+				new TitleFormat(5, 45, 5, TextUtil.format("&4&k||&r &c&lApocalipsis&r&4 &k||"), TextUtil.format("&7¡El apocalipsis ha empezado!"))
 			}),
 
 

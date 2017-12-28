@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -40,6 +41,7 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.types.SkywarsType;
+import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.ResourceExtractor;
 import net.omniblock.skywars.util.Schematic;
@@ -47,12 +49,10 @@ import net.omniblock.skywars.util.Schematic;
 @SuppressWarnings("deprecation")
 public class CageManager {
 
-	public static Map < Player,
-	Location > cagesdata = new HashMap < Player,
-	Location > ();
+	public static Map<Player, Location> cagesdata = new HashMap<Player, Location>();
 
-	public static List < EditSession > pastedcages = new ArrayList < EditSession > ();
-	public static List < BukkitTask > animations = new ArrayList < BukkitTask > ();
+	public static List<EditSession> pastedcages = new ArrayList<EditSession>();
+	public static List<CageAnimator> animators = new ArrayList<CageAnimator>();
 
 	public enum CageKind  {
 
@@ -79,125 +79,105 @@ public class CageManager {
 		/*
 		 * > Type: Normal Cages
 		 */
-		DEFAULT(CageKind.COLOR, "Jaula de Cristal", new String[] {
-			"",
+		DEFAULT(CageKind.COLOR, new ItemBuilder(Material.GLASS).amount(1).build(), "Jaula de Cristal", new String[] {
 			" &8- &7Un poco anticuada pero",
 			" &7está bastante bien."
-		},
-		Material.GLASS, 0, 0, "J0", "default"),
-		JAULA_BLANCA(CageKind.COLOR, "Jaula de Cristal Blanco", new String[] {
-			"",
+		}, 0, "J0", "default"),
+		
+		JAULA_BLANCA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(0).build(), "Jaula de Cristal Blanco", new String[] {
 			" &8- &7Proviene del cielo más",
 			" &7resplandeciente."
-		},
-		Material.STAINED_GLASS, 0, 0, "J1", "blanco"),
-		JAULA_NARANJA(CageKind.COLOR, "Jaula de Cristal Naranja", new String[] {
-			"",
+		}, 0, "J1", "blanco"),
+		
+		JAULA_NARANJA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(1).build(), "Jaula de Cristal Naranja", new String[] {
 			" &8- &7Probablemente naranja",
 			" &7pero no es una fruta."
-		},
-		Material.STAINED_GLASS, 1, 0, "J2", "naranja"),
-		JAULA_MAGENTA(CageKind.COLOR, "Jaula de Cristal Magenta", new String[] {
-			"",
+		}, 0, "J2", "naranja"),
+		
+		JAULA_MAGENTA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(2).build(), "Jaula de Cristal Magenta", new String[] {
 			" &8- &7Semejante al augurio",
 			" &7de una flor."
-		},
-		Material.STAINED_GLASS, 2, 0, "J3", "magenta"),
-		JAULA_AZUL_CLARO(CageKind.COLOR, "Jaula de Cristal Azul Claro", new String[] {
-			"",
+		}, 0, "J3", "magenta"),
+		
+		JAULA_AZUL_CLARO(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(3).build(), "Jaula de Cristal Azul Claro", new String[] {
 			" &8- &7Proviene del dominante",
 			" &7color del agua."
-		},
-		Material.STAINED_GLASS, 3, 0, "J4", "azulclaro"),
-		JAULA_AMARILLA(CageKind.COLOR, "Jaula de Cristal Amarillo", new String[] {
-			"",
+		}, 0, "J4", "azulclaro"),
+		
+		JAULA_AMARILLA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(4).build(), "Jaula de Cristal Amarillo", new String[] {
 			" &8- &7Semejante al brillo",
 			" &7del sol."
-		},
-		Material.STAINED_GLASS, 4, 0, "J5", "amarillo"),
-		JAULA_LIMA(CageKind.COLOR, "Jaula de Cristal Lima", new String[] {
-			"",
+		}, 0, "J5", "amarillo"),
+		
+		JAULA_LIMA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(5).build(), "Jaula de Cristal Lima", new String[] {
 			" &8- &7Una combinación de",
-			" &7colores unica!"
-		},
-		Material.STAINED_GLASS, 5, 0, "J6", "lima"),
-		JAULA_ROSA(CageKind.COLOR, "Jaula de Cristal Rosa", new String[] {
-			"",
+			" &7colores unica, como si",
+			" &7de un limón se tratase."
+		}, 0, "J6", "lima"),
+		
+		JAULA_ROSA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(6).build(), "Jaula de Cristal Rosa", new String[] {
 			" &8- &7Un color un tanto",
 			" &7chicloso!"
-		},
-		Material.STAINED_GLASS, 6, 0, "J7", "rosa"),
-		JAULA_GRIS(CageKind.COLOR, "Jaula de Cristal Gris", new String[] {
-			"",
+		}, 0, "J7", "rosa"),
+		
+		JAULA_GRIS(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(7).build(), "Jaula de Cristal Gris", new String[] {
 			" &8- &7Una jaula con un color",
 			" &7muy elegante."
-		},
-		Material.STAINED_GLASS, 7, 0, "J8", "gris"),
-		JAULA_GRIS_CLARO(CageKind.COLOR, "Jaula de Cristal Gris Claro", new String[] {
-			"",
+		}, 0, "J8", "gris"),
+		
+		JAULA_GRIS_CLARO(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(8).build(), "Jaula de Cristal Gris Claro", new String[] {
 			" &8- &7Una jaula con un color",
-			" &7muy elegante y más transparente",
+			" &7muy elegante y más fuerte",
 			" &7pero muy sutíl."
-		},
-		Material.STAINED_GLASS, 8, 0, "J9", "grisclaro"),
-		JAULA_CIAN(CageKind.COLOR, "Jaula de Cristal Cian", new String[] {
-			"",
+		}, 0, "J9", "grisclaro"),
+		
+		JAULA_CIAN(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(9).build(), "Jaula de Cristal Cian", new String[] {
 			" &8- &7No, no es azul, es el majestuoso",
 			" &7CIAN, es... Genial!"
-		},
-		Material.STAINED_GLASS, 9, 0, "J10", "cian"),
-		JAULA_MORADA(CageKind.COLOR, "Jaula de Cristal Morado", new String[] {
-			"",
+		}, 0, "J10", "cian"),
+		
+		JAULA_MORADA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(10).build(), "Jaula de Cristal Morado", new String[] {
 			" &8- &7Dale un toque morado a tus",
 			" &7partidas!"
-		},
-		Material.STAINED_GLASS, 10, 0, "J11", "morado"),
-		JAULA_AZUL(CageKind.COLOR, "Jaula de Cristal Azul", new String[] {
-			"",
+		}, 0, "J11", "morado"),
+		
+		JAULA_AZUL(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(11).build(), "Jaula de Cristal Azul", new String[] {
 			" &8- &7Un color muy increible en una",
 			" &7jaula muy increible de un juego",
-			" &7muy increible. ¿No es increible?"
-		},
-		Material.STAINED_GLASS, 11, 0, "J12", "azul"),
-		JAULA_CAFE(CageKind.COLOR, "Jaula de Cristal Café", new String[] {
-			"",
+			" &7muy increible. ¿No es azulmente",
+			" &7increible?"
+		}, 0, "J12", "azul"),
+		
+		JAULA_CAFE(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(12).build(), "Jaula de Cristal Café", new String[] {
 			" &8- &7Parecido al color de la",
 			" &7madera."
-		},
-		Material.STAINED_GLASS, 12, 0, "J13", "marron"),
-		JAULA_VERDE(CageKind.COLOR, "Jaula de Cristal Verde", new String[] {
-			"",
+		}, 0, "J13", "marron"),
+		
+		JAULA_VERDE(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(13).build(), "Jaula de Cristal Verde", new String[] {
 			" &8- &7Algo muy natural!"
-		},
-		Material.STAINED_GLASS, 13, 0, "J14", "verde"),
-		JAULA_ROJA(CageKind.COLOR, "Jaula de Cristal Rojo", new String[] {
-			"",
+		}, 0, "J14", "verde"),
+		
+		JAULA_ROJA(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(14).build(), "Jaula de Cristal Rojo", new String[] {
 			" &8- &7Un color muy elegante",
 			" &7y siniestro!"
-		},
-		Material.STAINED_GLASS, 14, 0, "J15", "rojo"),
-		JAULA_NEGRA(CageKind.COLOR, "Jaula de Cristal Negro", new String[] {
-			"",
+		}, 0, "J15", "rojo"),
+		
+		JAULA_NEGRA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(15).build(), "Jaula de Cristal Negro", new String[] {
 			" &8- &7Un color muy fantastico",
 			" &7obscuro y elegante."
-		},
-		Material.STAINED_GLASS, 15, 0, "J16", "negro"),
+		}, 0, "J16", "negro"),
+		
 		/*
 		 * > Type: Vip Cages
 		 */
-		JAULA_INFERNAL(CageKind.VIP, "Jaula Infernal", new String[] {
-			"",
-			" &8- &7Las almas del limbo",
-			" &7atrapadas en la destrucción",
-			" &7infernal."
-		},
-		"J800", "infernal", new String[] {
-			"01",
-			"02",
-			"03",
-			"04",
-			"05",
-
+		JAULA_RAINBOW(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Rainbow", new String[] {
+			" &8- &7Todo es perfecto y genial",
+			" &7en Minecraft, siempre y cuando",
+			" &7tenga muchos &aC&cO&dL&eO&9R&bE&6S&7."
+		}, "J500", "rainbow", 10, new String[] { 
+				"1", "2", "3",
+				"4", "5", "6",
+				"7"
 		}),
 
 		;
@@ -211,84 +191,79 @@ public class CageManager {
 		private String hashcode;
 		private String[] codeAnimation;
 
-		private Material mat;
+		private ItemStack icon;
 
 		private boolean vip = false;
 		private boolean animation = false;
 
+		private int delay = 0;
 		private int price = 0;
-		private int data = 0;
 
-		private CageAnimator[] animations;
-
-		CageType(CageKind kind, String name, String[] lore, Material mat, int data, int price, String code, String hashcode) {
+		CageType(CageKind kind, ItemStack icon, String name, String[] lore, int price, String code, String hashcode) {
+			
 			this.kind = kind;
 			this.name = name;
 			this.lore = lore;
-			this.mat = mat;
-			this.data = data;
+			this.icon = icon;
+			
 			this.price = price;
 			this.code = code;
 			this.hashcode = hashcode;
+			
 		}
 
-		CageType(CageKind kind, String name, String[] lore, Material mat, int data, String code, String hashcode) {
+		CageType(CageKind kind, ItemStack icon, String name, String[] lore, String code, String hashcode) {
+			
 			this.kind = kind;
 			this.name = name;
 			this.lore = lore;
-			this.mat = mat;
-			this.data = data;
+			this.icon = icon;
+			
 			this.code = code;
 			this.hashcode = hashcode;
+			this.price = 1000;
+			
 			this.vip = true;
 			this.animation = false;
+			
 		}
 
-		CageType(CageKind kind, String name, String[] lore, String code, String hashcode, String[] codeAnimation) {
+		CageType(CageKind kind, ItemStack icon, String name, String[] lore, String code, String hashcode, int delay, String[] codeAnimation) {
+			
 			this.kind = kind;
 			this.name = name;
 			this.lore = lore;
 			this.code = code;
 			this.hashcode = hashcode;
 			this.codeAnimation = codeAnimation;
-			this.vip = true;
-			this.animation = false;
-		}
-
-		CageType(CageKind kind, String name, String[] lore, Material mat, int data, String code, String hashcode, CageAnimator...animations) {
-			this.kind = kind;
-			this.name = name;
-			this.lore = lore;
-			this.mat = mat;
-			this.data = data;
-			this.code = code;
-			this.hashcode = hashcode;
-			this.animations = animations;
-
+			this.icon = icon;
+			
+			this.price = 1000;
+			this.delay = delay;
+			
 			this.vip = true;
 			this.animation = true;
+			
 		}
 
-		public Map < EditSession,
-		CuboidClipboard > paste(Vector loc, World world) {
+		public Map <EditSession, CuboidClipboard> paste(Vector loc, World world) {
 
-			Map < EditSession,
-			CuboidClipboard > map = new HashMap < EditSession,
-			CuboidClipboard > ();
+			Map <EditSession, CuboidClipboard> map = new HashMap <EditSession, CuboidClipboard>();
 			File schematic = getCageSchematic(this);
 
 			if (schematic != null) {
 
 				try {
+					
 					WorldEditPlugin we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 
 					EditSession session = we.getWorldEdit().getEditSessionFactory().getEditSession((LocalWorld) new BukkitWorld(world), 10000000);
 					CuboidClipboard cc = MCEditSchematicFormat.getFormat(schematic).load(schematic);
 
 					cc.paste(session, new com.sk89q.worldedit.Vector(loc.getX(), loc.getY(), loc.getZ()), false);
-
 					map.put(session, cc);
 					return map;
+					
 				} catch(MaxChangedBlocksException | DataException | IOException e) {
 					e.printStackTrace();
 				}
@@ -303,16 +278,8 @@ public class CageManager {
 			return name;
 		}
 
-		public void setName(String name) {
-			this.name = name;
-		}
-
 		public String[] getLore() {
 			return lore;
-		}
-
-		public void setLore(String[] lore) {
-			this.lore = lore;
 		}
 
 		public CageKind getKind() {
@@ -323,77 +290,47 @@ public class CageManager {
 			return code;
 		}
 
-		public void setCode(String code) {
-			this.code = code;
-		}
-
 		public String[] getCodeAnimation() {
 			return codeAnimation;
 		}
 
-		public void setCodeAnimation(String[] codeAnimation) {
-			this.codeAnimation = codeAnimation;
-		}
-
-		public Material getMaterial() {
-			return mat;
-		}
-
-		public void setMaterial(Material mat) {
-			this.mat = mat;
+		public ItemStack getIcon() {
+			return icon;
 		}
 
 		public boolean isVip() {
 			return vip;
 		}
 
-		public void setVip(boolean vip) {
-			this.vip = vip;
-		}
-
-		public boolean isAnimation() {
+		public boolean hasAnimation() {
 			return animation;
-		}
-
-		public void setAnimation(boolean animation) {
-			this.animation = animation;
 		}
 
 		public int getPrice() {
 			return price;
 		}
-
-		public void setPrice(int price) {
-			this.price = price;
-		}
-
-		public int getData() {
-			return data;
-		}
-
-		public void setData(int data) {
-			this.data = data;
-		}
-
-		public CageAnimator[] getAnimations() {
-			return animations;
-		}
-
-		public void setAnimations(CageAnimator[] animations) {
-			this.animations = animations;
+		
+		public long getDelay() {
+			return (long) delay;
 		}
 
 		public String getHashcode() {
 			return hashcode;
 		}
-
-		public void setHashcode(String hashcode) {
-			this.hashcode = hashcode;
+		
+		public CageAnimator createAnimator(Location loc) {
+			
+			if(this.hasAnimation())
+				return makeAnimator(loc, delay, this);
+			
+			throw new RuntimeException("La capsula " + hashcode + " no posee una animación!");
+						
 		}
+		
 	}
 
-	public static CageAnimator makeAnimation(Player player, int delay, CageType ct, AnimationType animation) {
-		return new CageAnimator(player, delay, ct, animation);
+	public static CageAnimator makeAnimator(Location loc, int delay, CageType ct) {
+		return new CageAnimator(loc, delay, ct);
 	}
 
 	public static File getCageSchematic(CageType type) {
@@ -406,6 +343,7 @@ public class CageManager {
 			File file = new File(Skywars.getInstance().getDataFolder(), dir + "cap." + code + ".schematic");
 
 			return file;
+			
 		} else {
 
 			String dir = "/data/cages/team/";
@@ -417,7 +355,7 @@ public class CageManager {
 	}
 
 	public static CageType getCageType(String code) {
-		for (CageType ct: CageType.values()) {
+		for (CageType ct : CageType.values()) {
 			if (ct.getCode() == code) {
 				return ct;
 			}
@@ -425,47 +363,37 @@ public class CageManager {
 		return CageType.DEFAULT;
 	}
 
-	public static void registerCage(CageType ca, Location loc) {
-
-		Map < EditSession,
-		CuboidClipboard > stored = ca.paste(loc.toVector(), loc.getWorld());
-		for (Map.Entry < EditSession, CuboidClipboard > k: stored.entrySet()) {
-			pastedcages.add(k.getKey());
+	public static void registerCage(CageType ct, Location loc) {
+		
+		if(ct.hasAnimation()) {
+			
+			CageAnimator animator = ct.createAnimator(loc);
+			animator.start();
+			
+			animators.add(animator);
+			return;
+			
+		}
+		
+		Map <EditSession, CuboidClipboard> stored = ct.paste(loc.toVector(), loc.getWorld());
+		
+		for (Map.Entry <EditSession, CuboidClipboard> entry : stored.entrySet()) {
+			pastedcages.add(entry.getKey());
 		}
 
 	}
 
 	public static void removeCages() {
 
-		for (EditSession k: pastedcages) {
-			k.undo(k);
-		}
+		for(EditSession session : pastedcages)
+			session.undo(session);
 
-		for (Player p: Bukkit.getOnlinePlayers()) {
+		for(CageAnimator animator : animators)
+			animator.stop();
+		
+		for(Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1F, 1F);
 			ParticleEffect.LAVA.display(0.5F, 0.5F, 0.5F, 1F, 20, p.getLocation(), 20D);
-		}
-
-	}
-
-	public static void registerAnimation(CageAnimator ca) {
-
-		BukkitTask bt;
-		try {
-			bt = ca.start();
-			if (bt != null) {
-				animations.add(bt);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public static void stopAnimations() {
-
-		for (BukkitTask bt: animations) {
-			bt.cancel();
 		}
 
 	}
@@ -494,14 +422,14 @@ public class CageManager {
 
 	public static class CageZCameraUtil {
 
-		public static void makeElevation(List < Player > players, Location cl) {
+		public static void makeElevation(List <Player> players, Location cl) {
 
 			if (players.size() <= 0) return;
 
 			int x = cl.getBlockX();
 			int z = cl.getBlockZ();
 
-			List < Location > points = Lists.newArrayList();
+			List <Location> points = Lists.newArrayList();
 			Location toLoc = players.get(0).getLocation().clone().add(0, 40, 0);
 
 			for (int y = 0; y < 256; y++) {
@@ -526,7 +454,7 @@ public class CageManager {
 			int x = cl.getBlockX();
 			int z = cl.getBlockZ();
 
-			List < Location > points = Lists.newArrayList();
+			List <Location> points = Lists.newArrayList();
 			Location toLoc = p.getLocation().clone().add(0, 40, 0);
 
 			for (int y = 0; y < 256; y++) {
@@ -551,96 +479,83 @@ public class CageManager {
 	/*
 	 * 
 	 * - Apartado para las animaciones...
-	 *
+	 * TODO
 	 */
 
 	public static class CageAnimator {
-
-		public static Map < Player,
-		Location > registerPlayer = new HashMap < Player,
-		Location > ();
-		private Player player;@SuppressWarnings("unused")
-		private String animationType;
-		private String HashCode;
+		
+		private Location location;
+		
+		private String hashCode;
 		private String[] codeAnimation;
+		
 		private int delay;
-
-		public CageAnimator(Player player, final int delay, CageType ct, AnimationType animationType) {
-			this.player = player;
+		
+		private BukkitTask task;
+		private Schematic schem = new Schematic();
+		
+		public CageAnimator(Location loc, final int delay, CageType ct) {
+			
+			this.location = loc;
 			this.delay = delay;
 			this.codeAnimation = ct.getCodeAnimation();
-			this.animationType = animationType.getName();
-			this.HashCode = ct.getHashcode();
+			this.hashCode = ct.getHashcode();
 
 		}
 
-		public BukkitTask start() {
+		public void start() {
 
-			if (codeAnimation.length > 1) {
-
-				return new BukkitRunnable() {
-					final int MAX = codeAnimation.length;
+			if(codeAnimation.length > 0)
+				task = new BukkitRunnable() {
+					
 					int start = 0;
 
 					@Override
 					public void run() {
-					
-						if (start == MAX) { 
+						
+						if(start + 1 == codeAnimation.length)
+							start = 0;
 							
-							cancel(); 
-							return;
+						if(Skywars.currentMatchType.isSolo()) {
+
+							String dir = "/data/cages/solo/";
+							String code = codeAnimation[start];
+							String path = "cap." + hashCode + "." + code + ".schematic";
+
+							schem.removeSchematic();
+							schem.pasteSchematic(dir, path, location);
+
+						} else {
+							
+							String dir = "/data/cages/team/";
+							String code = codeAnimation[start];
+							String path = "cap2p." + hashCode + "." + code + ".schematic";
+
+							schem.removeSchematic();
+							schem.pasteSchematic(dir, path, location);
 							
 						}
-							
-							start++;
-							
-							if (Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO || Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO || Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
-
-							String dir = "/data/cages/animation/" + animationType;
-							String code = codeAnimation[start];
-							String path = "cap." + HashCode + "." + code + ".schematic";
-
-							Schematic schem = new Schematic();
-							schem.pasteSchematic(dir, path, registerPlayer.get(player));
-							schem.removeSchematic();
-
-						} 
+						
+						start++;
+						
 					}
 
 				}.runTaskTimer(Skywars.getInstance(), 0, delay);
 
-			} else {
+			else
 				throw new RuntimeException("No se puede recrear una animación con menos de 2 schematic en su conjunto.");
-			}
+			
 		}
-
-		public void registerPlayer(Player player, Location cageLocation) {
-
-			if (!registerPlayer.containsKey(player)) {
-				registerPlayer.put(player, cageLocation);
-			} else {
-				System.out.println("El jugador " + player + " ya esta registrado!");
-			}
+		
+		public void stop() {
+			
+			schem.removeSchematic();
+			
+			if(task != null)
+				task.cancel();
+			
 		}
+		
 	}
-
-	public enum AnimationType {
-		FUEGO("fuego")
-		/** FUEGO: es un ejemplo, /data/cages/animation/fuego/ */
-		;
-
-		private String name;
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		AnimationType(String name) {
-			this.setName(name);
-		}
-
-		public String getName() {
-			return name;
-		}
-	}
+	
 }

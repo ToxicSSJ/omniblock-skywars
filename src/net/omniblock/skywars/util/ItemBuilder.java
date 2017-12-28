@@ -201,7 +201,7 @@ public class ItemBuilder {
 		this.damage = durability;
 		return this;
 	}
-
+	
 	/**
 	 * Sets the Data (Damage) of the ItemStack
 	 * 

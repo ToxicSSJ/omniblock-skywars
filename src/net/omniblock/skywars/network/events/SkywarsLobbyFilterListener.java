@@ -10,17 +10,21 @@
 
 package net.omniblock.skywars.network.events;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import net.omniblock.skywars.Skywars;
 
+@SuppressWarnings("deprecation")
 public class SkywarsLobbyFilterListener implements Listener {
 
 	@EventHandler
@@ -29,7 +33,20 @@ public class SkywarsLobbyFilterListener implements Listener {
 			e.setCancelled(true);
 		}
 	}
-
+	
+	@EventHandler
+	public void onPickup(PlayerPickupItemEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame)
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onPickup(EntitySpawnEvent e) {
+		if (Skywars.inlobby || Skywars.inpregame)
+			if(e.getEntityType() == EntityType.DROPPED_ITEM)
+				e.getEntity().remove();
+	}
+	
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e) {
 		if (Skywars.inlobby || Skywars.inpregame) {

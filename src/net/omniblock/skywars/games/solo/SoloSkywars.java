@@ -144,7 +144,7 @@ public class SoloSkywars implements SkywarsStarter {
 
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 200);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 420);
+		mainRunnableTask.addEvent("&8&lMUERTE:", 510);
 
 	}
 
@@ -168,7 +168,7 @@ public class SoloSkywars implements SkywarsStarter {
 
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 200);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 420);
+		mainRunnableTask.addEvent("&8&lMUERTE:", 510);
 
 	}
 
@@ -192,8 +192,8 @@ public class SoloSkywars implements SkywarsStarter {
 		mainRunnableTask.addEvent("&c&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 160);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 240);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 380);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 430);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 445);
+		mainRunnableTask.addEvent("&8&lMUERTE:", 510);
 
 	}
 
@@ -201,8 +201,9 @@ public class SoloSkywars implements SkywarsStarter {
 
 		final Map<SoloPlayerBattleInfo, Integer> cache_top = PlayerBattleInfoUtils
 				.getTop(SoloPlayerBattleListener.battle_info);
+		
 		final Map<Integer, SoloPlayerBattleInfo> top = PlayerBattleInfoUtils.reverse(cache_top);
-
+		
 		final SoloPlayerBattleInfo TOP_1 = top.get(1);
 		final SoloPlayerBattleInfo TOP_2 = top.get(2);
 		final SoloPlayerBattleInfo TOP_3 = top.get(3);
@@ -222,6 +223,7 @@ public class SoloSkywars implements SkywarsStarter {
 
 			Location fix_loc = MapManager.lobbyschematic.getLocation().getWorld()
 					.getHighestBlockAt(MapManager.lobbyschematic.getLocation()).getLocation();
+			
 			int launched = 0;
 
 			@Override
@@ -229,7 +231,7 @@ public class SoloSkywars implements SkywarsStarter {
 				if (launched < 12) {
 					if (win) {
 						if (winner.isOnline()) {
-							for (int i = 0; i < 5; i++) {
+							for (int i = 0; i < 2; i++) {
 								RandomFirework.spawnRandomFirework(LocationUtil.getRandomLocation(winner), 3);
 							}
 							launched++;
@@ -237,7 +239,7 @@ public class SoloSkywars implements SkywarsStarter {
 						}
 					}
 
-					for (int i = 0; i < 5; i++) {
+					for (int i = 0; i < 2; i++) {
 						RandomFirework.spawnRandomFirework(LocationUtil.getRandomLocation(fix_loc), 3);
 					}
 					launched++;
@@ -276,7 +278,7 @@ public class SoloSkywars implements SkywarsStarter {
 
 								int top = k.getKey().getTopNumber(cache_top);
 								p.sendMessage(TextUtil.getCenteredMessage(
-										"&7Tu pocisión fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
+										"&7Tu posición fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
 												+ k.getKey().getAverage() + "&r"));
 
 							}
@@ -322,7 +324,7 @@ public class SoloSkywars implements SkywarsStarter {
 
 								int top = k.getKey().getTopNumber(cache_top);
 								p.sendMessage(TextUtil.getCenteredMessage(
-										"&7Tu pocisión fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
+										"&7Tu posición fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
 												+ k.getKey().getAverage() + "&r"));
 
 							}

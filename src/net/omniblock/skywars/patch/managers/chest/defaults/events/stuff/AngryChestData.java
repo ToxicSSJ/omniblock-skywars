@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,7 +19,10 @@ import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener;
+import net.omniblock.skywars.games.solo.events.SoloPlayerBattleListener.DamageCauseZ;
+import net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener;
 import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
+import net.omniblock.skywars.patch.types.SkywarsType;
 
 public class AngryChestData {
 	
@@ -35,7 +37,7 @@ public class AngryChestData {
 		this.block = b;
 		this.player = player;
 		
-		chest = (Chest) this.block.getState().getData();
+		chest = (Chest) this.block.getState();
 		this.location = this.block.getLocation();
 		
 	}
@@ -88,6 +90,9 @@ public class AngryChestData {
 				}
 				
 				b.setData((byte) face, true);
+				b.getState().getData().setData((byte) face);
+				b.getState().update(true);
+				
 				laser(locUp, locDown);
 				
 				b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2, 2);
@@ -116,8 +121,16 @@ public class AngryChestData {
 					onClick.setVelocity(onClick.getLocation().getDirection().add(new Vector(0, 1, 0))
 							.multiply(1));
 					
-					SoloPlayerBattleListener.callEntityDamageEvent(player, onClick, DamageCause.BLOCK_EXPLOSION,
-							5.5);
+					if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
+							|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
+							|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
+
+						TeamPlayerBattleListener.makeZDamage(onClick, player, 5.5, net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.EXP_CHEST);
+						return;
+
+					}
+					
+					SoloPlayerBattleListener.makeZDamage(onClick, player, 5.5, DamageCauseZ.EXP_CHEST);
 				}
 			}
 			

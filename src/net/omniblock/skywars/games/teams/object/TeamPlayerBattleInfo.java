@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
 import net.omniblock.lobbies.api.LobbyUtility;
@@ -162,7 +161,7 @@ public class TeamPlayerBattleInfo {
 		int wins = SkywarsBase.getWinnedGames(stats);
 		String average = SkywarsBase.getAverage(stats);
 		
-		Double[] averages = Arrays.stream(SkywarsBase.getAverages(player)).boxed().toArray(Double[]::new);
+		double[] averages = SkywarsBase.getAverages(player);
 		
 		if(alive) wins = wins + 1;
 		kills = kills + this.kills;
@@ -172,13 +171,18 @@ public class TeamPlayerBattleInfo {
 		if(averages.length >= 50)
 			averages[NumberUtil.getRandomInt(0, 49)] = getAverage();
 		else
-			averages = ArrayUtils.append(averages, getAverage());
+			averages[averages.length - 1] = getAverage();
 		
 		average = averages.length >= 50 ? String.valueOf(ArrayUtils.getAverage(averages)) : "NEW";
 		stats = kills + ";" + assistences + ";" + games + ";" + wins + ";" + average;
 		
+		StringBuffer buffer = new StringBuffer();
+		
+		for(int i = 0; i < averages.length; i++)
+			buffer.append(averages[i] + (i == averages.length - 1 ? "" : ";"));
+		
 		SkywarsBase.setStats(player, stats);
-		SkywarsBase.setAverage(player, StringUtils.join(averages, ";"));
+		SkywarsBase.setAverage(player, buffer.toString());
 		SkywarsBase.addWeekPrizePoints(player, kills);
 		
 	}

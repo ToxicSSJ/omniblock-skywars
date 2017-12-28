@@ -1,13 +1,18 @@
 package net.omniblock.skywars.games.teams.events;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -24,6 +29,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import net.omniblock.network.library.utils.TextUtil;
+import net.omniblock.packets.util.Lists;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.games.teams.object.TeamPlayerBattleInfo;
@@ -31,6 +37,7 @@ import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.type.Turret.TurretUtil.AwakeTurret;
 import net.omniblock.skywars.util.ActionBarApi;
+import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.NumberUtil;
 
 @SuppressWarnings("deprecation")
@@ -137,8 +144,11 @@ public class TeamPlayerBattleListener implements Listener {
 
 					if (affected.getHealth() - event.getFinalDamage() <= 0) {
 
+						if(lasthit.containsKey(affected))
+							damager = lasthit.get(affected);
+						
 						killPlayer(affected, damager);
-						DeathMessages.P2P_SUICIDE.broadcastMessage(affected, damager);
+						DeathMessages.P2A_SUICIDE.broadcastMessage(affected, damager);
 
 					} else {
 
@@ -164,9 +174,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
-
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
+						
 					}
 
 				}
@@ -187,8 +197,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -210,8 +220,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -233,8 +243,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -256,8 +266,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -279,8 +289,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -302,8 +312,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -325,8 +335,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -348,8 +358,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -371,8 +381,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -394,8 +404,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -417,8 +427,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 						affected.damage(event.getFinalDamage());
 
-						addToAssistence(damager, affected, 8);
-						addToLastHitList(damager, affected, 8);
+						addToAssistence(damager, affected, 16);
+						addToLastHitList(damager, affected, 16);
 
 					}
 
@@ -578,7 +588,7 @@ public class TeamPlayerBattleListener implements Listener {
 				e.setCancelled(true);
 				return;
 			}
-
+			
 			if (TeamPlayerManager.getPlayersInGameList().contains(affected)) {
 
 				if (e.getCause() != DamageCause.ENTITY_ATTACK) {
@@ -727,6 +737,7 @@ public class TeamPlayerBattleListener implements Listener {
 					}
 
 				}
+				
 			} else {
 				e.setCancelled(true);
 				return;
@@ -911,6 +922,32 @@ public class TeamPlayerBattleListener implements Listener {
 			return;
 		}
 
+		if (e.getDamager().getType() == EntityType.EGG && e.getEntity().getType() == EntityType.PLAYER) {
+
+			Projectile egg = (Projectile) e.getDamager();
+
+			if (egg.getShooter() instanceof Player) {
+
+				Player damager = (Player) egg.getShooter();
+				Player affected = (Player) e.getEntity();
+
+				if (TeamPlayerManager.getPlayersInGameList().contains(damager) && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+
+					if (TeamPlayerManager.hasTeam(damager)) {
+						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
+							attackFilter(damager, affected, e, false);
+						}
+					} else {
+						attackFilter(damager, affected, e, false);
+					}
+
+				}
+
+			}
+
+			return;
+		}
+		
 		/**
 		 * @Specials
 		 * 
@@ -986,8 +1023,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 		} else {
 
-			addToAssistence(damager, affected, 8);
-			addToLastHitList(damager, affected, 8);
+			addToAssistence(damager, affected, 16);
+			addToLastHitList(damager, affected, 16);
 			return;
 
 		}
@@ -996,6 +1033,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 	public static void addToAssistence(Player damager, Player affected, int time) {
 
+		if(damager == affected)
+			return;
+		
 		if (assistence.containsKey(affected)) {
 
 			Map < Player,
@@ -1082,6 +1122,9 @@ public class TeamPlayerBattleListener implements Listener {
 
 	public static void addToLastHitList(Player damager, Player affected, int time) {
 
+		if(damager == affected)
+			return;
+		
 		if (lasthit.containsKey(affected)) {
 			lasthit.remove(affected);
 		}
@@ -1195,9 +1238,8 @@ public class TeamPlayerBattleListener implements Listener {
 
 	public static void killPlayer(Player affected, Player damager) {
 
-		if (affected == null) {
+		if (affected == null)
 			throw new IllegalArgumentException("El afectado no puede ser un valor nulo.");
-		}
 
 		/**
 		 * @AddTheKill
@@ -1310,12 +1352,49 @@ public class TeamPlayerBattleListener implements Listener {
 
 			TeamPlayerBattleInfo pbi = battle_info.get(death);
 			pbi.alive = false;
-
+			pbi.survival = true;
+			
 			battle_info.remove(death);
 			battle_info.put(death, pbi);
 
 			InGameActionBar.DEAD.send(death);
-			death.playSound(death.getLocation(), Sound.ENTITY_WITHER_SKELETON_HURT, 5, -10);
+			
+			List<Item> drops = Lists.newArrayList();
+			
+			for(int i = 0; i < 5; i++) {
+				
+				Location base = death.getLocation().add(0, 1, 0);
+				Item item = base.getWorld().dropItemNaturally(base, 
+						new ItemBuilder(Material.INK_SACK)
+						.data(1)
+						.name(UUID.randomUUID().toString().substring(0, 4))
+						.amount(1)
+						.build());
+				
+				item.setInvulnerable(true);
+				item.setPickupDelay(20 * 120);
+				drops.add(item);
+				
+			}
+			
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					
+					this.cancel();
+					
+					drops.forEach(drop -> {
+						if(drop.isValid() && !drop.isDead())
+							drop.remove();
+					});
+					return;
+					
+				}
+				
+			}.runTaskLater(Skywars.getInstance(), 20 * 4);
+			
+			death.playSound(death.getLocation(), Sound.ENTITY_SKELETON_HURT, 5, -10);
 
 		} else {
 

@@ -147,7 +147,7 @@ public class TeamSkywars implements SkywarsStarter {
 
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 200);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 420);
+		mainRunnableTask.addEvent("&8&lMUERTE:", 510);
 
 	}
 
@@ -172,7 +172,7 @@ public class TeamSkywars implements SkywarsStarter {
 
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 120);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 200);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 420);
+		mainRunnableTask.addEvent("&8&lMUERTE:", 510);
 
 	}
 
@@ -196,17 +196,16 @@ public class TeamSkywars implements SkywarsStarter {
 		mainRunnableTask.addEvent("&c&lDESTRUCCIÓN:", 60);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 160);
 		mainRunnableTask.addEvent("&6&lRELLENADO:", 240);
-		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 380);
-		mainRunnableTask.addEvent("&8&lELECCIÓN:", 430);
+		mainRunnableTask.addEvent("&4&lAPOCALIPSIS:", 445);
+		mainRunnableTask.addEvent("&8&lMUERTE:", 510);
 
 	}
 
 	public void finalize(Player winner) {
-
-		
 		
 		final Map<TeamPlayerBattleInfo, Integer> cache_top = PlayerBattleInfoUtils
 				.getTop(TeamPlayerBattleListener.battle_info);
+		
 		final Map<Integer, TeamPlayerBattleInfo> top = PlayerBattleInfoUtils.reverse(cache_top);
 
 		final TeamPlayerBattleInfo TOP_1 = top.get(1);
@@ -215,21 +214,10 @@ public class TeamSkywars implements SkywarsStarter {
 
 		Player team = TeamPlayerManager.getPlayerTeam(winner);
 		boolean win = winner != null;
-
-		System.out.println("win -> " + win);
 		
-		if (win) {
-
-			System.out.println("hasTeam -> " + TeamPlayerManager.hasTeam(winner));
-			
-			if(TeamPlayerManager.hasTeam(winner)) {
-				
-				System.out.println("winner -> " + winner.getName());
+		if(win)
+			if(TeamPlayerManager.hasTeam(winner))
 				TeamPlayerManager.winnerTeam(winner);
-				
-			}
-			
-		}
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
@@ -297,7 +285,7 @@ public class TeamSkywars implements SkywarsStarter {
 
 								int top = k.getKey().getTopNumber(cache_top);
 								p.sendMessage(TextUtil.getCenteredMessage(
-										"&7Tu pocisión fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
+										"&7Tu posición fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
 												+ k.getKey().getAverage() + "&r"));
 
 							}
@@ -343,7 +331,7 @@ public class TeamSkywars implements SkywarsStarter {
 
 								int top = k.getKey().getTopNumber(cache_top);
 								p.sendMessage(TextUtil.getCenteredMessage(
-										"&7Tu pocisión fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
+										"&7Tu posición fue &a&l" + top + " &7en esta partida con un promedio de &9&l"
 												+ k.getKey().getAverage() + "&r"));
 
 							}

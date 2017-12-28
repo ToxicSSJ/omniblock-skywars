@@ -91,6 +91,17 @@ public enum SkywarsType {
 		this.ss = ss;
 	}
 
+	public boolean isSolo() {
+		
+		if(this == SkywarsType.SW_INSANE_SOLO ||
+				this == SkywarsType.SW_NORMAL_SOLO ||
+						this == SkywarsType.SW_Z_SOLO)
+			return true;
+		
+		return false;
+		
+	}
+	
 	public SkywarsResolver getResolver() {
 		return resolver;
 	}

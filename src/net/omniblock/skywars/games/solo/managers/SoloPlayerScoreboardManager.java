@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import net.omniblock.lobbies.api.LobbyUtility;
 import net.omniblock.network.library.helpers.scoreboard.ScoreboardUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -87,9 +88,9 @@ public class SoloPlayerScoreboardManager {
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanador:"),
 									TextUtil.format(
-											" &a&l» &7" + SoloPlayerManager.getPlayersInGameList().get(0) != null
+											" &a&l» &7" + (!SoloPlayerManager.getPlayersInGameList().isEmpty()
 													? SoloPlayerManager.getPlayersInGameList().get(0).getName()
-													: "Vacio"),
+													: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -105,9 +106,9 @@ public class SoloPlayerScoreboardManager {
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanador:"),
 									TextUtil.format(
-											" &a&l» &7" + SoloPlayerManager.getPlayersInGameList().get(0) != null
+											" &a&l» &7" + (!SoloPlayerManager.getPlayersInGameList().isEmpty()
 													? SoloPlayerManager.getPlayersInGameList().get(0).getName()
-													: "Vacio"),
+													: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -156,7 +157,7 @@ public class SoloPlayerScoreboardManager {
 					case IN_LOBBY:
 
 						String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
-						String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+						String IN_LOBBY_FORK_TEXT = forkText(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster"));
 						String IN_LOBBY_MATCH_PLUS_FORMAT = Chests.currentMatchType.getName() + " " + getTimeFormat();
 
 						ScoreboardUtil.unrankedSidebarDisplay(SoloPlayerManager.getPlayersInLobbyList(),
@@ -218,9 +219,9 @@ public class SoloPlayerScoreboardManager {
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanador:"),
 									TextUtil.format(
-											" &a&l» &7" + SoloPlayerManager.getPlayersInGameList().get(0) != null
+											" &a&l» &7" + (!SoloPlayerManager.getPlayersInGameList().isEmpty()
 													? SoloPlayerManager.getPlayersInGameList().get(0).getName()
-													: "Vacio"),
+													: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -236,9 +237,9 @@ public class SoloPlayerScoreboardManager {
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanador:"),
 									TextUtil.format(
-											" &a&l» &7" + SoloPlayerManager.getPlayersInGameList().get(0) != null
+											" &a&l» &7" + (!SoloPlayerManager.getPlayersInGameList().isEmpty()
 													? SoloPlayerManager.getPlayersInGameList().get(0).getName()
-													: "Vacio"),
+													: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -285,7 +286,7 @@ public class SoloPlayerScoreboardManager {
 					case IN_LOBBY:
 
 						String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
-						String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+						String IN_LOBBY_FORK_TEXT = forkText(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster"));
 						String IN_LOBBY_MATCH_PLUS_FORMAT = Chests.currentMatchType.getName() + " " + getTimeFormat();
 
 						ScoreboardUtil.unrankedSidebarDisplay(SoloPlayerManager.getPlayersInLobbyList(),
@@ -345,9 +346,9 @@ public class SoloPlayerScoreboardManager {
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanador:"),
 									TextUtil.format(
-											" &a&l» &7" + SoloPlayerManager.getPlayersInGameList().get(0) != null
+											" &a&l» &7" + (!SoloPlayerManager.getPlayersInGameList().isEmpty()
 													? SoloPlayerManager.getPlayersInGameList().get(0).getName()
-													: "Vacio"),
+													: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -363,9 +364,9 @@ public class SoloPlayerScoreboardManager {
 									TextUtil.format(" &a&l» &7" + Bukkit.getServerName()), TextUtil.format("  "),
 									TextUtil.format("&b&lGanador:"),
 									TextUtil.format(
-											" &a&l» &7" + SoloPlayerManager.getPlayersInGameList().get(0) != null
+											" &a&l» &7" + (!SoloPlayerManager.getPlayersInGameList().isEmpty()
 													? SoloPlayerManager.getPlayersInGameList().get(0).getName()
-													: "Vacio"),
+													: "Vacio")),
 									TextUtil.format("   "),
 									TextUtil.format("&b&lOmnicoins: &a&l+&a"
 											+ SoloPlayerBattleListener.battle_info.get(infinish_p).getTotalMoney()),
@@ -412,7 +413,7 @@ public class SoloPlayerScoreboardManager {
 					case IN_LOBBY:
 
 						String IN_LOBBY_MAP_NAME = MapManager.CURRENT_MAP.getName();
-						String IN_LOBBY_FORK_TEXT = forkText(NetworkData.generalbooster);
+						String IN_LOBBY_FORK_TEXT = forkText(LobbyUtility.getFixedBoosterStatusBoolean("skywarsnetworkbooster"));
 						String IN_LOBBY_MATCH_PLUS_FORMAT = Chests.currentMatchType.getName() + " " + getTimeFormat();
 
 						ScoreboardUtil.unrankedSidebarDisplay(SoloPlayerManager.getPlayersInLobbyList(),

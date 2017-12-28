@@ -63,6 +63,17 @@ public class ArrayUtils {
 		
 	}
 	
+	public static double getAverage(double[] averages) {
+		
+		double sum = 0;
+		
+		for(Double row : averages)
+			sum = sum + row;
+		
+		return sum / averages.length;
+		
+	}
+	
 	public static <T> T[] append(T[] arr, T element) {
 	    final int N = arr.length;
 	    arr = Arrays.copyOf(arr, N + 1);
