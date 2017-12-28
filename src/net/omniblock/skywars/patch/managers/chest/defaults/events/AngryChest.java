@@ -18,83 +18,104 @@ import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.AngryChestData;
+import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
 
 public class AngryChest implements Listener {
 
 	private Map<Block, AngryChestData> chestBlock = new HashMap<Block, AngryChestData>();
-	
+
 	private Block block = null;
 
-    /**
-     * Con este evento, ubicaras o registraras la posición del AngryChest, esta
-     * ubicación se utilizara para determinar donde se desarrollara los efectos.
-     *
-     */
-	
+	/**
+	 * Con este evento, ubicaras o registraras la posición del AngryChest, esta
+	 * ubicación se utilizara para determinar donde se desarrollara los efectos.
+	 *
+	 */
+
 	@EventHandler
 	public void onPlace(BlockPlaceEvent event) {
-		
-		if (Skywars.getGameState() != SkywarsGameState.IN_GAME) return;
-		
+
+		if (Skywars.getGameState() != SkywarsGameState.IN_GAME)
+			return;
+
 		block = event.getBlockPlaced();
 
 		if (SoloPlayerManager.getPlayersInGameList().contains(event.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(event.getPlayer())) {
-			
-			if(!Skywars.ingame)
+
+			if (!Skywars.ingame)
 				return;
-		
-			if (block.getType() == Material.TRAPPED_CHEST) {
-				
+
+			if (block.getType() == Material.CHEST) {
+
 				event.getPlayer().sendMessage(TextUtil.format("&6¡Has creado un cofre trampa!"));
 				event.getPlayer().getWorld().playEffect(block.getLocation(), Effect.SMOKE, 10);
-				
 				chestBlock.put(block.getLocation().getBlock(), new AngryChestData(block, event.getPlayer()));
 			}
 		}
 	}
 
-    /**
-     *
-     * Con este evento, Determinaras que efecto se hará cuando le hagas click a un
-     * AngryChest ya registrado, una vez que el efecto se desarrolla el AngryChest
-     * dejara de estar registrado.
-     *
-     */
-	
+	/**
+	 *
+	 * Con este evento, Determinaras que efecto se hará cuando le hagas click a un
+	 * AngryChest ya registrado, una vez que el efecto se desarrolla el AngryChest
+	 * dejara de estar registrado.
+	 *
+	 */
+
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 
-		if (Skywars.getGameState() != SkywarsGameState.IN_GAME) return;
-		
+		if (Skywars.getGameState() != SkywarsGameState.IN_GAME)
+			return;
+
 		if (SoloPlayerManager.getPlayersInGameList().contains(event.getPlayer())
 				|| TeamPlayerManager.getPlayersInGameList().contains(event.getPlayer())) {
-			
+
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-				
-				if(!Skywars.ingame)
+
+				if (!Skywars.ingame)
 					return;
-				
-				if (event.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
-						event.getClickedBlock().getType() == Material.CHEST) {
-					
+
+				if (event.getClickedBlock().getType() == Material.TRAPPED_CHEST
+						|| event.getClickedBlock().getType() == Material.CHEST) {
+
+					Block block = event.getClickedBlock();
+
 					if (chestBlock.containsKey(event.getClickedBlock())) {
-						
-						AngryChestData data = chestBlock.get(event.getClickedBlock());
-						
-						if(event.getPlayer() == data.getPlayer()) {
-							
+
+						AngryChestData data = chestBlock.get(block);
+
+						if (event.getPlayer() == data.getPlayer()) {
+
 							data.getAngryChestBlock();
-							chestBlock.remove(event.getClickedBlock());
+							chestBlock.remove(block);
 							return;
 						}
-					
+
 						data.removeBlock();
 						data.makeExplode(event.getPlayer());
-						chestBlock.remove(event.getClickedBlock());
-						
+						chestBlock.remove(block);
+
+					} else {
+
+						if (event.getPlayer().getItemInHand().hasItemMeta()) {
+
+							if (!event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()) {
+								return;
+							}
+
+							if (event.getPlayer().getItemInHand().getType() == Material.CHEST) {
+
+								chestBlock.put(block.getLocation().getBlock(), new AngryChestData(block, event.getPlayer()));
+
+								AngryChestData data = chestBlock.get(block);
+								data.replaceChestWithAngryChest();
+								
+							}
+						}
 					}
-				} 
+				}
 			}
 		}
 	}

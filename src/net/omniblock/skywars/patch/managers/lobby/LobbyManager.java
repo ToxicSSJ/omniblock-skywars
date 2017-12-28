@@ -193,7 +193,6 @@ public class LobbyManager implements Listener {
 				cacheController = mapControllerZ;
 			
 			player.getInventory().setItem(4, LobbyItem.POWER_Z_MODE.getItem());
-			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;
@@ -204,7 +203,6 @@ public class LobbyManager implements Listener {
 				cacheController = mapControllerZ;
 			
 			player.getInventory().setItem(4, LobbyItem.POWER_Z_MODE.getItem());
-			player.getInventory().setItem(7, LobbyItem.KITS.getItem());
 			player.getInventory().setItem(8, LobbyItem.EXIT.getItem());
 
 			break;

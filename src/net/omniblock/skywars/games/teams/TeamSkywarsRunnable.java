@@ -50,7 +50,7 @@ public class TeamSkywarsRunnable extends BukkitRunnable {
 
 	private static TeamSkywars gStarter = null;
 
-	public static int MIN_PLAYERS_TO_START = 3;
+	public static int MIN_PLAYERS_TO_START = 2;
 	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 
 	private final int timeLobby = 25;

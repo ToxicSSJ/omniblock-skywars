@@ -60,6 +60,24 @@ public class AngryChestData {
 		
 	}
 	
+	public void replaceChestWithAngryChest() {
+		
+		if(chest != null && chest.getType() == Material.CHEST) {
+			
+			removeBlock();
+			
+			player.getInventory().setItemInHand(null);
+			
+			player.getPlayer().getWorld().playEffect(block.getLocation(), Effect.SMOKE, 10);
+			block.getState();
+			block.setType(Material.CHEST);
+			
+			
+			
+		}
+		
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void makeExplode(Player onClick) {
 		
@@ -89,7 +107,6 @@ public class AngryChestData {
 					b.setType(Material.TRAPPED_CHEST);
 				}
 				
-				b.setData((byte) face, true);
 				b.getState().getData().setData((byte) face);
 				b.getState().update(true);
 				

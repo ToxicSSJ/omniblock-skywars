@@ -154,7 +154,7 @@ public class CageManager {
 		}, 0, "J13", "marron"),
 		
 		JAULA_VERDE(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(13).build(), "Jaula de Cristal Verde", new String[] {
-			" &8- &7Algo muy natural!"
+			" &8- &7¡Algo muy natural!"
 		}, 0, "J14", "verde"),
 		
 		JAULA_ROJA(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(14).build(), "Jaula de Cristal Rojo", new String[] {
@@ -179,7 +179,70 @@ public class CageManager {
 				"4", "5", "6",
 				"7"
 		}),
+		
+		JAULA_CASA(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Casa", new String[] {
+				" &8- &7La mejor casa en todo",
+				" &7OmniBlock, con un único",
+				" &7y espectacular estilo clásico."
+			}, "J501", "casa", 10, new String[] { 
+					"1", "2", "3",
+					"4", "5", "6",
+					"7"
+			}),
+		
+		JAULA_COCHE(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Coche", new String[] {
+				" &8- &7Coches muy rápidos y",
+				" &7elegantes, perfectos para",
+				" &7generar envidia a tus amigos."
+			}, "J502", "coche", 10, new String[] { 
+					"1", "2", "3",
+					"4", "5", "6",
+					"7"
+			}),
+		
+		JAULA_MINA(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Mina", new String[] {
+				" &8- &7Solo para apasionados",
+				" &7mineros que buscan",
+				" &7piedras preciosas."
+			}, "J503", "mina", 10, new String[] { 
+					"1", "2", "3",
+					"4", "5", "6",
+					"7"
+			}),
+		
+		JAULA_POCION(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Poción", new String[] {
+				" &8- &7Perfecta combinación",
+				" &7de sustancias para aquellos",
+				" &7maestres de la alquimia."
+			}, "J504", "poti", 10, new String[] { 
+					"1", "2", "3",
+					"4", "5", "6",
+					"7"
+			}),
 
+		JAULA_TARTA(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Tarta", new String[] {
+				" &8- &7Un sabor exquisito para",
+				" &7una vida azucarada y para un",
+				" &7juego azucaradamente loco."
+			}, "J505", "tarta", 10, new String[] { 
+					"1", "2", "3",
+					"4", "5", "6",
+					"7"
+			}),
+		
+		/*
+		 * > Type: Seasonal Cages
+		 */
+		
+		JAULA_NAVIDAD(CageKind.SEASONAL, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Navideña", new String[] {
+				" &8- &7¿Te has portado mal",
+				" &7este año?",
+			}, "J1000", "navidad", 10, new String[] { 
+					"1", "2", "3",
+					"4", "5", "6",
+					"7"
+			}),
+		
 		;
 
 		private CageKind kind;
