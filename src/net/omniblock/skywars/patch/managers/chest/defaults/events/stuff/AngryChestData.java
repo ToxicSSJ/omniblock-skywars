@@ -60,6 +60,7 @@ public class AngryChestData {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void replaceChestWithAngryChest() {
 		
 		if(chest != null && chest.getType() == Material.CHEST) {

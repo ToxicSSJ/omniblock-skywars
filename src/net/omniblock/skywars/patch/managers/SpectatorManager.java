@@ -1,13 +1,18 @@
 package net.omniblock.skywars.patch.managers;
 
 import java.util.List;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -34,7 +39,7 @@ import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.RowsIntegers;
 
-public class SpectatorManager {
+public class SpectatorManager implements Listener {
 
 	public static List<Player> playersSpectators = Lists.newArrayList();
 
@@ -63,12 +68,16 @@ public class SpectatorManager {
 		p.setHealth(20D);
 		p.setFoodLevel(20);
 		p.resetMaxHealth();
-
+		p.setFireTicks(0);
+		
 		p.spigot().setCollidesWithEntities(false);
 		p.setCanPickupItems(false);
 		p.setAllowFlight(true);
 		p.setFlying(true);
 
+		p.setPlayerListName(RankBase.getRank(p).getCustomName(p, "&7✖", '7'));
+		p.setDisplayName(RankBase.getRank(p).getCustomName(p, "&7✖", '7'));
+		
 		VanishUtil.makeInvisible(p);
 
 		for (SpectatorItem si : SpectatorItem.values()) {
@@ -77,11 +86,37 @@ public class SpectatorManager {
 
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onChat(AsyncPlayerChatEvent e) {
+		
+		if(playersSpectators.contains(e.getPlayer()))
+			if(Skywars.ingame)
+				if(!RankBase.getRank(e.getPlayer()).isStaff())
+					e.getRecipients().removeAll(getInGamePlayers());
+					
+	}
+	
+	public List<Player> getInGamePlayers() {
+
+		if (Skywars.currentMatchType == SkywarsType.SW_INSANE_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
+				|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
+
+			return SoloPlayerManager.getPlayersInGameList();
+
+		}
+
+		return TeamPlayerManager.getPlayersInGameList();
+
+	}
+	
 	public enum SpectatorItem {
 
 		PLAYER_SELECTOR(new ItemBuilder(Material.COMPASS).amount(1).name(TextUtil.format("&a&lSelector de Jugadores"))
-				.lore("").lore(TextUtil.format("&9&l- &7Selecciona el jugador al cual"))
-				.lore(TextUtil.format("&7te deseas teletransportar.")).lore(""), 0,
+				.lore("")
+				.lore(TextUtil.format("&9&l- &7Selecciona el jugador al cual"))
+				.lore(TextUtil.format("&7te deseas teletransportar."))
+				.lore(""), 0,
 
 				new ItemExecutor() {
 
@@ -124,9 +159,14 @@ public class SpectatorManager {
 
 								ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 								SkullMeta sk = (SkullMeta) item.getItemMeta();
-
+							
+								double health = p.getHealth();
+								DecimalFormat format = new DecimalFormat("#.##");
+							
+								health = Double.valueOf(format.format(health));
+								
 								sk.setDisplayName(TextUtil.format("&7" + RankBase.getRank(p).getCustomName(p, 'a')
-										+ " &a&l" + p.getHealth() + "❤"));
+										+ " &c" + health + "❤"));
 								sk.setOwner(p.getName());
 
 								item.setItemMeta(sk);
@@ -137,16 +177,16 @@ public class SpectatorManager {
 									
 									@Override
 									public void click(ClickType click, Player player) {
-
+										
 										Player warrior = getInGamePlayers().stream()
 												.filter(k -> k.getName().equalsIgnoreCase(name))
 												.findAny().orElse(null);
-
+										
 										if (warrior == null || !warrior.isOnline()) {
 											player.sendMessage(TextUtil.format("&cEl jugador ya murió."));
 											return;
 										}
-
+										
 										if (getInGamePlayers().contains(warrior)) {
 
 											player.sendMessage(
@@ -188,11 +228,11 @@ public class SpectatorManager {
 								|| Skywars.currentMatchType == SkywarsType.SW_NORMAL_SOLO
 								|| Skywars.currentMatchType == SkywarsType.SW_Z_SOLO) {
 
-							return SoloPlayerManager.getPlayersInGameListAsCopy();
+							return SoloPlayerManager.getPlayersInGameList();
 
 						}
 
-						return TeamPlayerManager.getPlayersInGameListAsCopy();
+						return TeamPlayerManager.getPlayersInGameList();
 
 					}
 
@@ -432,14 +472,14 @@ public class SpectatorManager {
 					public void execute(Player player) {
 
 						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 2, -5);
-						player.sendMessage(TextUtil.format("&bEnviandote a otra partida..."));
+						player.sendMessage(TextUtil.format("&bEnviándote a otra partida..."));
 
 						Packets.STREAMER.streamPacket(new PlayerSendToGamePacket()
 
 								.setPlayername(player.getName()).setPreset(NetworkManager.getGamepreset())
 								.useParty(true)
 
-								.build().setReceiver(PacketSenderType.OMNICORD));
+								.build().setReceiver(PacketSenderType.OMNICORE));
 						return;
 
 					}
@@ -463,7 +503,7 @@ public class SpectatorManager {
 								.setPlayername(player.getName()).setServertype(ServerType.SKYWARS_LOBBY_SERVER)
 								.setParty(false)
 
-								.build().setReceiver(PacketSenderType.OMNICORD));
+								.build().setReceiver(PacketSenderType.OMNICORE));
 						return;
 
 					}

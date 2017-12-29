@@ -44,11 +44,18 @@ public class SoundPlayer {
 	}
 
 	public static void sendSound(Location l, String soundname, int radius) {
-
+		
 		for (Player cache : Bukkit.getOnlinePlayers()) {
+			
 			if (cache.getLocation().distance(l) <= radius + 1) {
+				
+				stopSound(cache);
+				cache.stopSound(soundname);
+				
 				l.getWorld().playSound(cache.getLocation(), soundname, 5, 1);
+				
 			}
+			
 		}
 
 	}
@@ -60,9 +67,16 @@ public class SoundPlayer {
 		if (nearby) {
 			
 			for (Player cache : Bukkit.getOnlinePlayers()) {
+				
 				if (cache.getLocation().distance(l) <= radius + 1) {
+					
+					stopSound(cache);
+					cache.stopSound(soundname);
+					
 					l.getWorld().playSound(cache.getLocation(), soundname, 5, 1);
+					
 				}
+				
 			}
 			
 		} else {
@@ -74,11 +88,21 @@ public class SoundPlayer {
 	}
 
 	public static void sendSound(Player p, String soundname, int volume) {
+		
+		stopSound(p);
+		p.stopSound(soundname);
+		
 		p.playSound(p.getLocation(), soundname, volume, 1);
+		
 	}
 
 	public static void sendSound(Player p, String soundname, int volume, int pitch) {
+		
+		stopSound(p);
+		p.stopSound(soundname);
+		
 		p.playSound(p.getLocation(), soundname, volume, pitch);
+		
 	}
 
 }

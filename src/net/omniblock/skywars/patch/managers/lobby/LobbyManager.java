@@ -31,6 +31,7 @@ import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.CommandManager;
+import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemManager;
 import net.omniblock.skywars.patch.managers.lobby.object.PowerItem.PowerItemType;
@@ -126,7 +127,8 @@ public class LobbyManager implements Listener {
 		}
 		
 		Skywars.getInstance().getServer().getPluginManager().registerEvents(new LobbyManager(), Skywars.getInstance());
-
+		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SpectatorManager(), Skywars.getInstance());
+		
 		for (PowerItemType pit : PowerItemType.values()) {
 
 			PowerItem.votes.put(pit, 0);

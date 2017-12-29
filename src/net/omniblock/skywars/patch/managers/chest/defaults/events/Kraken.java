@@ -94,7 +94,6 @@ public class Kraken implements Listener {
 					squid.setGravity(false);
 
 					fireball.setGravity(false);
-					;
 					fireball.setIsIncendiary(false);
 					fireball.setPassenger(squid);
 					fireball.setVelocity(dir);
@@ -156,13 +155,15 @@ public class Kraken implements Listener {
 						Player p = (Player) entity;
 
 						if ((SoloPlayerManager.getPlayersInGameList().contains(getPlayer.get(fb))
-								|| TeamPlayerManager.getPlayersInGameList().contains(getPlayer.get(fb)))) {
+								|| TeamPlayerManager.getPlayersInGameList().contains(getPlayer.get(fb))) && 
+								(SoloPlayerManager.getPlayersInGameList().contains(p)
+										|| TeamPlayerManager.getPlayersInGameList().contains(p))) {
 
 							if (Skywars.currentMatchType == SkywarsType.SW_NORMAL_TEAMS
 									|| Skywars.currentMatchType == SkywarsType.SW_INSANE_TEAMS
 									|| Skywars.currentMatchType == SkywarsType.SW_Z_TEAMS) {
 
-								TeamPlayerBattleListener.makeZDamage(getPlayer.get(fb), getPlayer.get(fb), 5,
+								TeamPlayerBattleListener.makeZDamage(p, getPlayer.get(fb), 5,
 										net.omniblock.skywars.games.teams.events.TeamPlayerBattleListener.DamageCauseZ.KRAKEN);
 								continue;
 

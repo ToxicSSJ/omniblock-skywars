@@ -183,7 +183,7 @@ public class TeamPlayerBattleInfo {
 		
 		SkywarsBase.setStats(player, stats);
 		SkywarsBase.setAverage(player, buffer.toString());
-		SkywarsBase.addWeekPrizePoints(player, kills);
+		SkywarsBase.addWeekPrizePoints(player, this.kills);
 		
 	}
 

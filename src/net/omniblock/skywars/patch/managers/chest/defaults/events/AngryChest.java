@@ -18,7 +18,6 @@ import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.stuff.AngryChestData;
-import net.omniblock.skywars.patch.managers.chest.defaults.type.LegendaryItemType;
 
 public class AngryChest implements Listener {
 
@@ -63,6 +62,7 @@ public class AngryChest implements Listener {
 	 *
 	 */
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
 

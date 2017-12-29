@@ -16,6 +16,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -123,12 +124,10 @@ public class TeamPlayerBattleListener implements Listener {
 			return;
 		}
 
-		if (TeamPlayerManager.hasTeam(damager)) {
-			if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) return;
-		}
-
-		damage = damage * 2;
-
+		if (TeamPlayerManager.hasTeam(damager))
+			if (TeamPlayerManager.getPlayerTeam(damager) == affected) 
+				return;
+		
 		affected.setMetadata("ZDAMAGE", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
 		EntityDamageEvent event = callEntityDamageEvent(damager, affected, DamageCause.CUSTOM, damage);
 
@@ -161,6 +160,14 @@ public class TeamPlayerBattleListener implements Listener {
 				return;
 			}
 
+			if(TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+				
+				if(TeamPlayerManager.hasTeam(affected))
+					if(TeamPlayerManager.getPlayerTeam(affected) == damager)
+						return;
+				
+			}
+			
 			if (dcz == DamageCauseZ.METEORO) {
 
 				if (TeamPlayerManager.getPlayersInGameList().contains(affected)) {
@@ -439,7 +446,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 		} else {
 
-			event.setCancelled(false);
+			event.setCancelled(true);
 
 			if (affected.hasMetadata("ZDAMAGE")) {
 				affected.removeMetadata("ZDAMAGE", Skywars.getInstance());
@@ -747,7 +754,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void attackAnything(EntityDamageByEntityEvent e) {
 
 		if (!Skywars.ingame) {
@@ -763,36 +770,29 @@ public class TeamPlayerBattleListener implements Listener {
 
 			Player damager = (Player) e.getDamager();
 			Player affected = (Player) e.getEntity();
-
+			
 			if (CustomProtocolManager.PROTECTED_PLAYER_LIST.contains(affected)) {
 				e.setCancelled(true);
 				return;
 			}
-
-			if (TeamPlayerManager.hasTeam(damager)) {
-				if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) {
-					e.setCancelled(true);
+			
+			if(TeamPlayerManager.hasTeam(damager))
+				if (TeamPlayerManager.getPlayerTeam(damager) == affected) {
+					e.setCancelled(true); 
 					return;
 				}
-			}
-			
 
-			if (!affected.hasMetadata("ZDAMAGE")) {
-
-				if (TeamPlayerManager.getPlayersInGameList().contains(damager) && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
-
-					if (TeamPlayerManager.hasTeam(damager)) {
-						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
-							attackFilter(damager, affected, e, false);
-						}
-					} else {
+			if (TeamPlayerManager.getPlayersInGameList().contains(damager) && TeamPlayerManager.getPlayersInGameList().contains(affected)) {
+				
+				if (TeamPlayerManager.hasTeam(damager))
+					if (TeamPlayerManager.getPlayerTeam(damager) != affected) {
 						attackFilter(damager, affected, e, false);
 					}
-
-				}
+					
+				else
+					attackFilter(damager, affected, e, false);
 
 			}
-
 			return;
 		}
 
@@ -1000,13 +1000,11 @@ public class TeamPlayerBattleListener implements Listener {
 	}
 
 	public void attackFilter(Player damager, Player affected, EntityDamageByEntityEvent e, boolean arrow) {
-
-		if (TeamPlayerManager.hasTeam(damager)) {
-			if (TeamPlayerManager.getPlayerTeam(damager).getName() == affected.getName()) {
+		
+		if (TeamPlayerManager.hasTeam(damager))
+			if (TeamPlayerManager.getPlayerTeam(damager) == affected)
 				return;
-			}
-		}
-
+		
 		double health = affected.getHealth();
 
 		if ((health - e.getFinalDamage()) <= 0) {
@@ -1018,6 +1016,7 @@ public class TeamPlayerBattleListener implements Listener {
 				DeathMessages.P2P_ARROWS.broadcastMessage(affected, damager);
 				return;
 			}
+			
 			DeathMessages.P2P_WEAPON.broadcastMessage(affected, damager);
 			return;
 
@@ -1092,9 +1091,7 @@ public class TeamPlayerBattleListener implements Listener {
 
 		} else {
 
-			Map < Player,
-			BukkitTask > players = new HashMap < Player,
-			BukkitTask > ();
+			Map <Player, BukkitTask> players = new HashMap <Player, BukkitTask> ();
 
 			players.put(damager, new BukkitRunnable() {@Override
 				public void run() {

@@ -220,8 +220,13 @@ public class TeamSkywars implements SkywarsStarter {
 				TeamPlayerManager.winnerTeam(winner);
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
+			
 			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
 			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
+			
+			p.setPlayerListName(RankBase.getRank(p).getCustomName(p, '7'));
+			p.setDisplayName(RankBase.getRank(p).getCustomName(p, '7'));
+			
 		}
 
 		new BukkitRunnable() {

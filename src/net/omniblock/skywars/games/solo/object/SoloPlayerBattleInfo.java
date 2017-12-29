@@ -179,7 +179,7 @@ public class SoloPlayerBattleInfo {
 		
 		SkywarsBase.setStats(player, stats);
 		SkywarsBase.setAverage(player, buffer.toString());
-		SkywarsBase.addWeekPrizePoints(player, kills);
+		SkywarsBase.addWeekPrizePoints(player, this.kills);
 		
 	}
 
@@ -260,9 +260,9 @@ public class SoloPlayerBattleInfo {
 
 			}
 
-			if (top.size() < 4) {
+			if (top.size() < 3) {
 
-				for (int i = 1; i <= 3; i++) {
+				for (int i = top.size(); i <= 3; i++) {
 					top.put(new SoloPlayerBattleInfo(true), i);
 				}
 

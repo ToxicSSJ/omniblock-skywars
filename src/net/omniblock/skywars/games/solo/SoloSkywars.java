@@ -30,6 +30,7 @@ import net.omniblock.lobbies.api.LobbyUtility;
 import net.omniblock.lobbies.api.LobbyUtility.BoosterInfo;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.network.handlers.base.bases.type.BankBase;
+import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.RestarterUtil;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.packets.network.Packets;
@@ -215,8 +216,13 @@ public class SoloSkywars implements SkywarsStarter {
 		}
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
+			
 			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
 			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, -10);
+			
+			p.setPlayerListName(RankBase.getRank(p).getCustomName(p, '7'));
+			p.setDisplayName(RankBase.getRank(p).getCustomName(p, '7'));
+			
 		}
 
 		new BukkitRunnable() {

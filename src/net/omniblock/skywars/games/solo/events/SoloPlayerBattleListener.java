@@ -114,8 +114,6 @@ public class SoloPlayerBattleListener implements Listener {
 			return;
 		}
 
-		damage = damage * 2;
-
 		affected.setMetadata("ZDAMAGE", new FixedMetadataValue(Skywars.getInstance(), "dummy"));
 		EntityDamageEvent event = callEntityDamageEvent(damager, affected, DamageCause.CUSTOM, damage);
 
