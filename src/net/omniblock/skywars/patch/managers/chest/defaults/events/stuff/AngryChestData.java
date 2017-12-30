@@ -44,8 +44,11 @@ public class AngryChestData {
 	
 	public void removeBlock() {
 
-		chest.getInventory().clear();
-		chest.update();
+		if(chest.getType() == Material.CHEST) {
+			chest.getInventory().clear();
+			chest.update();
+		}
+		
 		block.setType(Material.AIR);
 	
 	}
@@ -69,10 +72,15 @@ public class AngryChestData {
 			
 			player.getInventory().setItemInHand(null);
 			
-			player.getPlayer().getWorld().playEffect(block.getLocation(), Effect.SMOKE, 10);
-			block.getState();
-			block.setType(Material.CHEST);
+			byte data = block.getData();
 			
+			player.getPlayer().getWorld().playEffect(block.getLocation(), Effect.SMOKE, 10);
+			block.setType(Material.CHEST);
+			block.setData(data);
+			
+			chest = (Chest) block.getState(); 
+			chest.getInventory().clear();
+			chest.update();
 			
 			
 		}
@@ -94,7 +102,7 @@ public class AngryChestData {
 
 			Block b = location.clone().add(0, 3, 0).getBlock();
 			int start = 0;
-			int face = 0;
+			byte face = 0;
 			
 			@Override
 			public void run() {
@@ -108,7 +116,7 @@ public class AngryChestData {
 					b.setType(Material.TRAPPED_CHEST);
 				}
 				
-				b.getState().getData().setData((byte) face);
+				b.setData(face);
 				b.getState().update(true);
 				
 				laser(locUp, locDown);
