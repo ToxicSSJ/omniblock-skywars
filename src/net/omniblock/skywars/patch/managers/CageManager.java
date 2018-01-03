@@ -24,8 +24,10 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
@@ -39,9 +41,9 @@ import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 
 import net.omniblock.network.library.helpers.effectlib.util.ParticleEffect;
+import net.omniblock.network.library.helpers.ItemBuilder;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.types.SkywarsType;
-import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.ResourceExtractor;
 import net.omniblock.skywars.util.Schematic;
@@ -87,90 +89,90 @@ public class CageManager {
 		JAULA_BLANCA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(0).build(), "Jaula de Cristal Blanco", new String[] {
 			" &8- &7Proviene del cielo más",
 			" &7resplandeciente."
-		}, 0, "J1", "blanco"),
+		}, 100, "J1", "blanco"),
 		
 		JAULA_NARANJA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(1).build(), "Jaula de Cristal Naranja", new String[] {
 			" &8- &7Probablemente naranja",
 			" &7pero no es una fruta."
-		}, 0, "J2", "naranja"),
+		}, 100, "J2", "naranja"),
 		
 		JAULA_MAGENTA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(2).build(), "Jaula de Cristal Magenta", new String[] {
 			" &8- &7Semejante al augurio",
 			" &7de una flor."
-		}, 0, "J3", "magenta"),
+		}, 100, "J3", "magenta"),
 		
 		JAULA_AZUL_CLARO(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(3).build(), "Jaula de Cristal Azul Claro", new String[] {
 			" &8- &7Proviene del dominante",
 			" &7color del agua."
-		}, 0, "J4", "azulclaro"),
+		}, 100, "J4", "azulclaro"),
 		
 		JAULA_AMARILLA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(4).build(), "Jaula de Cristal Amarillo", new String[] {
 			" &8- &7Semejante al brillo",
 			" &7del sol."
-		}, 0, "J5", "amarillo"),
+		}, 100, "J5", "amarillo"),
 		
 		JAULA_LIMA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(5).build(), "Jaula de Cristal Lima", new String[] {
 			" &8- &7Una combinación de",
 			" &7colores unica, como si",
 			" &7de un limón se tratase."
-		}, 0, "J6", "lima"),
+		}, 100, "J6", "lima"),
 		
 		JAULA_ROSA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(6).build(), "Jaula de Cristal Rosa", new String[] {
 			" &8- &7Un color un tanto",
 			" &7chicloso!"
-		}, 0, "J7", "rosa"),
+		}, 100, "J7", "rosa"),
 		
 		JAULA_GRIS(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(7).build(), "Jaula de Cristal Gris", new String[] {
 			" &8- &7Una jaula con un color",
 			" &7muy elegante."
-		}, 0, "J8", "gris"),
+		}, 100, "J8", "gris"),
 		
 		JAULA_GRIS_CLARO(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(8).build(), "Jaula de Cristal Gris Claro", new String[] {
 			" &8- &7Una jaula con un color",
 			" &7muy elegante y más fuerte",
 			" &7pero muy sutíl."
-		}, 0, "J9", "grisclaro"),
+		}, 100, "J9", "grisclaro"),
 		
 		JAULA_CIAN(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(9).build(), "Jaula de Cristal Cian", new String[] {
 			" &8- &7No, no es azul, es el majestuoso",
 			" &7CIAN, es... Genial!"
-		}, 0, "J10", "cian"),
+		}, 100, "J10", "cian"),
 		
 		JAULA_MORADA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(10).build(), "Jaula de Cristal Morado", new String[] {
 			" &8- &7Dale un toque morado a tus",
 			" &7partidas!"
-		}, 0, "J11", "morado"),
+		}, 100, "J11", "morado"),
 		
 		JAULA_AZUL(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(11).build(), "Jaula de Cristal Azul", new String[] {
 			" &8- &7Un color muy increible en una",
 			" &7jaula muy increible de un juego",
 			" &7muy increible. ¿No es azulmente",
 			" &7increible?"
-		}, 0, "J12", "azul"),
+		}, 100, "J12", "azul"),
 		
 		JAULA_CAFE(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(12).build(), "Jaula de Cristal Café", new String[] {
 			" &8- &7Parecido al color de la",
 			" &7madera."
-		}, 0, "J13", "marron"),
+		}, 100, "J13", "marron"),
 		
 		JAULA_VERDE(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(13).build(), "Jaula de Cristal Verde", new String[] {
 			" &8- &7¡Algo muy natural!"
-		}, 0, "J14", "verde"),
+		}, 100, "J14", "verde"),
 		
 		JAULA_ROJA(CageKind.COLOR,  new ItemBuilder(Material.STAINED_GLASS).amount(1).data(14).build(), "Jaula de Cristal Rojo", new String[] {
 			" &8- &7Un color muy elegante",
 			" &7y siniestro!"
-		}, 0, "J15", "rojo"),
+		}, 100, "J15", "rojo"),
 		
 		JAULA_NEGRA(CageKind.COLOR, new ItemBuilder(Material.STAINED_GLASS).amount(1).data(15).build(), "Jaula de Cristal Negro", new String[] {
 			" &8- &7Un color muy fantastico",
 			" &7obscuro y elegante."
-		}, 0, "J16", "negro"),
+		}, 100, "J16", "negro"),
 		
 		/*
 		 * > Type: Vip Cages
 		 */
-		JAULA_RAINBOW(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Rainbow", new String[] {
+		JAULA_RAINBOW(CageKind.VIP, new ItemBuilder(Material.WOOL).data(2).amount(1).build(), "Jaula Rainbow", new String[] {
 			" &8- &7Todo es perfecto y genial",
 			" &7en Minecraft, siempre y cuando",
 			" &7tenga muchos &aC&cO&dL&eO&9R&bE&6S&7."
@@ -180,7 +182,7 @@ public class CageManager {
 				"7"
 		}),
 		
-		JAULA_CASA(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Casa", new String[] {
+		JAULA_CASA(CageKind.VIP, new ItemBuilder(Material.LOG).data(0).amount(1).build(), "Jaula Casa", new String[] {
 				" &8- &7La mejor casa en todo",
 				" &7OmniBlock, con un único",
 				" &7y espectacular estilo clásico."
@@ -190,7 +192,7 @@ public class CageManager {
 					"7"
 			}),
 		
-		JAULA_COCHE(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Coche", new String[] {
+		JAULA_COCHE(CageKind.VIP, new ItemBuilder(Material.FURNACE).amount(1).build(), "Jaula Coche", new String[] {
 				" &8- &7Coches muy rápidos y",
 				" &7elegantes, perfectos para",
 				" &7generar envidia a tus amigos."
@@ -200,7 +202,7 @@ public class CageManager {
 					"7"
 			}),
 		
-		JAULA_MINA(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Mina", new String[] {
+		JAULA_MINA(CageKind.VIP, new ItemBuilder(Material.EXPLOSIVE_MINECART).amount(1).build(), "Jaula Mina", new String[] {
 				" &8- &7Solo para apasionados",
 				" &7mineros que buscan",
 				" &7piedras preciosas."
@@ -210,7 +212,7 @@ public class CageManager {
 					"7"
 			}),
 		
-		JAULA_POCION(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Poción", new String[] {
+		JAULA_POCION(CageKind.VIP, new ItemBuilder(Material.POTION).setPotionEffect(new PotionEffect(PotionEffectType.HARM, 1, 1)).amount(1).build(), "Jaula Poción", new String[] {
 				" &8- &7Perfecta combinación",
 				" &7de sustancias para aquellos",
 				" &7maestres de la alquimia."
@@ -220,7 +222,7 @@ public class CageManager {
 					"7"
 			}),
 
-		JAULA_TARTA(CageKind.VIP, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Tarta", new String[] {
+		JAULA_TARTA(CageKind.VIP, new ItemBuilder(Material.CAKE).amount(1).build(), "Jaula Tarta", new String[] {
 				" &8- &7Un sabor exquisito para",
 				" &7una vida azucarada y para un",
 				" &7juego azucaradamente loco."
@@ -234,7 +236,7 @@ public class CageManager {
 		 * > Type: Seasonal Cages
 		 */
 		
-		JAULA_NAVIDAD(CageKind.SEASONAL, new ItemBuilder(Material.PAINTING).amount(1).build(), "Jaula Navideña", new String[] {
+		JAULA_NAVIDAD(CageKind.SEASONAL, new ItemBuilder(Material.SKULL_ITEM).durability((short) 3).setSkullOwner("thresh3").amount(1).build(), "Jaula Navideña", new String[] {
 				" &8- &7¿Te has portado mal",
 				" &7este año?",
 			}, "J1000", "navidad", 10, new String[] { 

@@ -147,6 +147,8 @@ public class Bombardier implements Listener {
 						
 						BOMBARDIER_DATA.get(event.getPlayer()).back(BombardierLauncherStatus.LAUNCHED);
 						BOMBARDIER_DATA.remove(event.getPlayer());
+						
+						BombardierData.launching = false;
 						return;
 
 					}

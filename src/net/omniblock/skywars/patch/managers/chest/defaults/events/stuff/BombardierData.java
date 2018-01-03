@@ -24,6 +24,7 @@ import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.patch.managers.CustomProtocolManager;
 import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.managers.SpectatorManager;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.Bombardier;
 import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.CameraUtil;
 import net.omniblock.skywars.util.ItemBuilder;
@@ -166,6 +167,9 @@ public class BombardierData {
 								TextUtil.format("&c&l - &7Se te ha acabado el tiempo!"));
 
 						back(BombardierLauncherStatus.TIME);
+						Bombardier.BOMBARDIER_DATA.remove(player);
+						
+						BombardierData.launching = false;
 						return;
 
 					} else {
