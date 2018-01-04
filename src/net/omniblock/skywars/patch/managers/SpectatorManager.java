@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
-import net.omniblock.network.handlers.network.NetworkManager;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.packets.network.Packets;
 import net.omniblock.packets.network.structure.packet.PlayerSendToGamePacket;
@@ -464,7 +463,7 @@ public class SpectatorManager implements Listener {
 		PLAY_AGAIN(new ItemBuilder(Material.PAPER).amount(1).name(TextUtil.format("&b&lVolver a Jugar")).lore("")
 				.lore(TextUtil.format("&9&l- &7Te envia a otra partida de skywars"))
 				.lore(TextUtil.format("&7con las mismas especificaciones de la")).lore(TextUtil.format("&7actual."))
-				.lore(""), 6,
+				.lore(""), 8,
 
 				new ItemExecutor() {
 
@@ -476,7 +475,7 @@ public class SpectatorManager implements Listener {
 
 						Packets.STREAMER.streamPacket(new PlayerSendToGamePacket()
 
-								.setPlayername(player.getName()).setPreset(NetworkManager.getGamepreset())
+								.setPlayername(player.getName()).setPreset(Skywars.currentMatchType.getPreset())
 								.useParty(true)
 
 								.build().setReceiver(PacketSenderType.OMNICORE));

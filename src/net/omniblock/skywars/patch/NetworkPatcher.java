@@ -23,13 +23,19 @@ import org.bukkit.entity.Player;
 
 import net.omniblock.network.handlers.Handlers;
 import net.omniblock.network.handlers.games.NetworkBroadcaster;
+import net.omniblock.packets.network.Packets;
+import net.omniblock.packets.network.structure.packet.GameOnlineInfoPacket;
+import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.skywars.Skywars;
+import net.omniblock.skywars.games.solo.SoloSkywars;
+import net.omniblock.skywars.games.teams.TeamSkywars;
 import net.omniblock.skywars.games.teams.managers.TeamPlayerManager;
 import net.omniblock.skywars.network.NetworkData;
 import net.omniblock.skywars.network.NetworkRunnable;
 import net.omniblock.skywars.network.events.FullAttributeListener;
 import net.omniblock.skywars.network.events.SkywarsLobbyFilterListener;
 import net.omniblock.skywars.patch.internal.Patcher;
+import net.omniblock.skywars.patch.managers.MapManager;
 import net.omniblock.skywars.patch.readers.GameReader;
 import net.omniblock.skywars.patch.types.SkywarsType;
 
@@ -109,12 +115,24 @@ public class NetworkPatcher implements Patcher {
 			@Override
 			public void read(String data) {
 
-				if (data.contains("$ LOCK")) {
-
+				if(data.contains("$ LOCK")) {
+					
+					Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
+							.setServername(Bukkit.getServerName())
+							.setMaximiumPlayers(Skywars.currentMatchType.isSolo() ? SoloSkywars.MAX_PLAYERS : TeamSkywars.MAX_PLAYERS)
+							.setOnlinePlayers(Bukkit.getOnlinePlayers().size())
+							.setMapname(MapManager.CURRENT_MAP.getName())
+							.setOpened(false).build().setReceiver(PacketSenderType.OMNICORE));
 					return;
 
 				} else if (data.contains("$ UNLOCK")) {
 
+					Packets.STREAMER.streamPacket(new GameOnlineInfoPacket()
+							.setServername(Bukkit.getServerName())
+							.setMaximiumPlayers(Skywars.currentMatchType.isSolo() ? SoloSkywars.MAX_PLAYERS : TeamSkywars.MAX_PLAYERS)
+							.setOnlinePlayers(Bukkit.getOnlinePlayers().size())
+							.setMapname(MapManager.CURRENT_MAP.getName())
+							.setOpened(true).build().setReceiver(PacketSenderType.OMNICORE));
 					return;
 
 				}

@@ -24,9 +24,8 @@ public class TeamPlayerToggleListener implements Listener {
 	@EventHandler
 	public void onPlayerPreJoin(AsyncPlayerPreLoginEvent e) {
 
-		if (Verifier == false) {
+		if(Verifier == false)
 			Verifier = true;
-		}
 
 		SkywarsGameState currentState = Skywars.getGameState();
 
@@ -37,9 +36,9 @@ public class TeamPlayerToggleListener implements Listener {
 
 		} else {
 
-			if (Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS) {
-				e.disallow(Result.KICK_OTHER, "La partida está llena!");
-			}
+			if(Bukkit.getOnlinePlayers().size() >= TeamSkywars.MAX_PLAYERS)
+				e.disallow(Result.KICK_OTHER, "¡La partida está llena!");
+			
 			return;
 
 		}
@@ -51,9 +50,8 @@ public class TeamPlayerToggleListener implements Listener {
 
 		e.setJoinMessage(null);
 
-		if (Verifier == false) {
+		if(Verifier == false)
 			Verifier = true;
-		}
 
 		SkywarsGameState currentState = Skywars.getGameState();
 
@@ -85,9 +83,8 @@ public class TeamPlayerToggleListener implements Listener {
 
 		SkywarsGameState currentState = Skywars.getGameState();
 
-		if (currentState == SkywarsGameState.IN_LOBBY) {
+		if(currentState == SkywarsGameState.IN_LOBBY)
 			TeamPlayerManager.removeTeam(e.getPlayer());
-		}
 
 		new BukkitRunnable() {
 			@Override

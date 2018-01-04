@@ -24,9 +24,8 @@ public class SoloPlayerToggleListener implements Listener {
 	@EventHandler
 	public void onPlayerPreJoin(AsyncPlayerPreLoginEvent e) {
 
-		if (Verifier == false) {
+		if(Verifier == false)
 			Verifier = true;
-		}
 
 		SkywarsGameState currentState = Skywars.getGameState();
 
@@ -37,9 +36,9 @@ public class SoloPlayerToggleListener implements Listener {
 
 		} else {
 
-			if (Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS) {
+			if(Bukkit.getOnlinePlayers().size() >= SoloSkywars.MAX_PLAYERS)
 				e.disallow(Result.KICK_OTHER, "La partida está llena!");
-			}
+			
 			return;
 
 		}
@@ -51,9 +50,8 @@ public class SoloPlayerToggleListener implements Listener {
 
 		e.setJoinMessage(null);
 
-		if (Verifier == false) {
+		if(Verifier == false)
 			Verifier = true;
-		}
 
 		SkywarsGameState currentState = Skywars.getGameState();
 

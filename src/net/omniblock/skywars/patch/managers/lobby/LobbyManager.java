@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -40,11 +41,17 @@ import net.omniblock.skywars.util.inventory.InventoryBuilder;
 import net.omniblock.skywars.util.inventory.InventoryBuilder.Action;
 import org.inventivetalent.mapmanager.controller.MapController;
 
+@SuppressWarnings("deprecation")
 public class LobbyManager implements Listener {
 
 	public static MapManager mapManagerZ, mapManagerN;
 	public static MapWrapper mapWrapperZ, mapWrapperN;
 	public static MapController mapControllerZ, mapControllerN;
+	
+	@EventHandler
+	public void a(PlayerAchievementAwardedEvent e){
+		e.setCancelled(true);
+	}
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
@@ -275,7 +282,6 @@ public class LobbyManager implements Listener {
 
 		),
 		
-		@SuppressWarnings("deprecation")
 		KITS(new ItemBuilder(Material.getMaterial(439)).amount(1)
 				.name(TextUtil.format("&6Kits"))
 				.lore("")
