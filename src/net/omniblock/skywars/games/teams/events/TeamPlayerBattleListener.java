@@ -835,9 +835,35 @@ public class TeamPlayerBattleListener implements Listener {
 
 					if (TeamPlayerManager.hasTeam(damager)) {
 						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
+							
+							Vector knockbackVector = damager.getLocation().getDirection().multiply(.4);
+							
+							double affectedYtoDouble = affected.getLocation().getY();
+							int affectedYtoInt = (int) affected.getLocation().getY();
+							double affectedY = affectedYtoDouble - affectedYtoInt;
+							knockbackVector.setY(0);
+							if(affectedY < 0.6)
+								knockbackVector.setY(.3);
+							
+							affected.setVelocity(knockbackVector);
+							affected.damage(0.01);
+							
 							attackFilter(damager, affected, e, false);
 						}
 					} else {
+						
+						Vector knockbackVector = damager.getLocation().getDirection().multiply(.4);
+						
+						double affectedYtoDouble = affected.getLocation().getY();
+						int affectedYtoInt = (int) affected.getLocation().getY();
+						double affectedY = affectedYtoDouble - affectedYtoInt;
+						knockbackVector.setY(0);
+						if(affectedY < 0.6)
+							knockbackVector.setY(.3);
+						
+						affected.setVelocity(knockbackVector);
+						affected.damage(0.01);
+						
 						attackFilter(damager, affected, e, false);
 					}
 
@@ -935,9 +961,35 @@ public class TeamPlayerBattleListener implements Listener {
 
 					if (TeamPlayerManager.hasTeam(damager)) {
 						if (TeamPlayerManager.getPlayerTeam(damager).getName() != affected.getName()) {
+							
+							Vector knockbackVector = damager.getLocation().getDirection().multiply(.4);
+							
+							double affectedYtoDouble = affected.getLocation().getY();
+							int affectedYtoInt = (int) affected.getLocation().getY();
+							double affectedY = affectedYtoDouble - affectedYtoInt;
+							knockbackVector.setY(0);
+							if(affectedY < 0.6)
+								knockbackVector.setY(.3);
+							
+							affected.setVelocity(knockbackVector);
+							affected.damage(0.01);
+							
 							attackFilter(damager, affected, e, false);
 						}
 					} else {
+						
+						Vector knockbackVector = damager.getLocation().getDirection().multiply(.4);
+						
+						double affectedYtoDouble = affected.getLocation().getY();
+						int affectedYtoInt = (int) affected.getLocation().getY();
+						double affectedY = affectedYtoDouble - affectedYtoInt;
+						knockbackVector.setY(0);
+						if(affectedY < 0.6)
+							knockbackVector.setY(.3);
+						
+						affected.setVelocity(knockbackVector);
+						affected.damage(0.01);
+						
 						attackFilter(damager, affected, e, false);
 					}
 
