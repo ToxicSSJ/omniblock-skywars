@@ -181,7 +181,7 @@ public class BlockPresets {
 
 			new ChestPack().addContent(new ItemBuilder(Material.STONE).amount(16).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(4).build())
-					.addContent(LegendaryItemType.POCION_PURIFICADORA.getItem())
+					.addContent(LegendaryItemType.POCION_DE_LAG.getItem())
 					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(ImprovedItemType.PETO_BRILLANTE.getItem()),
 

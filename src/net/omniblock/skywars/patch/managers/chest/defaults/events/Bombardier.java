@@ -97,6 +97,12 @@ public class Bombardier implements Listener {
 								
 							}
 							
+							if(Lag.PLAYER_LOCATIONS.containsKey(player)){
+								
+								player.sendMessage(TextUtil.format("&c¡Ya estás usando otro poder Z!"));
+								return;
+							}
+							
 							ItemStack itemInHand = event.getPlayer().getItemInHand();
 							if (itemInHand == null)
 								return;
