@@ -39,9 +39,9 @@ public enum LegendaryItemType {
 	new ItemBuilder(
 	Material.BLAZE_POWDER).amount(1).name("&4&k||&r &e&lBombardero &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Llamando a base, Lanzando").lore("&7misiles en 3, 2, 1...").lore("").lore("&7&lDaño: &76❤").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(
 	Enchantment.DURABILITY, 1).build()),
-	POCION_DE_LAG(
+	DEJA_VU(
 	new ItemBuilder(
-	Material.POTION).amount(1).name("&4&k||&r &e&lPoción de Lag &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Laggeate algunos segundos").lore("&7para hacer lo que desees").lore("&7sin temor a perder nada,").lore("&7al final vovlerás donde estabas.").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
+	Material.POTION).amount(1).name("&4&k||&r &e&lDéjà Vu &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Al usarla, una paradoja").lore("&7guarda tu posición en el").lore("&fespacio-tiempo &7durante").lore("&7algunos segundos antes").lore("&7de regresar a ella.").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
 	@SuppressWarnings("deprecation")
 	RAYO_CONGELADO(new ItemBuilder(Material.getMaterial(2259)).amount(1).name("&4&k||&r &e&lRayo Congelado &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Dale un toque de hielo a").lore("&7una zona.").lore("").lore("&7&lDaño: &72.5❤").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.DURABILITY, 1).build()),
 	@SuppressWarnings("deprecation")

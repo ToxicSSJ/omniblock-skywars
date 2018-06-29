@@ -31,11 +31,10 @@ import net.omniblock.skywars.patch.managers.chest.defaults.events.HealthTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.IBall;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.IceTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.Kraken;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.Lag;
+import net.omniblock.skywars.patch.managers.chest.defaults.events.DejaVu;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.LaserTurret;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.Meteoro;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.PorkTurret;
-import net.omniblock.skywars.patch.managers.chest.defaults.events.Potion;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.Punch;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.ThorA;
 import net.omniblock.skywars.patch.managers.chest.defaults.events.ThorI;
@@ -163,7 +162,7 @@ public class EventsManager {
 					add(new HealthTurret());
 					//add(new Potion());
 					add(new AutomaticTNT());
-					add(new Lag());
+					add(new DejaVu());
 
 				}
 			};
@@ -198,8 +197,9 @@ public class EventsManager {
 					add(new LaserTurret());
 					add(new IceTurret());
 					add(new HealthTurret());
-					add(new Potion());
+					//add(new Potion());
 					add(new AutomaticTNT());
+					add(new DejaVu());
 
 				}
 			};

@@ -97,7 +97,7 @@ public class Bombardier implements Listener {
 								
 							}
 							
-							if(Lag.PLAYER_LOCATIONS.containsKey(player)){
+							if(DejaVu.PLAYER_LOCATIONS.containsKey(player)){
 								
 								player.sendMessage(TextUtil.format("&c¡Ya estás usando otro poder Z!"));
 								return;

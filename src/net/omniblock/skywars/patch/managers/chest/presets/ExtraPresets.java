@@ -150,7 +150,7 @@ public class ExtraPresets {
 					.addContent(ImprovedItemType.ESPADA_EXTRAÑA.getItem())
 					.addContent(ImprovedItemType.PICO_DE_RAIZ.getItem())
 					.addContent(LegendaryItemType.COFRE_EXPLOSIVO.getItem())
-					.addContent(LegendaryItemType.POCION_DE_LAG.getItem())
+					.addContent(LegendaryItemType.DEJA_VU.getItem())
 					.addContent(new ItemBuilder(Material.STONE).amount(46).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(4).build())
 					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
@@ -174,7 +174,7 @@ public class ExtraPresets {
 					.addContent(ImprovedItemType.PICO_DE_RAIZ.getItem())
 					.addContent(LegendaryItemType.TORRETA_CONGELADORA.getItem())
 					.addContent(LegendaryItemType.TORRETA_LASER.getItem())
-					.addContent(LegendaryItemType.POCION_DE_LAG.getItem())
+					.addContent(LegendaryItemType.DEJA_VU.getItem())
 					.addContent(new ItemBuilder(Material.SHIELD).amount(1).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(24).build())
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
@@ -221,8 +221,8 @@ public class ExtraPresets {
 					.addContent(LegendaryItemType.BOTAS_TITAN.getItem()),
 
 			new ChestPack()
-					.addContent(LegendaryItemType.POCION_DE_LAG.getItem())
-					.addContent(LegendaryItemType.POCION_DE_LAG.getItem())
+					.addContent(LegendaryItemType.DEJA_VU.getItem())
+					.addContent(LegendaryItemType.DEJA_VU.getItem())
 					.addContent(new ItemBuilder(Material.STONE).amount(12).build())
 					.addContent(new ItemBuilder(Material.STONE).amount(12).build())
 					.addContent(new ItemBuilder(Material.WATER_BUCKET).amount(1).build())

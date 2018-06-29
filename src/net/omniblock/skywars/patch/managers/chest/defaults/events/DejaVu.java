@@ -2,8 +2,11 @@ package net.omniblock.skywars.patch.managers.chest.defaults.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -27,27 +30,29 @@ import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.SoundPlayer;
 
-public class Lag implements Listener{
+public class DejaVu implements Listener{
 	
-	private static ArrayList<Player> LaggedPlayers = new ArrayList<Player>();
+	private static Set<Player> LaggedPlayers = new HashSet<Player>();
 	public static Map<Player, ArrayList<Location>> PLAYER_LOCATIONS = new HashMap<Player, ArrayList<Location>>();
 	
 	ItemStack reconnector = new ItemBuilder(Material.WATCH).amount(1)
-			.name(TextUtil.format("&8&lRECONECTAR AHORA")).build();
+			.name(TextUtil.format("&8&lVOLVER AHORA")).build();
 	
 	BukkitTask laggingtask;
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void LagPot(PlayerInteractEvent event){
+	public void DejaVuPot(PlayerInteractEvent event){
+		
+		Player player = event.getPlayer();
 		
 		if (Skywars.getGameState() != SkywarsGameState.IN_GAME) return;
 		
-		if (!event.getPlayer().getItemInHand().hasItemMeta() 
-				|| !event.getPlayer().getItemInHand().getItemMeta().hasDisplayName()) return;
+		if (!player.getItemInHand().hasItemMeta() 
+				|| !player.getItemInHand().getItemMeta().hasDisplayName()) return;
 		
-		if (SoloPlayerManager.getPlayersInGameList().contains(event.getPlayer())
-				|| TeamPlayerManager.getPlayersInGameList().contains(event.getPlayer())){
+		if (SoloPlayerManager.getPlayersInGameList().contains(player)
+				|| TeamPlayerManager.getPlayersInGameList().contains(player)){
 			
 				
 			if (event.getAction() == Action.LEFT_CLICK_BLOCK
@@ -69,38 +74,39 @@ public class Lag implements Listener{
 					return;
 				
 				
-				if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName()
-						.equalsIgnoreCase(LegendaryItemType.POCION_DE_LAG.getItem().getItemMeta().getDisplayName())){
+				if (player.getItemInHand().getItemMeta().getDisplayName()
+						.equalsIgnoreCase(LegendaryItemType.DEJA_VU.getItem().getItemMeta().getDisplayName())){
 					
 					event.setCancelled(true);
 					
-					if(LaggedPlayers.contains(event.getPlayer())){
+					if(PLAYER_LOCATIONS.containsKey(player)){
 						
-						event.getPlayer().sendMessage(TextUtil.format("&c¡Ya estás laggeado!"));
+						player.sendMessage(TextUtil.format("&c¡Ya estás en un Déjà Vu!"));
 						return;
 					}
 					
-					LaggedPlayers.add(event.getPlayer());
-					PLAYER_LOCATIONS.put(event.getPlayer(), new ArrayList<Location>());
+					LaggedPlayers.add(player);
+					PLAYER_LOCATIONS.put(player, new ArrayList<Location>());
+					player.setGameMode(GameMode.ADVENTURE);
 					
-					event.getPlayer().getInventory().setItemInHand(null);
+					player.getInventory().setItemInHand(null);
 					
-					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_GENERIC_DRINK, 3, -30);
-					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_BAT_TAKEOFF, 3, -30);
-					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_YES, 2, -30);
+					player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_DRINK, 3, -30);
+					player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 3, -30);
+					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 2, -30);
 					
 					
-					event.getPlayer().getInventory().setItemInHand(reconnector);
+					player.getInventory().setItemInHand(reconnector);
 					
 					new BukkitRunnable(){
 
-						int halfSeconds = 28; //Representa 0.5 segundos en el Runnable
+						int halfSeconds = 28; //Representa 0.25 segundos en el Runnable
 						
 						@Override
 						public void run() {
 							
-							if(!LaggedPlayers.contains(event.getPlayer()) || !event.getPlayer().isOnline()
-									|| SpectatorManager.playersSpectators.contains(event.getPlayer())){
+							if(!LaggedPlayers.contains(player) || !player.isOnline()
+									|| SpectatorManager.playersSpectators.contains(player)){
 								
 								cancel();
 								return;
@@ -109,14 +115,14 @@ public class Lag implements Listener{
 							if(halfSeconds<=0){
 								
 								cancel();
-								reconnect(event.getPlayer());
+								reconnect(player);
 								
 							}else{
 								
-								PLAYER_LOCATIONS.get(event.getPlayer()).add(event.getPlayer().getLocation());
+								PLAYER_LOCATIONS.get(player).add(player.getLocation());
 								
-								ActionBarApi.sendActionBar(event.getPlayer(),
-										TextUtil.format("&c&l¡Laggeado! &8&l: &7Reconectando en &a"
+								ActionBarApi.sendActionBar(player,
+										TextUtil.format("&c&l¡Déjà Vu! &8&l: &7Regresando a la normalidad en &a"
 												+ ((int) halfSeconds / 4) + " &7segundos."));
 							}
 							
@@ -125,14 +131,14 @@ public class Lag implements Listener{
 						}
 					}.runTaskTimer(Skywars.getInstance(), 0, 5);
 					
-				} else if(event.getPlayer().getItemInHand().getItemMeta().getDisplayName()
+				} else if(player.getItemInHand().getItemMeta().getDisplayName()
 						.contains(reconnector.getItemMeta().getDisplayName())){
 					
 					event.setCancelled(true);
-					event.getPlayer().setItemInHand(null);
+					player.setItemInHand(null);
 					
-					if(LaggedPlayers.contains(event.getPlayer()))
-						reconnect(event.getPlayer());
+					if(LaggedPlayers.contains(player))
+						reconnect(player);
 						
 
 				}
@@ -147,7 +153,7 @@ public class Lag implements Listener{
 			player.getInventory().remove(reconnector);
 
 		ActionBarApi.sendActionBar(player,
-				TextUtil.format("&c&lReconectando...."));
+				TextUtil.format("&c&lSiento que ya pase por aquí... ¿¡Qué pasa!?"));
 		
 		SoundPlayer.sendSound(player.getLocation(), "skywars.power_up", 30);
 		player.setFallDistance(-1000);
@@ -173,12 +179,20 @@ public class Lag implements Listener{
 					
 					cancel();
 					PLAYER_LOCATIONS.remove(player);
+					player.setGameMode(GameMode.SURVIVAL);
 					
 					ActionBarApi.sendActionBar(player,
-							TextUtil.format("&a&l¡Conección establecida!"));
+							TextUtil.format("&a&l¡Déjà Vu!"));
 					
 					return;
 				}
+				
+				try{
+					while(PLAYER_LOCATIONS.get(player).get(times).getX() == PLAYER_LOCATIONS.get(player).get(times-1).getX()
+							&& PLAYER_LOCATIONS.get(player).get(times).getZ() == PLAYER_LOCATIONS.get(player).get(times-1).getZ())
+						times--;
+				}catch(Exception e){ }
+				
 				
 				player.teleport(PLAYER_LOCATIONS.get(player).get(times));
 				
@@ -187,5 +201,4 @@ public class Lag implements Listener{
 			
 		}.runTaskTimer(Skywars.getInstance(), 4, 4);
 	}
-
 }

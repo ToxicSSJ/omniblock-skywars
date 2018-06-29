@@ -245,8 +245,8 @@ public class CenterPresets {
 					.addContent(new ItemBuilder(Material.GOLDEN_APPLE).amount(2).build())
 					.addContent(LegendaryItemType.BOTAS_TITAN.getItem()),
 
-			new ChestPack().addContent(LegendaryItemType.POCION_DE_LAG.getItem())
-					.addContent(LegendaryItemType.POCION_DE_LAG.getItem())
+			new ChestPack().addContent(LegendaryItemType.DEJA_VU.getItem())
+					.addContent(LegendaryItemType.DEJA_VU.getItem())
 					.addContent(new ItemBuilder(Material.WATER_BUCKET).amount(1).build())
 					.addContent(LegendaryItemType.RAYO.getItem()),
 
