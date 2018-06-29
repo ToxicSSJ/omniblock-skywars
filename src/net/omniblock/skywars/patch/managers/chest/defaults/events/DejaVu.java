@@ -17,7 +17,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -30,16 +29,47 @@ import net.omniblock.skywars.util.ActionBarApi;
 import net.omniblock.skywars.util.ItemBuilder;
 import net.omniblock.skywars.util.SoundPlayer;
 
+/**
+*
+* Esta clase contiene todo
+* el sistema del item Déjà Vu
+* para el modo Z.
+*
+* @author SoZyk
+*/
 public class DejaVu implements Listener{
 	
-	private static Set<Player> LaggedPlayers = new HashSet<Player>();
+	/**
+	 * 
+	 * Lista estatica que contiene a todos los jugadores
+	 * que están experimentando un Déjà Vu.
+	 * 
+	 */
+	private static Set<Player> DejaVuPlayers = new HashSet<Player>();
+	
+	/**
+	 * 
+	 * HashMap estatico que contiene los lugares
+	 * por los que ha pasado un jugador en el Déjà Vu.
+	 * 
+	 */
 	public static Map<Player, ArrayList<Location>> PLAYER_LOCATIONS = new HashMap<Player, ArrayList<Location>>();
 	
+	/**
+	 * 
+	 * Item con el que el jugador
+	 * podrá finalizar el efecto Déjà Vu.
+	 * 
+	 */
 	ItemStack reconnector = new ItemBuilder(Material.WATCH).amount(1)
 			.name(TextUtil.format("&8&lVOLVER AHORA")).build();
 	
-	BukkitTask laggingtask;
-	
+	/**
+	 * 
+	 * Proceso que se encarga del sistema del Déjà Vu.
+	 * 
+	 * @param event
+	 */
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void DejaVuPot(PlayerInteractEvent event){
@@ -85,7 +115,7 @@ public class DejaVu implements Listener{
 						return;
 					}
 					
-					LaggedPlayers.add(player);
+					DejaVuPlayers.add(player);
 					PLAYER_LOCATIONS.put(player, new ArrayList<Location>());
 					player.setGameMode(GameMode.ADVENTURE);
 					
@@ -95,24 +125,24 @@ public class DejaVu implements Listener{
 					player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 3, -30);
 					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 2, -30);
 					
-					
 					player.getInventory().setItemInHand(reconnector);
 					
 					new BukkitRunnable(){
 
-						int halfSeconds = 28; //Representa 0.25 segundos en el Runnable
+						//Un qSecond representa 0.25 segundos
+						int qSeconds = 28;
 						
 						@Override
 						public void run() {
 							
-							if(!LaggedPlayers.contains(player) || !player.isOnline()
+							if(!DejaVuPlayers.contains(player) || !player.isOnline()
 									|| SpectatorManager.playersSpectators.contains(player)){
 								
 								cancel();
 								return;
 							}
 							
-							if(halfSeconds<=0){
+							if(qSeconds<=0){
 								
 								cancel();
 								reconnect(player);
@@ -123,10 +153,10 @@ public class DejaVu implements Listener{
 								
 								ActionBarApi.sendActionBar(player,
 										TextUtil.format("&c&l¡Déjà Vu! &8&l: &7Regresando a la normalidad en &a"
-												+ ((int) halfSeconds / 4) + " &7segundos."));
+												+ ((int) qSeconds / 4) + " &7segundos."));
 							}
 							
-							halfSeconds--;
+							qSeconds--;
 							return;
 						}
 					}.runTaskTimer(Skywars.getInstance(), 0, 5);
@@ -137,7 +167,7 @@ public class DejaVu implements Listener{
 					event.setCancelled(true);
 					player.setItemInHand(null);
 					
-					if(LaggedPlayers.contains(player))
+					if(DejaVuPlayers.contains(player))
 						reconnect(player);
 						
 
@@ -146,9 +176,17 @@ public class DejaVu implements Listener{
 		}
 	}
 
+	/**
+	 * 
+	 * Proceso que "reconecta" al jugador a la normalidad
+	 * tras haber pasado por el efecto del Déjà Vu.
+	 * 
+	 * @param player
+	 */
 	protected void reconnect(Player player) {
 		
-		LaggedPlayers.remove(player);
+		DejaVuPlayers.remove(player);
+		
 		if(player.getInventory().contains(reconnector))
 			player.getInventory().remove(reconnector);
 
@@ -160,6 +198,8 @@ public class DejaVu implements Listener{
 		
 		new BukkitRunnable(){
 
+			//Veces que se repetirá el Runnable a base
+			//de las locaciones guardadas en el Déjà Vu.
 			int times = PLAYER_LOCATIONS.get(player).size() - 1;
 			
 			@Override
@@ -187,12 +227,16 @@ public class DejaVu implements Listener{
 					return;
 				}
 				
+				//try para evitar un error en el HashMap de locaciones.
 				try{
+					
+					//Evitar teletransportaciones si se encuentra en el mismo
+					//lugar (según X y Z) en la siguiente locación.
 					while(PLAYER_LOCATIONS.get(player).get(times).getX() == PLAYER_LOCATIONS.get(player).get(times-1).getX()
 							&& PLAYER_LOCATIONS.get(player).get(times).getZ() == PLAYER_LOCATIONS.get(player).get(times-1).getZ())
 						times--;
+					
 				}catch(Exception e){ }
-				
 				
 				player.teleport(PLAYER_LOCATIONS.get(player).get(times));
 				

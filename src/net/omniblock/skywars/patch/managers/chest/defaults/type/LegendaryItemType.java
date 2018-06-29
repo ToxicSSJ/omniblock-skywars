@@ -41,7 +41,7 @@ public enum LegendaryItemType {
 	Enchantment.DURABILITY, 1).build()),
 	DEJA_VU(
 	new ItemBuilder(
-	Material.POTION).amount(1).name("&4&k||&r &e&lDéjà Vu &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Al usarla, una paradoja").lore("&7guarda tu posición en el").lore("&fespacio-tiempo &7durante").lore("&7algunos segundos antes").lore("&7de regresar a ella.").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
+	Material.POTION).amount(1).name("&4&k||&r &e&lDéjà Vu &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Al usarla, una paradoja temporal").lore("&7guarda tu posición en el").lore("&fespacio-tiempo &7durante").lore("&7algunos segundos antes").lore("&7de regresar a ella.").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").build()),
 	@SuppressWarnings("deprecation")
 	RAYO_CONGELADO(new ItemBuilder(Material.getMaterial(2259)).amount(1).name("&4&k||&r &e&lRayo Congelado &4&k||").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").lore("&7Dale un toque de hielo a").lore("&7una zona.").lore("").lore("&7&lDaño: &72.5❤").lore("&8━━━━━━━━━━━━━━━━━━━━━━━━━").enchant(Enchantment.DURABILITY, 1).build()),
 	@SuppressWarnings("deprecation")
