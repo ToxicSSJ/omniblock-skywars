@@ -472,14 +472,14 @@ public class SpectatorManager implements Listener {
 					public void execute(Player player) {
 
 						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 2, -5);
-						player.sendMessage(TextUtil.format("&bEnviándote a otra partida..."));
+						player.sendMessage(TextUtil.format("&cPróximamente..."));
 
-						Packets.STREAMER.streamPacket(new PlayerSendToGamePacket()
+						/*Packets.STREAMER.streamPacket(new PlayerSendToGamePacket()
 
 								.setPlayername(player.getName()).setPreset(NetworkManager.getGamepreset())
 								.useParty(true)
 
-								.build().setReceiver(PacketSenderType.OMNICORE));
+								.build().setReceiver(PacketSenderType.OMNICORE));*/
 						return;
 
 					}
