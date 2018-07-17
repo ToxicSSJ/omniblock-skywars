@@ -48,7 +48,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 
 	private static SoloSkywars gStarter = null;
 
-	public static int MIN_PLAYERS_TO_START = 2;
+	public static int MIN_PLAYERS_TO_START = 1;
 	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 
 	private final int timeLobby = 25;

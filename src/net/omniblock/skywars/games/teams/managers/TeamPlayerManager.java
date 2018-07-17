@@ -20,10 +20,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
-
+import net.omniblock.shop.systems.object.Element;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
-import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
@@ -38,6 +37,7 @@ import net.omniblock.skywars.patch.managers.SpectatorManager;
 import net.omniblock.skywars.util.MapUtils;
 import net.omniblock.skywars.util.NumberUtil;
 import net.omniblock.skywars.util.TitleUtil;
+
 
 public class TeamPlayerManager {
 
@@ -454,7 +454,7 @@ public class TeamPlayerManager {
 
 	public static void sendAllPlayersToCages() {
 
-		List<Player> processed_players = new ArrayList<Player>();
+		List<Player> processed_players = new ArrayList<>();
 
 		List<Location> cageLocations = TeamSkywars.getCageLocations();
 		Collections.shuffle(cageLocations);
@@ -481,8 +481,9 @@ public class TeamPlayerManager {
 
 			List<Object> cages = Lists.newArrayList();
 
-			Object cage_obj = SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
+			Element element = (Element) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
+			Object cage_obj = getCage(player, element);
 			Object two_obj = null;
 
 			player.setFallDistance(0);
@@ -548,9 +549,9 @@ public class TeamPlayerManager {
 			
 			Player player = playersInGame.get(i);
 			
-			SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
+			//SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
 		
-			kitstype.getKitContents().equipKit(player);
+			//kitstype.getKitContents().equipKit(player);
 			
 			continue;
 			
@@ -621,6 +622,17 @@ public class TeamPlayerManager {
 
 		}
 
+	}
+
+	private static CageType getCage(Player player, Element element){
+
+		LOOP: for(CageType cageType : CageType.values()){
+			if(!cageType.getCode().equalsIgnoreCase(element.getCode())) continue LOOP;
+
+				return cageType;
+		}
+
+		return CageType.DEFAULT;
 	}
 
 }

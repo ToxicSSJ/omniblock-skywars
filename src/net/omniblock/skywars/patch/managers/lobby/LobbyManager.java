@@ -22,9 +22,6 @@ import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.packets.util.Lists;
-import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
-import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
-import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
@@ -296,82 +293,7 @@ public class LobbyManager implements Listener {
 						
 						int CURRENT_SLOT = 0;
 						
-						
-						for(SWKitsType kt : SWKitsType.values()) {
-								
-							if(CURRENT_SLOT == MAX_SLOT) break;
-							if(kt == SWKitsType.NONE) continue;
-							
-							ib.addItem(
-									ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), kt.getCode()) ?
-											
-											new ItemBuilder(kt.getMaterial())
-											.amount(1)
-											.durability((short) kt.getData())
-											.hideAtributes()
-											.name(TextUtil.format(color + kt.getName()))
-											.lore("")
-											.lore(kt.getLore())
-											.lore("")
-											.lore(TextUtil.format("&a¡Kit Adquirido!"))
-											.lore(TextUtil.format(( (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(kt.getCode()) ?
-													"     &a¡Usando!" :
-													" &7(Click para usar)")).build() :
-										
-											new ItemBuilder(Material.STAINED_GLASS)
-											.amount(1)
-											.durability((short) 7)
-											.hideAtributes()
-											.name(TextUtil.format(" &c&l&oKit no Adquirido!"))
-											.lore("")
-											.lore(kt.getLore())
-											.lore("")
-										.lore(TextUtil.format(" &6Rareza: &7" + kt.getRarity())).build(),
-											
-								CURRENT_SLOT, new Action(){
 
-													boolean inuse = (((SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(kt.getCode())) ? true : false;
-													
-													boolean haskits = ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), kt.getCode());
-												
-													@Override
-													public void click(ClickType click, Player player) {
-														
-														if(inuse) return;
-														
-														if(haskits){
-															
-															SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), kt.getCode()));
-							
-															player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-													
-															player.sendMessage(TextUtil.getCenteredMessage("&a&l ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", true));
-															player.sendMessage(TextUtil.format(" "));
-															player.sendMessage(TextUtil.getCenteredMessage("&8&l&nKIT EQUIPADO", true));
-															player.sendMessage(TextUtil.format(" "));
-															player.sendMessage(TextUtil.getCenteredMessage(" &6&l" + kt.getName(), true));
-															player.sendMessage(TextUtil.format(" "));
-															player.sendMessage(TextUtil.getCenteredMessage("&a&l ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", true));
-															
-															player.closeInventory();
-				
-															return;
-															
-														}
-														
-														player.closeInventory();
-														
-														player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, -1);
-														player.sendMessage(TextUtil.format("&6&l→ &cPara adquirir este Kit, debes comprarlo en la tienda!"));
-														return;
-														
-													}
-												
-											});
-							
-							CURRENT_SLOT++;
-											
-						}
 	
 						ib.addItem(new ItemBuilder(Material.ARROW).amount(1)
 								.name(TextUtil.format("&7Volver")).build(), 48, new Action(){
@@ -380,63 +302,6 @@ public class LobbyManager implements Listener {
 									public void click(ClickType click, Player player) {
 										
 										player.closeInventory();
-										return;
-										
-									}
-							
-						});
-						
-						ib.addItem(
-								
-								ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), SWKitsType.NONE.getCode()) ? 
-										
-									new ItemBuilder(SWKitsType.NONE.getMaterial())
-										.amount(1)
-										.durability((short) SWKitsType.NONE.getData())
-										.hideAtributes()
-										.name(TextUtil.format(SWKitsType.NONE.getName()))
-										.lore("")
-										.lore(SWKitsType.NONE.getLore())
-										.lore("")
-										.lore(TextUtil.format("&a¡Kit Adquirido!"))
-										.lore(TextUtil.format(( (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(SWKitsType.NONE.getCode()) ?
-												"     &a¡Usando!" :
-												" &7(Click para usar)")).build() :
-									
-										new ItemBuilder(Material.COAL_BLOCK)
-										.amount(1)
-										.hideAtributes()
-										.name(TextUtil.format(" &c&l&oKit no Adquirido!"))
-										.lore("")
-										.lore(SWKitsType.NONE.getLore())
-										.lore("")
-										.lore(TextUtil.format(" &6Rareza: &7" + SWKitsType.NONE.getRarity())).build(), 49, new Action(){
-										
-										boolean inuse = (((SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player))).getCode().equalsIgnoreCase(SWKitsType.NONE.getCode())) ? true : false;
-													
-										boolean haskits = ArrayUtils.contains(SkywarsBase.getItems(player).split(";"), SWKitsType.NONE.getCode());
-									
-									@Override
-									public void click(ClickType click, Player player) {
-										
-										if(inuse) return;
-										
-										if(haskits) {
-											
-											SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), SWKitsType.NONE.getCode()));
-											
-											player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, -1);
-											player.sendMessage(TextUtil.format("&6&l→ &cNo te equipaste ningún Kit!"));
-											player.closeInventory();
-											
-											
-											return;
-										}
-										
-										player.closeInventory();
-										
-										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, -1);
-										player.sendMessage(TextUtil.format("&6&l→ &cPara adquirir este Kit, debes comprarlo en la tienda!"));
 										return;
 										
 									}

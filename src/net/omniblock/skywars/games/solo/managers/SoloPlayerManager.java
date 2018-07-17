@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.omniblock.shop.systems.object.Element;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
-import net.omniblock.lobbies.skywars.handler.systems.SWKits.SWKitsType;
 import net.omniblock.lobbies.utils.PlayerUtils;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
 import net.omniblock.network.library.utils.TextUtil;
@@ -161,21 +161,24 @@ public class SoloPlayerManager {
 		for (int i = 0; i < getPlayersInGameAmount(); i++) {
 
 			Player player = playersInGame.get(i);
-			CageType cagetype = (CageType) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
+
+			Element element = (Element) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
-			
 
-			PlayerUtils.emptyPlayer(player);
-			
-			Location cageLocation = cageLocations.get(i);
+			LOOP: for(CageType cageType : CageType.values()){
+					if(!cageType.getCode().equalsIgnoreCase(element.getCode())) continue LOOP;
 
-			CageManager.registerCage(cagetype, cageLocation);
-			player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
+					PlayerUtils.emptyPlayer(player);
+					Location cageLocation = cageLocations.get(i);
 
-			CageManager.cagesdata.put(player, cageLocation);
+					CageManager.registerCage(cageType, cageLocation);
+					player.teleport(cageLocation.clone().add(0.5, 0, 0.5));
 
-			
-			
+					CageManager.cagesdata.put(player, cageLocation);
+					break LOOP;
+
+				}
+
 			continue;
 
 		}
@@ -187,19 +190,19 @@ public class SoloPlayerManager {
 		
 			Player player = playersInGame.get(i);
 			
-			if(currentMatchType == MatchType.NORMAL
-					|| currentMatchType == MatchType.Z) {
+			//if(currentMatchType == MatchType.NORMAL
+					//|| currentMatchType == MatchType.Z) {
 				
-				SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), SWKitsType.NONE.getCode()));
-				break;
+				//SkywarsBase.setSelectedItems(player, SkywarsBase.setSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player), SWKitsType.NONE.getCode()));
+				//break;
 				
-			}
+			//}
 			
 			
 			
-			SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
+			//SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
 		
-			kitstype.getKitContents().equipKit(player);
+			//kitstype.getKitContents().equipKit(player);
 			
 			continue;
 			
@@ -255,5 +258,4 @@ public class SoloPlayerManager {
 		}
 
 	}
-
 }

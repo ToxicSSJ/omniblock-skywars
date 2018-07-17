@@ -169,7 +169,7 @@ public class CageManager {
 			" &8- &7Todo es perfecto y genial",
 			" &7en Minecraft, siempre y cuando",
 			" &7tenga muchos &aC&cO&dL&eO&9R&bE&6S&7."
-		}, "J500", "rainbow", 10, new String[] { 
+		}, "JV0", "rainbow", 10, new String[] {
 				"1", "2", "3",
 				"4", "5", "6",
 				"7"
@@ -179,7 +179,7 @@ public class CageManager {
 				" &8- &7La mejor casa en todo",
 				" &7OmniBlock, con un único",
 				" &7y espectacular estilo clásico."
-			}, "J501", "casa", 10, new String[] { 
+			}, "JV1", "casa", 10, new String[] {
 					"1", "2", "3",
 					"4", "5", "6",
 					"7"
@@ -189,7 +189,7 @@ public class CageManager {
 				" &8- &7Coches muy rápidos y",
 				" &7elegantes, perfectos para",
 				" &7generar envidia a tus amigos."
-			}, "J502", "coche", 10, new String[] { 
+			}, "JV2", "coche", 10, new String[] {
 					"1", "2", "3",
 					"4", "5", "6",
 					"7"
@@ -199,7 +199,7 @@ public class CageManager {
 				" &8- &7Solo para apasionados",
 				" &7mineros que buscan",
 				" &7piedras preciosas."
-			}, "J503", "mina", 10, new String[] { 
+			}, "JV3", "mina", 10, new String[] {
 					"1", "2", "3",
 					"4", "5", "6",
 					"7"
@@ -209,7 +209,7 @@ public class CageManager {
 				" &8- &7Perfecta combinación",
 				" &7de sustancias para aquellos",
 				" &7maestres de la alquimia."
-			}, "J504", "poti", 10, new String[] { 
+			}, "JV4", "poti", 10, new String[] {
 					"1", "2", "3",
 					"4", "5", "6",
 					"7"
@@ -219,7 +219,7 @@ public class CageManager {
 				" &8- &7Un sabor exquisito para",
 				" &7una vida azucarada y para un",
 				" &7juego azucaradamente loco."
-			}, "J505", "tarta", 10, new String[] { 
+			}, "JV5", "tarta", 10, new String[] {
 					"1", "2", "3",
 					"4", "5", "6",
 					"7"
@@ -232,7 +232,7 @@ public class CageManager {
 		Cápsula_NAVIDAD(CageKind.SEASONAL, new ItemBuilder(Material.SKULL_ITEM).durability((short) 3).setSkullOwner("thresh3").amount(1).build(), "Cápsula Navideña", new String[] {
 				" &8- &7¿Te has portado mal",
 				" &7este año?",
-			}, "J1000", "navidad", 10, new String[] { 
+			}, "JS0", "navidad", 10, new String[] {
 					"1", "2", "3",
 					"4", "5", "6",
 					"7"
