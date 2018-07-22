@@ -80,7 +80,7 @@ public class CommandManager implements CommandExecutor {
 				Player player = (Player) sender;
 				RankType rank = RankBase.getRank(player);
 				
-				if(rank == RankType.CEO || rank == RankType.ADMIN) {
+				if(rank == RankType.DIRECTOR || rank == RankType.ADMIN) {
 					
 					if(testmode == true) {
 						

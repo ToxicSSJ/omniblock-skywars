@@ -23,10 +23,8 @@ import com.google.common.collect.Lists;
 
 import net.omniblock.skywars.Skywars;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
-import net.omniblock.network.handlers.network.NetworkManager;
 import net.omniblock.network.library.utils.TextUtil;
 import net.omniblock.packets.network.Packets;
-import net.omniblock.packets.network.structure.packet.PlayerSendToGamePacket;
 import net.omniblock.packets.network.structure.packet.PlayerSendToServerPacket;
 import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
