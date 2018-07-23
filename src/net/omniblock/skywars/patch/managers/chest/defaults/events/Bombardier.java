@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -165,6 +166,19 @@ public class Bombardier implements Listener {
 
 	}
 
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		
+		if(BombardierData.launching && BOMBARDIER_DATA.containsKey(e.getPlayer())) {
+			
+			BOMBARDIER_DATA.remove(e.getPlayer());
+			BombardierData.launching = false;
+			return;
+			
+		}
+		
+	}
+	
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
 

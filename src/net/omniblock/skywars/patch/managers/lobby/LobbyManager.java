@@ -3,7 +3,6 @@ package net.omniblock.skywars.patch.managers.lobby;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -288,12 +287,10 @@ public class LobbyManager implements Listener {
 						
 						InventoryBuilder ib = new InventoryBuilder(TextUtil.format("&2&lKits Disponibles"), 6 * 9, true);
 						
-						final String color = "&6";
-						final int MAX_SLOT = (6 * 9) - 1;
+						// final String color = "&6";
+						// final int MAX_SLOT = (6 * 9) - 1;
 						
-						int CURRENT_SLOT = 0;
-						
-
+						// int CURRENT_SLOT = 0;
 	
 						ib.addItem(new ItemBuilder(Material.ARROW).amount(1)
 								.name(TextUtil.format("&7Volver")).build(), 48, new Action(){

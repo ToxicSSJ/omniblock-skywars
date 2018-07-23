@@ -547,7 +547,7 @@ public class TeamPlayerManager {
 		
 			if(currentMatchType == MatchType.NORMAL) break;
 			
-			Player player = playersInGame.get(i);
+			// Player player = playersInGame.get(i);
 			
 			//SWKitsType kitstype = (SWKitsType) SkywarsBase.getSelectedItem(SelectedItemType.KIT, SkywarsBase.getSelectedItems(player));
 		

@@ -10,8 +10,6 @@
 
 package net.omniblock.skywars;
 
-import net.omniblock.lobbies.skywars.handler.systems.shop.SkywarsShop;
-import net.omniblock.shop.systems.GameShopHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

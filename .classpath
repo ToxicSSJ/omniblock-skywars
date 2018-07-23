@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="C:/Gitlab/MapManager_v1.4.0-SNAPSHOT.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Omniblock-Lobbies"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Omniblock-Packets"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OmniBlock-ShopHandler"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

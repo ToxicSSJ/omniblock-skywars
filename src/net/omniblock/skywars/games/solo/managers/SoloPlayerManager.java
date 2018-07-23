@@ -188,7 +188,7 @@ public class SoloPlayerManager {
 		
 		for (int i = 0; i < getPlayersInGameAmount(); i++) {
 		
-			Player player = playersInGame.get(i);
+			// Player player = playersInGame.get(i);
 			
 			//if(currentMatchType == MatchType.NORMAL
 					//|| currentMatchType == MatchType.Z) {
