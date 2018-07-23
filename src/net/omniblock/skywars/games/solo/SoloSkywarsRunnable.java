@@ -52,7 +52,7 @@ public class SoloSkywarsRunnable extends BukkitRunnable {
 	public static Map<String, Integer> EVENTS = new HashMap<String, Integer>();
 
 	private final int timeLobby = 25;
-	private int remainingTimeLobby = timeLobby;
+	public int remainingTimeLobby = timeLobby;
 
 	private boolean lobbyStarting = false;
 	private boolean pregameTitles = false;

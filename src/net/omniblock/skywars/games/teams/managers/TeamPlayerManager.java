@@ -20,7 +20,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.Lists;
-import net.omniblock.shop.systems.object.Element;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase;
 import net.omniblock.lobbies.skywars.handler.base.SkywarsBase.SelectedItemType;
 import net.omniblock.network.handlers.base.bases.type.RankBase;
@@ -249,6 +248,9 @@ public class TeamPlayerManager {
 			SkywarsBase.saveAccount(p);
 
 			playersInLobby.add(p);
+			
+			if(TeamSkywars.mainRunnableTask.remainingTimeLobby <= 15)
+				TeamSkywars.mainRunnableTask.remainingTimeLobby += 10;
 
 		} else {
 

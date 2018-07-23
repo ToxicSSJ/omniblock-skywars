@@ -103,6 +103,9 @@ public class SoloPlayerManager {
 			SkywarsBase.saveAccount(p);
 
 			playersInLobby.add(p);
+			
+			if(SoloSkywars.mainRunnableTask.remainingTimeLobby <= 15)
+				SoloSkywars.mainRunnableTask.remainingTimeLobby += 10;
 
 		} else {
 
