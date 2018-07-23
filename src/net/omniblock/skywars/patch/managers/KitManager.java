@@ -35,7 +35,7 @@ public class KitManager {
 
 	public enum SWKitsType {
 
-		NORMAL(KitKind.GENERAL, "Ninguno", "&e✯✯✯✯✯✯✯✯✯", "K0", Material.BARRIER,
+		NONE(KitKind.GENERAL, "Ninguno", "&e✯✯✯✯✯✯✯✯✯", "K0", Material.BARRIER,
 				new KitContents(KitContents.KIT_NONE_CONTENTS), 1000, 5,
 				new String[] {
 						"&8- &7El increíble, magnifico,",
@@ -152,7 +152,7 @@ public class KitManager {
 		private KitContents kitContents;
 
 		SWKitsType(KitKind kind, String name, String code, Material mat, KitContents kitcontents, int rarity, int price,
-				   String[] lore) {
+				String[] lore) {
 
 			this.kitContents = kitcontents;
 			this.Kind = kind;
@@ -168,7 +168,7 @@ public class KitManager {
 		}
 
 		SWKitsType(KitKind kind, String name, String rarityString, String code, Material mat, KitContents kitcontents, int rarity, int price,
-				   String[] lore) {
+				String[] lore) {
 
 			this.kitContents = kitcontents;
 			this.Kind = kind;
@@ -185,7 +185,7 @@ public class KitManager {
 		}
 
 		SWKitsType(KitKind kind, String name, String rarityString, String code, Material mat, int data, KitContents kitcontents, int rarity,
-				   int price, String[] lore) {
+				int price, String[] lore) {
 
 			this.kitContents = kitcontents;
 			this.Kind = kind;
@@ -228,7 +228,7 @@ public class KitManager {
 			this.name = name;
 			this.code = code;
 			this.lore = new String[] {"&8- &7Increíble kit que amplia",
-					"&7tus estrategias en el combate."};
+									  "&7tus estrategias en el combate."};
 
 		}
 
@@ -287,7 +287,7 @@ public class KitManager {
 
 
 		public KitItems(ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots,
-						ItemStack mainArticle, ItemStack secondaryArticle, ItemStack tertiaryArticle) {
+				ItemStack mainArticle, ItemStack secondaryArticle, ItemStack tertiaryArticle) {
 
 			this.helmet = helmet;
 			this.chestplate = chestplate;
@@ -1045,3 +1045,4 @@ public class KitManager {
 
 	}
 }
+
