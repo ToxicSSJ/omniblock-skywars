@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.omniblock.shop.systems.object.Element;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -162,11 +161,11 @@ public class SoloPlayerManager {
 
 			Player player = playersInGame.get(i);
 
-			Element element = (Element) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
+			String code = (String) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
 
 			LOOP: for(CageType cageType : CageType.values()){
-					if(!cageType.getCode().equalsIgnoreCase(element.getCode())) continue LOOP;
+					if(!cageType.getCode().equalsIgnoreCase(code)) continue LOOP;
 
 					PlayerUtils.emptyPlayer(player);
 					Location cageLocation = cageLocations.get(i);

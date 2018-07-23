@@ -10,6 +10,7 @@
 
 package net.omniblock.skywars;
 
+import net.omniblock.network.systems.adapters.GameJOINAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -101,6 +102,8 @@ public class Skywars extends JavaPlugin implements Updatable {
 		EffectLib.startEffectLib();
 		VanishUtil.start();
 		LobbyManager.start();
+
+		GameJOINAdapter.toggleJoinMSG(false);
 
 		InventoryBuilderListener.startInventoryBuilder();
 

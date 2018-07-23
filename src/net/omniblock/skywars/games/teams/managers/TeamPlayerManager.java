@@ -101,8 +101,6 @@ public class TeamPlayerManager {
 
 	public static void winnerTeam(Player p) {
 
-		System.out.println("xddd");
-		
 		Player team = getPlayerTeam(p);
 
 		if (team != null) {
@@ -481,8 +479,9 @@ public class TeamPlayerManager {
 
 			List<Object> cages = Lists.newArrayList();
 
-			Element element = (Element) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
+			String element = (String) SkywarsBase.getSelectedItem(SelectedItemType.CAGE,
 					SkywarsBase.SAVED_ACCOUNTS.get(player).getSelected());
+
 			Object cage_obj = getCage(player, element);
 			Object two_obj = null;
 
@@ -624,10 +623,10 @@ public class TeamPlayerManager {
 
 	}
 
-	private static CageType getCage(Player player, Element element){
+	private static CageType getCage(Player player, String element){
 
 		LOOP: for(CageType cageType : CageType.values()){
-			if(!cageType.getCode().equalsIgnoreCase(element.getCode())) continue LOOP;
+			if(!cageType.getCode().equalsIgnoreCase(element)) continue LOOP;
 
 				return cageType;
 		}
