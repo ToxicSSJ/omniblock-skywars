@@ -22,6 +22,7 @@ import net.omniblock.packets.network.structure.type.PacketSenderType;
 import net.omniblock.packets.object.external.ServerType;
 import net.omniblock.packets.util.Lists;
 import net.omniblock.network.library.utils.TextUtil;
+import net.omniblock.network.systems.adapters.GameCMDAdapter;
 import net.omniblock.skywars.Skywars;
 import net.omniblock.skywars.SkywarsGameState;
 import net.omniblock.skywars.games.solo.managers.SoloPlayerManager;
@@ -114,13 +115,15 @@ public class LobbyManager implements Listener {
 				"salir",
 				"leave",
 				"hub",
-				"gen_command_vote",
-				"gen_command_test"
+				"gen_command_vote"
 		};
 		
 		for(String command : commands){
 			Skywars.getInstance().getCommand(command).setExecutor(executor);
+			GameCMDAdapter.ACTIVED_COMMANDS.add(command);
 		}
+		
+		Skywars.getInstance().getCommand("gen_command_test").setExecutor(executor);
 		
 		Skywars.getInstance().getServer().getPluginManager().registerEvents(new LobbyManager(), Skywars.getInstance());
 		Skywars.getInstance().getServer().getPluginManager().registerEvents(new SpectatorManager(), Skywars.getInstance());
