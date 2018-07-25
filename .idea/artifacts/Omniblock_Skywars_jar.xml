@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/../CompiledJars</output-path>
     <root id="archive" name="Omniblock-Skywars.jar">
       <element id="module-output" name="Omniblock-Skywars" />
+      <element id="file-copy" path="$PROJECT_DIR$/Config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
     </root>
   </artifact>
 </component>
